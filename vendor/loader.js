@@ -11,8 +11,13 @@ var define, requireModule;
     if (seen[name]) { return seen[name]; }
     seen[name] = {};
 
-    var mod = registry[name],
-        deps = mod.deps,
+    var mod = registry[name];
+
+    if (!mod) {
+      throw new Error("Module: '" + name + "' not found.");
+    }
+
+    var deps = mod.deps,
         callback = mod.callback,
         reified = [],
         exports;
@@ -31,5 +36,4 @@ var define, requireModule;
 
   define.registry = registry;
   define.seen = seen;
-
 })();

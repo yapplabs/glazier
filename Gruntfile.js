@@ -12,30 +12,29 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      files: ['app/**'],
-      tasks: ['ember_handlebars', 'transpile', 'copy']
+      files: ['glazier/**'],
+      tasks: ['ember_handlebars', 'transpile', 'copy', 'concat']
     },
 
     transpile: {
       main: {
         type: "amd",
-        moduleName: PROJECT_NAME.toLowerCase(),
         files: [{
           expand: true,
-          cwd: 'app/',
+          cwd: 'glazier',
           src: ['**/*.js'],
-          dest: 'tmp/public/app'
+          dest: 'tmp/public/glazier'
         }]
       }
     },
 
     copy: {
-      index: {
+      public: {
         files: [
           {
             expand: true,
-            cwd: 'app',
-            src: ['index.html'],
+            cwd: 'public/',
+            src: ['**'],
             dest: 'tmp/public/'
           }
         ]
@@ -57,12 +56,22 @@ module.exports = function(grunt) {
       compile: {
         options: {
           processName: function(filename) {
-            return filename.replace(/^app\/templates\//,'').replace(/\.handlebars$/,'');
+            return filename.replace(/templates\//,'').replace(/\.handlebars$/,'');
           }
         },
         files: {
-          "tmp/public/app/templates.js": "app/templates/*.handlebars"
+          "tmp/public/glazier/templates.js": "templates/*.handlebars"
         }
+      }
+    },
+
+    concat: {
+      options: {
+        separator: ';'
+      },
+      dist: {
+        src: ['tmp/public/glazier/**/*.js'],
+        dest: 'tmp/public/glazier.js'
       }
     }
   });
@@ -72,6 +81,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-es6-module-transpiler');
+  grunt.loadNpmTasks('grunt-contrib-qunit');
+  grunt.loadNpmTasks('grunt-contrib-concat');
 
-  grunt.registerTask('default', ['connect:main', 'ember_handlebars', 'transpile', 'copy', 'watch']);
+  grunt.registerTask('default', ['connect:main', 'ember_handlebars', 'transpile', 'copy', 'concat', 'watch']);
 };
