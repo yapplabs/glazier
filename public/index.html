@@ -23,7 +23,7 @@
 
       window.addEventListener("message", function(event) {
         // TODO: hostname should be environment-specific
-        if (event.origin == "http://localhost:8000") {
+        if (event.origin == window.location.origin) {
           var authCode = event.data;
           console.log("we got a code" + authCode);
           var accessToken = null;
@@ -38,7 +38,7 @@
           var oReq = new XMLHttpRequest();
           oReq.onload = reqListener;
           // TODO: hostname should be environment-specific
-          oReq.open("post", "http://localhost:8000/api/oauth/github/exchange?code=" + authCode, true);
+          oReq.open("post", window.location.origin + "/api/oauth/github/exchange?code=" + authCode, true);
           oReq.send();
         } else {
           console.log("got unknown message", event);
