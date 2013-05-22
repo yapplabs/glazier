@@ -124,6 +124,21 @@ module.exports = function(grunt) {
         dest: 'tmp/public/tests.js'
       }
     },
+
+    shell: {
+      ingest: {
+        command: [
+          "cd glazier-server",
+          "bundle exec rake glazier:ingest_as_current[../tmp/public/index.html]"
+        ].join(' && '),
+        options: {
+          stdout: true,
+          stderr: true,
+          failOnError: true
+        }
+      }
+    },
+
     jshint: {
       all: {
         // TODO: Run jshint on individual files when jshint supports ES6 modules
@@ -190,10 +205,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-connect-proxy');
+  grunt.loadNpmTasks('grunt-shell');
 
   grunt.registerTask('build', ['ember_handlebars', 'transpile', 'copy', 'concat', 'jshint']);
 
   grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
 
   grunt.registerTask('default', ['build',  'connect', 'watch']);
+
+  grunt.registerTask('ingest', ['build', 'shell:ingest']);
 };
