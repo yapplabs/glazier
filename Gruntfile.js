@@ -12,8 +12,8 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      files: ['glazier/**'],
-      tasks: ['ember_handlebars', 'transpile', 'copy', 'concat']
+      files: ['glazier/**', 'tests/**'],
+      tasks: ['build', 'qunit:all']
     },
 
     transpile: {
@@ -25,11 +25,21 @@ module.exports = function(grunt) {
           src: ['**/*.js'],
           dest: 'tmp/public/glazier'
         }]
+      },
+
+      tests: {
+        type: "amd",
+        files: [{
+          expand: true,
+          cwd: 'tests',
+          src: ['**/*.js'],
+          dest: 'tmp/public/tests/'
+        }]
       }
     },
 
     copy: {
-      public: {
+      main: {
         files: [
           {
             expand: true,
@@ -40,6 +50,16 @@ module.exports = function(grunt) {
         ]
       },
 
+      test: {
+        files: [
+          {
+            expand: true,
+            cwd: 'tests/',
+            src: ['index.html'],
+            dest: 'tmp/public/tests'
+        }
+      ]},
+
       vendor: {
         files: [
           {
@@ -49,6 +69,14 @@ module.exports = function(grunt) {
             dest: 'tmp/public/vendor'
           }
         ]
+      }
+    },
+
+    qunit: {
+      all:  {
+        options: {
+          urls: ['http://localhost:8000/tests/index.html']
+        }
       }
     },
 
@@ -66,12 +94,13 @@ module.exports = function(grunt) {
     },
 
     concat: {
-      options: {
-        separator: ';'
-      },
-      dist: {
+      main: {
         src: ['tmp/public/glazier/**/*.js'],
         dest: 'tmp/public/glazier.js'
+      },
+      tests: {
+        src: ['tmp/public/tests/**/*.js'],
+        dest: 'tmp/public/tests.js'
       }
     }
   });
@@ -84,5 +113,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-concat');
 
-  grunt.registerTask('default', ['connect:main', 'ember_handlebars', 'transpile', 'copy', 'concat', 'watch']);
+  grunt.registerTask('build', ['ember_handlebars', 'transpile', 'copy', 'concat']);
+
+  grunt.registerTask('test', ['build',  'connect:main', 'qunit:all']);
+
+  grunt.registerTask('default', ['build',  'connect:main', 'watch']);
 };
