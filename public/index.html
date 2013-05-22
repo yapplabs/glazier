@@ -8,46 +8,8 @@
     <script src="/glazier.js"></script>
   </head>
   <body>
-    <button id="github_button">Log In with GitHub</button>
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-
     <script>
-      var GITHUB_CLIENT_ID = $('meta[name=github_client_id]').attr('content');
-
-      document.getElementById('github_button').addEventListener('click', function(){
-        var githubUri = "https://github.com/login/oauth/authorize" +
-      '?client_id=' + GITHUB_CLIENT_ID + '&scope=gist'
-        window.open(githubUri, "authwindow", "menubar=0,resizable=1,width=960,height=410");
-        return false;
-      });
-
-      window.addEventListener("message", function(event) {
-        // TODO: hostname should be environment-specific
-        if (event.origin == window.location.origin) {
-          var authCode = event.data;
-          console.log("we got a code" + authCode);
-          var accessToken = null;
-
-          function reqListener() {
-            if (oReq.readyState == 4) {
-              accessToken = oReq.responseText;
-              console.log("My access token is ", accessToken);
-            }
-          };
-
-          var oReq = new XMLHttpRequest();
-          oReq.onload = reqListener;
-          // TODO: hostname should be environment-specific
-          oReq.open("post", window.location.origin + "/api/oauth/github/exchange?code=" + authCode, true);
-          oReq.send();
-        } else {
-          console.log("got unknown message", event);
-        }
-      });
-    </script>
-
-    <script>
-      requireModule('glazier/main');
+      window.Glazier = requireModule('glazier/main').Glazier;
     </script>
   </body>
 </html>
