@@ -102,6 +102,61 @@ module.exports = function(grunt) {
         src: ['tmp/public/tests/**/*.js'],
         dest: 'tmp/public/tests.js'
       }
+    },
+    jshint: {
+      all: {
+        // TODO: Run jshint on individual files when jshint supports ES6 modules
+        src: ['Gruntfile.js', 'tmp/public/glazier.js', 'tmp/public/tests.js'],
+        options: {
+          predef: [
+            "Ember",
+            "define",
+            "console",
+            "require",
+            "requireModule",
+            "equal",
+            "notEqual",
+            "notStrictEqual",
+            "test",
+            "asyncTest",
+            "testBoth",
+            "testWithDefault",
+            "raises",
+            "throws",
+            "deepEqual",
+            "start",
+            "stop",
+            "ok",
+            "strictEqual",
+            "module",
+            "expect"
+          ],
+          "node" : false,
+          "browser" : true,
+          "boss" : true,
+          "curly": false,
+          "debug": false,
+          "devel": false,
+          "eqeqeq": true,
+          "evil": true,
+          "forin": false,
+          "immed": false,
+          "laxbreak": false,
+          "newcap": true,
+          "noarg": true,
+          "noempty": false,
+          "nonew": false,
+          "nomen": false,
+          "onevar": false,
+          "plusplus": false,
+          "regexp": false,
+          "undef": true,
+          "sub": true,
+          "strict": false,
+          "white": false,
+          "eqnull": true
+        }
+      }
     }
   });
 
@@ -112,8 +167,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-es6-module-transpiler');
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
-  grunt.registerTask('build', ['ember_handlebars', 'transpile', 'copy', 'concat']);
+  grunt.registerTask('build', ['ember_handlebars', 'transpile', 'copy', 'concat', 'jshint']);
 
   grunt.registerTask('test', ['build',  'connect:main', 'qunit:all']);
 
