@@ -1,0 +1,3 @@
+[submodule "glazier-server"]
+	path = glazier-server
+	url = git://github.com/yapplabs/glazier-server.git

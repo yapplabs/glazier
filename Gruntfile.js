@@ -1,12 +1,33 @@
 var PROJECT_NAME = 'Glazier';
+var proxy = require('proxy-middleware');
+var url= require('url');
+
 module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     connect: {
-      main: {
+      server: {
         options: {
-          base: 'tmp/public'
+          port: 8000,
+          hostname: 'localhost',
+          base: 'tmp/public',
+          middleware: function(connect, options) {
+            var theUrl, theProxy, middleware;
+
+            theUrl = url.parse('http://localhost:3040/api');
+            theUrl.route = '/api';
+
+            theProxy = proxy(theUrl);
+
+            middleware = [
+              theProxy,
+              connect['static'](options.base),
+              connect.directory(options.base)
+            ];
+
+            return middleware;
+          }
         }
       }
     },
@@ -64,7 +85,7 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: 'vendor',
+              cwd: 'vendor',
             src: ['**'],
             dest: 'tmp/public/vendor'
           }
@@ -168,10 +189,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-connect-proxy');
 
   grunt.registerTask('build', ['ember_handlebars', 'transpile', 'copy', 'concat', 'jshint']);
 
-  grunt.registerTask('test', ['build',  'connect:main', 'qunit:all']);
+  grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
 
-  grunt.registerTask('default', ['build',  'connect:main', 'watch']);
+  grunt.registerTask('default', ['build',  'connect', 'watch']);
 };
