@@ -173,6 +173,7 @@ module.exports = function(grunt) {
         options: {
           predef: [
             "Ember",
+            "Conductor",
             "define",
             "console",
             "require",
