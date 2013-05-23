@@ -1,6 +1,7 @@
 var PROJECT_NAME = 'Glazier';
 var proxy = require('proxy-middleware');
 var url= require('url');
+var CLOUDFRONT_HOST = "http://d4h95iioxf8ji.cloudfront.net";
 
 module.exports = function(grunt) {
 
@@ -154,7 +155,7 @@ module.exports = function(grunt) {
       dev: {
         upload: [
           {
-            src: 'tmp/md5/glazier-*.js',
+            src: 'tmp/md5/glazier*.js',
             dest: 'assets/'
           },
           {
@@ -255,6 +256,27 @@ module.exports = function(grunt) {
           }
         }
       }
+    },
+
+    uglify: {
+      all: {
+        files: [
+          {
+            expand: true,
+            cwd: 'tmp/public/',
+            src: ['glazier.js'],
+            ext: '.min.js',
+            dest: 'tmp/public/'
+          },
+          {
+            expand: true,
+            cwd: 'tmp/public/vendor/',
+            src: '**/*.js',
+            ext: '.min.js',
+            dest: 'tmp/public/vendor/'
+          }
+        ]
+      }
     }
   });
 
@@ -272,17 +294,19 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-s3');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.registerTask('index.html', 'process index.html', function() {
     var template = grunt.file.read('public/index.html');
     var manifestContents = grunt.file.read('tmp/manifest.json');
     var manifest = JSON.parse(manifestContents);
-    var host = "http://d4h95iioxf8ji.cloudfront.net";
     var indexContents = grunt.template.process(template, {
       data: {
         manifestUrl: function(path) {
           if (process.env.GLAZIER_ENV === "prod") {
-            return host + manifest[path];
+            path = path.replace(/\.js$/, '.min.js');
+            /* Our MD5 task adds the -MD5 directly before the .js */
+            return CLOUDFRONT_HOST + manifest[path]; //.replace(/(-[^-]+)\.js$/, '$1.js');
           }
           return path;
         }
@@ -297,11 +321,13 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
 
-  grunt.registerTask('default', ['build',  'connect', 'watch', 'index.html']);
+  grunt.registerTask('default', ['assets', 'connect', 'watch', 'index.html']);
 
-  grunt.registerTask('assets', ['build', 'md5', 'index.html']);
+  grunt.registerTask('assets', ['build', 'uglify:all', 'md5', 'index.html']);
 
   grunt.registerTask('ingest', ['assets', 'shell:ingest']);
 
   grunt.registerTask('deploy', ['assets', 's3:dev']);
+
+  grunt.registerTask('preview', ['deploy', 'shell:ingest', 'connect', 'watch']);
 };
