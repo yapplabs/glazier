@@ -6,6 +6,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    env: process.env,
     connect: {
       server: {
         options: {
@@ -142,6 +143,28 @@ module.exports = function(grunt) {
       }
     },
 
+    s3: {
+      options: {
+        key: '<%= env.GLAZIER_S3_KEY %>',
+        secret: '<%= env.GLAZIER_S3_SECRET %>',
+        bucket: 'glazier',
+        gzip: true,
+        access: 'public-read'
+      },
+      dev: {
+        upload: [
+          {
+            src: 'tmp/md5/glazier-*.js',
+            dest: 'assets/'
+          },
+          {
+            src: 'tmp/md5/vendor/**/*-*.js',
+            dest: 'assets/vendor/'
+          }
+        ]
+      }
+    },
+
     jshint: {
       all: {
         // TODO: Run jshint on individual files when jshint supports ES6 modules
@@ -168,6 +191,7 @@ module.exports = function(grunt) {
             "ok",
             "strictEqual",
             "module",
+            "process",
             "expect"
           ],
           "node" : false,
@@ -198,12 +222,14 @@ module.exports = function(grunt) {
       }
     },
 
+    clean: ["tmp"],
+
     md5: {
       compile: {
         files: [{
           expand: true,
           cwd: 'tmp/public',
-          src: ['**/*.js'],
+          src: ['**/*.*'],
           dest: 'tmp/md5/'
         }],
         options: {
@@ -244,12 +270,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-connect-proxy');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-md5');
+  grunt.loadNpmTasks('grunt-s3');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
-  grunt.registerTask('build', ['ember_handlebars', 'transpile', 'copy', 'concat', 'jshint']);
+  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'copy', 'concat', 'jshint']);
 
   grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
 
   grunt.registerTask('default', ['build',  'connect', 'watch']);
 
   grunt.registerTask('ingest', ['build', 'shell:ingest']);
+
+  grunt.registerTask('assets', ['build', 'md5', 's3:dev']);
 };
