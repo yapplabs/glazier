@@ -35,7 +35,7 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      files: ['app/**', 'tests/**'],
+      files: ['app/**', 'cards/**', 'vendor/**', 'tests/**'],
       tasks: ['build', 'qunit:all']
     },
 
@@ -85,6 +85,17 @@ module.exports = function(grunt) {
             dest: 'tmp/public/tests'
         }
       ]},
+
+      cards: {
+        files: [
+          {
+            expand: true,
+              cwd: 'cards',
+            src: ['**'],
+            dest: 'tmp/public/cards'
+          }
+        ]
+      },
 
       vendor: {
         files: [
