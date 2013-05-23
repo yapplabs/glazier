@@ -29,6 +29,7 @@
     "grunt-contrib-qunit": "~0.2.1",
     "grunt-connect-proxy": "~0.1.2",
     "proxy-middleware": "~0.3.2",
-    "grunt-shell": "~0.2.2"
+    "grunt-shell": "~0.2.2",
+    "grunt-md5": "~0.1.10"
   }
 }

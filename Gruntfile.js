@@ -196,6 +196,40 @@ module.exports = function(grunt) {
           "eqnull": true
         }
       }
+    },
+
+    md5: {
+      compile: {
+        files: [{
+          expand: true,
+          cwd: 'tmp/public',
+          src: ['**/*.js'],
+          dest: 'tmp/md5/'
+        }],
+        options: {
+          cmd: 'tmp/public/glazier',
+          encoding: null,
+          keepBasename: true,
+          keepExtension: true,
+          after: function (fileChanges, options) {
+            var fs, manifest, key, file, from, to;
+
+            fs = require('fs');
+            manifest = {};
+
+            for (key in fileChanges) {
+              file = fileChanges[key];
+
+              from = file.oldPath.replace(/^tmp\/public\//,'');
+              to = file.newPath.replace(/^tmp\/md5\//,'');
+
+              manifest[from] = to;
+            }
+
+            fs.writeFileSync('tmp/manifest.json', JSON.stringify({ files: manifest }));
+          }
+        }
+      }
     }
   });
 
@@ -209,6 +243,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-connect-proxy');
   grunt.loadNpmTasks('grunt-shell');
+  grunt.loadNpmTasks('grunt-md5');
 
   grunt.registerTask('build', ['ember_handlebars', 'transpile', 'copy', 'concat', 'jshint']);
 
