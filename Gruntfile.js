@@ -238,21 +238,20 @@ module.exports = function(grunt) {
           keepBasename: true,
           keepExtension: true,
           after: function (fileChanges, options) {
-            var fs, manifest, key, file, from, to;
+            var manifest, key, file, from, to;
 
-            fs = require('fs');
             manifest = {};
 
             for (key in fileChanges) {
               file = fileChanges[key];
 
-              from = file.oldPath.replace(/^tmp\/public\//,'');
-              to = file.newPath.replace(/^tmp\/md5\//,'');
+              from = file.oldPath.replace(/^tmp\/public/,'');
+              to = file.newPath.replace(/^tmp\/md5/,'/assets');
 
               manifest[from] = to;
             }
 
-            fs.writeFileSync('tmp/manifest.json', JSON.stringify({ files: manifest }));
+            grunt.file.write('tmp/manifest.json', JSON.stringify(manifest));
           }
         }
       }
@@ -272,14 +271,37 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-md5');
   grunt.loadNpmTasks('grunt-s3');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-handlebars');
+
+  grunt.registerTask('index.html', 'process index.html', function() {
+    var template = grunt.file.read('public/index.html');
+    var manifestContents = grunt.file.read('tmp/manifest.json');
+    var manifest = JSON.parse(manifestContents);
+    var host = "http://d4h95iioxf8ji.cloudfront.net";
+    var indexContents = grunt.template.process(template, {
+      data: {
+        manifestUrl: function(path) {
+          if (process.env.GLAZIER_ENV === "prod") {
+            return host + manifest[path];
+          }
+          return path;
+        }
+      }
+    });
+
+    grunt.file.write("tmp/public/index.html", indexContents);
+  });
+
 
   grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'copy', 'concat', 'jshint']);
 
   grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
 
-  grunt.registerTask('default', ['build',  'connect', 'watch']);
+  grunt.registerTask('default', ['build',  'connect', 'watch', 'index.html']);
 
-  grunt.registerTask('ingest', ['build', 'shell:ingest']);
+  grunt.registerTask('assets', ['build', 'md5', 'index.html']);
 
-  grunt.registerTask('assets', ['build', 'md5', 's3:dev']);
+  grunt.registerTask('ingest', ['assets', 'shell:ingest']);
+
+  grunt.registerTask('deploy', ['assets', 's3:dev']);
 };

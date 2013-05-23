@@ -31,6 +31,7 @@
     "proxy-middleware": "~0.3.2",
     "grunt-shell": "~0.2.2",
     "grunt-md5": "~0.1.10",
-    "grunt-s3": "~0.2.0-alpha.1"
+    "grunt-s3": "~0.2.0-alpha.1",
+    "grunt-contrib-handlebars": "~0.5.8"
   }
 }
