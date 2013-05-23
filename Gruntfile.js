@@ -35,7 +35,7 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      files: ['app/**', 'cards/**', 'vendor/**', 'tests/**'],
+      files: ['app/**', 'cards/**', 'vendor/**', 'test/**'],
       tasks: ['build', 'qunit:all']
     },
 
@@ -57,9 +57,9 @@ module.exports = function(grunt) {
         type: "amd",
         files: [{
           expand: true,
-          cwd: 'tests',
-          src: ['**/*.js'],
-          dest: 'tmp/public/tests/'
+          cwd: 'test/',
+          src: ['**/*.js', '!fixtures/**'],
+          dest: 'tmp/public/test/'
         }]
       }
     },
@@ -80,9 +80,19 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: 'tests/',
+            cwd: 'test/',
             src: ['index.html'],
-            dest: 'tmp/public/tests'
+            dest: 'tmp/public/test'
+        }
+      ]},
+
+      fixtures: {
+        files: [
+          {
+            expand: true,
+            cwd: 'test/',
+            src: ['fixtures/**'],
+            dest: 'tmp/public/test'
         }
       ]},
 
@@ -112,7 +122,7 @@ module.exports = function(grunt) {
     qunit: {
       all:  {
         options: {
-          urls: ['http://localhost:8000/tests/index.html']
+          urls: ['http://localhost:8000/test/index.html']
         }
       }
     },
@@ -136,8 +146,8 @@ module.exports = function(grunt) {
         dest: 'tmp/public/glazier.js'
       },
       tests: {
-        src: ['tmp/public/tests/**/*.js'],
-        dest: 'tmp/public/tests.js'
+        src: ['tmp/public/test/**/*.js'],
+        dest: 'tmp/public/test.js'
       }
     },
 
@@ -180,11 +190,12 @@ module.exports = function(grunt) {
     jshint: {
       all: {
         // TODO: Run jshint on individual files when jshint supports ES6 modules
-        src: ['Gruntfile.js', 'tmp/public/glazier.js', 'tmp/public/tests.js'],
+        src: ['Gruntfile.js', 'tmp/public/glazier.js', 'tmp/public/test.js'],
         options: {
           predef: [
             "Ember",
             "Conductor",
+            "$",
             "define",
             "console",
             "require",
