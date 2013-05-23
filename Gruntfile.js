@@ -33,16 +33,19 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      files: ['glazier/**', 'tests/**'],
+      files: ['app/**', 'tests/**'],
       tasks: ['build', 'qunit:all']
     },
 
     transpile: {
       main: {
         type: "amd",
+        moduleName: function(defaultModuleName){
+          return 'glazier/' + defaultModuleName;
+        },
         files: [{
           expand: true,
-          cwd: 'glazier',
+          cwd: 'app/',
           src: ['**/*.js'],
           dest: 'tmp/public/glazier'
         }]
