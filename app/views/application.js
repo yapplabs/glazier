@@ -1,30 +1,28 @@
+import ConfigurationService from 'glazier/services/configuration';
+import FullXhrService from 'glazier/services/full_xhr';
+
 var ApplicationView = Ember.View.extend({
   didInsertElement: function() {
-    var GITHUB_CLIENT_ID = Ember.$('meta[name=github_client_id]').attr('content');
-    var view = this;
-    document.getElementById('github_button').addEventListener('click', function(){
-      var githubUri = "https://github.com/login/oauth/authorize?scope=gist" +
-        "&client_id=" +  GITHUB_CLIENT_ID;
-      window.open(githubUri, "authwindow", "menubar=0,resizable=1,width=960,height=410");
-      return false;
-    });
+    var conductor = new Conductor(),
+        cardUrl = "/cards/github-auth/card.js",
+        cardId = 1,
+        card, $cardWrapper;
 
-    window.addEventListener("message", function(event) {
-      if (event.origin !== window.location.origin) {
-        Ember.Logger.debug("got unknown message", event);
-        return;
-      }
-      var authCode = event.data;
-      Ember.Logger.debug("we got a code " + authCode);
-      Ember.$.ajax({
-        type: 'post',
-        url: window.location.origin + "/api/oauth/github/exchange?code=" + authCode
-      }).then(function(data) {
-        var accessToken = data;
-        view.set('controller.githubAccessToken', accessToken);
-        Ember.Logger.debug("My access token is ", accessToken);
-      });
+    // this.initializeAnalytics();
+    // this.initializeIframeBorderToggle();
+
+    Conductor.services['configuration'] = ConfigurationService;
+    Conductor.services['fullXhr'] = FullXhrService;
+
+    conductor.loadData(cardUrl, cardId, {});
+    card = conductor.load(cardUrl, cardId, { capabilities: ['fullXhr', 'configuration']});
+    $cardWrapper = this.$("<div class='card-wrapper'>");
+
+    this.$('.cards').append($cardWrapper);
+    card.appendTo($cardWrapper[0]).then(function() {
+      card.render();
     });
+    // this.wiretapCard(card);
   }
 });
 
