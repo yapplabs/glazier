@@ -321,17 +321,24 @@ module.exports = function(grunt) {
 
   grunt.registerTask('index.html', 'process index.html', function() {
     var template = grunt.file.read('public/index.html');
-    var manifestContents = grunt.file.read('tmp/manifest.json');
-    var manifest = JSON.parse(manifestContents);
+    var manifestContents;
+    var manifest;
+
+    if (process.env.GLAZIER_ENV === "prod") {
+      manifestContents = grunt.file.read('tmp/manifest.json');
+      manifest = JSON.parse(manifestContents);
+    }
+
     var indexContents = grunt.template.process(template, {
       data: {
         manifestUrl: function(path) {
-          if (process.env.GLAZIER_ENV === "prod") {
+          if(process.env.GLAZIER_ENV === "prod") {
             path = path.replace(/\.js$/, '.min.js');
             /* Our MD5 task adds the -MD5 directly before the .js */
             return CLOUDFRONT_HOST + manifest[path]; //.replace(/(-[^-]+)\.js$/, '$1.js');
+          } else { 
+            return path;
           }
-          return path;
         }
       }
     });
@@ -339,18 +346,16 @@ module.exports = function(grunt) {
     grunt.file.write("tmp/public/index.html", indexContents);
   });
 
-
   grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'copy', 'concat', 'jshint']);
-
-  grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
-
-  grunt.registerTask('default', ['assets', 'connect', 'watch', 'index.html']);
 
   grunt.registerTask('assets', ['build', 'uglify:all', 'md5', 'index.html']);
 
   grunt.registerTask('ingest', ['assets', 'shell:ingest']);
-
   grunt.registerTask('deploy', ['assets', 's3:dev']);
 
-  grunt.registerTask('preview', ['deploy', 'shell:ingest', 'connect', 'watch']);
+  grunt.registerTask('preview:local', ['build', 'uglify:all', 'md5', 'index.html', 'connect', 'watch']);
+  grunt.registerTask('preview:remote', ['deploy', 'shell:ingest', 'connect', 'watch']);
+
+  grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
+  grunt.registerTask('default', ['build', 'index.html', 'connect', 'watch']);
 };
