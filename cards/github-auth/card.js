@@ -3,8 +3,8 @@ Conductor.requireCSS('/cards/github-auth/card.css');
 
 Conductor.card({
   consumers: {
-    configuration: Conductor.Oasis.Consumer.extend({}),
-    fullXhr: Conductor.Oasis.Consumer.extend({})
+    configuration: Conductor.Oasis.Consumer,
+    fullXhr: Conductor.Oasis.Consumer
   },
   render: function (intent, dimensions) {
     if (!dimensions) { dimensions = {width:500,height:500} };
@@ -13,7 +13,7 @@ Conductor.card({
   },
 
   activate: function() {
-    console.log("activate");
+    console.log("activate github-auth");
     var card = this;
     var _configurationService = this.consumers.configuration;
     githubClientIdPromise = _configurationService.request('configurationValue', 'github_client_id');

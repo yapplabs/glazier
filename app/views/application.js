@@ -1,28 +1,34 @@
-import ConfigurationService from 'glazier/services/configuration';
-import FullXhrService from 'glazier/services/full_xhr';
 
 var ApplicationView = Ember.View.extend({
+  conductor: function(){
+    return this.get('container').lookup('conductor:main');
+  }.property(),
   didInsertElement: function() {
-    var conductor = new Conductor(),
-        cardUrl = "/cards/github-auth/card.js",
-        cardId = 1,
-        card, $cardWrapper;
+    this.loadCard(
+      '/cards/github-auth/card.js', 1,
+      [ 'fullXhr', 'configuration' ]
+    );
+    this.loadCard(
+      '/cards/github-repositories/card.js', 2,
+      [ 'credentialedGithubApi' ]
+    );
 
     // this.initializeAnalytics();
     // this.initializeIframeBorderToggle();
 
-    Conductor.services['configuration'] = ConfigurationService;
-    Conductor.services['fullXhr'] = FullXhrService;
-
+    // this.wiretapCard(card);
+  },
+  loadCard: function(cardUrl, cardId, capabilities){
+    var conductor = this.get('conductor'),
+        card, $cardWrapper;
     conductor.loadData(cardUrl, cardId, {});
-    card = conductor.load(cardUrl, cardId, { capabilities: ['fullXhr', 'configuration']});
+    card = conductor.load(cardUrl, cardId, { capabilities: capabilities});
     $cardWrapper = this.$("<div class='card-wrapper'>");
 
     this.$('.cards').append($cardWrapper);
     card.appendTo($cardWrapper[0]).then(function() {
       card.render();
     });
-    // this.wiretapCard(card);
   }
 });
 
