@@ -12,5 +12,26 @@
     <script>
       window.Glazier = requireModule('glazier/main').Glazier;
     </script>
+
+
+    <!-- Analytics -->
+    <link rel="stylesheet" href="/css/conductorjs-starter-kit.css">
+    <div class="analytics">
+      <div class="tab">Analytics</div>
+      <div class="panel">
+        <pre class="output"></pre>
+      </div>
+    </div>
+
+    <script>
+      var StarterKit = {};
+    </script>
+
+    <script src="/vendor/analytics.js"></script>
+    <script>
+      $(function() {
+        StarterKit.initializeAnalytics();
+      });
+    </script>
   </body>
 </html>
