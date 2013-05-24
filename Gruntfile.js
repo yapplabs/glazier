@@ -2,9 +2,52 @@ var PROJECT_NAME = 'Glazier';
 var proxy = require('proxy-middleware');
 var url= require('url');
 var CLOUDFRONT_HOST = "http://d4h95iioxf8ji.cloudfront.net";
+var request = require('http').request;
+
+function proxyIndex(req, res, next){
+  if (req.url === "/" || req.url === "/index.html") {
+
+    // TODO: don't hardcode configuration
+    var opts = {
+      pathname: 'index.html',
+      hostname: '0.0.0.0',
+      port: '3040'
+    };
+
+    var proxyReq =  request(opts, function (proxyRes) {
+      res.writeHead(proxyRes.statusCode, proxyRes.headers);
+      proxyRes.on('error', next);
+      proxyRes.pipe(res);
+    });
+
+    proxyReq.on('error', next);
+
+    if (!req.readable) {
+      proxyReq.end();
+    } else {
+      req.pipe(proxyReq);
+    }
+
+  } else {
+    next();
+  }
+}
+
+function middleware(connect, options) {
+  var theUrl;
+
+  theUrl = url.parse('http://localhost:3040/api');
+  theUrl.route = '/api';
+
+  return [
+    proxy(theUrl),
+    proxyIndex,
+    connect['static'](options.base),
+    connect.directory(options.base)
+  ];
+}
 
 module.exports = function(grunt) {
-
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     env: process.env,
@@ -14,22 +57,7 @@ module.exports = function(grunt) {
           port: 8000,
           hostname: 'localhost',
           base: 'tmp/public',
-          middleware: function(connect, options) {
-            var theUrl, theProxy, middleware;
-
-            theUrl = url.parse('http://localhost:3040/api');
-            theUrl.route = '/api';
-
-            theProxy = proxy(theUrl);
-
-            middleware = [
-              theProxy,
-              connect['static'](options.base),
-              connect.directory(options.base)
-            ];
-
-            return middleware;
-          }
+          middleware: middleware
         }
       }
     },
@@ -155,7 +183,7 @@ module.exports = function(grunt) {
       ingest: {
         command: [
           "cd glazier-server",
-          "bundle exec rake glazier:ingest_as_current[../tmp/public/index.html]"
+          "bundle exec rake 'glazier:ingest_as_current[../tmp/public/index.html]'"
         ].join(' && '),
         options: {
           stdout: true,
@@ -253,8 +281,9 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: 'tmp/public',
-          src: ['**/*.*'],
-          dest: 'tmp/md5/'
+          src: ['**/*'],
+          dest: 'tmp/md5/',
+          filter: 'isFile'
         }],
         options: {
           cmd: 'tmp/public/glazier',
@@ -325,8 +354,7 @@ module.exports = function(grunt) {
     var manifest;
 
     if (process.env.GLAZIER_ENV === "prod") {
-      manifestContents = grunt.file.read('tmp/manifest.json');
-      manifest = JSON.parse(manifestContents);
+      manifest = grunt.file.readJSON('tmp/manifest.json');
     }
 
     var indexContents = grunt.template.process(template, {
@@ -346,6 +374,10 @@ module.exports = function(grunt) {
     grunt.file.write("tmp/public/index.html", indexContents);
   });
 
+  grunt.registerTask("prod", function(){
+    process.env.GLAZIER_ENV = 'prod';
+  });
+
   grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'copy', 'concat', 'jshint']);
 
   grunt.registerTask('assets', ['build', 'uglify:all', 'md5', 'index.html']);
@@ -353,8 +385,8 @@ module.exports = function(grunt) {
   grunt.registerTask('ingest', ['assets', 'shell:ingest']);
   grunt.registerTask('deploy', ['assets', 's3:dev']);
 
-  grunt.registerTask('preview:local', ['build', 'uglify:all', 'md5', 'index.html', 'connect', 'watch']);
-  grunt.registerTask('preview:remote', ['deploy', 'shell:ingest', 'connect', 'watch']);
+  grunt.registerTask('preview', ['build', 'uglify:all', 'md5', 'index.html', 'shell:ingest', 'connect', 'watch']);
+  grunt.registerTask('preview:cdn', ['prod', 'deploy', 'shell:ingest', 'connect', 'watch']);
 
   grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
   grunt.registerTask('default', ['build', 'index.html', 'connect', 'watch']);
