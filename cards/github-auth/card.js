@@ -4,7 +4,9 @@ Conductor.requireCSS('/cards/github-auth/card.css');
 Conductor.card({
   consumers: {
     configuration: Conductor.Oasis.Consumer,
-    fullXhr: Conductor.Oasis.Consumer
+    fullXhr: Conductor.Oasis.Consumer,
+    userStorage: Conductor.Oasis.Consumer,
+    test: Conductor.Oasis.Consumer.extend({})
   },
   render: function (intent, dimensions) {
     if (!dimensions) { dimensions = {width:500,height:500} };
@@ -13,7 +15,7 @@ Conductor.card({
   },
 
   activate: function() {
-    console.log("activate github-auth");
+    // console.log("activate github-auth");
     var card = this;
     var _configurationService = this.consumers.configuration;
     githubClientIdPromise = _configurationService.request('configurationValue', 'github_client_id');
@@ -32,17 +34,29 @@ Conductor.card({
       //   return;
       // }
       var authCode = event.data;
-      console.log("we got a code " + authCode);
-      var _fullXhrService = card.consumers.fullXhr;
-      _fullXhrService.request('ajax', {
+      // console.log("we got a code " + authCode);
+      var fullXhrService = card.consumers.fullXhr;
+      fullXhrService.request('ajax', {
         type: 'post',
         url: 'http://localhost:8000' + "/api/oauth/github/exchange?code=" + authCode
       }).then(function(data) {
         var accessToken = data;
         // view.set('controller.githubAccessToken', accessToken);
-        console.log("My access token is ", accessToken);
+        card.consumers.userStorage.request('setItem', 'accessToken', accessToken).then(function(){
+          // console.log("I saved my access token: ", accessToken);
+        });
+      }, function(e){
+        console.error(e);
       });
     });
+
+    var card = this;
+    setTimeout(function(){
+      card.consumers.test.request('runTest').then(function(testFnString) {
+        var testFn = new Function('return ' + testFnString)();
+        testFn.call(window, card);
+      });
+    }, 100);
   },
 
   metadata: {
