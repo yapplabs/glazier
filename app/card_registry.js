@@ -43,6 +43,7 @@ Proxy.prototype = {
     this.queue.forEach(function (pair) {
       var event = pair[0];
       var data = pair[1];
+
       this.target.send(event, data);
     }, this);
   }
@@ -99,10 +100,9 @@ function CardRegistry(conductor) {
 
 CardRegistry.prototype = {
   load: function (manifestUrl) {
-    var promise = new Conductor.Oasis.RSVP.Promise();
-    if (loaded[manifestUrl]) {
-      promise.resolve(loaded[manifestUrl]);
-    } else {
+    var promise = loaded[manifestUrl];
+    if (!promise) {
+      loaded[manifestUrl] = promise = new Conductor.Oasis.RSVP.Promise();
       var manifest = manifests[manifestUrl];
       var options = {
         capabilities: []
@@ -118,9 +118,15 @@ CardRegistry.prototype = {
         }, this);
       }
       var card = this.conductor.load(manifest.jsUrl, manifestUrl, options);
-      card.promise.then(function (card) {
-        loaded[manifestUrl] = card;
+      card.sandbox.activatePromise.then(function () {
         promise.resolve(card);
+      });
+
+      var $cardWrapper = $("<div class='card-wrapper'>");
+
+      $('.cards').append($cardWrapper);
+      card.appendTo($cardWrapper[0]).then(function() {
+        card.render();
       });
 
       StarterKit.wiretapCard(card);

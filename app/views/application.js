@@ -4,10 +4,7 @@ var ApplicationView = Ember.View.extend({
   }.property(),
   didInsertElement: function() {
     var cardRegistry = this.get('container').lookup('cardRegistry:main');
-    var self = this;
-    cardRegistry.load('/cards/github-repositories/manifest.json').then(function (card) {
-      self.addCard(card);
-    });
+    cardRegistry.load('/cards/github-repositories/manifest.json');
 
     // this.loadCard(
     //   '/cards/github-auth/card.js', 1,

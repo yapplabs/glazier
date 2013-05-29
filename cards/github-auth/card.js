@@ -3,9 +3,16 @@ Conductor.requireCSS('/cards/github-auth/card.css');
 
 var card;
 var ApiConsumer = Conductor.Oasis.Consumer.extend({
-  request: {
+  initialize: function (port, name) {
+    port.all(function (type, data) {
+      console.log(type, data);
+    }, this);
+  },
+  requests: {
     ajax: function (promise, ajaxOpts) {
+      console.log('card.accessTokenPromise.then');
       card.accessTokenPromise.then(function (accessToken) {
+        ajaxOpts.data = {};
         ajaxOpts.data.access_token = accessToken;
         card.consumers.fullXhr.request('ajax', ajaxOpts).then(function (data) {
           promise.resolve(data);
@@ -28,6 +35,7 @@ card = Conductor.card({
     document.body.innerHTML = "<div><div>Hooray world!</div><button id=\"github_button\">Log In with GitHub</button></div>";
     this.resize(dimensions);
   },
+  accessTokenPromise: new Conductor.Oasis.RSVP.Promise(),
 
   activate: function() {
     console.log("activate github-auth");
@@ -43,8 +51,6 @@ card = Conductor.card({
       return false;
     });
 
-    this.accessTokenPromise = new Conductor.Oasis.RSVP.Promise();
-
     window.addEventListener("message", function(event) {
       // if (event.origin !== window.location.origin) {
       //   console.log("got unknown message", event);
@@ -58,7 +64,8 @@ card = Conductor.card({
         url: 'http://localhost:8000' + "/api/oauth/github/exchange?code=" + authCode
       }).then(function(data) {
         var accessToken = data;
-        accessTokenPromise.resolve(accessToken);
+        console.log('card.accessTokenPromise.resolve', accessToken);
+        card.accessTokenPromise.resolve(accessToken);
         // view.set('controller.githubAccessToken', accessToken);
         console.log("My access token is ", accessToken);
       });
