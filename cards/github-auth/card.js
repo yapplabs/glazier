@@ -3,11 +3,6 @@ Conductor.requireCSS('/cards/github-auth/card.css');
 
 var card;
 var ApiConsumer = Conductor.Oasis.Consumer.extend({
-  initialize: function (port, name) {
-    port.all(function (type, data) {
-      console.log(type, data);
-    }, this);
-  },
   requests: {
     ajax: function (promise, ajaxOpts) {
       console.log('card.accessTokenPromise.then');

@@ -18,44 +18,47 @@ var services = {
 // tracks loaded cards
 var loaded = {};
 
-function Proxy(registry, name) {
+function Proxy(registry, port, name) {
   this.registry = registry;
+  this.port = port;
   this.name = name;
-  this.target = null;
-  this.targetPromise = null;
-  this.queue = [];
+  this.loaded = false;
+  this.targetPromise = new Conductor.Oasis.RSVP.Promise();
 }
 
 Proxy.prototype = {
-  handle: function (type, data) {
-    if (!this.target) {
-      this.queue.push([type, data]);
-      if (!this.targetPromise) {
-        var self = this;
-        this.targetPromise = this.registry.resolveService(this.name).then(function (target) {
-          self.target = target;
-          self.flush();
-        });
-      }
-    }
+  load: function () {
+    if (this.loaded) return;
+    console.log('Proxy.load target for '+this.name);
+    var self = this;
+    this.registry.resolveService(this.name).then(function (target) {
+      console.log('Proxy target loaded for '+self.name);
+      self.targetPromise.resolve(target);
+    });
+    this.loaded = true;
   },
-  flush: function () {
-    this.queue.forEach(function (pair) {
-      var event = pair[0];
-      var data = pair[1];
+  handle: function (eventName, data) {
+    var self = this;
+    console.log('Proxy handle '+ eventName);
+    this.load(); //lazy load service
+    this.targetPromise.then(function (target) {
+      console.log('Proxy forwarding '+ eventName);
+      var responseEvent = eventName.replace(/^@request:/, '@response:');
+      var requestId = data.requestId;
 
-      this.target.send(event, data);
-    }, this);
-  }
-};
+      var observer = function(event) {
+        if (event.requestId === requestId) {
+          console.log('Proxy response '+ responseEvent);
+          target.port.off(responseEvent, observer);
+          this.port.send(responseEvent, event);
+        }
+      };
 
-function Target(name) {
-  this.name = name;
-}
-
-Target.prototype = {
-  handle: function (type, data) {
-    console.log(type, data);
+      target.port.on(responseEvent, observer, self);
+      target.port.send(eventName, data);
+    }, function (e) {
+      console.error(e);
+    });
   }
 };
 
@@ -65,7 +68,7 @@ function CardRegistry(conductor) {
 
   var ProxyService = Conductor.Oasis.Service.extend({
     registry: this,
-    initialize: function (oasisObject, name) {
+    initialize: function (port, name) {
       // this.sandbox.card.id
       // if name in consumes then this is the requester
       // if name in provides then this is the target
@@ -77,11 +80,10 @@ function CardRegistry(conductor) {
           card.proxyTargets = {};
         }
         card.proxyTargets[name] = this;
-        this.handler = new Target(name);
       } else {
-        this.handler = new Proxy(this.registry, name);
+        var proxy = new Proxy(this.registry, this.port, name);
+        this.port.all(proxy.handle, proxy);
       }
-      this.port.all(this.handler.handle, this.handler);
     }
   });
 
