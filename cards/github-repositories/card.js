@@ -7,7 +7,7 @@ var App;
 
 Conductor.card({
   consumers: {
-    credentialedGithubApi: Conductor.Oasis.Consumer
+    'github:authenticated:read': Conductor.Oasis.Consumer
   },
   render: function (intent, dimensions) {
     if (!dimensions) { dimensions = {width:500,height:500} };
@@ -29,7 +29,8 @@ Conductor.card({
     App.ApplicationController = Ember.ArrayController.extend();
     App.ApplicationRoute = Ember.Route.extend({
       model: function(){
-        var _apiService = card.consumers.credentialedGithubApi;
+        debugger
+        var _apiService = card.consumers['github:authenticated:read'];
         return _apiService.request("ajax", {
           url: '/user/repos',
           dataType: 'json'

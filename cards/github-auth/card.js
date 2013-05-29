@@ -1,10 +1,27 @@
 Conductor.require('http://code.jquery.com/jquery-1.9.1.min.js');
 Conductor.requireCSS('/cards/github-auth/card.css');
 
-Conductor.card({
+var card;
+var ApiConsumer = Conductor.Oasis.Consumer.extend({
+  request: {
+    ajax: function (promise, ajaxOpts) {
+      card.accessTokenPromise.then(function (accessToken) {
+        ajaxOpts.data.access_token = accessToken;
+        card.consumers.fullXhr.request('ajax', ajaxOpts).then(function (data) {
+          promise.resolve(data);
+        }, function (e) {
+          promise.reject(e);
+        });
+      });
+    }
+  }
+});
+
+card = Conductor.card({
   consumers: {
     configuration: Conductor.Oasis.Consumer,
-    fullXhr: Conductor.Oasis.Consumer
+    fullXhr: Conductor.Oasis.Consumer,
+    'github:authenticated:read': ApiConsumer
   },
   render: function (intent, dimensions) {
     if (!dimensions) { dimensions = {width:500,height:500} };
@@ -26,6 +43,8 @@ Conductor.card({
       return false;
     });
 
+    this.accessTokenPromise = new Conductor.Oasis.RSVP.Promise();
+
     window.addEventListener("message", function(event) {
       // if (event.origin !== window.location.origin) {
       //   console.log("got unknown message", event);
@@ -39,6 +58,7 @@ Conductor.card({
         url: 'http://localhost:8000' + "/api/oauth/github/exchange?code=" + authCode
       }).then(function(data) {
         var accessToken = data;
+        accessTokenPromise.resolve(accessToken);
         // view.set('controller.githubAccessToken', accessToken);
         console.log("My access token is ", accessToken);
       });
