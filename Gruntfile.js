@@ -64,7 +64,7 @@ module.exports = function(grunt) {
 
     watch: {
       files: ['app/**', 'cards/**', 'vendor/**', 'test/**'],
-      tasks: ['build', 'qunit:all']
+      tasks: ['build', 'jshint', 'qunit:all']
     },
 
     transpile: {
@@ -378,14 +378,14 @@ module.exports = function(grunt) {
     process.env.GLAZIER_ENV = 'prod';
   });
 
-  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'copy', 'concat', 'jshint']);
+  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'copy', 'concat']);
 
-  grunt.registerTask('assets', ['build', 'uglify:all', 'md5', 'index.html']);
+  grunt.registerTask('assets', ['build', 'jshint', 'uglify:all', 'md5', 'index.html']);
 
   grunt.registerTask('ingest', ['assets', 'shell:ingest']);
   grunt.registerTask('deploy', ['assets', 's3:dev']);
 
-  grunt.registerTask('preview', ['build', 'uglify:all', 'md5', 'index.html', 'shell:ingest', 'connect', 'watch']);
+  grunt.registerTask('preview', ['build',  'jshint', 'uglify:all', 'md5', 'index.html', 'shell:ingest', 'connect', 'watch']);
   grunt.registerTask('preview:cdn', ['prod', 'deploy', 'shell:ingest', 'connect', 'watch']);
 
   grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
