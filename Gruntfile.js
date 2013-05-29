@@ -48,6 +48,8 @@ function middleware(connect, options) {
 }
 
 module.exports = function(grunt) {
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     env: process.env,
@@ -63,6 +65,7 @@ module.exports = function(grunt) {
     },
 
     watch: {
+
       files: ['app/**', 'cards/**', 'vendor/**', 'test/**'],
       tasks: ['build', 'jshint', 'qunit:all']
     },
@@ -332,22 +335,6 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-ember-handlebars');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-es6-module-transpiler');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-connect-proxy');
-  grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-md5');
-  grunt.loadNpmTasks('grunt-s3');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-handlebars');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-
   grunt.registerTask('index.html', 'process index.html', function() {
     var template = grunt.file.read('public/index.html');
     var manifestContents;
@@ -390,4 +377,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
   grunt.registerTask('default', ['build', 'index.html', 'connect', 'watch']);
+
 };
