@@ -177,7 +177,7 @@ module.exports = function(grunt) {
         dest: 'tmp/public/glazier.js'
       },
       tests: {
-        src: ['tmp/public/test/**/*.js'],
+        src: ['tmp/public/test/**/*.js', '!tmp/public/test/fixtures/**'],
         dest: 'tmp/public/test.js'
       }
     },
@@ -351,7 +351,7 @@ module.exports = function(grunt) {
             path = path.replace(/\.js$/, '.min.js');
             /* Our MD5 task adds the -MD5 directly before the .js */
             return CLOUDFRONT_HOST + manifest[path]; //.replace(/(-[^-]+)\.js$/, '$1.js');
-          } else { 
+          } else {
             return path;
           }
         }
