@@ -12,7 +12,9 @@ var ApiConsumer = Conductor.Oasis.Consumer.extend({
     ajax: function (promise, ajaxOpts) {
       console.log('card.accessTokenPromise.then');
       card.accessTokenPromise.then(function (accessToken) {
-        ajaxOpts.data = {};
+        if (!ajaxOpts.data)
+          ajaxOpts.data = {};
+        ajaxOpts.url = 'https://api.github.com' + ajaxOpts.url;
         ajaxOpts.data.access_token = accessToken;
         card.consumers.fullXhr.request('ajax', ajaxOpts).then(function (data) {
           promise.resolve(data);
