@@ -1,11 +1,28 @@
 import UserStorageService from 'glazier/services/user_storage';
 import assertResolved from 'helpers/promise_test_helpers';
 import { inCard, TestService } from 'helpers/card_test_helpers';
+import createServiceForTesting from 'helpers/service_test_helpers';
 
 var conductor, card, ajaxRequests;
 
+function mockAjaxRequests() {
+  var originalAjax = Ember.$.ajax;
+  ajaxRequests = [];
+
+  Ember.$.ajax = function(options) {
+    ajaxRequests.push(options);
+    var promise = new Conductor.Oasis.RSVP.Promise();
+    promise.resolve({responseText: 'bar', statusCode: 200});
+    return promise;
+  };
+
+  Ember.$.ajax.restore = function() {
+    Ember.$.ajax = originalAjax;
+  };
+}
+
 if (!/phantom/i.test(navigator.userAgent)) {
-  module("Glazier UserStorageService", {
+  module("Glazier UserStorageService Integration", {
     setup: function() {
       conductor = new Conductor({
         testing: true
@@ -17,18 +34,11 @@ if (!/phantom/i.test(navigator.userAgent)) {
         capabilities: ['userStorage', 'test', 'assertion']
       });
       card.appendTo('#qunit-fixture');
-      this.originalAjax = Ember.$.ajax;
-      ajaxRequests = [];
 
-      Ember.$.ajax = function(options) {
-        ajaxRequests.push(options);
-        var promise = new Conductor.Oasis.RSVP.Promise();
-        promise.resolve({responseText: 'bar', statusCode: 200});
-        return promise;
-      };
+      mockAjaxRequests();
     },
     teardown: function(){
-      Ember.$.ajax = this.originalAjax;
+      Ember.$.ajax.restore();
     }
   });
 
@@ -71,3 +81,28 @@ if (!/phantom/i.test(navigator.userAgent)) {
     });
   });
 }
+
+// var port, card, sandbox;
+module("Glazier UserStorageService Unit", {
+  setup: function() {
+    this.service = createServiceForTesting(UserStorageService, 'card-id');
+    mockAjaxRequests();
+  },
+  teardown: function() {
+    Ember.$.ajax.restore();
+  }
+});
+
+asyncTest("setItem POSTs to /card/:card_id/user", 3, function() {
+  this.service.simulateRequest('setItem', "name", "stef").then(function() {
+    var ajaxRequest = ajaxRequests[0];
+    ok(ajaxRequest, 'made an ajax request');
+    equal(ajaxRequest && ajaxRequest.type, 'POST', 'made a POST request');
+    equal(ajaxRequest && ajaxRequest.url, '/card/card-id/user', 'made a request to the correct endpoint');
+    start();
+  }, function(e) {
+    ok(false, "failed");
+    start();
+  });
+});
+

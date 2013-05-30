@@ -4,7 +4,7 @@ var UserStorageService = Conductor.Oasis.Service.extend({
       var data = {};
       data[key] = value;
       $.ajax({
-        url: 'http://foo',
+        url: '/card/' + this.sandbox.card.id + '/user',
         type: 'POST',
         data: data
       }).then(function(r){ promise.resolve(r); }, function(r){ promise.reject(r); });
