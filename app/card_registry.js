@@ -38,7 +38,6 @@ function CardRegistry(conductor) {
   }
 }
 
-
 // tracks loading promises
 var loaded = {};
 CardRegistry.prototype = {
@@ -78,8 +77,6 @@ CardRegistry.prototype = {
       card.appendTo($cardWrapper[0]).then(function() {
         card.render();
       });
-
-      StarterKit.wiretapCard(card);
     }
     return promise;
   },
