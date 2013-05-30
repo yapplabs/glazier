@@ -83,7 +83,7 @@ module.exports = function(grunt) {
       server: {
         options: {
           port: 8000,
-          hostname: 'localhost',
+          hostname: '0.0.0.0',
           base: 'tmp/public',
           middleware: middleware
         }
