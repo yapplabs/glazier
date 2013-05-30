@@ -4,51 +4,77 @@ var url= require('url');
 var CLOUDFRONT_HOST = "http://d4h95iioxf8ji.cloudfront.net";
 var request = require('http').request;
 
-function proxyIndex(req, res, next){
-  if (req.url === "/" || req.url === "/index.html") {
-
-    // TODO: don't hardcode configuration
-    var opts = {
-      pathname: 'index.html',
-      hostname: '0.0.0.0',
-      port: '3040'
-    };
-
-    var proxyReq =  request(opts, function (proxyRes) {
-      res.writeHead(proxyRes.statusCode, proxyRes.headers);
-      proxyRes.on('error', next);
-      proxyRes.pipe(res);
-    });
-
-    proxyReq.on('error', next);
-
-    if (!req.readable) {
-      proxyReq.end();
-    } else {
-      req.pipe(proxyReq);
-    }
-
-  } else {
-    next();
-  }
-}
-
-function middleware(connect, options) {
-  var theUrl;
-
-  theUrl = url.parse('http://localhost:3040/api');
-  theUrl.route = '/api';
-
-  return [
-    proxy(theUrl),
-    proxyIndex,
-    connect['static'](options.base),
-    connect.directory(options.base)
-  ];
-}
-
 module.exports = function(grunt) {
+  function proxyIndex(req, res, next){
+    if (req.url === "/" || req.url === "/index.html") {
+
+      // TODO: don't hardcode configuration
+      var opts = {
+        pathname: 'index.html',
+        hostname: '0.0.0.0',
+        port: '3040'
+      };
+
+      var proxyReq =  request(opts, function (proxyRes) {
+        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+        proxyRes.on('error', next);
+        proxyRes.pipe(res);
+      });
+
+      proxyReq.on('error', next);
+
+      if (!req.readable) {
+        proxyReq.end();
+      } else {
+        req.pipe(proxyReq);
+      }
+
+    } else {
+      next();
+    }
+  }
+
+  function blockDuringBuild(req,res,next){
+    if (grunt.isLockedDuringBuild) {
+      var tryAgainSoon = function() {
+        setTimeout(function(){
+          if (grunt.isLockedDuringBuild) {
+            tryAgainSoon();
+          } else {
+            next();
+          }
+        }, 100);
+      };
+      tryAgainSoon();
+    } else {
+      next();
+    }
+  }
+
+  function middleware(connect, options) {
+    var theUrl;
+
+    theUrl = url.parse('http://localhost:3040/api');
+    theUrl.route = '/api';
+
+    return [
+      blockDuringBuild,
+      proxy(theUrl),
+      proxyIndex,
+      connect['static'](options.base),
+      connect.directory(options.base)
+    ];
+  }
+
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+
+  grunt.registerTask('lock', 'Set semaphore for connect server to wait on.', function() {
+    grunt.isLockedDuringBuild = true;
+  });
+
+  grunt.registerTask('unlock', 'Release semaphore that connect server waits on.', function() {
+    grunt.isLockedDuringBuild = false;
+  });
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -65,9 +91,13 @@ module.exports = function(grunt) {
     },
 
     watch: {
-
-      files: ['app/**', 'cards/**', 'vendor/**', 'test/**'],
-      tasks: ['build', 'jshint', 'qunit:all']
+      scripts: {
+        files: ['app/**', 'cards/**', 'vendor/**', 'test/**'],
+        tasks: ['lock', 'build', 'unlock', 'jshint', 'qunit:all'],
+        options: {
+          nospawn: true
+        }
+      }
     },
 
     transpile: {
