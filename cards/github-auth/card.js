@@ -1,18 +1,40 @@
 Conductor.require('http://code.jquery.com/jquery-1.9.1.min.js');
 Conductor.requireCSS('/cards/github-auth/card.css');
 
-Conductor.card({
+var card;
+var ApiConsumer = Conductor.Oasis.Consumer.extend({
+  requests: {
+    ajax: function (promise, ajaxOpts) {
+      console.log('card.accessTokenPromise.then');
+      card.accessTokenPromise.then(function (accessToken) {
+        if (!ajaxOpts.data)
+          ajaxOpts.data = {};
+        ajaxOpts.url = 'https://api.github.com' + ajaxOpts.url;
+        ajaxOpts.data.access_token = accessToken;
+        card.consumers.fullXhr.request('ajax', ajaxOpts).then(function (data) {
+          promise.resolve(data);
+        }, function (e) {
+          promise.reject(e);
+        });
+      });
+    }
+  }
+});
+
+card = Conductor.card({
   consumers: {
     configuration: Conductor.Oasis.Consumer,
     fullXhr: Conductor.Oasis.Consumer,
+    'github:authenticated:read': ApiConsumer,
     userStorage: Conductor.Oasis.Consumer,
     test: Conductor.Oasis.Consumer.extend({})
   },
   render: function (intent, dimensions) {
-    if (!dimensions) { dimensions = {width:500,height:500} };
+    if (!dimensions) { dimensions = {width:500,height:500}; }
     document.body.innerHTML = "<div><div>Hooray world!</div><button id=\"github_button\">Log In with GitHub</button></div>";
     this.resize(dimensions);
   },
+  accessTokenPromise: new Conductor.Oasis.RSVP.Promise(),
 
   activate: function() {
     // console.log("activate github-auth");
@@ -41,6 +63,8 @@ Conductor.card({
         url: 'http://localhost:8000' + "/api/oauth/github/exchange?code=" + authCode
       }).then(function(data) {
         var accessToken = data;
+        console.log('card.accessTokenPromise.resolve', accessToken);
+        card.accessTokenPromise.resolve(accessToken);
         // view.set('controller.githubAccessToken', accessToken);
         card.consumers.userStorage.request('setItem', 'accessToken', accessToken).then(function(){
           // console.log("I saved my access token: ", accessToken);
@@ -50,12 +74,13 @@ Conductor.card({
       });
     });
 
-    var card = this;
     setTimeout(function(){
-      card.consumers.test.request('runTest').then(function(testFnString) {
-        var testFn = new Function('return ' + testFnString)();
-        testFn.call(window, card);
-      });
+      if (card.consumers.test) {
+        card.consumers.test.request('runTest').then(function(testFnString) {
+          var testFn = new Function('return ' + testFnString)();
+          testFn.call(window, card);
+        });
+      }
     }, 100);
   },
 
