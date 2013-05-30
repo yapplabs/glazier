@@ -2,24 +2,8 @@ import UserStorageService from 'glazier/services/user_storage';
 import assertResolved from 'helpers/promise_test_helpers';
 import { inCard, TestService } from 'helpers/card_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
-
-var conductor, card, ajaxRequests;
-
-function mockAjaxRequests() {
-  var originalAjax = Ember.$.ajax;
-  ajaxRequests = [];
-
-  Ember.$.ajax = function(options) {
-    ajaxRequests.push(options);
-    var promise = new Conductor.Oasis.RSVP.Promise();
-    promise.resolve({responseText: 'bar', statusCode: 200});
-    return promise;
-  };
-
-  Ember.$.ajax.restore = function() {
-    Ember.$.ajax = originalAjax;
-  };
-}
+import mockAjax from 'helpers/ajax_test_helpers';
+var conductor, card;
 
 if (!/phantom/i.test(navigator.userAgent)) {
   module("Glazier UserStorageService Integration", {
@@ -35,7 +19,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
       });
       card.appendTo('#qunit-fixture');
 
-      mockAjaxRequests();
+      mockAjax();
     },
     teardown: function(){
       Ember.$.ajax.restore();
@@ -51,7 +35,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
         resolver.reject('service request setItem failed');
       });
     }).then(function(){
-      var ajaxRequest = ajaxRequests[0];
+      var ajaxRequest = mockAjax.requests[0];
       ok(ajaxRequest, 'made an ajax request');
       equal(ajaxRequest && ajaxRequest.type, 'POST', 'made a POST request');
       start();
@@ -71,7 +55,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
         resolver.reject('service request getItem failed');
       });
     }).then(function(){
-      var ajaxRequest = ajaxRequests[0];
+      var ajaxRequest = mockAjax.requests[0];
       ok(ajaxRequest, 'made an ajax request');
       equal(ajaxRequest && ajaxRequest.type, 'GET', 'made a GET request');
       start();
@@ -86,7 +70,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
 module("Glazier UserStorageService Unit", {
   setup: function() {
     this.service = createServiceForTesting(UserStorageService, 'card-id');
-    mockAjaxRequests();
+    mockAjax();
   },
   teardown: function() {
     Ember.$.ajax.restore();
@@ -95,7 +79,7 @@ module("Glazier UserStorageService Unit", {
 
 asyncTest("setItem POSTs to /card/:card_id/user", 3, function() {
   this.service.simulateRequest('setItem', "name", "stef").then(function() {
-    var ajaxRequest = ajaxRequests[0];
+    var ajaxRequest = mockAjax.requests[0];
     ok(ajaxRequest, 'made an ajax request');
     equal(ajaxRequest && ajaxRequest.type, 'POST', 'made a POST request');
     equal(ajaxRequest && ajaxRequest.url, '/card/card-id/user', 'made a request to the correct endpoint');
