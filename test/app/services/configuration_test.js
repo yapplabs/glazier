@@ -1,4 +1,5 @@
 import ConfigurationService from 'glazier/services/configuration';
+import assertResolved from 'helpers/promise_test_helpers';
 
 var conductor, card;
 
@@ -13,23 +14,19 @@ module("Glazier ConfigurationService", {
       capabilities: ['configuration']
     });
     card.appendTo('#qunit-fixture');
+    $('<meta>').attr('name', 'config_test').attr('content', 'foo').appendTo('head');
   },
   teardown: function() {
+    $('meta[name=config_test]').remove();
   }
 });
 
-test("A card can return a configuration value by name", function() {
-  expect(1);
-  stop();
-  $('<meta>').attr('name', 'config_test').attr('content', 'foo').appendTo('head');
-  card.then(function() {
+asyncTest("A card can return a configuration value by name", 2, function() {
+  assertResolved(card.then(function() {
     return card.metadataFor('retrievedConfig');
   }).then(function(retrievedConfigValue) {
     start();
     equal(retrievedConfigValue, "foo");
-  }).then(null, function(){
-    start();
-    ok(false, 'Card or configurationValue retrieval failed');
-  });
+  }));
 });
 

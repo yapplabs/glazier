@@ -1,26 +1,7 @@
 import FullXhrService from 'glazier/services/full_xhr';
+import { inCard, TestService } from 'helpers/card_test_helpers';
 
-var conductor, card, queueCardTest, TestService, testQueue, queuePromise;
-testQueue = [];
-queueCardTest = function(f) {
-  testQueue.push(f);
-  if (queuePromise) {
-    queuePromise.resolve(testQueue.pop().toString());
-    queuePromise = null;
-  }
-};
-
-TestService = Conductor.Oasis.Service.extend({
-  requests: {
-    runTest: function(promise) {
-      if (testQueue.length > 0) {
-        promise.resolve(testQueue.pop().toString());
-      } else {
-        queuePromise = promise;
-      }
-    }
-  }
-});
+var conductor, card;
 
 module("Glazier FullXhrService", {
   setup: function() {
@@ -35,17 +16,13 @@ module("Glazier FullXhrService", {
       capabilities: ['fullXhr', 'test', 'assertion']
     });
     card.appendTo('#qunit-fixture');
-  },
-  teardown: function() {
   }
 });
 
-test("A card can return a configuration value by name", function() {
-  expect(1);
-  stop();
-  queueCardTest(function(card){
+asyncTest("A card can return a configuration value by name", 1, function() {
+  inCard(function(card){
     var fullXhrService = card.consumers.fullXhr;
-    fullXhrService.request('ajax', {
+    var xhrPromise = fullXhrService.request('ajax', {
       url: '/test/fixtures/app/services/foo.txt'
     }).then(function(result){
       ok(/bar/.test(result), 'retrieves text from fixture via xhr');

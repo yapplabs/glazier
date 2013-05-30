@@ -16,9 +16,10 @@
   <script src="/vendor/qunit.js"></script>
   <script src="/glazier.js"></script>
   <script src="/test.js"></script>
-    <script>
-      Ember.keys(define.registry).forEach(requireModule);
-    </script>
+  <script>
+    Ember.keys(define.registry).forEach(requireModule);
+    requireModule('glazier/main').Glazier.deferReadiness();
+  </script>
   </body>
 </body>
 </html>

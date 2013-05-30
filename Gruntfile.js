@@ -48,6 +48,8 @@ function middleware(connect, options) {
 }
 
 module.exports = function(grunt) {
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     env: process.env,
@@ -63,8 +65,9 @@ module.exports = function(grunt) {
     },
 
     watch: {
+
       files: ['app/**', 'cards/**', 'vendor/**', 'test/**'],
-      tasks: ['build', 'qunit:all']
+      tasks: ['build', 'jshint', 'qunit:all']
     },
 
     transpile: {
@@ -174,12 +177,23 @@ module.exports = function(grunt) {
         dest: 'tmp/public/glazier.js'
       },
       tests: {
-        src: ['tmp/public/test/**/*.js'],
+        src: ['tmp/public/test/**/*.js', '!tmp/public/test/fixtures/**'],
         dest: 'tmp/public/test.js'
       }
     },
 
     shell: {
+      glazierServer: {
+        command: [
+          "cd glazier-server",
+          "PORT=3040 foreman start"
+        ].join(' && '),
+        options: {
+          stdout: true,
+          stderr: true,
+          failOnError: true
+        }
+      },
       ingest: {
         command: [
           "cd glazier-server",
@@ -332,22 +346,6 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-ember-handlebars');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-es6-module-transpiler');
-  grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-connect-proxy');
-  grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-md5');
-  grunt.loadNpmTasks('grunt-s3');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-handlebars');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-
   grunt.registerTask('index.html', 'process index.html', function() {
     var template = grunt.file.read('public/index.html');
     var manifestContents;
@@ -364,7 +362,7 @@ module.exports = function(grunt) {
             path = path.replace(/\.js$/, '.min.js');
             /* Our MD5 task adds the -MD5 directly before the .js */
             return CLOUDFRONT_HOST + manifest[path]; //.replace(/(-[^-]+)\.js$/, '$1.js');
-          } else { 
+          } else {
             return path;
           }
         }
@@ -378,14 +376,14 @@ module.exports = function(grunt) {
     process.env.GLAZIER_ENV = 'prod';
   });
 
-  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'copy', 'concat', 'jshint']);
+  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'copy', 'concat']);
 
-  grunt.registerTask('assets', ['build', 'uglify:all', 'md5', 'index.html']);
+  grunt.registerTask('assets', ['build', 'jshint', 'uglify:all', 'md5', 'index.html']);
 
   grunt.registerTask('ingest', ['assets', 'shell:ingest']);
   grunt.registerTask('deploy', ['assets', 's3:dev']);
 
-  grunt.registerTask('preview', ['build', 'uglify:all', 'md5', 'index.html', 'shell:ingest', 'connect', 'watch']);
+  grunt.registerTask('preview', ['build',  'jshint', 'uglify:all', 'md5', 'index.html', 'shell:ingest', 'connect', 'watch']);
   grunt.registerTask('preview:cdn', ['prod', 'deploy', 'shell:ingest', 'connect', 'watch']);
 
   grunt.registerTask('test', ['build',  'connect', 'qunit:all']);

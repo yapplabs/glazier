@@ -25,17 +25,19 @@ card = Conductor.card({
   consumers: {
     configuration: Conductor.Oasis.Consumer,
     fullXhr: Conductor.Oasis.Consumer,
-    'github:authenticated:read': ApiConsumer
+    'github:authenticated:read': ApiConsumer,
+    userStorage: Conductor.Oasis.Consumer,
+    test: Conductor.Oasis.Consumer.extend({})
   },
   render: function (intent, dimensions) {
-    if (!dimensions) { dimensions = {width:500,height:500} };
+    if (!dimensions) { dimensions = {width:500,height:500}; }
     document.body.innerHTML = "<div><div>Hooray world!</div><button id=\"github_button\">Log In with GitHub</button></div>";
     this.resize(dimensions);
   },
   accessTokenPromise: new Conductor.Oasis.RSVP.Promise(),
 
   activate: function() {
-    console.log("activate github-auth");
+    // console.log("activate github-auth");
     var card = this;
     var _configurationService = this.consumers.configuration;
     githubClientIdPromise = _configurationService.request('configurationValue', 'github_client_id');
@@ -54,9 +56,9 @@ card = Conductor.card({
       //   return;
       // }
       var authCode = event.data;
-      console.log("we got a code " + authCode);
-      var _fullXhrService = card.consumers.fullXhr;
-      _fullXhrService.request('ajax', {
+      // console.log("we got a code " + authCode);
+      var fullXhrService = card.consumers.fullXhr;
+      fullXhrService.request('ajax', {
         type: 'post',
         url: 'http://localhost:8000' + "/api/oauth/github/exchange?code=" + authCode
       }).then(function(data) {
@@ -64,9 +66,22 @@ card = Conductor.card({
         console.log('card.accessTokenPromise.resolve', accessToken);
         card.accessTokenPromise.resolve(accessToken);
         // view.set('controller.githubAccessToken', accessToken);
-        console.log("My access token is ", accessToken);
+        card.consumers.userStorage.request('setItem', 'accessToken', accessToken).then(function(){
+          // console.log("I saved my access token: ", accessToken);
+        });
+      }, function(e){
+        console.error(e);
       });
     });
+
+    setTimeout(function(){
+      if (card.consumers.test) {
+        card.consumers.test.request('runTest').then(function(testFnString) {
+          var testFn = new Function('return ' + testFnString)();
+          testFn.call(window, card);
+        });
+      }
+    }, 100);
   },
 
   metadata: {

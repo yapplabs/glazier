@@ -1389,6 +1389,7 @@ define("oasis",
       var activatePromise = this.activateWhen(dataPromise, [ xhrPromise ]);
 
       this.promise = new RSVP.Promise();
+
       activatePromise.then(function () {
         card.promise.resolve(card);
       });
