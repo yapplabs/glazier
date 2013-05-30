@@ -5,7 +5,8 @@ function mockAjax() {
   Ember.$.ajax = function(options) {
     mockAjax.requests.push(options);
     var promise = new Conductor.Oasis.RSVP.Promise();
-    promise.resolve({responseText: 'bar', statusCode: 200});
+    promise.resolve(mockAjax.nextResponse || {});
+    mockAjax.nextResponse = null;
     return promise;
   };
 

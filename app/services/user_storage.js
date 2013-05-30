@@ -4,16 +4,21 @@ var UserStorageService = Conductor.Oasis.Service.extend({
       var data = {};
       data[key] = value;
       $.ajax({
-        url: '/card/' + this.sandbox.card.id + '/user',
+        url: '/api/cards/' + this.sandbox.card.id + '/user.json',
         type: 'POST',
-        data: data
+        data: {data: data, access: 'private'}
       }).then(function(r){ promise.resolve(r); }, function(r){ promise.reject(r); });
     },
     getItem: function(promise, key) {
       $.ajax({
-        url: 'http://foo/' + key,
-        type: 'GET'
-      }).then(function(r){ promise.resolve(r.responseText); }, function(r){ promise.reject(r); });
+        url: '/api/cards/' + this.sandbox.card.id + '.json',
+        type: 'GET',
+        dataType: 'json'
+      }).then(function(r) {
+        promise.resolve(r.card.private[key]);
+      }, function(r) {
+        promise.reject(r);
+      });
     }
   }
 });

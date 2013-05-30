@@ -46,6 +46,14 @@ if (!/phantom/i.test(navigator.userAgent)) {
   });
 
   asyncTest("A card can retrieve a value by key via the service", 3, function() {
+    mockAjax.nextResponse = {
+      card: {
+        private: {
+          'foo': 'bar'
+        }
+      }
+    };
+
     inCard(function(card, resolver){
       var service = card.consumers.userStorage;
       service.request('getItem', 'foo').then(function(value){
@@ -77,12 +85,13 @@ module("Glazier UserStorageService Unit", {
   }
 });
 
-asyncTest("setItem POSTs to /card/:card_id/user", 3, function() {
+asyncTest("setItem POSTs to /api/cards/:card_id/user.json", 4, function() {
   this.service.simulateRequest('setItem', "name", "stef").then(function() {
     var ajaxRequest = mockAjax.requests[0];
     ok(ajaxRequest, 'made an ajax request');
-    equal(ajaxRequest && ajaxRequest.type, 'POST', 'made a POST request');
-    equal(ajaxRequest && ajaxRequest.url, '/card/card-id/user', 'made a request to the correct endpoint');
+    equal(ajaxRequest.type, 'POST', 'made a POST request');
+    equal(ajaxRequest.url, '/api/cards/card-id/user.json', 'made a request to the correct endpoint');
+    deepEqual(ajaxRequest.data, { data: {name: 'stef'}, access: 'private' }, 'has expected payload ' + JSON.stringify(ajaxRequest.data) );
     start();
   }, function(e) {
     ok(false, "failed");
@@ -90,3 +99,23 @@ asyncTest("setItem POSTs to /card/:card_id/user", 3, function() {
   });
 });
 
+asyncTest("getItem GETs from /api/cards/:card_id/user.json", 3, function() {
+  var responseJSON = {
+    card: {
+      private: {
+        name: 'stef'
+      }
+    }
+  };
+  mockAjax.nextResponse = responseJSON;
+  this.service.simulateRequest('getItem', "name").then(function(value) {
+    var ajaxRequest = mockAjax.requests[0];
+    equal(ajaxRequest.type, 'GET', 'made a GET request');
+    equal(ajaxRequest.dataType, 'json', 'requested json');
+    equal(value, "stef");
+    start();
+  }, function() {
+    ok(false, "failed");
+    start();
+  });
+});
