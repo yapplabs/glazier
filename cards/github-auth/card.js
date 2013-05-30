@@ -76,9 +76,15 @@ card = Conductor.card({
 
     setTimeout(function(){
       if (card.consumers.test) {
-        card.consumers.test.request('runTest').then(function(testFnString) {
-          var testFn = new Function('return ' + testFnString)();
-          testFn.call(window, card);
+        card.consumers.test.request('runTest').then(function(testData) {
+          var testFn = new Function('return ' + testData.fnString)();
+          var promise = new Conductor.Oasis.RSVP.Promise();
+          testFn.call(window, card, promise);
+          promise.then(function(resolveReason){
+            card.consumers.test.send('finishedTest', {testId: testData.testId, reason: resolveReason});
+          }, function(rejectReason){
+            card.consumers.test.send('failedTest', {testId: testData.testId, reason: rejectReason});
+          });
         });
       }
     }, 100);

@@ -1,6 +1,6 @@
 Conductor.card({
   consumers: {
-    fullXhr: Conductor.Oasis.Consumer.extend({}),
+    userStorage: Conductor.Oasis.Consumer.extend({}),
     test: Conductor.Oasis.Consumer.extend({})
   },
   activate: function () {

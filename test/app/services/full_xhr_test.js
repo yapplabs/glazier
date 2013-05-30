@@ -23,7 +23,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
   asyncTest("A card can return a configuration value by name", 1, function() {
     inCard(function(card){
       var fullXhrService = card.consumers.fullXhr;
-      var xhrPromise = fullXhrService.request('ajax', {
+      fullXhrService.request('ajax', {
         url: '/test/fixtures/app/services/foo.txt'
       }).then(function(result){
         ok(/bar/.test(result), 'retrieves text from fixture via xhr');
