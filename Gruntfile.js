@@ -183,6 +183,17 @@ module.exports = function(grunt) {
     },
 
     shell: {
+      glazierServer: {
+        command: [
+          "cd glazier-server",
+          "PORT=3040 foreman start"
+        ].join(' && '),
+        options: {
+          stdout: true,
+          stderr: true,
+          failOnError: true
+        }
+      },
       ingest: {
         command: [
           "cd glazier-server",
@@ -377,5 +388,4 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
   grunt.registerTask('default', ['build', 'index.html', 'connect', 'watch']);
-
 };
