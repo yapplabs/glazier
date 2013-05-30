@@ -70,10 +70,17 @@ When you submit the form you will get a **client id** and **client secret**. Set
 
 # Running specs
 
+Start the grunt server with `grunt`, then visit:
+
+    http://localhost:8000/test/index.html
+
+QUnit tests that are able to be run in Phantom (see https://github.com/yapplabs/glazier/issues/1)
+will run as you make changes or you can run them with `grunt qunit:all`
+
 glazier-server uses RSpec for unit tests. To run them:
 
     bundle exec rake
 
-To automatically execute specs as you update code and specs:
+To automatically execute glazier-server specs as you update code and specs:
 
     bundle exec guard
