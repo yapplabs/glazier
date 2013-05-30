@@ -1,13 +1,23 @@
-function Proxy(registry, port, name) {
-  this.registry = registry;
-  this.port = port;
-  this.name = name;
-  this.loaded = false;
-  this.targetPromise = new Conductor.Oasis.RSVP.Promise();
-  port.all(this.handle, this);
-}
-
-Proxy.prototype = {
+var ProxyService = Conductor.Oasis.Service.extend({
+  initialize: function (port, name) {
+    // this.sandbox.card.id
+    // if name in consumes then this is the requester
+    // if name in provides then this is the target
+    // assert card can't provide and consume the same service
+    this.name = name;
+    this.loaded = false;
+    this.targetPromise = null;
+    var card = this.sandbox.card, cardId = card.id;
+    if (this.registry.isProvider(cardId, name)) {
+      if (!card.proxyTargets) {
+        card.proxyTargets = {};
+      }
+      card.proxyTargets[name] = this;
+    } else {
+      this.targetPromise = new Conductor.Oasis.RSVP.Promise();
+      port.all(this.forward, this);
+    }
+  },
   load: function () {
     if (this.loaded) return;
     console.log('Proxy.load target for '+this.name);
@@ -18,7 +28,7 @@ Proxy.prototype = {
     });
     this.loaded = true;
   },
-  handle: function (eventName, data) {
+  forward: function (eventName, data) {
     var self = this;
     console.log('Proxy handle '+ eventName);
     this.load(); //lazy load service
@@ -40,24 +50,6 @@ Proxy.prototype = {
     }, function (e) {
       console.error(e);
     });
-  }
-};
-
-var ProxyService = Conductor.Oasis.Service.extend({
-  initialize: function (port, name) {
-    // this.sandbox.card.id
-    // if name in consumes then this is the requester
-    // if name in provides then this is the target
-    // assert card can't provide and consume the same service
-    var card = this.sandbox.card, cardId = card.id;
-    if (this.registry.isProvider(cardId, name)) {
-      if (!card.proxyTargets) {
-        card.proxyTargets = {};
-      }
-      card.proxyTargets[name] = this;
-    } else {
-      new Proxy(this.registry, this.port, name);
-    }
   }
 });
 
