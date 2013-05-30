@@ -47,11 +47,9 @@ asyncTest('test ProxyService for a consumer', 4, function () {
   var targetService = {
     port: proxyTargetPort
   };
-  var card = {
-    id: 'card-id'
-  };
+
   var sandbox = {
-    card:card
+    card: { id: 'card-id' }
   };
 
   var capability = 'service name';
@@ -76,7 +74,7 @@ asyncTest('test ProxyService for a consumer', 4, function () {
 
   service.initialize(proxyServicePort, capability);
 
-  // card | srcPort <-> proxy <-> [targetPort | card]
+  // consumerCardPort-[consumerChannel]-proxyServicePort-[*Proxy Service*]-proxyTargetPort-[providerChannel]-providerCardPort
 
   providerCardPort.on(requestEventName, function (e) {
     equal(e, requestEvent, 'provider card received request event');
