@@ -40,6 +40,8 @@ MockPort.prototype = {
     var port = this;
 
     function processEvents() {
+      start();
+
       port._all.forEach(function(tuple) {
         var callback = tuple[0];
         var binding = tuple[1];
@@ -57,6 +59,7 @@ MockPort.prototype = {
       });
     }
 
+    stop();
     // simulate async
     setTimeout(processEvents, 0);
   }
