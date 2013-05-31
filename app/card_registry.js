@@ -11,7 +11,7 @@ var manifests = {
   }
 };
 
-var services = {
+var providers = {
   'github:authenticated:read' : '/cards/github-auth/manifest.json'
 };
 
@@ -80,10 +80,12 @@ CardRegistry.prototype = {
     }
     return promise;
   },
-  resolveService: function (serviceName) {
-    var cardId = services[serviceName]; // 1 to 1 for now
-    return this.load(cardId).then(function (card) {
-      return card.proxyTargets[serviceName];
+  // proxyService is ignored for now, assumes all cards get the same implementation
+  // in the future the target can vary by proxyService
+  getProxyTargetPort: function (proxyService, capability) {
+    var manifestUrl = providers[capability]; // 1 to 1 for now
+    return this.load(manifestUrl).then(function (card) {
+      return card.sandbox.channels[capability].port1;
     });
   }
 };
