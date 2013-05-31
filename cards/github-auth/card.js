@@ -27,6 +27,7 @@ card = Conductor.card({
     fullXhr: Conductor.Oasis.Consumer,
     'github:authenticated:read': ApiConsumer,
     userStorage: Conductor.Oasis.Consumer,
+    identity: Conductor.Oasis.Consumer.extend({}),
     test: Conductor.Oasis.Consumer.extend({})
   },
   render: function (intent, dimensions) {
@@ -68,6 +69,7 @@ card = Conductor.card({
         // view.set('controller.githubAccessToken', accessToken);
         card.consumers.userStorage.request('setItem', 'accessToken', accessToken).then(function(){
           // console.log("I saved my access token: ", accessToken);
+          card.consumers.identity.send('identified', {accessToken: accessToken});
         });
       }, function(e){
         console.error(e);

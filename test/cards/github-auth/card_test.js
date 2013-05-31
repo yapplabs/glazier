@@ -23,6 +23,14 @@ if (!/phantom/i.test(navigator.userAgent)) {
           }
         }
       });
+      Conductor.services['identity'] = Conductor.Oasis.Service.extend({
+        events: {
+          identified: function(data) {
+            Conductor.services['identity'].trigger('identified');
+          }
+        }
+      });
+      Conductor.Oasis.RSVP.EventTarget.mixin(Conductor.services['identity']);
       Conductor.services['userStorage'] = Conductor.Oasis.Service.extend({
         requests: {
           //http://dev.w3.org/html5/webstorage/#storage-0
@@ -50,13 +58,14 @@ if (!/phantom/i.test(navigator.userAgent)) {
       window.open.calledWith = [];
 
       card = conductor.load('/cards/github-auth/card.js', 1, {
-        capabilities: ['fullXhr', 'configuration', 'userStorage', 'test', 'assertion']
+        capabilities: ['fullXhr', 'configuration', 'userStorage', 'identity', 'test', 'assertion']
       });
       card.appendTo('#qunit-fixture');
     },
     teardown: function() {
       window.open = originalWindowOpen;
       Conductor.services['userStorage'].off('setItem');
+      Conductor.services['identity'].off('identified');
     }
   });
 
@@ -76,10 +85,12 @@ if (!/phantom/i.test(navigator.userAgent)) {
     });
   });
 
-  asyncTest("The card exchanges the auth code for an accessToken and persists the token as private user data", 2, function() {
+  asyncTest("The card exchanges the auth code for an accessToken and persists the token as private user data", 3, function() {
     card.sandbox.activatePromise.then(function(){
       card.sandbox.el.contentWindow.postMessage('123456', '*');
-      Conductor.services['userStorage'].on('setItem', function(){
+      var identifiedEventSent = false;
+      Conductor.services['identity'].on('identified', function(){
+        ok(true, 'sent identified event to identity service');
         equal(stubbedUserStorage['accessToken'], 'def456', 'persists accessToken');
         inCard(function(card){
           card.consumers.userStorage.request('getItem', 'accessToken').then(function(token){
