@@ -19,6 +19,17 @@ var UserStorageService = Conductor.Oasis.Service.extend({
       }, function(r) {
         promise.reject(r);
       });
+    },
+    removeItem: function(promise, key) {
+      $.ajax({
+        url: '/api/cards/' + this.sandbox.card.id + '/user.json',
+        type: 'DELETE',
+        data: {key: key, access: 'private'}
+      }).then(function(r) {
+        promise.resolve();
+      }, function(r) {
+        promise.reject(r);
+      });
     }
   }
 });

@@ -99,7 +99,7 @@ asyncTest("setItem POSTs to /api/cards/:card_id/user.json", 4, function() {
   });
 });
 
-asyncTest("getItem GETs from /api/cards/:card_id/user.json", 3, function() {
+asyncTest("getItem GETs from /api/cards/:card_id.json", 4, function() {
   var responseJSON = {
     card: {
       private: {
@@ -112,7 +112,21 @@ asyncTest("getItem GETs from /api/cards/:card_id/user.json", 3, function() {
     var ajaxRequest = mockAjax.requests[0];
     equal(ajaxRequest.type, 'GET', 'made a GET request');
     equal(ajaxRequest.dataType, 'json', 'requested json');
+    equal(ajaxRequest.url, '/api/cards/card-id.json', 'made a request to the correct endpoint');
     equal(value, "stef");
+    start();
+  }, function() {
+    ok(false, "failed");
+    start();
+  });
+});
+
+asyncTest("removeItem DELETEs to /api/cards/:card_id/user.json", 3, function() {
+  this.service.simulateRequest('removeItem', "name").then(function() {
+    var ajaxRequest = mockAjax.requests[0];
+    equal(ajaxRequest.type, 'DELETE', 'made a DELETE request');
+    equal(ajaxRequest.url, '/api/cards/card-id/user.json', 'made a request to the correct endpoint');
+    deepEqual(ajaxRequest.data, { key: 'name', access: 'private' }, 'has expected payload ' + JSON.stringify(ajaxRequest.data) );
     start();
   }, function() {
     ok(false, "failed");
