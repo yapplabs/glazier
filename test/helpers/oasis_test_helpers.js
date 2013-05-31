@@ -9,6 +9,7 @@ function spy(fn, args) {
   fn.calledWith.push(Array.prototype.slice.call(arguments));
 }
 
+// Oasis port API
 MockPort.prototype = {
   all: function all(callback, binding){
     spy(all, arguments);
@@ -29,17 +30,13 @@ MockPort.prototype = {
     delete this._events[eventName];
   },
 
-  // this is sending to an iframe, e.g postMessage
   send: function send(name, event){
     spy(send, arguments);
-    this.port.trigger(name, event);
+
+    this.port._trigger(name, event);
   },
 
-  // this will be used from the test, to mimic
-  // an iframe posting back
-  //
-  // e.g emitting message event
-  trigger: function(name, event) {
+  _trigger: function(name, event) {
     var port = this;
 
     function processEvents() {
@@ -60,18 +57,19 @@ MockPort.prototype = {
       });
     }
 
+    // simulate async
     setTimeout(processEvents, 0);
   }
 };
 
-function MockChannel(name, portA, portB) {
+function MockChannel(name, port1, port2) {
   this.name = name;
 
-  this.portA = portA;
-  this.portB = portB;
+  this.port1 = port1;
+  this.port2 = port2;
 
-  portA.port = portB;
-  portB.port = portA;
+  port1.port = port2;
+  port2.port = port1;
 }
 
 export { MockPort, MockChannel };
