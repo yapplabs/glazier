@@ -15,9 +15,12 @@ Glazier.register('cardRegistry:main', cardRegistry, { instantiate: false});
 
 export Glazier;
 
-
 import ConfigurationService from 'glazier/services/configuration';
 import FullXhrService from 'glazier/services/full_xhr';
+import UserStorageService from 'glazier/services/user_storage';
+import IdentityService from 'glazier/services/identity';
 
 Conductor.services['configuration'] = ConfigurationService;
 Conductor.services['fullXhr'] = FullXhrService;
+Conductor.services['userStorage'] = UserStorageService;
+Conductor.services['identity'] = IdentityService;

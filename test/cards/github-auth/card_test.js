@@ -76,7 +76,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
         start();
         calledWith = Array.prototype.slice.call(arguments);
         ok(calledWith, "expected window.open to be called");
-        equal(calledWith[0], "https://github.com/login/oauth/authorize?scope=gist&client_id=abc123", 'Calls github dance with configured client ID');
+        equal(calledWith[0], "https://github.com/login/oauth/authorize?scope=user,public_repo&client_id=abc123", 'Calls github dance with configured client ID');
         equal(calledWith[1], "authwindow", "names window");
         equal(calledWith[2], "menubar=0,resizable=1,width=960,height=410", "opens window with options");
       };
@@ -87,9 +87,16 @@ if (!/phantom/i.test(navigator.userAgent)) {
 
   asyncTest("The card exchanges the auth code for an accessToken and persists the token as private user data", 3, function() {
     card.sandbox.activatePromise.then(function(){
-      card.sandbox.el.contentWindow.postMessage('123456', '*');
-      var identifiedEventSent = false;
+      var setItemRequestPromise = new Conductor.Oasis.RSVP.Promise(),
+          identifiedSentPromise = new Conductor.Oasis.RSVP.Promise();
+      Conductor.services['userStorage'].on('setItem', function(){
+        setItemRequestPromise.resolve();
+      });
       Conductor.services['identity'].on('identified', function(){
+        identifiedSentPromise.resolve();
+      });
+      card.sandbox.el.contentWindow.postMessage('123456', '*');
+      Conductor.Oasis.RSVP.all([setItemRequestPromise, identifiedSentPromise]).then(function(){
         ok(true, 'sent identified event to identity service');
         equal(stubbedUserStorage['accessToken'], 'def456', 'persists accessToken');
         inCard(function(card){

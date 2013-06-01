@@ -2,7 +2,7 @@
 var manifests = {
   '/cards/github-auth/manifest.json' : {
     jsUrl: '/cards/github-auth/card.js',
-    consumes: [ 'fullXhr', 'configuration' ],
+    consumes: [ 'fullXhr', 'configuration', 'userStorage', 'identity' ],
     provides: ['github:authenticated:read']
   },
   '/cards/github-repositories/manifest.json' : {

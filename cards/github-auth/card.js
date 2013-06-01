@@ -44,7 +44,7 @@ card = Conductor.card({
     githubClientIdPromise = _configurationService.request('configurationValue', 'github_client_id');
     $('body').on('click', '#github_button', function(){
       githubClientIdPromise.then(function(githubClientId){
-        var githubUri = "https://github.com/login/oauth/authorize?scope=gist" +
+        var githubUri = "https://github.com/login/oauth/authorize?scope=user,public_repo" +
           "&client_id=" +  githubClientId;
         window.open(githubUri, "authwindow", "menubar=0,resizable=1,width=960,height=410");
       });
@@ -69,8 +69,8 @@ card = Conductor.card({
         // view.set('controller.githubAccessToken', accessToken);
         card.consumers.userStorage.request('setItem', 'accessToken', accessToken).then(function(){
           // console.log("I saved my access token: ", accessToken);
-          card.consumers.identity.send('identified', {accessToken: accessToken});
         });
+        card.consumers.identity.send('identified', {githubAccessToken: accessToken});
       }, function(e){
         console.error(e);
       });
