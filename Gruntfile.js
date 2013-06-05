@@ -7,14 +7,14 @@ var request = require('http').request;
 var reservedRoutes = /^\/(vendor|css|js|cards|api|test)\//;
 var githubRepo = /^\/[^\/]+\/[^\/]+$/;
 
-function shouldProxy(url) {
+function shouldProxyIndex(url) {
   return url === "/" || url === "/index.html" ||
     (!reservedRoutes.test(url) && githubRepo.test(url));
 }
 
 module.exports = function(grunt) {
   function proxyIndex(req, res, next){
-    if (shouldProxy(req.url)) {
+    if (shouldProxyIndex(req.url)) {
       // TODO: don't hardcode configuration
       var opts = {
         pathname: 'index.html',
