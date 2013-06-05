@@ -30,6 +30,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
           }
         }
       });
+
       Conductor.Oasis.RSVP.EventTarget.mixin(Conductor.services['identity']);
       Conductor.services['userStorage'] = Conductor.Oasis.Service.extend({
         requests: {

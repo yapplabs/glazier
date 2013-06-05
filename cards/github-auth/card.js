@@ -1,5 +1,5 @@
-Conductor.require('http://code.jquery.com/jquery-1.9.1.min.js');
-Conductor.requireCSS('/cards/github-auth/card.css');
+Conductor.require('/vendor/jquery.js');
+Conductor.requireCSS('/cards/github-auth/css/style.css');
 
 var card;
 var ApiConsumer = Conductor.Oasis.Consumer.extend({
