@@ -1,3 +1,4 @@
+
 var IdentityService = Conductor.Oasis.Service.extend({
   events: {
     identified: function(userData) {
@@ -12,9 +13,7 @@ var IdentityService = Conductor.Oasis.Service.extend({
       }).then(function(userJson){
         Glazier.__container__.lookup("controller:application").set('name', userJson.user.github_login);
         service.port.send('identified', userJson);
-      }, function(e){
-        console.error(e);
-      });
+      }, console.error);
     }
   }
 });
