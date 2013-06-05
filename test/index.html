@@ -18,7 +18,9 @@
   <script src="/test.js"></script>
   <script>
     Ember.keys(define.registry).forEach(requireModule);
-    requireModule('glazier/main').Glazier.deferReadiness();
+    window.Glazier = requireModule('glazier/main').Glazier;
+
+    Glazier.deferReadiness();
   </script>
   </body>
 </body>
