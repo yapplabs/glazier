@@ -39,7 +39,7 @@ function CardRegistry(conductor) {
 }
 
 // tracks loading promises
-var loaded = {};
+var instances = {};
 CardRegistry.prototype = {
   isProvider: function (cardId, serviceName) {
     var manifest = manifests[cardId];
@@ -50,42 +50,30 @@ CardRegistry.prototype = {
   },
 
   load: function (manifestUrl) {
-    var promise = loaded[manifestUrl];
-    if (!promise) {
-      loaded[manifestUrl] = promise = new Conductor.Oasis.RSVP.Promise();
-      var manifest = manifests[manifestUrl];
-      var options = {
-        capabilities: []
-      };
-      if (manifest.consumes) {
-        manifest.consumes.forEach(function (service) {
-          options.capabilities.push(service);
-        }, this);
-      }
-      if (manifest.provides) {
-        manifest.provides.forEach(function (service) {
-          options.capabilities.push(service);
-        }, this);
-      }
-      var card = this.conductor.load(manifest.jsUrl, manifestUrl, options);
-      card.sandbox.activatePromise.then(function () {
-        promise.resolve(card);
-      });
-
-      var $cardWrapper = $("<div class='card-wrapper'>");
-
-      $('.cards').append($cardWrapper);
-      card.appendTo($cardWrapper[0]).then(function() {
-        card.render();
-      });
+    var card = instances[manifestUrl];
+    if (card) return card;
+    var manifest = manifests[manifestUrl];
+    var options = {
+      capabilities: []
+    };
+    if (manifest.consumes) {
+      manifest.consumes.forEach(function (service) {
+        options.capabilities.push(service);
+      }, this);
     }
-    return promise;
+    if (manifest.provides) {
+      manifest.provides.forEach(function (service) {
+        options.capabilities.push(service);
+      }, this);
+    }
+    return instances[manifestUrl] = this.conductor.load(manifest.jsUrl, manifestUrl, options);
   },
   // proxyService is ignored for now, assumes all cards get the same implementation
   // in the future the target can vary by proxyService
   getProxyTargetPort: function (proxyService, capability) {
     var manifestUrl = providers[capability]; // 1 to 1 for now
-    return this.load(manifestUrl).then(function (card) {
+    var card = this.load(manifestUrl);
+    return card.sandbox.activatePromise.then(function () {
       return card.sandbox.channels[capability].port1;
     });
   }

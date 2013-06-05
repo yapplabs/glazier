@@ -1,0 +1,10 @@
+#header {
+  position: relative;
+  border-bottom: 1px solid black;
+}
+
+#auth {
+  position: absolute;
+  right: 0;
+  top: 0;
+}

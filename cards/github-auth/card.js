@@ -16,6 +16,8 @@ var ApiConsumer = Conductor.Oasis.Consumer.extend({
         }, function (e) {
           promise.reject(e);
         });
+      }, function (e) {
+        console.error(e);
       });
     }
   }
