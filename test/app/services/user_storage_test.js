@@ -27,7 +27,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
   });
 
   asyncTest("A card can persist a key value pair via the service", 2, function() {
-    inCard(function(card, resolver){
+    inCard(card, function(card, resolver){
       var service = card.consumers.userStorage;
       service.request('setItem', 'foo', 'bar').then(function(){
         resolver.resolve('setItemCalled');
@@ -54,7 +54,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
       }
     };
 
-    inCard(function(card, resolver){
+    inCard(card, function(card, resolver){
       var service = card.consumers.userStorage;
       service.request('getItem', 'foo').then(function(value){
         equal(value, 'bar', "expected to get bar for foo");

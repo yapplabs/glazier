@@ -1,4 +1,4 @@
-Conductor.card({
+var card = Conductor.card({
   consumers: {
     configuration: Conductor.Oasis.Consumer.extend({})
   },

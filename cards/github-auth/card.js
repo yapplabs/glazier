@@ -34,7 +34,15 @@ card = Conductor.card({
         }
       }
     }),
-    test: Conductor.Oasis.Consumer.extend({})
+    test: Conductor.Oasis.Consumer.extend({
+      requests: {
+        runTest:  function(promise, testData){
+          var testFn = new Function('return ' + testData.fnString)();
+
+          testFn.call(window, card, promise);
+        }
+      }
+    })
   },
   render: function (intent, dimensions) {
     if (!dimensions) { dimensions = {width:500,height:500}; }

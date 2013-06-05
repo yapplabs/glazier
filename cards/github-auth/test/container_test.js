@@ -71,7 +71,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
   });
 
   asyncTest("The card uses the github client ID from configuration", 4, function() {
-    inCard(function(card){
+    inCard(card, function(card){
       var calledWith = [];
       window.open = function(){
         start();
@@ -100,7 +100,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
       Conductor.Oasis.RSVP.all([setItemRequestPromise, identifiedSentPromise]).then(function(){
         ok(true, 'sent identified event to identity service');
         equal(stubbedUserStorage['accessToken'], 'def456', 'persists accessToken');
-        inCard(function(card){
+        inCard(card, function(card){
           card.consumers.userStorage.request('getItem', 'accessToken').then(function(token){
             equal(token, 'def456', 'reads back the token from userStorage');
             start();

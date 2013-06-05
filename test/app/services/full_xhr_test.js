@@ -21,7 +21,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
   });
 
   asyncTest("A card can return a configuration value by name", 1, function() {
-    inCard(function(card){
+    inCard(card, function(card){
       var fullXhrService = card.consumers.fullXhr;
       fullXhrService.request('ajax', {
         url: '/test/fixtures/app/services/foo.txt'
@@ -32,4 +32,3 @@ if (!/phantom/i.test(navigator.userAgent)) {
     });
   });
 }
-

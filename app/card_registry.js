@@ -48,6 +48,7 @@ CardRegistry.prototype = {
     }
     return false;
   },
+
   load: function (manifestUrl) {
     var promise = loaded[manifestUrl];
     if (!promise) {
