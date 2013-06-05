@@ -135,20 +135,27 @@ test('Test ProxyService with multiple consumers and one producer', function() {
   proxyService2.initialize(proxyService2Port, 'ajax');
   proxyService3.initialize(proxyService3Port, 'ajax');
 
-  // ajaxChannel      : [ proxyTargetPort, ajaxCardPort ]
-  // consumerXChannel : [ consumerXCard, proxyServiceXport]
-  //
-  // consumer1 <- consumer1Channel->
-  // consumer2 <- consumer2Channel-> <- ajaxChannel -> ajax
-  // consumer3 <- consumer3Channel->
 
-  // sequence
+  // Test explanation
+  //
+  // given that:
+  //   ajaxChannel      consists of [ proxyTargetPort, ajaxCardPort ]
+  //   consumerXChannel consists of [ consumerXCard, proxyServiceXport]
+
+  // and the topology of:
+  //  consumer1 <- consumer1Channel-> |
+  //  consumer2 <- consumer2Channel-> | <--[Proxy]--> ajaxChannel -> ajax
+  //  consumer3 <- consumer3Channel-> |
+
+  // test sequence:
 
   // 1. consumer1 --- request /      ---> ajax
   // 2. consumer2 --- request /posts ---> ajax
 
   // 3. consumer2 <-- response BAR  <--  ajax
   // 4. consumer1 <-- response FOO  <--  ajax
+
+  // test assertions:
 
   // assert correct consumer gets correct response
   // assert consumer3 doesn't send or recieve
