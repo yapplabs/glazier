@@ -130,6 +130,7 @@ module.exports = function(grunt) {
           dest: 'tmp/public/test/'
         }]
       },
+
       cardContainerTests: {
         type: "amd",
         files: [{
@@ -137,6 +138,16 @@ module.exports = function(grunt) {
           cwd: 'cards/',
           src: ['*/test/container_test.js'],
           dest: 'tmp/public/test/cards/'
+        }]
+      },
+
+      cardsCode: {
+        type: "amd",
+        files: [{
+          expand: true,
+          cwd: 'cards/',
+          src: ['**/*.js'],
+          dest: 'tmp/public/cards/'
         }]
       }
     },
@@ -177,8 +188,8 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-              cwd: 'cards',
-            src: ['**'],
+            cwd: 'cards',
+            src: ['**', '!**/*.js', '!**/*.handlebars'],
             dest: 'tmp/public/cards'
           }
         ]
@@ -212,7 +223,8 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          "tmp/public/glazier/templates.js": "templates/*.handlebars"
+          "tmp/public/glazier/templates.js": "templates/*.handlebars",
+          "tmp/public/cards/github-issues/templates/templates.js": "cards/github-issues/templates/*.handlebars"
         }
       }
     },
@@ -222,9 +234,25 @@ module.exports = function(grunt) {
         src: ['tmp/public/glazier/**/*.js'],
         dest: 'tmp/public/glazier.js'
       },
+
       tests: {
         src: ['tmp/public/test/**/*.js', '!tmp/public/test/fixtures/**'],
         dest: 'tmp/public/test.js'
+      },
+
+      issues: {
+        src: ['tmp/public/cards/github-issues/**/*.js'],
+        dest: 'tmp/public/cards/github-issues/all.js'
+      },
+
+      auth: {
+        src: ['tmp/public/cards/github-auth/**/*.js'],
+        dest: 'tmp/public/cards/github-auth/all.js'
+      },
+
+      repos: {
+        src: ['tmp/public/cards/github-repositories/**/*.js'],
+        dest: 'tmp/public/cards/github-repositories/all.js'
       }
     },
 

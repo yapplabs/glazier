@@ -1,12 +1,12 @@
 /* global StarterKit */
 var manifests = {
   '/cards/github-auth/manifest.json' : {
-    jsUrl: '/cards/github-auth/card.js',
+    jsUrl: '/cards/github-auth/all.js',
     consumes: [ 'fullXhr', 'configuration', 'userStorage', 'identity' ],
     provides: ['github:authenticated:read']
   },
   '/cards/github-repositories/manifest.json' : {
-    jsUrl: '/cards/github-repositories/card.js',
+    jsUrl: '/cards/github-repositories/all.js',
     consumes: [ 'github:authenticated:read' ]
   }
 };

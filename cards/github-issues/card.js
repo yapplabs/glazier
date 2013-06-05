@@ -1,9 +1,9 @@
 Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
 Conductor.require('/vendor/ember-latest.js');
-Conductor.requireCSS('/cards/github-issues/css/style.css');
+Conductor.requireCSS('/cards/github-issues/style.css');
 
-var App;
+import { App } from 'app/application';
 
 var card = Conductor.card({
   consumers: {
@@ -29,21 +29,8 @@ var card = Conductor.card({
   },
 
   activate: function() {
+    console.log('activate');
     var card = this;
-
-    App = Ember.Application.create({
-      rootElement: '#card'
-    });
-
-    Ember.TEMPLATES['application'] = Ember.Handlebars.compile(
-      "<h3>Github Issues</h3>"
-    );
-
-    App.ApplicationController = Ember.ArrayController.extend();
-    App.ApplicationRoute = Ember.Route.extend({
-      model: function(){
-      }
-    });
 
     App.deferReadiness();
   },

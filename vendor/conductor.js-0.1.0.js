@@ -6,6 +6,8 @@
     registry[name] = { deps: deps, callback: callback };
   };
 
+  global.define.registry = registry;
+
   global.requireModule = function(name) {
     if (seen[name]) { return seen[name]; }
     seen[name] = {};
