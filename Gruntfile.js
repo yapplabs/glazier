@@ -4,10 +4,17 @@ var url= require('url');
 var CLOUDFRONT_HOST = "http://d4h95iioxf8ji.cloudfront.net";
 var request = require('http').request;
 
+var reservedRoutes = /^\/(vendor|css|js|cards|api)\//;
+var githubRepo = /^\/[^\/]+\/[^\/]+$/;
+
+function shouldProxy(url) {
+  return url === "/" || url === "/index.html" ||
+    (!reservedRoutes.test(url) && githubRepo.test(url));
+}
+
 module.exports = function(grunt) {
   function proxyIndex(req, res, next){
-    if (req.url === "/" || req.url === "/index.html") {
-
+    if (shouldProxy(req.url)) {
       // TODO: don't hardcode configuration
       var opts = {
         pathname: 'index.html',
