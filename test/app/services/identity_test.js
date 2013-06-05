@@ -13,7 +13,7 @@ module("Glazier IdentityService Unit", {
   }
 });
 
-asyncTest("send identified logs the user in", 3, function() {
+asyncTest("send identified logs the user in and then ", 3, function() {
   var responseJSON = {
     user: {
       id: 56,
