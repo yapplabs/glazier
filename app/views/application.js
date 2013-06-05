@@ -3,8 +3,6 @@ var ApplicationView = Ember.View.extend({
     return this.get('container').lookup('conductor:main');
   }.property(),
   didInsertElement: function() {
-    var cardRegistry = this.get('container').lookup('cardRegistry:main');
-    cardRegistry.load('/cards/github-repositories/manifest.json');
 
     // this.loadCard(
     //   '/cards/github-auth/card.js', 1,

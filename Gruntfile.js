@@ -4,7 +4,7 @@ var url= require('url');
 var CLOUDFRONT_HOST = "http://d4h95iioxf8ji.cloudfront.net";
 var request = require('http').request;
 
-var reservedRoutes = /^\/(vendor|css|js|cards|api)\//;
+var reservedRoutes = /^\/(vendor|css|js|cards|api|test)\//;
 var githubRepo = /^\/[^\/]+\/[^\/]+$/;
 
 function shouldProxy(url) {
@@ -99,7 +99,7 @@ module.exports = function(grunt) {
 
     watch: {
       scripts: {
-        files: ['app/**', 'cards/**', 'vendor/**', 'test/**'],
+        files: ['app/**', 'cards/**', 'vendor/**', 'test/**',  'templates/**'],
         tasks: ['lock', 'build', 'unlock', 'jshint', 'qunit:all'],
         options: {
           nospawn: true

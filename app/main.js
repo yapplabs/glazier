@@ -5,6 +5,29 @@ var Glazier = Ember.Application.create();
 Glazier.ApplicationView = ApplicationView;
 Glazier.ApplicationController = ApplicationController;
 
+Glazier.Router.reopen({
+  location: 'history'
+});
+
+Glazier.Router.map(function() {
+  this.route('dashboard', { path: '/:github_user/:github_repo' });
+});
+
+Glazier.DashboardRoute = Ember.Route.extend({
+  serialize: function (object, params) {
+    var parts = object.split('/'),
+        hash = {};
+    Ember.assert(parts.length === 2 && params.length === 2, 'parts should equal params');
+    hash[params[0]] = parts[0];
+    hash[params[1]] = parts[1];
+    return hash;
+  },
+
+  deserialize: function (hash) {
+    return hash.github_user + '/' + hash.github_repo;
+  }
+});
+
 import CardRegistry from 'glazier/card_registry';
 
 var conductor = new Conductor();
