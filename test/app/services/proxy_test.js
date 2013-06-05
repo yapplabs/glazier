@@ -1,5 +1,5 @@
 import ProxyService from 'glazier/services/proxy';
-import {MockPort, MockChannel } from 'helpers/oasis_test_helpers';
+import { MockPort, MockChannel } from 'helpers/oasis_test_helpers';
 
 module('Glazier ProxyService');
 
