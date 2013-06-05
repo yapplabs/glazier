@@ -2,6 +2,7 @@
   "predef": [
     "Glazier",
     "Ember",
+    "DS",
     "Conductor",
     "$",
     "define",
