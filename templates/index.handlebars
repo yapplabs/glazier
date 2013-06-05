@@ -1,2 +1,3 @@
-{{#linkTo dashboard "yapplabs/glazier"}}/yapplabs/glazier{{/linkTo}}
-{{#linkTo dashboard "emberjs/ember.js"}}/emberjs/ember.js{{/linkTo}}
+{{#each}}
+  {{#linkTo dashboard this}}{{id}}{{/linkTo}}
+{{/each}}

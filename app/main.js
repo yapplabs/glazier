@@ -1,4 +1,5 @@
 import Application from 'glazier/application';
+import IndexRoute from 'glazier/routes/index';
 import DashboardRoute from 'glazier/routes/dashboard';
 import DashboardView from 'glazier/views/dashboard';
 import CardRegistry from 'glazier/card_registry';
@@ -6,8 +7,19 @@ import ConfigurationService from 'glazier/services/configuration';
 import FullXhrService from 'glazier/services/full_xhr';
 import UserStorageService from 'glazier/services/user_storage';
 import IdentityService from 'glazier/services/identity';
+import Card from 'glazier/models/card';
+import CardType from 'glazier/models/card_type';
+import Dashboard from 'glazier/models/dashboard';
+
+import FIXTURES from 'glazier/fixtures';
 
 var Glazier = Application.create();
+
+Glazier.Card = Card;
+Glazier.CardType = CardType;
+Glazier.Dashboard = Dashboard;
+
+Glazier.IndexRoute = IndexRoute;
 
 Glazier.DashboardRoute = DashboardRoute;
 Glazier.DashboardView = DashboardView;

@@ -1,6 +1,6 @@
 var DashboardRoute = Ember.Route.extend({
   serialize: function (object, params) {
-    var parts = object.split('/'),
+    var parts = object.id.split('/'),
         hash = {};
     Ember.assert(parts.length === 2 && params.length === 2, 'parts should equal params');
     hash[params[0]] = parts[0];
@@ -9,7 +9,8 @@ var DashboardRoute = Ember.Route.extend({
   },
 
   deserialize: function (hash) {
-    return hash.github_user + '/' + hash.github_repo;
+    var id = hash.github_user + '/' + hash.github_repo;
+    return Glazier.Dashboard.find(id);
   }
 });
 
