@@ -27,7 +27,13 @@ card = Conductor.card({
     fullXhr: Conductor.Oasis.Consumer,
     'github:authenticated:read': ApiConsumer,
     userStorage: Conductor.Oasis.Consumer,
-    identity: Conductor.Oasis.Consumer.extend({}),
+    identity: Conductor.Oasis.Consumer.extend({
+      events: {
+        identified: function(userJson){
+          console.log("card:consumers:identity:identified", userJson);
+        }
+      }
+    }),
     test: Conductor.Oasis.Consumer.extend({})
   },
   render: function (intent, dimensions) {
