@@ -2,8 +2,6 @@ import Card from 'glazier/models/card';
 import CardType from 'glazier/models/card_type';
 import Dashboard from 'glazier/models/dashboard';
 
-var FIXTURES = {};
-
 // github user names do not allow . so we use the first period as a delimiter to combine in an id
 Dashboard.FIXTURES = [
   {
@@ -50,5 +48,3 @@ CardType.FIXTURES = [
     }
   }
 ];
-
-export FIXTURES;

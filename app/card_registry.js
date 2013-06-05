@@ -70,13 +70,6 @@ CardRegistry.prototype = {
       card.sandbox.activatePromise.then(function () {
         promise.resolve(card);
       });
-
-      var $cardWrapper = $("<div class='card-wrapper'>");
-
-      $('.cards').append($cardWrapper);
-      card.appendTo($cardWrapper[0]).then(function() {
-        card.render();
-      });
     }
     return promise;
   },
