@@ -1,4 +1,4 @@
-import Card from 'glazier/models/card';
+import Pane from 'glazier/models/pane';
 import CapabilityProvider from 'glazier/models/capability_provider';
 import CardType from 'glazier/models/card_type';
 import Dashboard from 'glazier/models/dashboard';
@@ -15,7 +15,7 @@ Dashboard.FIXTURES = [
   }
 ];
 
-Card.FIXTURES = [
+Pane.FIXTURES = [
   {
     id: '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2',
     type: '/cards/github-repositories/manifest.json',

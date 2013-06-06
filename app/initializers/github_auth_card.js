@@ -1,4 +1,4 @@
-import Card from 'glazier/models/card';
+import Pane from 'glazier/models/pane';
 import CardType from 'glazier/models/card_type';
 
 var initializer = {
@@ -13,7 +13,7 @@ var initializer = {
         provides: ['github:authenticated:read']
       }
     });
-    store.load(Card, '7f878b1a-34af-42ed-b477-878721cbc90d', {
+    store.load(Pane, '7f878b1a-34af-42ed-b477-878721cbc90d', {
       type: '/cards/github-auth/manifest.json'
     });
   }

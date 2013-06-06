@@ -9,7 +9,7 @@ import ConfigurationService from 'glazier/services/configuration';
 import FullXhrService from 'glazier/services/full_xhr';
 import UserStorageService from 'glazier/services/user_storage';
 import IdentityService from 'glazier/services/identity';
-import Card from 'glazier/models/card';
+import Pane from 'glazier/models/pane';
 import CapabilityProvider from 'glazier/models/capability_provider';
 import CardType from 'glazier/models/card_type';
 import Dashboard from 'glazier/models/dashboard';
@@ -19,7 +19,7 @@ import 'glazier/fixtures' as Fixtures;
 
 var Glazier = Application.create();
 
-Glazier.Card = Card;
+Glazier.Pane = Pane;
 Glazier.CapabilityProvider = CapabilityProvider;
 Glazier.CardType = CardType;
 Glazier.Dashboard = Dashboard;
