@@ -55,7 +55,7 @@ card = Conductor.card({
     console.log("activate github-auth");
     var card = this;
     var _configurationService = this.consumers.configuration;
-    githubClientIdPromise = _configurationService.request('configurationValue', 'github_client_id');
+    var githubClientIdPromise = _configurationService.request('configurationValue', 'github_client_id');
     $('body').on('click', '#github_button', function(){
       githubClientIdPromise.then(function(githubClientId){
         var githubUri = "https://github.com/login/oauth/authorize?scope=user,public_repo" +
@@ -89,21 +89,6 @@ card = Conductor.card({
         console.error(e);
       });
     });
-
-    setTimeout(function(){
-      if (card.consumers.test) {
-        card.consumers.test.request('runTest').then(function(testData) {
-          var testFn = new Function('return ' + testData.fnString)();
-          var promise = new Conductor.Oasis.RSVP.Promise();
-          testFn.call(window, card, promise);
-          promise.then(function(resolveReason){
-            card.consumers.test.send('finishedTest', {testId: testData.testId, reason: resolveReason});
-          }, function(rejectReason){
-            card.consumers.test.send('failedTest', {testId: testData.testId, reason: rejectReason});
-          });
-        });
-      }
-    }, 100);
   },
 
   metadata: {
