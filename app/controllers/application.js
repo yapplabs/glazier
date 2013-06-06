@@ -1,5 +1,6 @@
 var ApplicationController = Ember.Controller.extend({
-  name: null
+  name: null,
+  authCard: null
 });
 
 export ApplicationController;

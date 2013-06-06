@@ -6,27 +6,21 @@ module('Glazier ProxyService');
 test('test ProxyService for a provider', function () {
   var port = {};
   var card = {
-    id: 'card-id'
+    id: 'card-id',
+    consumes: {}
   };
   var sandbox = {
     card: card
   };
   var capability = 'service name';
-  var Service = ProxyService.extend({
-    registry: {
-      isProvider: function (cardId, service) {
-        return true;
-      }
-    }
-  });
 
-  var service = new Service(port, sandbox);
+  var service = new ProxyService(port, sandbox);
   ok(service, 'created service');
   service.initialize(port, capability);
 });
 
 test('test ProxyService for a consumer', function () {
-  expect(5);
+  expect(3);
 
   var requestEventName = '@request:someEvent';
   var requestEvent = {
@@ -45,27 +39,32 @@ test('test ProxyService for a consumer', function () {
   var consumerChannel = new MockChannel('consumer', consumerCardPort, proxyServicePort);
   var providerChannel = new MockChannel('provider', proxyTargetPort, providerCardPort);
 
+  var targetActivePromise = new Conductor.Oasis.RSVP.Promise();
+
+  var targetCard = {
+    sandbox: {
+      activatePromise: targetActivePromise,
+      channels: {
+        'service name': providerChannel
+      }
+    }
+  };
+
   var sandbox = {
-    card: { id: 'card-id' }
+    card: {
+      id: 'card-id',
+      consumes: {
+        'service name': true
+      },
+      targets: {
+        'service name': targetCard
+      }
+    }
   };
 
   var proxyCapability = 'service name';
-  var Service = ProxyService.extend({
-    registry: {
-      isProvider: function (cardId, service) {
-        return false;
-      },
-      getProxyTargetPort: function (service, capability) {
-        equal(service, proxyService, 'resolve target for service name');
-        equal(capability, proxyCapability, 'resolve target for service name');
-        var promise = new Conductor.Oasis.RSVP.Promise();
-        promise.resolve(proxyTargetPort);
-        return promise;
-      }
-    }
-  });
 
-  var proxyService = new Service(proxyServicePort, sandbox);
+  var proxyService = new ProxyService(proxyServicePort, sandbox);
 
   ok(proxyService, 'created service');
 
@@ -87,6 +86,8 @@ test('test ProxyService for a consumer', function () {
 
   stop();
   consumerCardPort.send(requestEventName, requestEvent);
+
+  targetActivePromise.resolve();
 });
 
 test('Test ProxyService with multiple consumers and one producer', function() {
@@ -110,22 +111,19 @@ test('Test ProxyService with multiple consumers and one producer', function() {
 
   var ajaxChannel = new MockChannel('provider', proxyTargetPort, ajaxCardPort);
 
-  var Service = ProxyService.extend({
-    registry: {
-      isProvider: function (cardId, service) {
-        return false;
-      },
-      getProxyTargetPort: function (service, capability) {
-        var promise = new Conductor.Oasis.RSVP.Promise();
-        promise.resolve(proxyTargetPort);
-        return promise;
+  var targetActivePromise = new Conductor.Oasis.RSVP.Promise();
+  var targetCard = {
+    sandbox: {
+      activatePromise: targetActivePromise,
+      channels: {
+        ajax: ajaxChannel
       }
     }
-  });
+  };
 
-  var proxyService1 = new Service(proxyService1Port, { card : { id: '1' } });
-  var proxyService2 = new Service(proxyService2Port, { card : { id: '2' } });
-  var proxyService3 = new Service(proxyService3Port, { card : { id: '3' } });
+  var proxyService1 = new ProxyService(proxyService1Port, { card : { id: '1', consumes: { ajax: true }, targets: { ajax: targetCard } } });
+  var proxyService2 = new ProxyService(proxyService2Port, { card : { id: '2', consumes: { ajax: true }, targets: { ajax: targetCard } } });
+  var proxyService3 = new ProxyService(proxyService3Port, { card : { id: '3', consumes: { ajax: true }, targets: { ajax: targetCard } } });
 
   ok(proxyService1, 'created proxyService1');
   ok(proxyService2, 'created proxyService2');
@@ -212,4 +210,6 @@ test('Test ProxyService with multiple consumers and one producer', function() {
 
   // consumer1: ajax GET /posts -> proxy -> ajax
   consumer2CardPort.send('request', { requestId: 2, data: '/posts'});
+
+  targetActivePromise.resolve();
 });

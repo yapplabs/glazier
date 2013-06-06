@@ -1,19 +1,26 @@
 var ProxyService = Conductor.Oasis.Service.extend({
-  name: null,
+  capability: null,
   loaded: false,
   targetPromise: null,
 
   _requests: null,
 
-  initialize: function (port, name) {
-    this.name = name;
-    var card = this.sandbox.card, cardId = card.id;
+  initialize: function (port, capability) {
+    this.capability = capability;
     this._requests = {};
 
-    if (!this.registry.isProvider(cardId, name)) {
+    if (this.sandbox.card.consumes[capability]) {
       this.targetPromise = new Conductor.Oasis.RSVP.Promise();
       port.all(this.forward, this);
     }
+  },
+
+  getProxyTargetPort: function () {
+    var capability = this.capability;
+    var targetCard = this.sandbox.card.targets[capability];
+    return targetCard.sandbox.activatePromise.then(function () {
+      return targetCard.sandbox.channels[capability].port1;
+    });
   },
 
   load: function () {
@@ -21,7 +28,7 @@ var ProxyService = Conductor.Oasis.Service.extend({
 
     var self = this;
 
-    this.registry.getProxyTargetPort(this, this.name).then(function (targetPort) {
+    this.getProxyTargetPort().then(function (targetPort) {
       targetPort.all(self.back, self);
       self.targetPort = targetPort;
       self.targetPromise.resolve(targetPort);

@@ -13,9 +13,9 @@ module("Github::Issues Acceptances", {
     });
 
     Conductor.services['test'] = TestService;
-    
-    card = conductor.load('/cards/github-issues/card.js', 1, {
-      capabilities: ['test']                     
+
+    card = conductor.load('/cards/github-issues/all.js', 1, {
+      capabilities: ['test']
     });
     card.appendTo('#qunit-fixture');
   },
