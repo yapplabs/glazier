@@ -5,6 +5,10 @@ import CapabilityProvider from 'glazier/models/capability_provider';
 
 var cardManager, pane, store;
 
+if (/phantom/i.test(navigator.userAgent)) {
+  return; // these tests do not work in grunt
+}
+
 Pane.FIXTURES = [
   {
     id: '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2',
