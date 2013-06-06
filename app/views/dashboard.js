@@ -1,10 +1,13 @@
 import CardRegistry from 'glazier/card_registry';
 
 var DashboardView = Ember.View.extend({
+  init: function () {
+    this._super();
+    this.cardRegistry = this.container.lookup('cardRegistry:main');
+  },
   didInsertElement: function () {
     var self = this;
-    var conductor = this.container.lookup('conductor:main');
-    var cardRegistry = this.container.lookup('cardRegistry:main');
+    var cardRegistry = this.cardRegistry;
     this.get('controller.cards').forEach(function(card) {
       card.then(function() {
         Ember.RSVP.all([card.get('type'), card.get('capabilityProviders')]).then(function () {
@@ -13,6 +16,11 @@ var DashboardView = Ember.View.extend({
         });
       });
     });
+  },
+  willDestroyElement: function() {
+    this.get('controller.cards').forEach(function(card) {
+      this.cardRegistry.unload(card);
+    }, this);
   },
   appendConductorCard: function(conductorCard) {
     var $cardWrapper = Ember.$("<div class='card-wrapper'>");
