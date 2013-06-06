@@ -9,7 +9,6 @@ module.exports = {
       }
     ]
   },
-
   test: {
     files: [
       {
@@ -19,7 +18,6 @@ module.exports = {
         dest: 'tmp/public/test'
     }
   ]},
-
   fixtures: {
     files: [
       {
@@ -29,18 +27,6 @@ module.exports = {
         dest: 'tmp/public/test'
     }
   ]},
-
-  cards: {
-    files: [
-      {
-        expand: true,
-        cwd: 'cards',
-        src: ['**', '!**/*.js', '!**/*.handlebars'],
-        dest: 'tmp/public/cards'
-      }
-    ]
-  },
-
   vendor: {
     files: [
       {
@@ -48,6 +34,18 @@ module.exports = {
           cwd: 'vendor',
         src: ['**'],
         dest: 'tmp/public/vendor'
+      }
+    ]
+  },
+  cards: {
+    files: [
+      {
+        expand: true,
+        cwd: 'cards',
+        src: ['*/dist/**'],
+        dest: 'tmp/public/cards',
+        flatten: true,
+        filter: 'isFile'
       }
     ]
   }

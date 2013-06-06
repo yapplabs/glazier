@@ -30,15 +30,5 @@ module.exports = {
       src: ['*/test/container_test.js'],
       dest: 'tmp/public/test/cards/'
     }]
-  },
-
-  cardsCode: {
-    type: "amd",
-    files: [{
-      expand: true,
-      cwd: 'cards/',
-      src: ['**/*.js'],
-      dest: 'tmp/public/cards/'
-    }]
   }
 };

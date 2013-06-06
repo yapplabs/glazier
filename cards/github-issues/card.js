@@ -1,9 +1,10 @@
 Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
 Conductor.require('/vendor/ember-latest.js');
-Conductor.requireCSS('/cards/github-issues/style.css');
+Conductor.requireCSS('/cards/github-issues.css');
 
-import { App } from 'app/application';
+var App;
+import loadEmberApp from 'app/application';
 
 var card = Conductor.card({
   consumers: {
@@ -29,7 +30,8 @@ var card = Conductor.card({
   },
 
   activate: function() {
-    console.log('activate');
+    console.log('activate github-issues');
+    App = loadEmberApp();
     var card = this;
 
     App.deferReadiness();

@@ -1,3 +1,6 @@
+function cardGruntCommand(cardName) {
+  return "pushd cards/" + cardName + " && grunt && popd";
+}
 module.exports = {
   glazierServer: {
     command: [
@@ -15,6 +18,18 @@ module.exports = {
       "cd glazier-server",
       "bundle exec rake 'glazier:ingest_as_current[../tmp/public/index.html]'"
     ].join(' && '),
+    options: {
+      stdout: true,
+      stderr: true,
+      failOnError: true
+    }
+  },
+  buildCards: {
+    command: [
+      'github-auth',
+      'github-issues',
+      'github-repositories'
+    ].map(cardGruntCommand).join(' && '),
     options: {
       stdout: true,
       stderr: true,

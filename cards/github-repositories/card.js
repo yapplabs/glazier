@@ -1,7 +1,9 @@
 Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
 Conductor.require('/vendor/ember-latest.js');
-Conductor.requireCSS('/cards/github-repositories/css/style.css');
+Conductor.requireCSS('/cards/github-repositories.css');
+
+import loadEmberApp from 'app/application';
 
 var App;
 var card = Conductor.card({
@@ -18,13 +20,7 @@ var card = Conductor.card({
   activate: function() {
     console.log("activate github-repositories");
     var card = this;
-    card.App = App = Ember.Application.create({
-      rootElement: '#card'
-    });
-    App.deferReadiness();
-    Ember.TEMPLATES['application'] = Ember.Handlebars.compile(
-      "<h3>My Repositories</h3><ul>{{#each}}<li>{{name}}</li>{{/each}}</ul>"
-    );
+    App = loadEmberApp();
     App.ApplicationController = Ember.ArrayController.extend();
     App.ApplicationRoute = Ember.Route.extend({
       model: function(){

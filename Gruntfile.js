@@ -29,7 +29,8 @@ module.exports = function(grunt) {
     process.env.GLAZIER_ENV = 'prod';
   });
 
-  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'copy', 'concat']);
+  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'copy_glazier', 'concat', 'shell:buildCards', 'copy:cards']);
+  grunt.registerTask('copy_glazier', ['copy:main', 'copy:test', 'copy:fixtures', 'copy:vendor']);
 
   grunt.registerTask('assets', ['build', 'jshint', 'uglify:all', 'md5', 'index.html']);
 
