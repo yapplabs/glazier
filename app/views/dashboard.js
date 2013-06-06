@@ -1,17 +1,17 @@
-import CardRegistry from 'glazier/card_registry';
+import CardManager from 'glazier/card_manager';
 
 var DashboardView = Ember.View.extend({
   init: function () {
     this._super();
-    this.cardRegistry = this.container.lookup('cardRegistry:main');
+    this.cardManager = this.container.lookup('cardManager:main');
   },
   didInsertElement: function () {
     var self = this;
-    var cardRegistry = this.cardRegistry;
+    var cardManager = this.cardManager;
     this.get('controller.panes').forEach(function(pane) {
       pane.then(function() {
         Ember.RSVP.all([pane.get('type'), pane.get('capabilityProviders')]).then(function () {
-          var card = cardRegistry.load(pane);
+          var card = cardManager.load(pane);
           self.appendCard(card);
         });
       });
@@ -19,7 +19,7 @@ var DashboardView = Ember.View.extend({
   },
   willDestroyElement: function() {
     this.get('controller.panes').forEach(function(pane) {
-      this.cardRegistry.unload(pane);
+      this.cardManager.unload(pane);
     }, this);
   },
   appendCard: function(card) {

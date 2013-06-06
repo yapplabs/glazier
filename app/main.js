@@ -4,7 +4,7 @@ import IndexRoute from 'glazier/routes/index';
 import DashboardRoute from 'glazier/routes/dashboard';
 import DashboardView from 'glazier/views/dashboard';
 import ApplicationView from 'glazier/views/application';
-import CardRegistry from 'glazier/card_registry';
+import CardManager from 'glazier/card_manager';
 import ConfigurationService from 'glazier/services/configuration';
 import FullXhrService from 'glazier/services/full_xhr';
 import UserStorageService from 'glazier/services/user_storage';
@@ -31,10 +31,10 @@ Glazier.DashboardRoute = DashboardRoute;
 Glazier.DashboardView = DashboardView;
 
 var conductor = new Conductor();
-var cardRegistry = new CardRegistry(conductor);
+var cardManager = new CardManager(conductor);
 
 Glazier.register('conductor:main', conductor, { instantiate: false});
-Glazier.register('cardRegistry:main', cardRegistry, { instantiate: false});
+Glazier.register('cardManager:main', cardManager, { instantiate: false});
 
 
 Conductor.services['configuration'] = ConfigurationService;
