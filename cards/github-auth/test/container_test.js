@@ -58,9 +58,10 @@ if (!/phantom/i.test(navigator.userAgent)) {
       };
       window.open.calledWith = [];
 
-      card = conductor.load('/cards/github-auth/all.js', 1, {
+      card = conductor.load('/cards/github-auth.js', 1, {
         capabilities: ['fullXhr', 'configuration', 'userStorage', 'identity', 'test', 'assertion']
       });
+      card.then(null, function(e){ console.log(e); });
       card.appendTo('#qunit-fixture');
     },
     teardown: function() {

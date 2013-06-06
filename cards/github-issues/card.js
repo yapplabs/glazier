@@ -25,16 +25,12 @@ var card = Conductor.card({
     document.body.innerHTML = "<div id=\"card\"></div>";
 
     Ember.run(App, 'advanceReadiness');
-
     return App;
   },
 
   activate: function() {
     console.log('activate github-issues');
     App = loadEmberApp();
-    var card = this;
-
-    App.deferReadiness();
   },
 
   metadata: {

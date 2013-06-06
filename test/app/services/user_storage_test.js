@@ -17,6 +17,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
       card = conductor.load('/test/fixtures/app/services/user_storage_card.js', 1, {
         capabilities: ['userStorage', 'test', 'assertion']
       });
+      card.then(null, function(e){ console.log(e); });
       card.appendTo('#qunit-fixture');
 
       mockAjax();

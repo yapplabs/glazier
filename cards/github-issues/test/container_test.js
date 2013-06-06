@@ -14,9 +14,10 @@ module("Github::Issues Acceptances", {
 
     Conductor.services['test'] = TestService;
 
-    card = conductor.load('/cards/github-issues/all.js', 1, {
+    card = conductor.load('/cards/github-issues.js', 1, {
       capabilities: ['test']
     });
+    card.then(null, function(e){ console.log(e); });
     card.appendTo('#qunit-fixture');
   },
 
@@ -26,12 +27,12 @@ module("Github::Issues Acceptances", {
 });
 
 asyncTest("it renders", 1, function(){
-
   inCard(card, function(card){
-
     card.render().then(function(){
       start();
       equal($('h3').text(), 'Github Issues');
+    }, function(e){
+      ok(false, e);
     });
 
   }).then(null, console.error);
