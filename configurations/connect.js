@@ -42,10 +42,10 @@ function proxyIndex(req, res, next){
 }
 
 function blockDuringBuild(req,res,next){
-  if (grunt.isLockedDuringBuild) {
+  if (process.isLockedDuringBuild) {
     var tryAgainSoon = function() {
       setTimeout(function(){
-        if (grunt.isLockedDuringBuild) {
+        if (process.isLockedDuringBuild) {
           tryAgainSoon();
         } else {
           next();

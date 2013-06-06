@@ -52,7 +52,7 @@ card = Conductor.card({
   accessTokenPromise: new Conductor.Oasis.RSVP.Promise(),
 
   activate: function() {
-    // console.log("activate github-auth");
+    console.log("activate github-auth");
     var card = this;
     var _configurationService = this.consumers.configuration;
     githubClientIdPromise = _configurationService.request('configurationValue', 'github_client_id');

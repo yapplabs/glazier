@@ -4,8 +4,7 @@ Conductor.require('/vendor/ember-latest.js');
 Conductor.requireCSS('/cards/github-repositories/css/style.css');
 
 var App;
-
-Conductor.card({
+var card = Conductor.card({
   consumers: {
     'github:authenticated:read': Conductor.Oasis.Consumer
   },
@@ -19,7 +18,7 @@ Conductor.card({
   activate: function() {
     console.log("activate github-repositories");
     var card = this;
-    App = Ember.Application.create({
+    card.App = App = Ember.Application.create({
       rootElement: '#card'
     });
     App.deferReadiness();
@@ -54,3 +53,5 @@ Conductor.card({
     });
   }
 });
+
+export { card };

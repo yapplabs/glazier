@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+  grunt.loadTasks('tasks');
 
   function config(configFileName) {
     return require('./configurations/' + configFileName);
@@ -8,6 +9,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     env: process.env,
+
     connect: config('connect'),
     watch: config('watch'),
     transpile: config('transpile'),
@@ -22,8 +24,6 @@ module.exports = function(grunt) {
     md5: config('md5'),
     uglify: config('uglify')
   });
-
-  grunt.loadTasks('tasks');
 
   grunt.registerTask("prod", function(){
     process.env.GLAZIER_ENV = 'prod';
