@@ -1,6 +1,12 @@
+var fs = require('fs')
+
+
 function cardGruntCommand(cardName) {
-  return "pushd cards/" + cardName + " && grunt && popd";
+  var cmd = "pushd cards/" + cardName + " && grunt && popd"
+  console.log("Building card '" + cardName + "' with cmd: " + cmd)
+  return cmd;
 }
+
 module.exports = {
   glazierServer: {
     command: [
@@ -25,11 +31,7 @@ module.exports = {
     }
   },
   buildCards: {
-    command: [
-      'github-auth',
-      'github-issues',
-      'github-repositories'
-    ].map(cardGruntCommand).join(' && '),
+    command: fs.readdirSync('cards').map(cardGruntCommand).join(' && '),
     options: {
       stdout: true,
       stderr: true,
