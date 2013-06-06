@@ -378,6 +378,7 @@ define("oasis",
         var options = sandbox.options,
             iframe = document.createElement('iframe');
 
+        iframe.name = sandbox.options.url
         iframe.sandbox = 'allow-same-origin allow-scripts allow-popups allow-forms';
         iframe.seamless = true;
         iframe.src = generateSrc(options.url, options.oasisURL, sandbox.dependencies);
