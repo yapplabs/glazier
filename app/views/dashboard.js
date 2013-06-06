@@ -7,8 +7,10 @@ var DashboardView = Ember.View.extend({
     var cardRegistry = this.container.lookup('cardRegistry:main');
     this.get('controller.cards').forEach(function(card) {
       card.then(function() {
-        var conductorCard = cardRegistry.load(card.get('cardType.id'));
-        self.appendConductorCard(conductorCard);
+        Ember.RSVP.all([card.get('type'), card.get('capabilityProviders')]).then(function () {
+          var conductorCard = cardRegistry.load(card);
+          self.appendConductorCard(conductorCard);
+        });
       });
     });
   },

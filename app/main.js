@@ -10,6 +10,7 @@ import FullXhrService from 'glazier/services/full_xhr';
 import UserStorageService from 'glazier/services/user_storage';
 import IdentityService from 'glazier/services/identity';
 import Card from 'glazier/models/card';
+import CapabilityProvider from 'glazier/models/capability_provider';
 import CardType from 'glazier/models/card_type';
 import Dashboard from 'glazier/models/dashboard';
 
@@ -19,6 +20,7 @@ import 'glazier/fixtures' as Fixtures;
 var Glazier = Application.create();
 
 Glazier.Card = Card;
+Glazier.CapabilityProvider = CapabilityProvider;
 Glazier.CardType = CardType;
 Glazier.Dashboard = Dashboard;
 
