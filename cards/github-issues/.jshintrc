@@ -2,6 +2,7 @@
   "predef": [
     "App",
     "Ember",
+    "Em",
     "Conductor",
     "$",
     "define",
