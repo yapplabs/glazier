@@ -1,11 +1,10 @@
 import ProxyService from 'glazier/services/proxy';
 
-function CardManager(conductor) {
-  this.conductor = conductor;
-  this.instances = {}; // track instances by id
-}
+var CardManager = Ember.Object.extend({
+  init: function () {
+    this.instances = {}; // track instances by id
+  },
 
-CardManager.prototype = {
   // load(pane) -> card
   load: function (pane) {
     var id = pane.get('id');
@@ -71,6 +70,6 @@ CardManager.prototype = {
     });
     return targets;
   }
-};
+});
 
 export CardManager;

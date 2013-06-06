@@ -15,7 +15,11 @@ import CapabilityProvider from 'glazier/models/capability_provider';
 import CardType from 'glazier/models/card_type';
 import Dashboard from 'glazier/models/dashboard';
 
+import classFactory from 'glazier/utils/class_factory';
 
+
+import 'glazier/initializers/conductor_services' as conductorServicesInitializer;
+import 'glazier/initializers/github_auth_card' as githubAuthCardInitializer;
 import 'glazier/fixtures' as Fixtures;
 
 var Glazier = Application.create();
@@ -31,16 +35,18 @@ Glazier.ApplicationView = ApplicationView;
 Glazier.DashboardRoute = DashboardRoute;
 Glazier.DashboardView = DashboardView;
 
-var conductor = new Conductor();
-var cardManager = new CardManager(conductor);
+Glazier.register('conductor:main', new Conductor(), { instantiate: false});
+Glazier.register('cardManager:main', CardManager);
 
-Glazier.register('conductor:main', conductor, { instantiate: false});
-Glazier.register('cardManager:main', cardManager, { instantiate: false});
+Glazier.inject('cardManager:main', 'conductor', 'conductor:main');
 
-Conductor.services['configuration'] = ConfigurationService;
-Conductor.services['fullXhr'] = FullXhrService;
-Conductor.services['userStorage'] = UserStorageService;
-Conductor.services['identity'] = IdentityService;
-Conductor.services['repository'] = RepositoryService;
+Glazier.register('service:configuration', classFactory(ConfigurationService));
+Glazier.register('service:fullXhr', classFactory(FullXhrService));
+Glazier.register('service:userStorage', classFactory(UserStorageService));
+Glazier.register('service:identity', classFactory(IdentityService));
+Glazier.register('service:repository', classFactory(RepositoryService));
+
+Ember.Application.initializer(conductorServicesInitializer);
+Ember.Application.initializer(githubAuthCardInitializer);
 
 export Glazier;

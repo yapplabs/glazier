@@ -1,10 +1,8 @@
-
 var IdentityService = Conductor.Oasis.Service.extend({
   updateName: function(name){
-
-    // TODO: not this
+    var applicationController = this.container.lookup("controller:application");
     Ember.run(function() {
-      Glazier.__container__.lookup("controller:application").set('name', name);
+      applicationController.set('name', name);
     });
   },
   events: {
