@@ -1,8 +1,11 @@
 var fs = require('fs')
 
+var isCardDir = function (dir){
+  return dir[0] != ".";
+}
 
 function cardGruntCommand(cardName) {
-  var cmd = "pushd cards/" + cardName + " && grunt && popd"
+  var cmd = "cd cards/" + cardName + " && grunt && cd ../.."
   console.log("Building card '" + cardName + "' with cmd: " + cmd)
   return cmd;
 }
@@ -31,7 +34,7 @@ module.exports = {
     }
   },
   buildCards: {
-    command: fs.readdirSync('cards').map(cardGruntCommand).join(' && '),
+    command: fs.readdirSync('cards').filter(isCardDir).map(cardGruntCommand).join(' && '),
     options: {
       stdout: true,
       stderr: true,
