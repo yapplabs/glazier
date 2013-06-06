@@ -2,18 +2,18 @@ import ProxyService from 'glazier/services/proxy';
 
 function CardRegistry(conductor) {
   this.conductor = conductor;
+  this.instances = {}; // track instances by id
 }
 
-// track instances by id
-var instances = {};
 CardRegistry.prototype = {
-  // load(cardModel) -> card
-  load: function (cardModel) {
-    var id = cardModel.get('id');
+  // load(pane) -> card
+  load: function (pane) {
+    var id = pane.get('id');
+    var instances = this.instances;
     var card = instances[id];
     if (card) return card;
     var conductorServices = this.conductor.services;
-    var manifest = cardModel.get('type.manifest');
+    var manifest = pane.get('type.manifest');
     var capabilities = [];
     var consumes = {};
     if (manifest.consumes) {
@@ -36,7 +36,7 @@ CardRegistry.prototype = {
     });
     instances[id] = card;
     var targets = {};
-    cardModel.get('capabilityProviders').forEach(function (capabilityProvider) {
+    pane.get('capabilityProviders').forEach(function (capabilityProvider) {
       targets[capabilityProvider.get('capability')] = instances[capabilityProvider.get('provider.id')];
     });
     card.targets = targets;
@@ -44,9 +44,9 @@ CardRegistry.prototype = {
     card.provides = provides;
     return card;
   },
-  unload: function (cardModel) {
+  unload: function (pane) {
     // unload in the future should card.destroy
-    delete instances[cardModel.get('id')];
+    delete this.instances[pane.get('id')];
   }
 };
 

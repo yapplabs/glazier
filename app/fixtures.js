@@ -7,11 +7,11 @@ import Dashboard from 'glazier/models/dashboard';
 Dashboard.FIXTURES = [
   {
     id: 'emberjs/ember.js',
-    cards: ['1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2']
+    panes: ['1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2']
   },
   {
     id: 'yapplabs/glazier',
-    cards: ['d30608af-11d8-402f-80a3-1f458650dbef']
+    panes: ['d30608af-11d8-402f-80a3-1f458650dbef']
   }
 ];
 
