@@ -56,7 +56,9 @@ module("CardManager", {
       adapter: DS.FixtureAdapter // TODO lower delay for tests
     });
 
-    cardManager = new CardManager(conductor);
+    cardManager = CardManager.create({
+      conductor: conductor
+    });
 
     store.load(CardType, '/cards/github-auth/manifest.json', {
       manifest: {
