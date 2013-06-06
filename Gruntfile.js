@@ -40,6 +40,6 @@ module.exports = function(grunt) {
   grunt.registerTask('preview', ['build', 'uglify:all', 'md5', 'index.html', 'shell:ingest', 'connect', 'watch']);
   grunt.registerTask('preview:cdn', ['prod', 'deploy', 'shell:ingest', 'connect', 'watch']);
 
-  grunt.registerTask('test', ['build',  'connect', 'qunit:all']);
+  grunt.registerTask('test', ['shell:npmInstallForCards', 'build',  'connect', 'qunit:all']);
   grunt.registerTask('default', ['build', 'index.html', 'connect', 'watch']);
 };

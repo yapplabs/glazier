@@ -6,7 +6,11 @@ var isCardDir = function (dir){
 
 function cardGruntCommand(cardName) {
   var cmd = "cd cards/" + cardName + " && grunt && cd ../.."
-  console.log("Building card '" + cardName + "' with cmd: " + cmd)
+  return cmd;
+}
+
+function cardNpmInstallCommand(cardName) {
+  var cmd = "cd cards/" + cardName + " && npm install && cd ../.."
   return cmd;
 }
 
@@ -27,6 +31,14 @@ module.exports = {
       "cd glazier-server",
       "bundle exec rake 'glazier:ingest_as_current[../tmp/public/index.html]'"
     ].join(' && '),
+    options: {
+      stdout: true,
+      stderr: true,
+      failOnError: true
+    }
+  },
+  npmInstallForCards: {
+    command: fs.readdirSync('cards').filter(isCardDir).map(cardNpmInstallCommand).join(' && '),
     options: {
       stdout: true,
       stderr: true,
