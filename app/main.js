@@ -6,6 +6,7 @@ import DashboardView from 'glazier/views/dashboard';
 import ApplicationView from 'glazier/views/application';
 import CardManager from 'glazier/card_manager';
 import ConfigurationService from 'glazier/services/configuration';
+import RepositoryService from 'glazier/services/repository';
 import FullXhrService from 'glazier/services/full_xhr';
 import UserStorageService from 'glazier/services/user_storage';
 import IdentityService from 'glazier/services/identity';
@@ -36,10 +37,10 @@ var cardManager = new CardManager(conductor);
 Glazier.register('conductor:main', conductor, { instantiate: false});
 Glazier.register('cardManager:main', cardManager, { instantiate: false});
 
-
 Conductor.services['configuration'] = ConfigurationService;
 Conductor.services['fullXhr'] = FullXhrService;
 Conductor.services['userStorage'] = UserStorageService;
 Conductor.services['identity'] = IdentityService;
+Conductor.services['repository'] = RepositoryService;
 
 export Glazier;

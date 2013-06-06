@@ -66,7 +66,7 @@ CardType.FIXTURES = [
     id: '/cards/github-repositories/manifest.json',
     manifest: {
       jsUrl: '/cards/github-repositories.js',
-      consumes: [ 'github:authenticated:read' ]
+      consumes: [ 'github:authenticated:read', 'repository' ]
     }
   },
   {

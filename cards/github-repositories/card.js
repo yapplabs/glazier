@@ -8,7 +8,8 @@ import loadEmberApp from 'app/application';
 var App;
 var card = Conductor.card({
   consumers: {
-    'github:authenticated:read': Conductor.Oasis.Consumer
+    'github:authenticated:read': Conductor.Oasis.Consumer,
+    repository: Conductor.Oasis.Consumer
   },
   render: function (intent, dimensions) {
     if (!dimensions) { dimensions = {width:500,height:500}; }
@@ -23,6 +24,15 @@ var card = Conductor.card({
     App = loadEmberApp();
     App.ApplicationController = Ember.ArrayController.extend();
     App.ApplicationRoute = Ember.Route.extend({
+      setupController: function(controller, model) {
+        this._super(controller, model);
+        var repositoryService = card.consumers['repository'];
+        var currentRepoRequest = repositoryService.request('getRepository');
+        currentRepoRequest.then(function(repoName) {
+          controller.set('currentRepository', repoName);
+        });
+      },
+
       model: function(){
         var _apiService = card.consumers['github:authenticated:read'];
         return _apiService.request("ajax", {
