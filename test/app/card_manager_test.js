@@ -39,7 +39,7 @@ CardType.FIXTURES = [
   {
     id: '/cards/github-repositories/manifest.json',
     manifest: {
-      jsUrl: '/cards/github-repositories/all.js',
+      jsUrl: '/cards/github-repositories.js',
       consumes: [ 'github:authenticated:read' ]
     }
   }
@@ -62,7 +62,7 @@ module("CardManager", {
 
     store.load(CardType, '/cards/github-auth/manifest.json', {
       manifest: {
-        jsUrl: '/cards/github-auth/all.js',
+        jsUrl: '/cards/github-auth.js',
         consumes: [ 'fullXhr', 'configuration', 'userStorage', 'identity' ],
         provides: ['github:authenticated:read']
       }
