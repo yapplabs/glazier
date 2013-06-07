@@ -29,13 +29,7 @@ card = Conductor.card({
     fullXhr: Conductor.Oasis.Consumer,
     'github:authenticated:read': ApiConsumer,
     userStorage: Conductor.Oasis.Consumer,
-    identity: Conductor.Oasis.Consumer.extend({
-      events: {
-        identified: function(userJson){
-          console.log("card:consumers:identity:identified", userJson);
-        }
-      }
-    }),
+    login: Conductor.Oasis.Consumer,
     test: Conductor.Oasis.Consumer.extend({
       requests: {
         runTest:  function(promise, testData){
@@ -83,10 +77,11 @@ card = Conductor.card({
         console.log('card.accessTokenPromise.resolve', accessToken);
         card.accessTokenPromise.resolve(accessToken);
         // view.set('controller.githubAccessToken', accessToken);
-        card.consumers.userStorage.request('setItem', 'accessToken', accessToken).then(function(){
-          // console.log("I saved my access token: ", accessToken);
+        card.consumers.login.request('loginWithGithub', {githubAccessToken: accessToken}).then(function(){
+          card.consumers.userStorage.request('setItem', 'accessToken', accessToken).then(function(){
+            // console.log("I saved my access token: ", accessToken);
+          });
         });
-        card.consumers.identity.send('identified', {githubAccessToken: accessToken});
       }, function(e){
         console.error(e);
       });

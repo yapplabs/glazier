@@ -18,9 +18,13 @@ var ProxyService = Conductor.Oasis.Service.extend({
   getProxyTargetPort: function () {
     var capability = this.capability;
     var targetCard = this.sandbox.card.targets[capability];
-    return targetCard.sandbox.activatePromise.then(function () {
-      return targetCard.sandbox.channels[capability].port1;
-    });
+    if (targetCard) {
+      return targetCard.sandbox.activatePromise.then(function () {
+        return targetCard.sandbox.channels[capability].port1;
+      });
+    } else {
+      throw new Error('No target card available to provide service ' + capability);
+    }
   },
 
   load: function () {

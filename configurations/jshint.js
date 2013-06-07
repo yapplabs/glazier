@@ -4,6 +4,7 @@ module.exports = {
     src: [
       'Gruntfile.js',
       'tmp/public/**/*.js',
+      '!tmp/public/glazier.js',
       '!tmp/public/vendor/**',
       '!tmp/public/test.js',
       '!tmp/public/cards/**'

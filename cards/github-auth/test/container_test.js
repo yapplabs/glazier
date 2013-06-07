@@ -23,15 +23,16 @@ if (!/phantom/i.test(navigator.userAgent)) {
           }
         }
       });
-      Conductor.services['identity'] = Conductor.Oasis.Service.extend({
-        events: {
-          identified: function(data) {
-            Conductor.services['identity'].trigger('identified');
+      Conductor.services['login'] = Conductor.Oasis.Service.extend({
+        requests: {
+          loginWithGithub: function(promise, data) {
+            Conductor.services['login'].trigger('handled');
+            promise.resolve({user:{}});
           }
         }
       });
 
-      Conductor.Oasis.RSVP.EventTarget.mixin(Conductor.services['identity']);
+      Conductor.Oasis.RSVP.EventTarget.mixin(Conductor.services['login']);
       Conductor.services['userStorage'] = Conductor.Oasis.Service.extend({
         requests: {
           //http://dev.w3.org/html5/webstorage/#storage-0
@@ -59,7 +60,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
       window.open.calledWith = [];
 
       card = conductor.load('/cards/github-auth.js', 1, {
-        capabilities: ['fullXhr', 'configuration', 'userStorage', 'identity', 'test', 'assertion']
+        capabilities: ['fullXhr', 'configuration', 'userStorage', 'login', 'test', 'assertion']
       });
       card.then(null, function(e){ console.log(e); });
       card.appendTo('#qunit-fixture');
@@ -67,7 +68,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
     teardown: function() {
       window.open = originalWindowOpen;
       Conductor.services['userStorage'].off('setItem');
-      Conductor.services['identity'].off('identified');
+      Conductor.services['login'].off('handled');
     }
   });
 
@@ -90,21 +91,23 @@ if (!/phantom/i.test(navigator.userAgent)) {
   asyncTest("The card exchanges the auth code for an accessToken and persists the token as private user data", 3, function() {
     card.sandbox.activatePromise.then(function(){
       var setItemRequestPromise = new Conductor.Oasis.RSVP.Promise(),
-          identifiedSentPromise = new Conductor.Oasis.RSVP.Promise();
+          loginHandledPromise = new Conductor.Oasis.RSVP.Promise();
       Conductor.services['userStorage'].on('setItem', function(){
         setItemRequestPromise.resolve();
       });
-      Conductor.services['identity'].on('identified', function(){
-        identifiedSentPromise.resolve();
+      Conductor.services['login'].on('handled', function(){
+        loginHandledPromise.resolve();
       });
       card.sandbox.el.contentWindow.postMessage('123456', '*');
-      Conductor.Oasis.RSVP.all([setItemRequestPromise, identifiedSentPromise]).then(function(){
-        ok(true, 'sent identified event to identity service');
-        equal(stubbedUserStorage['accessToken'], 'def456', 'persists accessToken');
-        inCard(card, function(card){
-          card.consumers.userStorage.request('getItem', 'accessToken').then(function(token){
-            equal(token, 'def456', 'reads back the token from userStorage');
-            start();
+      loginHandledPromise.then(function(){
+        ok(true, 'log in request sent to login service');
+        setItemRequestPromise.then(function(){
+          equal(stubbedUserStorage['accessToken'], 'def456', 'persists accessToken');
+          inCard(card, function(card){
+            card.consumers.userStorage.request('getItem', 'accessToken').then(function(token){
+              equal(token, 'def456', 'reads back the token from userStorage');
+              start();
+            });
           });
         });
       });

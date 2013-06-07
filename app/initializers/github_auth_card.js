@@ -9,7 +9,7 @@ var initializer = {
     store.load(CardType, '/cards/github-auth/manifest.json', {
       manifest: {
         jsUrl: '/cards/github-auth.js',
-        consumes: [ 'fullXhr', 'configuration', 'userStorage', 'identity' ],
+        consumes: [ 'fullXhr', 'configuration', 'userStorage', 'login' ],
         provides: ['github:authenticated:read']
       }
     });

@@ -2,6 +2,7 @@ function MockPort(name) {
   this.name = name;
   this._events = { };
   this._all = [ ];
+  this._errors = [ ];
 }
 
 function spy(fn, args) {
@@ -15,6 +16,10 @@ MockPort.prototype = {
     spy(all, arguments);
 
     this._all.push([callback, binding]);
+  },
+
+  error: function error(callback, binding){
+    this._errors.push([callback, binding]);
   },
 
   on: function on(eventName, callback, binding) {
@@ -38,27 +43,29 @@ MockPort.prototype = {
 
   _trigger: function(name, event) {
     var port = this;
-
+    function invoke(args) {
+      return function(tuple) {
+        var callback = tuple[0];
+        var binding = tuple[1];
+        callback.apply(binding, args);
+      }
+    }
     function processEvents() {
       start();
-
-      port._all.forEach(function(tuple) {
-        var callback = tuple[0];
-        var binding = tuple[1];
-
-        callback.call(binding, name, event);
-      });
-
       var tuples = port._events[name] || [];
 
-      tuples.forEach(function(tuple) {
-        var callback = tuple[0];
-        var binding = tuple[1];
-
-        callback.call(binding, event);
-      });
+      if (port._errors.length > 0) { // if error handlers are installed
+        try {
+          port._all.forEach(invoke([name, event]));
+          tuples.forEach(invoke([event]));
+        } catch(e) {
+          port._errors.forEach(invoke([e]));
+        }
+      } else {
+        port._all.forEach(invoke([name, event]));
+        tuples.forEach(invoke([event]));
+      }
     }
-
     stop();
     // simulate async
     setTimeout(processEvents, 0);

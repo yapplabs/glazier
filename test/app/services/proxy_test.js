@@ -213,3 +213,39 @@ test('Test ProxyService with multiple consumers and one producer', function() {
 
   targetActivePromise.resolve();
 });
+
+test('test ProxyService that has no target', function () {
+  expect(1);
+
+  var requestEventName = '@request:someEvent';
+  var requestEvent = {
+    requestId: 'request id'
+  };
+
+  var consumerCardPort = new MockPort('consumerCard');
+  var proxyServicePort = new MockPort('proxyService');
+
+  var consumerChannel = new MockChannel('consumer', consumerCardPort, proxyServicePort);
+
+  var sandbox = {
+    card: {
+      id: 'card-id',
+      consumes: {
+        'nonexistentService': true
+      },
+      targets: {}
+    }
+  };
+
+  var proxyCapability = 'nonexistentService';
+  proxyServicePort.error(function(e){
+    equal(e.message, 'No target card available to provide service ' + proxyCapability);
+    start()
+  });
+
+  var proxyService = new ProxyService(proxyServicePort, sandbox);
+  proxyService.initialize(proxyServicePort, proxyCapability);
+
+  consumerCardPort.send(requestEventName, requestEvent);
+  stop();
+});
