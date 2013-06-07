@@ -1,3 +1,5 @@
-App.ApplicationController = Ember.Controller.extend({
+var ApplicationController = Ember.ArrayController.extend({
   repositoryName: null
 });
+
+export = ApplicationController;

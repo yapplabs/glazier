@@ -3,9 +3,7 @@ var loadEmberApp = function() {
     rootElement: '#card'
   });
 
-  App.ApplicationController = Ember.ArrayController.extend({
-    repositoryName: null
-  });
+  App.ApplicationController = requireModule('app/controllers/application');
 
   App.deferReadiness();
   requireModule('templates');
