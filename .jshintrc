@@ -4,6 +4,7 @@
     "Ember",
     "DS",
     "Conductor",
+    "StarterKit",
     "$",
     "define",
     "console",

@@ -30,6 +30,9 @@ var CardManager = Ember.Object.extend({
       capabilities: capabilities
     });
 
+    // attach wiretapping for the analytics panel
+    StarterKit.wiretapCard(card);
+
     card.targets = this._getTargets(pane);
     card.consumes = consumes;
     card.provides = provides;
