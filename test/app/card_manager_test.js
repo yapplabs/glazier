@@ -80,6 +80,9 @@ module("CardManager", {
     Ember.RSVP.all([authPane, cardType]).then(function() {
       cardManager.load(authPane);
       start();
+    }).then(null, function(e) {
+      console.error('error:', e);
+      start();
     });
 
     stop();

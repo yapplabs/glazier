@@ -13,6 +13,8 @@ var DashboardView = Ember.View.extend({
         Ember.RSVP.all([pane.get('type'), pane.get('capabilityProviders')]).then(function () {
           var card = cardManager.load(pane);
           self.appendCard(card);
+        }, function(reason) {
+          console.error("error in DashboardView didInsertElement: ", reason);
         });
       });
     });
