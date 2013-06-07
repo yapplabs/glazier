@@ -11,13 +11,12 @@ import FullXhrService from 'glazier/services/full_xhr';
 import UserStorageService from 'glazier/services/user_storage';
 import IdentityService from 'glazier/services/identity';
 import LoginService from 'glazier/services/login';
+import OauthService from 'glazier/services/oauth';
 import Pane from 'glazier/models/pane';
 import CapabilityProvider from 'glazier/models/capability_provider';
 import CardType from 'glazier/models/card_type';
 import Dashboard from 'glazier/models/dashboard';
-
 import classFactory from 'glazier/utils/class_factory';
-
 
 import 'glazier/initializers/conductor_services' as conductorServicesInitializer;
 import 'glazier/initializers/github_auth_card' as githubAuthCardInitializer;
@@ -47,6 +46,7 @@ Glazier.register('service:userStorage', classFactory(UserStorageService));
 Glazier.register('service:identity', classFactory(IdentityService));
 Glazier.register('service:repository', classFactory(RepositoryService));
 Glazier.register('service:login', classFactory(LoginService));
+Glazier.register('service:oauth', classFactory(OauthService));
 
 Ember.Application.initializer(conductorServicesInitializer);
 Ember.Application.initializer(githubAuthCardInitializer);
