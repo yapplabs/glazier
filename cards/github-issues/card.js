@@ -30,6 +30,17 @@ var card = Conductor.card({
         Em.run(function(){
           App.__container__.lookup('controller:application').set('repositoryName', repoName);
         });
+
+        card.consumers['github:authenticated:read'].request("ajax", {
+          url: '/repos/' + repoName + '/issues',
+          dataType: 'json'
+        }).then(function(issues) {
+          Em.run(function() {
+            App.__container__.lookup('controller:application').set('model', issues);
+          });
+        }, function(reason) {
+          console.error('issues fetch failed for ' + repoName);
+        });
       });
     }).then(null, function(e){ console.log(e); });
   },
