@@ -43,13 +43,15 @@ MockPort.prototype = {
 
   _trigger: function(name, event) {
     var port = this;
+
     function invoke(args) {
       return function(tuple) {
         var callback = tuple[0];
         var binding = tuple[1];
         callback.apply(binding, args);
-      }
+      };
     }
+
     function processEvents() {
       start();
       var tuples = port._events[name] || [];

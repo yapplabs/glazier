@@ -240,7 +240,7 @@ test('test ProxyService that has no target', function () {
   var proxyCapability = 'nonexistentService';
   proxyServicePort.error(function(e){
     equal(e.message, 'No target card available to provide service ' + proxyCapability);
-    start()
+    start();
   });
 
   var proxyService = new ProxyService(proxyServicePort, sandbox);
