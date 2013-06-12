@@ -30,4 +30,4 @@ var OauthService = Conductor.Oasis.Service.extend({
   }
 });
 
-export OauthService;
+export = OauthService;

@@ -1,3 +1,14 @@
+/*
+ * This module defines a subclass of Ember.DefaultResolver that adds two
+ * important features:
+ *
+ *  1) The module system provided by es6-module-transpiler and
+ *     vendor/loader is consulted so that classes can be resolved
+ *     directly cia the module loader, without needing a manual `require`.
+ *  2) is able provide injections to classes that implement `extend`
+ *     (as is typical with Ember).
+ */
+
 var typeMap = {
   view: 'views',
   util: 'utils',
@@ -7,13 +18,10 @@ var typeMap = {
 };
 
 function classFactory(klass) {
+  Ember.assert("classFactory must be used with a class that implements `extend`", typeof klass.extend === 'function');
   return {
     create: function (injections) {
-      if (typeof klass.extend === 'function') {
-        return klass.extend(injections);
-      } else {
-        return klass;
-      }
+      return klass.extend(injections);
     }
   };
 }
