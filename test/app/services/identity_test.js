@@ -1,4 +1,4 @@
-import IdentityService from 'glazier/services/identity';
+import 'glazier/services/identity' as IdentityService;
 import createServiceForTesting from 'helpers/service_test_helpers';
 import mockAjax from 'helpers/ajax_test_helpers';
 

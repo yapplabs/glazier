@@ -4,4 +4,3 @@ var Pane = DS.Model.extend({
 });
 
 export Pane;
-

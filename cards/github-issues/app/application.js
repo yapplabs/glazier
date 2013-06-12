@@ -14,7 +14,7 @@ var loadEmberApp = function() {
     };
   }
 
-  function Resolver(prefix) {
+  function resolver(prefix) {
     return Ember.DefaultResolver.extend({
       resolveController: resolve(prefix + '/controllers/'),
       resolveView:       resolve(prefix + '/views/')
@@ -23,7 +23,7 @@ var loadEmberApp = function() {
 
   var App = Ember.Application.create({
     rootElement: '#card',
-    resolver: Resolver('app')
+    resolver: resolver('app')
   });
 
   App.deferReadiness();

@@ -1,4 +1,4 @@
-import FullXhrService from 'glazier/services/full_xhr';
+import 'glazier/services/full_xhr' as FullXhrService;
 import { inCard, TestService } from 'helpers/card_test_helpers';
 
 var conductor, card;

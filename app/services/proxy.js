@@ -70,4 +70,4 @@ var ProxyService = Conductor.Oasis.Service.extend({
   }
 });
 
-export ProxyService;
+export = ProxyService;

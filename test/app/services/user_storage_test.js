@@ -1,4 +1,4 @@
-import UserStorageService from 'glazier/services/user_storage';
+import 'glazier/services/user_storage' as UserStorageService;
 import assertResolved from 'helpers/promise_test_helpers';
 import { inCard, TestService } from 'helpers/card_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';

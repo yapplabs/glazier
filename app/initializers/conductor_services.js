@@ -1,11 +1,15 @@
+var camelize = Ember.String.camelize;
+
 var initializer = {
   name: 'conductorServices',
   initialize: function (container, application) {
-    container.registry.eachLocal(function (key) {
-      var match = /^service:(.+)/.exec(key);
+    Ember.keys(define.registry).forEach(function (moduleName) {
+      var match = /^glazier\/services\/(.+)/.exec(moduleName);
+
       if (match) {
-        var keyWithoutType = match[1];
-        Conductor.services[keyWithoutType] = container.lookup(key);
+        var keyWithoutType = camelize(match[1]);
+        var fullName = 'service:' + match[1];
+        Conductor.services[keyWithoutType] = container.lookup(fullName);
       }
     });
   }

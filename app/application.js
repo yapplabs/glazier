@@ -12,17 +12,23 @@ var typeMap = {
 function classFactory(klass) {
   return {
     create: function (injections) {
-      return klass.extend(injections);
+      if (typeof klass.extend === 'function') {
+        return klass.extend(injections);
+      } else {
+        return klass;
+      }
     }
   };
 }
 
+var underscore = Ember.String.underscore;
 function resolve(prefix) {
   return function(parsedName){
-    var pluralizedType = typeMap[parsedName.type] || parsedName.type;
-    var name = Ember.String.underscore(parsedName.fullNameWithoutType);
 
-    var moduleName = prefix + '/' +  pluralizedType + '/' + name;
+    var pluralizedType = typeMap[parsedName.type] || parsedName.type;
+    var name = parsedName.fullNameWithoutType;
+
+    var moduleName = prefix + '/' +  pluralizedType + '/' + underscore(name);
     var module;
 
     if (define.registry[moduleName]) {
@@ -47,7 +53,7 @@ function resolve(prefix) {
   };
 }
 
-function Resolver(prefix) {
+function resolver(prefix) {
   return  Ember.DefaultResolver.extend({
     resolveOther: resolve(prefix)
   });
@@ -56,7 +62,7 @@ function Resolver(prefix) {
 var Application = Ember.Application.extend({
   Router: Router,
   Store: Store,
-  resolver: Resolver('glazier'),
+  resolver: resolver('glazier')
 });
 
 export Application;
