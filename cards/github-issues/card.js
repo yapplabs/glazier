@@ -42,7 +42,7 @@ var card = Conductor.card({
           console.error('issues fetch failed for ' + repoName);
         });
       });
-    }).then(null, function(e){ console.log(e); });
+    }).then(null, function(e){ console.error(e); });
   },
 
   activate: function() {
