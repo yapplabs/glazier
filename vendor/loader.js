@@ -48,9 +48,10 @@ define("resolver",
    * This module defines a subclass of Ember.DefaultResolver that adds two
    * important features:
    *
-   *  1) The module system provided by es6-module-transpiler and
-   *     vendor/loader is consulted so that classes can be resolved
-   *     directly cia the module loader, without needing a manual `require`.
+   *  1) The resolver makes the container aware of es6 modules via the AMD
+   *     output. The loader's registry is consulted so that classes can be 
+   *     resolved directly via the module loader, without needing a manual
+   *     `import`.
    *  2) is able provide injections to classes that implement `extend`
    *     (as is typical with Ember).
    */
@@ -63,17 +64,20 @@ define("resolver",
   };
 
   function classFactory(klass) {
-    Ember.assert("classFactory must be used with a class that implements `extend`", typeof klass.extend === 'function');
     return {
       create: function (injections) {
-        return klass.extend(injections);
+        if (typeof klass.extend === 'function') {
+          return klass.extend(injections);  
+        } else {
+          return klass;
+        }
       }
     };
   }
 
   var underscore = Ember.String.underscore;
 
-  function resolveOther(parsedName){
+  function resolveOther(parsedName) {
     var prefix = this.namespace.modulePrefix;
     Ember.assert('module prefix must be defined', prefix);
 
@@ -104,6 +108,8 @@ define("resolver",
     }
   }
 
+  // Ember.DefaultResolver docs:
+  //   https://github.com/emberjs/ember.js/blob/master/packages/ember-application/lib/system/resolver.js
   var Resolver = Ember.DefaultResolver.extend({
     resolveOther: resolveOther
   });
