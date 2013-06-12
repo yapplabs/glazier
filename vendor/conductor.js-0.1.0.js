@@ -1,41 +1,43 @@
-var define, requireModule;
+if (typeof define !== 'function' && typeof requireModule !== 'function') {
+  var define, requireModule;
 
-(function() {
-  var registry = {}, seen = {};
+  (function() {
+    var registry = {}, seen = {};
 
-  define = function(name, deps, callback) {
-    registry[name] = { deps: deps, callback: callback };
-  };
+    define = function(name, deps, callback) {
+      registry[name] = { deps: deps, callback: callback };
+    };
 
-  define.registry = registry;
+    define.registry = registry;
 
-  requireModule = function(name) {
-    if (seen[name]) { return seen[name]; }
-    seen[name] = {};
+    requireModule = function(name) {
+      if (seen[name]) { return seen[name]; }
+      seen[name] = {};
 
-    var mod = registry[name];
+      var mod = registry[name];
 
-    if (!mod) {
-      throw new Error("Module: '" + name + "' not found.");
-    }
-
-    var deps = mod.deps,
-        callback = mod.callback,
-        reified = [],
-        exports;
-
-    for (var i=0, l=deps.length; i<l; i++) {
-      if (deps[i] === 'exports') {
-        reified.push(exports = {});
-      } else {
-        reified.push(requireModule(deps[i]));
+      if (!mod) {
+        throw new Error("Module: '" + name + "' not found.");
       }
-    }
 
-    var value = callback.apply(this, reified);
-    return seen[name] = exports || value;
-  };
-})();
+      var deps = mod.deps,
+          callback = mod.callback,
+          reified = [],
+          exports;
+
+      for (var i=0, l=deps.length; i<l; i++) {
+        if (deps[i] === 'exports') {
+          reified.push(exports = {});
+        } else {
+          reified.push(requireModule(deps[i]));
+        }
+      }
+
+      var value = callback.apply(this, reified);
+      return seen[name] = exports || value;
+    };
+  })();
+}
 
 /*
  Version: core-1.0
@@ -3081,7 +3083,7 @@ define("oasis",
         var consumer = this;
 
         promise.then(function() {
-          consumer.send('activated');  
+          consumer.send('activated');
         });
       }
     });
@@ -3307,7 +3309,7 @@ define("oasis",
 
     This is useful for cards who cannot fulfill dependency requests of its child
     cards, but whose containing environment can.
-  
+
 
     Example:
 
