@@ -1,11 +1,21 @@
 import 'glazier/services/proxy' as ProxyService;
 
+/*
+  @class CardManager
+  @extends Ember.Object
+*/
 var CardManager = Ember.Object.extend({
   init: function () {
     this.instances = {}; // track instances by id
   },
 
-  // load(pane) -> card
+  /*
+    @public
+
+    @method load
+    @param pane {Glazier.Pane}
+    @return {Conductor.Card} the panes card
+  */
   load: function (pane) {
     var id = pane.get('id');
     var card = this.instances[id];
@@ -16,11 +26,26 @@ var CardManager = Ember.Object.extend({
     return card;
   },
 
+  /*
+    @public
+
+    Unloads the provided pane
+
+    @method unload
+    @param pane {Glazier.Pane}
+  */
   unload: function (pane) {
     // unload in the future should card.destroy
     delete this.instances[pane.get('id')];
   },
 
+  /*
+    @private
+
+    @method _load
+    @param pane {Glazier.Pane}
+    @return {Conductor.Card} the panes card
+  */
   _load: function (pane) {
     var manifest = pane.get('type.manifest');
     var capabilities = [];
@@ -39,6 +64,14 @@ var CardManager = Ember.Object.extend({
     return card;
   },
 
+  /*
+    @private
+
+    @method _processConsumes
+    @param  manifest {Object
+    @param  capabilities {Object}
+    @return {Object}
+  */
   _processConsumes: function (manifest, capabilities) {
     var conductorServices = this.conductor.services;
     var consumes = {};
@@ -52,6 +85,12 @@ var CardManager = Ember.Object.extend({
     return consumes;
   },
 
+  /*
+    @public
+
+    @method load
+    @return {Conductor.Card} the panes card
+  */
   _processProvides: function (manifest, capabilities) {
     var conductorServices = this.conductor.services;
     var provides = {};
@@ -65,6 +104,13 @@ var CardManager = Ember.Object.extend({
     return provides;
   },
 
+  /*
+    @private
+
+    @method _getTargets
+    @param pane {Glazier.Pane}
+    @return {Object} list of targets
+  */
   _getTargets: function (pane) {
     var targets = {};
     var instances = this.instances;

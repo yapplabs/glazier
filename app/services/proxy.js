@@ -1,8 +1,38 @@
 var ProxyService = Conductor.Oasis.Service.extend({
+  /*
+    @public
+
+    @property capability
+    @type String
+    @default 'null'
+  */
   capability: null,
+
+  /*
+    @public
+
+    @property loaded
+    @type Boolean
+    @default 'false'
+  */
   loaded: false,
+
+  /*
+    @public
+
+    @property targetPromise
+    @type Conductor.Oasis.RSVP.Promise
+    @default 'null'
+  */
   targetPromise: null,
 
+  /*
+    @private
+
+    @property _requests
+    @type Object
+    @default 'null'
+  */
   _requests: null,
 
   initialize: function (port, capability) {
@@ -15,6 +45,11 @@ var ProxyService = Conductor.Oasis.Service.extend({
     }
   },
 
+  /*
+    @public
+
+    @method getProxyTargetPort
+  */
   getProxyTargetPort: function () {
     var capability = this.capability;
     var targetCard = this.sandbox.card.targets[capability];
@@ -27,6 +62,11 @@ var ProxyService = Conductor.Oasis.Service.extend({
     }
   },
 
+  /*
+    @public
+
+    @method load
+  */
   load: function () {
     if (this.loaded) return;
 
@@ -41,6 +81,13 @@ var ProxyService = Conductor.Oasis.Service.extend({
     this.loaded = true;
   },
 
+  /*
+    @public
+
+    @method forward
+    @param eventName {String}
+    @param data {Object}
+  */
   forward: function (eventName, data) {
     var self = this,
     requestId = data && data.requestId;
@@ -56,6 +103,13 @@ var ProxyService = Conductor.Oasis.Service.extend({
     }, console.error);
   },
 
+  /*
+    @public
+
+    @method back
+    @param eventName {String}
+    @param data {Object}
+  */
   back: function (eventName, data) {
     var requestId = data && data.requestId;
 

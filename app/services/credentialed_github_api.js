@@ -1,5 +1,20 @@
 var CredentialedGithubApiService = Conductor.Oasis.Service.extend({
+
+  /*
+    @public
+
+    @property requests
+    @type Object
+  */
   requests: {
+
+    /*
+      @public
+
+      @method ajax
+      @param promise {Conductor.Oasis.RSVP.Promise}
+      @param ajaxOpts {Object}
+    */
     ajax: function(promise, ajaxOpts) {
       //TODO: prepend github domain
       //TODO: add access_token
