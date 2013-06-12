@@ -77,7 +77,7 @@ card = Conductor.card({
         console.log('card.accessTokenPromise.resolve', accessToken);
         card.accessTokenPromise.resolve(accessToken);
         // view.set('controller.githubAccessToken', accessToken);
-        card.consumers.login.request('loginWithGithub', {githubAccessToken: accessToken}).then(function(){
+        card.consumers.login.request('loginWithGithub', {accessToken: accessToken}).then(function(){
           card.consumers.userStorage.request('setItem', 'accessToken', accessToken).then(function(){
             // console.log("I saved my access token: ", accessToken);
           });
