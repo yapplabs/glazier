@@ -32,8 +32,16 @@ function resolve(prefix) {
         module = classFactory(module);
       }
 
+      if (Ember.ENV.LOG_MODULE_RESOLVER){
+        console.log('hit', moduleName);
+      }
+
       return module;
     } else  {
+      if (Ember.ENV.LOG_MODULE_RESOLVER){
+        console.log('miss', moduleName);
+      }
+
       return this._super(parsedName);
     }
   };
