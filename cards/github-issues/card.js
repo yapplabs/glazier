@@ -1,9 +1,8 @@
 Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
 Conductor.require('/vendor/ember-latest.js');
+Conductor.require('/vendor/loader.js');
 Conductor.requireCSS('/cards/github-issues.css');
-
-import loadEmberApp from 'app/application';
 
 var card = Conductor.card({
   consumers: {
@@ -47,7 +46,7 @@ var card = Conductor.card({
 
   activate: function() {
     console.log('activate github-issues');
-    window.App = loadEmberApp();
+    window.App = requireModule('app/application');
   },
 
   metadata: {
@@ -67,3 +66,5 @@ var card = Conductor.card({
     });
   }
 });
+
+export = card;

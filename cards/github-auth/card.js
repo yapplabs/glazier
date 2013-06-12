@@ -104,3 +104,5 @@ card = Conductor.card({
     });
   }
 });
+
+export = card;

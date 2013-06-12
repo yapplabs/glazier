@@ -1,11 +1,12 @@
-var loadEmberApp = function() {
-  var App = Ember.Application.create({
-    rootElement: '#card'
-  });
+import 'resolver' as Resolver;
 
-  App.deferReadiness();
-  requireModule('templates');
-  return App;
-};
+var App = Ember.Application.create({
+  modulePrefix: 'app',
+  rootElement: '#card',
+  resolver: Resolver
+});
 
-export loadEmberApp;
+App.deferReadiness();
+requireModule('templates');
+
+export = App;
