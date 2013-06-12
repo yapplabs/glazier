@@ -15,8 +15,7 @@
     </script>
 
     <!-- Analytics -->
-    <link rel="stylesheet" href="/css/glazier.css">
-    <link rel="stylesheet" href="/css/conductorjs-starter-kit.css">
+    <link rel="stylesheet" href="<%= manifestUrl('/glazier.css') %>">
     <div class="analytics">
       <div class="tab">Analytics</div>
       <div class="panel">
@@ -28,7 +27,7 @@
       var StarterKit = {};
     </script>
 
-    <script src="/vendor/analytics.js"></script>
+    <script src="<%= manifestUrl('/vendor/analytics.js') %>"></script>
     <script>
       $(function() {
         StarterKit.initializeAnalytics();

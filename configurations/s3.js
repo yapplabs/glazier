@@ -13,6 +13,10 @@ module.exports = {
         dest: 'assets/'
       },
       {
+        src: 'tmp/md5/glazier*.css',
+        dest: 'assets/'
+      },
+      {
         src: 'tmp/md5/vendor/**/*-*.js',
         dest: 'assets/vendor/'
       }
