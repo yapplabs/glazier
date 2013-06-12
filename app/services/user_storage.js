@@ -23,7 +23,11 @@ var UserStorageService = Conductor.Oasis.Service.extend({
         url: '/api/cards/' + this.sandbox.card.id + '/user.json',
         type: 'POST',
         data: {data: data, access: 'private'}
-      }).then(function(r){ promise.resolve(r); }, function(r){ promise.reject(r); });
+      }).then(function(r){
+        promise.resolve(r);
+      }, function(r){
+        promise.reject(r);
+      });
     },
 
     /*
@@ -58,7 +62,7 @@ var UserStorageService = Conductor.Oasis.Service.extend({
         type: 'DELETE',
         data: {key: key, access: 'private'}
       }).then(function(r) {
-        promise.resolve();
+        promise.resolve(r);
       }, function(r) {
         promise.reject(r);
       });

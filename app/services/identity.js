@@ -40,10 +40,7 @@ var IdentityService = Conductor.Oasis.Service.extend({
         url: '/api/session.json',
         type: 'POST',
         data: data
-      }).then(broadcast).then(null,function(reason) {
-        console.error(reason, reason.message, reason.stack);
-        throw reason;
-      });
+      }).then(broadcast).then(null, Conductor.error);
     }
   }
 });

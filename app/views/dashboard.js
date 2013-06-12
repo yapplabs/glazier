@@ -19,10 +19,9 @@ var DashboardView = Ember.View.extend({
         return Ember.RSVP.all([type, providers]).then(function () {
           var card = cardManager.load(pane);
           self.appendCard(card);
-        }, function(reason) {
-          console.error("error in DashboardView didInsertElement: ", reason);
         });
-      });
+
+      }).then(null, Conductor.error);
     });
   },
 
@@ -38,7 +37,7 @@ var DashboardView = Ember.View.extend({
 
     card.appendTo($cardWrapper[0]).then(function() {
       card.render();
-    });
+    }).then(null, Conductor.error);
   }
 });
 

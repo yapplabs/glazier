@@ -44,10 +44,7 @@ var LoginService = Conductor.Oasis.Service.extend({
         url: '/api/session.json',
         type: 'POST',
         data: data
-      }).then(resolve).then(null,function(reason) {
-        console.error(reason, reason.message, reason.stack);
-        throw reason;
-      });
+      }).then(resolve).then(null, Conductor.error);
     }
   }
 });
