@@ -1,44 +1,46 @@
-var define, requireModule;
-
 var scripts = document.getElementsByTagName("script");
 window.conductorSrcUrl = scripts[scripts.length-1].src;
 
-(function() {
-  var registry = {}, seen = {};
+if (typeof define !== 'function' && typeof requireModule !== 'function') {
+  var define, requireModule;
 
-  define = function(name, deps, callback) {
-    registry[name] = { deps: deps, callback: callback };
-  };
+  (function() {
+    var registry = {}, seen = {};
 
-  define.registry = registry;
+    define = function(name, deps, callback) {
+      registry[name] = { deps: deps, callback: callback };
+    };
 
-  requireModule = function(name) {
-    if (seen[name]) { return seen[name]; }
-    seen[name] = {};
+    define.registry = registry;
 
-    var mod = registry[name];
+    requireModule = function(name) {
+      if (seen[name]) { return seen[name]; }
+      seen[name] = {};
 
-    if (!mod) {
-      throw new Error("Module: '" + name + "' not found.");
-    }
+      var mod = registry[name];
 
-    var deps = mod.deps,
-        callback = mod.callback,
-        reified = [],
-        exports;
-
-    for (var i=0, l=deps.length; i<l; i++) {
-      if (deps[i] === 'exports') {
-        reified.push(exports = {});
-      } else {
-        reified.push(requireModule(deps[i]));
+      if (!mod) {
+        throw new Error("Module: '" + name + "' not found.");
       }
-    }
 
-    var value = callback.apply(this, reified);
-    return seen[name] = exports || value;
-  };
-})();
+      var deps = mod.deps,
+          callback = mod.callback,
+          reified = [],
+          exports;
+
+      for (var i=0, l=deps.length; i<l; i++) {
+        if (deps[i] === 'exports') {
+          reified.push(exports = {});
+        } else {
+          reified.push(requireModule(deps[i]));
+        }
+      }
+
+      var value = callback.apply(this, reified);
+      return seen[name] = exports || value;
+    };
+  })();
+}
 
 /*
  Version: core-1.0
@@ -1666,6 +1668,7 @@ define("oasis",
         var options = sandbox.options,
             iframe = document.createElement('iframe');
 
+        iframe.name = options.url;
         iframe.sandbox = 'allow-same-origin allow-scripts allow-popups allow-forms';
         iframe.seamless = true;
         iframe.src = generateSrc(options.url, options.oasisURL, sandbox.dependencies);
@@ -2486,8 +2489,6 @@ define("oasis",
           throw error;
         }, 1);
       }
-
-      throw error;
     };
 
     Conductor.Oasis = requireModule('oasis');
