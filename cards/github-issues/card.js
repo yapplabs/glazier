@@ -30,7 +30,7 @@ var card = Conductor.card({
           App.__container__.lookup('controller:application').set('repositoryName', repoName);
         });
 
-        card.consumers['github:authenticated:read'].request("ajax", {
+        return card.consumers['github:authenticated:read'].request("ajax", {
           url: '/repos/' + repoName + '/issues',
           dataType: 'json'
         }).then(function(issues) {
@@ -41,7 +41,7 @@ var card = Conductor.card({
           console.error('issues fetch failed for ' + repoName);
         });
       });
-    }).then(null, function(e){ console.error(e); });
+    }).then(null, Conductor.error);
   },
 
   activate: function() {

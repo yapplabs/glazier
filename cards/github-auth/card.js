@@ -6,19 +6,20 @@ var ApiConsumer = Conductor.Oasis.Consumer.extend({
   requests: {
     ajax: function (promise, ajaxOpts) {
       console.log('card.accessTokenPromise.then');
+
       card.accessTokenPromise.then(function (accessToken) {
-        if (!ajaxOpts.data)
+
+        if (!ajaxOpts.data) {
           ajaxOpts.data = {};
+        }
+
         ajaxOpts.url = 'https://api.github.com' + ajaxOpts.url;
         ajaxOpts.data.access_token = accessToken;
-        card.consumers.fullXhr.request('ajax', ajaxOpts).then(function (data) {
-          promise.resolve(data);
-        }, function (e) {
-          promise.reject(e);
-        });
-      }, function (e) {
-        console.error(e);
-      });
+
+        return card.consumers.fullXhr.request('ajax', ajaxOpts).
+          then(function (data) { promise.resolve(data); });
+
+      }).then(null, Conductor.error);
     }
   }
 });
@@ -49,42 +50,43 @@ card = Conductor.card({
 
   activate: function() {
     console.log("activate github-auth");
+
     var card = this;
     var _configurationService = this.consumers.configuration;
     var githubClientIdPromise = _configurationService.request('configurationValue', 'github_client_id');
+
     $('body').on('click', '#github_button', function(){
+
       githubClientIdPromise.then(function(githubClientId){
         var githubUri = "https://github.com/login/oauth/authorize?scope=user,public_repo" +
           "&client_id=" +  githubClientId;
         window.open(githubUri, "authwindow", "menubar=0,resizable=1,width=960,height=410");
-      });
+      }).then(null, Conductor.error);
+
       return false;
     });
 
     window.addEventListener("message", function(event) {
-      // if (event.origin !== window.location.origin) {
-      //   console.log("got unknown message", event);
-      //   return;
-      // }
+
       var authCode = event.data;
-      // console.log("we got a code " + authCode);
       var fullXhrService = card.consumers.fullXhr;
+
       fullXhrService.request('ajax', {
         type: 'post',
         url: 'http://localhost:8000' + "/api/oauth/github/exchange?code=" + authCode
       }).then(function(data) {
         var accessToken = data;
+
         console.log('card.accessTokenPromise.resolve', accessToken);
         card.accessTokenPromise.resolve(accessToken);
+
         // view.set('controller.githubAccessToken', accessToken);
-        card.consumers.login.request('loginWithGithub', {accessToken: accessToken}).then(function(){
-          card.consumers.userStorage.request('setItem', 'accessToken', accessToken).then(function(){
+        return card.consumers.login.request('loginWithGithub', {accessToken: accessToken}).then(function(){
+          return card.consumers.userStorage.request('setItem', 'accessToken', accessToken).then(function(){
             // console.log("I saved my access token: ", accessToken);
           });
         });
-      }, function(e){
-        console.error(e);
-      });
+      }).then(null, Conductor.error);
     });
   },
 

@@ -62,7 +62,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
       card = conductor.load('/cards/github-auth.js', 1, {
         capabilities: ['fullXhr', 'configuration', 'userStorage', 'login', 'test', 'assertion']
       });
-      card.then(null, function(e){ console.log(e); });
+      card.then(null, Conductor.error);
       card.appendTo('#qunit-fixture');
     },
     teardown: function() {
