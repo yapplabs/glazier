@@ -8,3 +8,10 @@
   right: 0;
   top: 0;
 }
+
+.foo {
+  .bar {
+    color: orange;
+    font-size: 2em;
+  }
+}
