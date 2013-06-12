@@ -2486,6 +2486,8 @@ define("oasis",
           throw error;
         }, 1);
       }
+
+      throw error;
     };
 
     Conductor.Oasis = requireModule('oasis');
