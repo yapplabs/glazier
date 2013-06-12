@@ -7,4 +7,4 @@ var ConfigurationService = Conductor.Oasis.Service.extend({
   }
 });
 
-export ConfigurationService;
+export = ConfigurationService;

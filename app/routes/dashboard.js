@@ -14,4 +14,4 @@ var DashboardRoute = Ember.Route.extend({
   }
 });
 
-export DashboardRoute;
+export = DashboardRoute;

@@ -30,4 +30,4 @@ var LoginService = Conductor.Oasis.Service.extend({
   }
 });
 
-export LoginService;
+export = LoginService;

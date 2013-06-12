@@ -2,4 +2,4 @@ var DashboardController = Ember.Controller.extend({
 
 });
 
-export DashboardController;
+export = DashboardController;

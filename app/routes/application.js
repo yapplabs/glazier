@@ -7,4 +7,4 @@ var ApplicationRoute = Ember.Route.extend({
   }
 });
 
-export ApplicationRoute;
+export = ApplicationRoute;

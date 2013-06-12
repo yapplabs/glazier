@@ -34,4 +34,4 @@ var DashboardView = Ember.View.extend({
   }
 });
 
-export DashboardView;
+export = DashboardView;

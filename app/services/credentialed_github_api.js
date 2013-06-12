@@ -42,4 +42,4 @@ var CredentialedGithubApiService = Conductor.Oasis.Service.extend({
   }
 });
 
-export CredentialedGithubApiService;
+export = CredentialedGithubApiService;

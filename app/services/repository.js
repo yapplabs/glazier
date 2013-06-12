@@ -7,4 +7,4 @@ var RepositoryService = Conductor.Oasis.Service.extend({
   }
 });
 
-export RepositoryService;
+export = RepositoryService;

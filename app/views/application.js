@@ -8,4 +8,4 @@ var ApplicationView = Ember.View.extend({
   }
 });
 
-export ApplicationView;
+export = ApplicationView;

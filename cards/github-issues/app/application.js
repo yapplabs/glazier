@@ -8,7 +8,7 @@ var loadEmberApp = function() {
         console.log('Module hit:', moduleName);
         return requireModule(moduleName);
       } else {
-        console.log('Module mis:', moduleName);
+        console.log('Module miss:', moduleName);
         return this._super(parsedName);
       }
     };

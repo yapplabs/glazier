@@ -29,4 +29,4 @@ var IdentityService = Conductor.Oasis.Service.extend({
   }
 });
 
-export IdentityService;
+export = IdentityService;

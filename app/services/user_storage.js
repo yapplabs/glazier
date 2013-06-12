@@ -34,4 +34,4 @@ var UserStorageService = Conductor.Oasis.Service.extend({
   }
 });
 
-export UserStorageService;
+export = UserStorageService;

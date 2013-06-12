@@ -7,4 +7,4 @@ var FullXhrService = Conductor.Oasis.Service.extend({
   }
 });
 
-export FullXhrService;
+export = FullXhrService;

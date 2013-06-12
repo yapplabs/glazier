@@ -3,4 +3,4 @@ var ApplicationController = Ember.Controller.extend({
   authCard: null
 });
 
-export ApplicationController;
+export = ApplicationController;
