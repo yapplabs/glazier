@@ -19,7 +19,10 @@ var card = Conductor.card({
   },
 
   render: function (intent, dimensions) {
-    if (!dimensions) { dimensions = {width:500,height:500}; }
+    if (!dimensions) {
+      dimensions = {width:500,height:2000};
+    }
+
     document.body.innerHTML = "<div id=\"card\"></div>";
 
     Ember.run(App, 'advanceReadiness');

@@ -8,9 +8,7 @@ var IdentityService = Conductor.Oasis.Service.extend({
   */
   updateName: function(name){
     var applicationController = this.container.lookup("controller:application");
-    Ember.run(function() {
-      applicationController.set('name', name);
-    });
+    Ember.run(applicationController, 'set', 'name', name);
   },
 
   /*

@@ -56,11 +56,16 @@ card = Conductor.card({
       }
     })
   },
+
   render: function (intent, dimensions) {
-    if (!dimensions) { dimensions = {width:500,height:500}; }
+    if (!dimensions) {
+      dimensions = {width:500,height:500};
+    }
+
     document.body.innerHTML = "<div><div>Hooray world!</div><button id=\"github_button\">Log In with GitHub</button></div>";
     this.resize(dimensions);
   },
+
   accessTokenPromise: new Conductor.Oasis.RSVP.Promise(),
 
   activate: function() {
