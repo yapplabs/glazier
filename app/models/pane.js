@@ -3,4 +3,4 @@ var Pane = DS.Model.extend({
   capabilityProviders: DS.hasMany('Glazier.CapabilityProvider') // cards that provide services to this card
 });
 
-export Pane;
+export = Pane;

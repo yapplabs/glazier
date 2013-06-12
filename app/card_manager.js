@@ -1,4 +1,4 @@
-import ProxyService from 'glazier/services/proxy';
+import 'glazier/services/proxy' as ProxyService;
 
 var CardManager = Ember.Object.extend({
   init: function () {
@@ -75,4 +75,4 @@ var CardManager = Ember.Object.extend({
   }
 });
 
-export CardManager;
+export = CardManager;

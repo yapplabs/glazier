@@ -1,10 +1,11 @@
-import Application from 'glazier/application';
+import 'glazier/application' as Application;
 
-import CardManager from 'glazier/card_manager';
-import Pane from 'glazier/models/pane';
-import CapabilityProvider from 'glazier/models/capability_provider';
-import CardType from 'glazier/models/card_type';
-import Dashboard from 'glazier/models/dashboard';
+import 'glazier/card_manager'as CardManager;
+
+import 'glazier/models/pane' as Pane;
+import 'glazier/models/card_type' as CardType;
+import 'glazier/models/dashboard' as Dashboard;
+import 'glazier/models/capability_provider' as CapabilityProvider;
 
 import 'glazier/initializers/conductor_services' as conductorServicesInitializer;
 import 'glazier/initializers/github_auth_card' as githubAuthCardInitializer;

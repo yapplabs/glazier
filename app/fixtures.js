@@ -1,7 +1,7 @@
-import Pane from 'glazier/models/pane';
-import CapabilityProvider from 'glazier/models/capability_provider';
-import CardType from 'glazier/models/card_type';
-import Dashboard from 'glazier/models/dashboard';
+import 'glazier/models/pane' as Pane;
+import 'glazier/models/capability_provider' as CapabilityProvider;
+import 'glazier/models/card_type' as CardType;
+import 'glazier/models/dashboard' as Dashboard;
 
 // github user names do not allow . so we use the first period as a delimiter to combine in an id
 Dashboard.FIXTURES = [

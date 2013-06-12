@@ -3,4 +3,4 @@ var CapabilityProvider = DS.Model.extend({
   provider: DS.belongsTo('Glazier.Pane')
 });
 
-export CapabilityProvider;
+export = CapabilityProvider;

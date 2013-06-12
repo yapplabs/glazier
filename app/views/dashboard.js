@@ -1,4 +1,4 @@
-import CardManager from 'glazier/card_manager';
+import 'glazier/card_manager' as CardManager;
 
 var DashboardView = Ember.View.extend({
   init: function () {

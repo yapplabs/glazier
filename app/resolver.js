@@ -62,4 +62,4 @@ var Resolver = Ember.DefaultResolver.extend({
   resolveOther: resolve('glazier')
 });
 
-export Resolver;
+export = Resolver;

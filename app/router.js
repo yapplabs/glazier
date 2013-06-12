@@ -6,4 +6,4 @@ Router.map(function() {
   this.route('dashboard', { path: '/:github_user/:github_repo' });
 });
 
-export Router;
+export = Router;

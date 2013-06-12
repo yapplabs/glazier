@@ -1,5 +1,5 @@
-import Pane from 'glazier/models/pane';
-import CardType from 'glazier/models/card_type';
+import 'glazier/models/pane' as Pane;
+import 'glazier/models/card_type' as CardType;
 
 var initializer = {
   name: 'github_auth_card',

@@ -1,6 +1,6 @@
-import Router from 'glazier/router';
-import Store from 'glazier/store';
-import Resolver from 'glazier/resolver';
+import 'glazier/router' as Router;
+import 'glazier/store' as Store;
+import 'glazier/resolver' as Resolver;
 
 var Application = Ember.Application.extend({
   Router: Router,
@@ -8,4 +8,4 @@ var Application = Ember.Application.extend({
   resolver: Resolver
 });
 
-export Application;
+export = Application;

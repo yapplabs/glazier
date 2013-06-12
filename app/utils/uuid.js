@@ -6,4 +6,4 @@ function uuid() {
   });
 }
 
-export uuid;
+export = uuid;
