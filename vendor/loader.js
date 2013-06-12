@@ -91,13 +91,13 @@ define("resolver",
       }
 
       if (Ember.ENV.LOG_MODULE_RESOLVER){
-        console.log('hit', moduleName);
+        Ember.logger.info('hit', moduleName);
       }
 
       return module;
     } else  {
       if (Ember.ENV.LOG_MODULE_RESOLVER){
-        console.log('miss', moduleName);
+        Ember.logger.info('miss', moduleName);
       }
 
       return this._super(parsedName);
