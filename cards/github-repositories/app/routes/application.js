@@ -1,10 +1,3 @@
-function rejectionHandler(reason) {
-  console.error(reason);
-  console.assert(reason);
-
-  throw reason;
-}
-
 import 'card' as card;
 
 var ApplicationRoute = Ember.Route.extend({
@@ -16,7 +9,7 @@ var ApplicationRoute = Ember.Route.extend({
 
     currentRepoRequest.then(function(repoName) {
       controller.set('currentRepository', repoName);
-    }).then(null, rejectionHandler);
+    }).then(null, Conductor.error);
   },
 
   model: function(){
