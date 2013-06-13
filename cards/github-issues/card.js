@@ -4,19 +4,14 @@ Conductor.require('/vendor/ember-latest.js');
 Conductor.require('/vendor/loader.js');
 Conductor.requireCSS('/cards/github-issues.css');
 
+import 'app/consumers/test' as TestConsumer;
+
 var card = Conductor.card({
   consumers: {
     'repository': Conductor.Oasis.Consumer,
     'unauthenticatedGithubApi': Conductor.Oasis.Consumer,
     'github:authenticated:read': Conductor.Oasis.Consumer,
-    test: Conductor.Oasis.Consumer.extend({
-      requests: {
-        runTest:  function(promise, testData){
-          var testFn = new Function('return ' + testData.fnString)();
-          testFn.call(window, card, promise);
-        }
-      }
-    })
+    test: TestConsumer,
   },
 
   render: function (intent, dimensions) {
