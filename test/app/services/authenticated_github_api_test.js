@@ -7,7 +7,7 @@ var originalAjax = $.ajax;
 module("AuthenticatedGithubApiService", {
   setup: function(){
     this.service = createServiceForTesting(AuthenticatedGithubApiService, 'card-id');
-    this.service.userController = Em.Controller.create({});
+    this.service.userController = Ember.Controller.create({});
     this.service.userController.set('accessToken', 'abc123');
   },
 
