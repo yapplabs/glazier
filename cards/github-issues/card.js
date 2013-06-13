@@ -27,7 +27,6 @@ var card = Conductor.card({
 
     Ember.run(App, 'advanceReadiness');
     return App.then(function(){
-      requireModule('app/controllers/application');
       return card.consumers.repository.request('getRepository').then(function(repoName){
         Em.run(function(){
           App.__container__.lookup('controller:application').set('repositoryName', repoName);
