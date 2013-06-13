@@ -21,7 +21,7 @@ card = Conductor.card({
       dimensions = {width:500,height:500};
     }
 
-    document.body.innerHTML = "<div><div>Hooray world!</div><button id=\"github_button\">Log In with GitHub</button></div>";
+    document.body.innerHTML = "<div><div>Hooray world!</div>"
     this.resize(dimensions);
   },
 
@@ -34,39 +34,6 @@ card = Conductor.card({
     var _configurationService = this.consumers.configuration;
     var githubClientIdPromise = _configurationService.request('configurationValue', 'github_client_id');
 
-    $('body').on('click', '#github_button', function(){
-
-      githubClientIdPromise.then(function(githubClientId){
-        var githubUri = "https://github.com/login/oauth/authorize?scope=user,public_repo" +
-          "&client_id=" +  githubClientId;
-        window.open(githubUri, "authwindow", "menubar=0,resizable=1,width=960,height=410");
-      }).then(null, Conductor.error);
-
-      return false;
-    });
-
-    window.addEventListener("message", function(event) {
-
-      var authCode = event.data;
-      var fullXhrService = card.consumers.fullXhr;
-
-      fullXhrService.request('ajax', {
-        type: 'post',
-        url: 'http://localhost:8000' + "/api/oauth/github/exchange?code=" + authCode
-      }).then(function(data) {
-        var accessToken = data;
-
-        console.log('card.accessTokenPromise.resolve', accessToken);
-        card.accessTokenPromise.resolve(accessToken);
-
-        // view.set('controller.githubAccessToken', accessToken);
-        return card.consumers.login.request('loginWithGithub', {accessToken: accessToken}).then(function(){
-          return card.consumers.userStorage.request('setItem', 'accessToken', accessToken).then(function(){
-            // console.log("I saved my access token: ", accessToken);
-          });
-        });
-      }).then(null, Conductor.error);
-    });
   },
 
   metadata: {
