@@ -1,0 +1,27 @@
+<div id="footer" {{bindAttr class="isDrawerOpen"}}>
+  <div class="tabs">
+    <div class="logo">Glazier I/O</div>
+    <div class="user" {{action clickLoginButton}}>
+      {{#if isLoggedIn}}
+        avatar / username
+      {{else}}
+        Login with Github
+      {{/if}}
+    </div>
+    <div class="project">
+      Projects
+      {{input type="text" value=projectPath}}
+    </div>
+    <div class="help">
+      Help
+    </div>
+    <div class="peek" {{action toggleAnalyticsDrawer}}>
+      ConductorPeek
+    </div>
+  </div>
+  <div class="panel">
+    <div class="analytics">
+      <pre class="output"></pre>
+    </div>
+  </div>
+</div>

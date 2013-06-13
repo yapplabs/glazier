@@ -66,8 +66,8 @@
       card.wiretap(this.printWiretapEvent, this);
     },
 
-    initializeAnalytics: function() {
-      var $analytics = $('.analytics');
+    initializeAnalytics: function(selector) {
+      var $analytics = $(selector);
 
       $analytics.find('.tab').on('click', function() {
         $analytics.toggleClass('showing');

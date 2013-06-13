@@ -1,5 +1,4 @@
 var LoginService = Conductor.Oasis.Service.extend({
-
   /*
     @public
 

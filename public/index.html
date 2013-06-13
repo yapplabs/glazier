@@ -16,22 +16,10 @@
 
     <!-- Analytics -->
     <link rel="stylesheet" href="<%= manifestUrl('/glazier.css') %>">
-    <div class="analytics">
-      <div class="tab">Analytics</div>
-      <div class="panel">
-        <pre class="output"></pre>
-      </div>
-    </div>
 
     <script>
       var StarterKit = {};
     </script>
-
     <script src="<%= manifestUrl('/vendor/analytics.js') %>"></script>
-    <script>
-      $(function() {
-        StarterKit.initializeAnalytics();
-      });
-    </script>
   </body>
 </html>

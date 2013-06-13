@@ -48,7 +48,7 @@ h1 {
   border: 1px solid rgba(256,0,0,0.3);
 }
 
-.analytics {
+/*.analytics {
   position: fixed;
   bottom: -380px;
   right: 0;
@@ -58,7 +58,7 @@ h1 {
 
   -webkit-transition: bottom 0.2s ease-out;
 }
-
+*/
 .analytics.showing {
   bottom: 0;
 }
@@ -82,7 +82,7 @@ h1 {
   cursor: pointer;
 }
 
-.analytics .panel {
+/*.analytics .panel {
   position: relative;
 
   height: 380px;
@@ -91,19 +91,17 @@ h1 {
   color: #eee;
   background-color: rgba(0,0,0,0.9);
 }
-
+*/
 .analytics .output {
   position: absolute;
 
-  top: 10px;
+  top: 0px;
   right: 10px;
-  bottom: 10px;
+  bottom: 0px;
   left: 10px;
 
   overflow-y: auto;
   overflow-x: hidden;
-
-  border-radius: 2px;
 
   font-family: "Menlo", Consolas, monaco, monospace;)
 }

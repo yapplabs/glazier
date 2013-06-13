@@ -5,6 +5,7 @@ var ApplicationView = Ember.View.extend({
     card.appendTo($auth[0]).then(function() {
       card.render();
     }).then(null, Conductor.error);
+    StarterKit.initializeAnalytics('#footer .analytics');
   }
 });
 

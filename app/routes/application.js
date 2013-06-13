@@ -5,6 +5,11 @@ var ApplicationRoute = Ember.Route.extend({
     var authCard = cardManager.load(authPane);
 
     controller.set('authCard', authCard);
+  },
+  events: {
+    clickLoginButton: function(){
+      alert("Doesn't do anything yet");
+    }
   }
 });
 
