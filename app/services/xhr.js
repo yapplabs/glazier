@@ -2,9 +2,6 @@
 var cardManifests = {
   'card1_id': {'assets': {'card1.css': 'http://full-path-to/card1-fingerprint.css'}}
 };
-var glazierUrlMap = {
-  '/some/vendor/path.js': 'expanded path for /some/vendor/path.js'
-};
 
 // Lookup a url in the manifest for this card
 var cardManifestUrl = function(cardId, url) {
@@ -16,7 +13,8 @@ var cardManifestUrl = function(cardId, url) {
 
 // Lookup a url in the manifest available to all cards
 var glazierUrl = function(url) {
-  if (glazierUrlMap[url]) return glazierUrlMap[url];
+  var tranlatedUrl = Glazier.manifest[url];
+  if (tranlatedUrl) return Glazier.cdnHost + tranlatedUrl;
 };
 
 var ManifestXHRService = Conductor.XHRService.extend({

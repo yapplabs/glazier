@@ -19,7 +19,16 @@ module.exports = {
       {
         src: 'tmp/md5/vendor/**/*-*.js',
         dest: 'assets/vendor/'
+      },
+      {
+        src: 'tmp/md5/cards/**/*-*.js',
+        dest: 'assets/cards/'
+      },
+      {
+        src: 'tmp/md5/cards/**/*-*.css',
+        dest: 'assets/cards/'
       }
+
     ]
   }
 };

@@ -3,7 +3,7 @@ module.exports = function(grunt){
     var template = grunt.file.read('public/index.html');
     var manifestContents;
     var manifest;
-
+    var cdnHost = grunt.config.get('pkg').cloudfrontHost || '';
     if (process.env.GLAZIER_ENV === "prod") {
       manifest = grunt.file.readJSON('tmp/manifest.json');
     }
@@ -19,7 +19,9 @@ module.exports = function(grunt){
           } else {
             return path;
           }
-        }
+        },
+        manifest: JSON.stringify(manifest || {}),
+        cdnHost: cdnHost
       }
     });
 
