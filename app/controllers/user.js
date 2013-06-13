@@ -19,6 +19,10 @@ var UserController = Ember.Controller.extend({
       self.loginWithGithub(accessToken);
     }).then(null, Conductor.error);
   },
+  logout: function() {
+    document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    this.setCurrentUser(null);
+  },
   loginWithGithub: function(githubAccessToken) {
     var self = this;
     return Ember.$.ajax({
