@@ -10,7 +10,7 @@ module.exports = function(grunt) {
         type: "amd",
         files: [{
           expand: true,
-          src: ['card.js'],
+          src: ['card.js', 'app/**/*.js'],
           dest: 'tmp/'
         }]
       }

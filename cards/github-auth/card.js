@@ -1,60 +1,19 @@
 Conductor.require('/vendor/jquery.js');
 Conductor.requireCSS('/cards/github-auth.css');
 
+import 'app/consumers/authenticated_api' as AuthentiatedApiConsumer;
+import 'app/consumers/test' as TestConsumer;
+
 var card;
-var ApiConsumer = Conductor.Oasis.Consumer.extend({
-
-  /*
-    @public
-
-    @property requests
-    @type Object
-  */
-  requests: {
-
-    /*
-      @public
-
-      @method ajax
-      @param promise {Conductor.Oasis.RSVP.Promise}
-      @param ajaxOpts {Object}
-    */
-    ajax: function (promise, ajaxOpts) {
-      console.log('card.accessTokenPromise.then');
-
-      card.accessTokenPromise.then(function (accessToken) {
-
-        if (!ajaxOpts.data) {
-          ajaxOpts.data = {};
-        }
-
-        ajaxOpts.url = 'https://api.github.com' + ajaxOpts.url;
-        ajaxOpts.data.access_token = accessToken;
-
-        return card.consumers.fullXhr.request('ajax', ajaxOpts).
-          then(function (data) { promise.resolve(data); });
-
-      }).then(null, Conductor.error);
-    }
-  }
-});
 
 card = Conductor.card({
   consumers: {
     configuration: Conductor.Oasis.Consumer,
     fullXhr: Conductor.Oasis.Consumer,
-    'github:authenticated:read': ApiConsumer,
+    'github:authenticated:read': AuthentiatedApiConsumer,
     userStorage: Conductor.Oasis.Consumer,
     login: Conductor.Oasis.Consumer,
-    test: Conductor.Oasis.Consumer.extend({
-      requests: {
-        runTest:  function(promise, testData){
-          var testFn = new Function('return ' + testData.fnString)();
-
-          testFn.call(window, card, promise);
-        }
-      }
-    })
+    test: TestConsumer
   },
 
   render: function (intent, dimensions) {
