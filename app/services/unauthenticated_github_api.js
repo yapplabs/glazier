@@ -28,9 +28,11 @@ var UnauthenticatedGithubApiService = Conductor.Oasis.Service.extend({
       ajaxOpts.url = 'https://api.github.com' + ajaxOpts.url;
       delete ajaxOpts.data.access_token;
 
-      return card.consumers.fullXhr.request('ajax', ajaxOpts).
-        then(function (data) { promise.resolve(data); }).
-        then(null, Conductor.error);
+      $.ajax(ajaxOpts).then(function(value){
+        promise.resolve(value);
+      }).then(null, function(reason) {
+        promise.reject(reason);
+      });
     }
   }
 });

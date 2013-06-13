@@ -39,11 +39,17 @@ var LoginService = Conductor.Oasis.Service.extend({
         // service.port.send('identified', userJson);
       }
 
+      function reject(reason) {
+        promise.reject(reason);
+      }
+
       $.ajax({
         url: '/api/session.json',
         type: 'POST',
         data: data
-      }).then(resolve).then(null, Conductor.error);
+      }).
+        then(resolve).
+        then(null, reject);
     }
   }
 });

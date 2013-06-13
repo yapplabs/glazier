@@ -7,6 +7,7 @@ Conductor.requireCSS('/cards/github-issues.css');
 var card = Conductor.card({
   consumers: {
     'repository': Conductor.Oasis.Consumer,
+    'unauthenticatedGithubApi': Conductor.Oasis.Consumer,
     'github:authenticated:read': Conductor.Oasis.Consumer,
     test: Conductor.Oasis.Consumer.extend({
       requests: {
@@ -32,22 +33,20 @@ var card = Conductor.card({
           App.__container__.lookup('controller:application').set('repositoryName', repoName);
         });
 
-        return card.consumers['github:authenticated:read'].request("ajax", {
+        // unauth for now
+        return card.consumers.unauthenticatedGithubApi.request("ajax", {
           url: '/repos/' + repoName + '/issues',
           dataType: 'json'
         }).then(function(issues) {
           Em.run(function() {
             App.__container__.lookup('controller:application').set('model', issues);
           });
-        }, function(reason) {
-          console.error('issues fetch failed for ' + repoName);
         });
       });
     }).then(null, Conductor.error);
   },
 
   activate: function() {
-    console.log('activate github-issues');
     window.App = requireModule('app/application');
   },
 
