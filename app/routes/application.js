@@ -14,7 +14,6 @@ var ApplicationRoute = Ember.Route.extend({
 });
 
 function getUserFromCookie(){
-  debugger;
   var cookies = document.cookie.split(/\s*;\s*/);
   for (var i = 0; i < cookies.length; i++) {
     var cookie = cookies[i],
