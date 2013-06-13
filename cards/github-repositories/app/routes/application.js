@@ -13,11 +13,7 @@ var ApplicationRoute = Ember.Route.extend({
   },
 
   model: function(){
-    var _apiService = card.consumers['github:authenticated:read'];
-    return _apiService.request("ajax", {
-      url: '/user/repos',
-      dataType: 'json'
-    });
+    return card.consumers.authenticatedGithubApi.getRepositories();
   }
 });
 

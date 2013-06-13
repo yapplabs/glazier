@@ -7,8 +7,27 @@ Conductor.requireCSS('/cards/github-repositories.css');
 var App;
 var card = Conductor.card({
   consumers: {
-    'github:authenticated:read': Conductor.Oasis.Consumer,
-    repository: Conductor.Oasis.Consumer
+    authenticatedGithubApi: Conductor.Oasis.Consumer.extend({
+      getRepositories: function(){
+        var consumer = this;
+        return this.card.consumers.identity.getCurrentUser().then(function(userJson){
+          if (userJson) {
+            return consumer.request("ajax", {
+              url: '/user/repos',
+              dataType: 'json'
+            });
+          } else {
+            return null;
+          }
+        });
+      }
+    }),
+    repository: Conductor.Oasis.Consumer,
+    identity: Conductor.Oasis.Consumer.extend({
+      getCurrentUser: function(){
+        return this.request('currentUser');
+      }
+    })
   },
 
   render: function (intent, dimensions) {

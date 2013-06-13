@@ -36,8 +36,8 @@ var UserController = Ember.Controller.extend({
   setCurrentUser: function (user) {
     var accessToken = null;
     if (user) {
-      accessToken = user.access_token;
-      delete user.access_token;
+      accessToken = user.github_access_token;
+      delete user.github_access_token;
     }
     this.set('content', user);
     this.set('accessToken', accessToken);
