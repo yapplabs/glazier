@@ -35,7 +35,7 @@ var LoginService = Conductor.Oasis.Service.extend({
           };
 
       function resolve(userJson) {
-        service.updateName(userJson.user.github_login);
+        service.updateName(userJson.github_login);
         promise.resolve(userJson);
         // service.port.send('identified', userJson);
       }

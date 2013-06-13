@@ -32,7 +32,7 @@ var IdentityService = Conductor.Oasis.Service.extend({
           };
 
       function broadcast(userJson) {
-        service.updateName(userJson.user.github_login);
+        service.updateName(userJson.github_login);
         service.port.send('identified', userJson);
       }
 

@@ -18,11 +18,9 @@ test("sending 'oauthIdentityEstablished' logs the user in and then broadcasts th
   expect(6);
 
   var responseJSON = {
-    user: {
-      id: 56,
-      github_login: 'lukemelia',
-      github_id: 123
-    }
+    id: 56,
+    github_login: 'lukemelia',
+    github_id: 123
   };
 
   mockAjax.nextResponse = responseJSON;
@@ -34,11 +32,9 @@ test("sending 'oauthIdentityEstablished' logs the user in and then broadcasts th
 
   this.service.port.send = function(event, data) {
     deepEqual(data, {
-      user: {
-        id: 56,
-        github_login: 'lukemelia',
-        github_id: 123
-      }
+      id: 56,
+      github_login: 'lukemelia',
+      github_id: 123
     }, 'correct user data');
 
     start();

@@ -18,11 +18,9 @@ test("sending 'loginWithGithub' logs the user in", function() {
   expect(6);
 
   var responseJSON = {
-    user: {
-      id: 56,
-      github_login: 'lukemelia',
-      github_id: 123
-    }
+    id: 56,
+    github_login: 'lukemelia',
+    github_id: 123
   };
 
   mockAjax.nextResponse = responseJSON;
@@ -37,11 +35,9 @@ test("sending 'loginWithGithub' logs the user in", function() {
 
   this.service.simulateRequest('loginWithGithub', requestPayload).then(function(userJson){
     deepEqual(userJson, {
-      user: {
-        id: 56,
-        github_login: 'lukemelia',
-        github_id: 123
-      }
+      id: 56,
+      github_login: 'lukemelia',
+      github_id: 123
     }, 'correct user data');
     start();
   });
