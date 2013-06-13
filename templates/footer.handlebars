@@ -1,13 +1,7 @@
 <div id="footer" {{bindAttr class="isDrawerOpen"}}>
   <div class="tabs">
     <div class="logo">Glazier I/O</div>
-    <div class="user" {{action clickLoginButton}}>
-      {{#if isLoggedIn}}
-        avatar / username
-      {{else}}
-        Login with Github
-      {{/if}}
-    </div>
+    {{render user}}
     <div class="project">
       Projects
       {{input type="text" value=projectPath}}

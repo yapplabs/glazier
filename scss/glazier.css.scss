@@ -41,7 +41,14 @@
     cursor:pointer;
   }
   .tabs > .logo { font-weight: bold; }
-  .tabs > .user { width: 200px; }
+  .tabs > .user {
+    width: 200px;
+    img {
+      width: 30px;
+      height: 30px;
+      vertical-align: middle;
+    }
+  }
   .tabs > .project { width: 200px; }
   .panel {
     height:240px;
