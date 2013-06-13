@@ -2,9 +2,15 @@ import 'glazier/services/unauthenticated_github_api' as UnauthenticatedGithubApi
 import { MockPort, MockChannel } from 'helpers/oasis_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
 
+var originalAjax = $.ajax;
+
 module("UnauthenticatedGithubApiService", {
   setup: function(){
     this.service = createServiceForTesting(UnauthenticatedGithubApiService, 'card-id');
+  },
+
+  teardown: function(){
+    $.ajax = originalAjax;
   }
 });
 
@@ -13,7 +19,7 @@ test("it exists", function(){
 });
 
 test("requesting issues", function(){
-  expect(4);
+  expect(3);
 
   var responseJSON = { 
         someOther: 'data'
@@ -25,26 +31,19 @@ test("requesting issues", function(){
 
   stop();
 
-  this.service.card = {
-    consumers: {
-      fullXhr: {
-        request: function(type, data) {
+  $.ajax = function(data) {
+    var promise = new Conductor.Oasis.RSVP.Promise();
 
-          equal(type, 'ajax', 'expected type ajax');
-          equal(data.url, 'https://api.github.com/path', 'the url was re-written to include the path');
-          deepEqual(data, requestPayload, 'expected payloaded');
+    equal(data.url, 'https://api.github.com/path', 'the url was re-written to include the path');
+    deepEqual(data, requestPayload, 'expected payloaded');
 
-          var promise = new Conductor.Oasis.RSVP.Promise();
 
-          setTimeout(function(){
-            promise.resolve(responseJSON);
-          });
+    setTimeout(function(){
+      promise.resolve(responseJSON);
+    }, 0);
 
-          return promise;
-        }
-      }
-    }
-  };
+    return promise;
+  }
 
   this.service.simulateRequest('ajax', requestPayload).then(function(response){
     start();
