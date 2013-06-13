@@ -1,6 +1,10 @@
 module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
+  function config(configFileName) {
+    return require('./configurations/' + configFileName);
+  }
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     env: process.env,
@@ -38,7 +42,7 @@ module.exports = function(grunt) {
       }
     },
     copy: {
-      all: {
+      main: {
         files: [
           {
             expand: true,
@@ -46,19 +50,51 @@ module.exports = function(grunt) {
             dest: 'tmp'
           }
         ]
+      },
+      manifest: {
+        files: [{
+          expand: true,
+          cwd: 'tmp/md5',
+          src: ['**/*'],
+          dest: 'dist/',
+          filter: 'isFile'
+        }],
+        options: {
+          encoding: null,
+          keepBasename: true,
+          keepExtension: true,
+          after: function (fileChanges, options) {
+            var manifest, key, file, from, to, name;
+
+            name = 'yapplabs/github-repositories'; // TODO dynamic
+
+            manifest = {}; // TOOD load manifest options (like consumes)
+
+            for (key in fileChanges) {
+              file = fileChanges[key];
+
+              from = file.oldPath.replace(/^tmp\/md5/, '');
+              to = file.newPath.replace(/^dist/, '/assets/cards/' + name + '/assets');
+
+              manifest[from] = to;
+            }
+            grunt.file.write('tmp/manifest.json', JSON.stringify(manifest));
+          }
+
+        }
       }
     },
     concat: {
       js: {
         src: ['tmp/**/*.js'],
-        dest: 'dist/github-repositories.js',
+        dest: 'tmp/dist/github-repositories.js',
         options: {
           footer: "requireModule('card');"
         }
       },
       css: {
         src: ['tmp/css/style.css'],
-        dest: 'dist/github-repositories.css'
+        dest: 'tmp/dist/github-repositories.css'
       }
     },
     jshint: {
@@ -69,9 +105,14 @@ module.exports = function(grunt) {
           force: true
         }
       }
-    }
+    },
+    s3: config('s3'),
+    md5: config('md5')
   });
 
-  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'jshint', 'copy', 'concat']);
+  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'jshint', 'copy:main', 'concat']);
+  grunt.registerTask('manifest', ['build', 'md5', 'copy:manifest']);
+  grunt.registerTask('deploy', ['manifest', 's3']);
+
   grunt.registerTask('default', ['build']);
 };
