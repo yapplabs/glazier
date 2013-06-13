@@ -1,27 +1,42 @@
 import 'card' as card;
 
-var resolve = Ember.RSVP.resolve;
-
 var Issues = {
-  findByRepoName: function(repoName) {
+  findByRepositoryName: function(repositoryName) {
     return card.consumers.unauthenticatedGithubApi.request("ajax", {
-      url: '/repos/' + repoName + '/issues',
+      url: '/repos/' + repositoryName + '/issues',
       dataType: 'json'
     });
   }
 };
 
-var ApplicationRoute = Ember.Route.extend({
-  model: function(){
-    var route = this,
-    applicationController = this.controllerFor('application');
+var Repo = {
+  getCurrentRepositoryName: function(){
+    return Ember.RSVP.resolve(card.consumers.repository.request('getRepository'));
+  }
+};
 
-    return resolve(card.consumers.repository.request('getRepository')).then(function(repoName){
 
-      Ember.run(applicationController, 'set', 'repositoryName', repoName);
+function retrieveIssues(route) {
+  var applicationController = route.controllerFor('application');
 
-      return Issues.findByRepoName(repoName);
+  return Repo.getCurrentRepositoryName().then(function(repositoryName) {
+    applicationController.set('repositoryName', repositoryName);
+
+    return Issues.findByRepositoryName(repositoryName).then(function(issues){
+      applicationController.set('model', issues);
     });
+
+  }).then(null, Conductor.error);
+}
+
+var ApplicationRoute = Ember.Route.extend({
+  events: {
+    currentUserChanged: function(user) {
+      retrieveIssues(this);
+    }
+  },
+  model: function(){
+    return retrieveIssues(this);
   }
 });
 

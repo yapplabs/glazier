@@ -5,13 +5,14 @@ Conductor.require('/vendor/loader.js');
 Conductor.requireCSS('/cards/github-issues.css');
 
 import 'app/consumers/test' as TestConsumer;
+import 'app/consumers/identity' as IdentityConsumer;
 
 var card = Conductor.card({
   consumers: {
+    'test': TestConsumer,
+    'identity': IdentityConsumer,
     'repository': Conductor.Oasis.Consumer,
-    'unauthenticatedGithubApi': Conductor.Oasis.Consumer,
-    'github:authenticated:read': Conductor.Oasis.Consumer,
-    test: TestConsumer,
+    'unauthenticatedGithubApi': Conductor.Oasis.Consumer
   },
 
   render: function (intent, dimensions) {
