@@ -1,9 +1,9 @@
 /*
   Provides unauthenticated github api access
 
-  @class UnauthenticatedApiConsumer
+  @class UnauthenticatedGithubApiConsumer
 */
-var UnauthenticatedApiConsumer = Conductor.Oasis.Consumer.extend({
+var UnauthenticatedGithubApiService = Conductor.Oasis.Service.extend({
 
   /*
     @public
@@ -37,4 +37,4 @@ var UnauthenticatedApiConsumer = Conductor.Oasis.Consumer.extend({
   }
 });
 
-export = UnauthenticatedApiConsumer;
+export = UnauthenticatedGithubApiService;

@@ -3,7 +3,6 @@ Conductor.requireCSS('/cards/github-auth.css');
 
 import 'app/consumers/test' as TestConsumer;
 import 'app/consumers/authenticated_api' as AuthentiatedApiConsumer;
-import 'app/consumers/unauthenticated_api' as UnauthenticatedApiConsumer;
 
 var card;
 
@@ -11,7 +10,6 @@ card = Conductor.card({
   consumers: {
     configuration: Conductor.Oasis.Consumer,
     fullXhr: Conductor.Oasis.Consumer,
-    'github:unauthenticated:read': UnauthenticatedApiConsumer,
     'github:authenticated:read': AuthentiatedApiConsumer,
     userStorage: Conductor.Oasis.Consumer,
     login: Conductor.Oasis.Consumer,
