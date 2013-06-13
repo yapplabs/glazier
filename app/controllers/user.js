@@ -32,6 +32,15 @@ var UserController = Ember.Controller.extend({
         self.set('content', data.user);
       });
     }).then(null, Conductor.error);
+  },
+  setCurrentUser: function (user) {
+    var accessToken = null;
+    if (user) {
+      accessToken = user.access_token;
+      delete user.access_token;
+    }
+    this.set('content', user);
+    this.set('accessToken', accessToken);
   }
 });
 export = UserController;

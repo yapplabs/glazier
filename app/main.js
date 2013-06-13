@@ -22,6 +22,7 @@ Glazier.register('conductor:main', new Conductor(), { instantiate: false});
 Glazier.register('cardManager:main', CardManager);
 
 Glazier.inject('cardManager:main', 'conductor', 'conductor:main');
+Glazier.inject('service:identity', 'userController', 'controller:user');
 
 Ember.Application.initializer(conductorServicesInitializer);
 Ember.Application.initializer(githubAuthCardInitializer);

@@ -4,58 +4,44 @@ import mockAjax from 'helpers/ajax_test_helpers';
 
 module("Glazier IdentityService Unit", {
   setup: function() {
+    this.userController = Ember.Controller.create();
+    this.service = createServiceForTesting(IdentityService.extend({
+      userController: this.userController
+    }), 'card-id');
 
-    this.service = createServiceForTesting(IdentityService, 'card-id');
-
-    mockAjax();
+    this.service.initialize();
+    this.service.port.send = function () {
+      // stub
+    };
   },
   teardown: function() {
-    Ember.$.ajax.restore();
   }
 });
 
-test("sending 'oauthIdentityEstablished' logs the user in and then broadcasts the 'identified' event", function() {
-  expect(6);
-
-  var responseJSON = {
-    id: 56,
-    github_login: 'lukemelia',
-    github_id: 123
-  };
-
-  mockAjax.nextResponse = responseJSON;
-
-  var oauthPayload = {
-    service: 'github',
-    accessToken: 'abc123'
-  };
+test("sends 'currentUserChanged' when userController content changes", function () {
+  var user = {};
 
   this.service.port.send = function(event, data) {
-    deepEqual(data, {
-      id: 56,
-      github_login: 'lukemelia',
-      github_id: 123
-    }, 'correct user data');
-
+    equal(event, 'currentUserChanged');
+    equal(data, user);
     start();
   };
 
-  this.service.updateName = function(name) {
-    equal(name, 'lukemelia');
-  };
+  stop();
+  Ember.run(this, function () {
+    this.userController.set('content', user);
+  });
+});
 
-  this.service.simulateSend('oauthIdentityEstablished', oauthPayload);
-
-  var ajaxRequest = mockAjax.requests[0];
-
-  ok(ajaxRequest, 'made an ajax request');
-
-  deepEqual(ajaxRequest.data, {
-    github_access_token: 'abc123'
-  }, ' correct payload');
-
-  equal(ajaxRequest.type, 'POST', 'made a POST request');
-  equal(ajaxRequest.url, '/api/session.json', 'made a request to the correct endpoint');
+test("request 'currentUser' should resolve with the userController content", function () {
+  var user = {};
+  Ember.run(this, function () {
+    this.userController.set('content', user);
+  });
 
   stop();
+  this.service.simulateRequest('currentUser').then(function (userJson) {
+    equal(userJson, user);
+    start();
+  });
 });

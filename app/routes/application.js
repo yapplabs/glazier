@@ -7,9 +7,7 @@ var ApplicationRoute = Ember.Route.extend({
     controller.set('authCard', authCard);
 
     var user = getUserFromCookie();
-    if (user) {
-      this.controllerFor('user').set('content', user);
-    }
+    this.controllerFor('user').setCurrentUser(user);
   }
 });
 
