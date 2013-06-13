@@ -13,7 +13,7 @@
   "author": "Yapp Labs",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "cloudfrontHost": "http://d4h95iioxf8ji.cloudfront.net",
+  "assetHost": "http://glazier.s3.amazonaws.com",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-cli": "~0.1.8",

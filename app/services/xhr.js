@@ -14,7 +14,7 @@ var cardManifestUrl = function(cardId, url) {
 // Lookup a url in the manifest available to all cards
 var glazierUrl = function(url) {
   var tranlatedUrl = Glazier.manifest[url];
-  if (tranlatedUrl) return Glazier.cdnHost + tranlatedUrl;
+  if (tranlatedUrl) return Glazier.assetHost + tranlatedUrl;
 };
 
 var ManifestXHRService = Conductor.XHRService.extend({
