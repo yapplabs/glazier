@@ -21,7 +21,7 @@ function getUserFromCookie(){
     if (match) {
       return JSON.parse(decodeURIComponent(match[1]));
     }
-  };
+  }
   return null;
 }
 
