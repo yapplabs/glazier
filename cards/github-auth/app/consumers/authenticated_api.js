@@ -1,3 +1,8 @@
+/*
+  Provides authenticated github api access
+
+  @class ApiConsumer
+*/
 var AuthentiatedApiConsumer = Conductor.Oasis.Consumer.extend({
 
   /*

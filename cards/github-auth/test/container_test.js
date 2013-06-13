@@ -16,6 +16,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
           }
         }
       });
+
       Conductor.services['fullXhr'] = Conductor.Oasis.Service.extend({
         requests: {
           ajax: function(promise, options) {
@@ -23,6 +24,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
           }
         }
       });
+
       Conductor.services['login'] = Conductor.Oasis.Service.extend({
         requests: {
           loginWithGithub: function(promise, data) {
@@ -50,21 +52,26 @@ if (!/phantom/i.test(navigator.userAgent)) {
           //clear
         }
       });
+
       Conductor.Oasis.RSVP.EventTarget.mixin(Conductor.services['userStorage']);
       stubbedUserStorage = {};
       Conductor.services['test'] = TestService;
       originalWindowOpen = window.open;
+
       window.open = function(){
         window.open.calledWith.push(Array.slice.apply(arguments));
       };
+
       window.open.calledWith = [];
 
       card = conductor.load('/cards/github-auth.js', 1, {
         capabilities: ['fullXhr', 'configuration', 'userStorage', 'login', 'test', 'assertion']
       });
+
       card.then(null, Conductor.error);
       card.appendTo('#qunit-fixture');
     },
+
     teardown: function() {
       window.open = originalWindowOpen;
       Conductor.services['userStorage'].off('setItem');
