@@ -2724,6 +2724,10 @@ define("oasis",
         }, options.consumers)
       };
 
+      for (var prop in cardOptions.consumers) {
+        cardOptions.consumers[prop] = cardOptions.consumers[prop].extend({card: this});
+      };
+
       Conductor.Oasis.connect(cardOptions);
     };
 
