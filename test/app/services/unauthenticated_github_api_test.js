@@ -43,7 +43,7 @@ test("requesting issues", function(){
     }, 0);
 
     return promise;
-  }
+  };
 
   this.service.simulateRequest('ajax', requestPayload).then(function(response){
     start();

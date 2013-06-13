@@ -2,7 +2,7 @@ var UserView = Ember.View.extend({
   classNames: ['user'],
   click: function(){
     if (this.get('controller.isLoggedIn')) {
-      alert('LOG OUT!');
+      window.alert('LOG OUT!');
     } else {
       this.startGithubOauth();
     }
