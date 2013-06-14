@@ -1,6 +1,6 @@
 import 'glazier/card_manager' as CardManager;
 import 'glazier/models/pane' as Pane;
-import 'glazier/models/card_type' as CardType;
+import 'glazier/models/card_manifest' as CardManifest;
 import 'glazier/models/capability_provider' as CapabilityProvider;
 
 var cardManager, pane, store;
@@ -35,7 +35,7 @@ CapabilityProvider.FIXTURES = [
   }
 ];
 
-CardType.FIXTURES = [
+CardManifest.FIXTURES = [
   {
     id: '/cards/github-repositories/manifest.json',
     manifest: {
@@ -60,7 +60,7 @@ module("CardManager", {
       conductor: conductor
     });
 
-    store.load(CardType, '/cards/github-auth/manifest.json', {
+    store.load(CardManifest, '/cards/github-auth/manifest.json', {
       manifest: {
         jsUrl: '/cards/github-auth.js',
         consumes: [ 'fullXhr', 'configuration', 'userStorage', 'identity' ],
@@ -75,7 +75,7 @@ module("CardManager", {
     pane = store.find(Pane, '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2');
 
     var authPane = store.find(Pane, '7f878b1a-34af-42ed-b477-878721cbc90d');
-    var cardType = store.find(CardType, '/cards/github-auth/manifest.json');
+    var cardType = store.find(CardManifest, '/cards/github-auth/manifest.json');
 
     Ember.RSVP.all([authPane, cardType]).then(function() {
       cardManager.load(authPane);
