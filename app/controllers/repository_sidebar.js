@@ -1,5 +1,4 @@
 var RepositorySidebarController = Ember.ObjectController.extend({
-  needs: ['dashboard'],
   setCurrentRepository: function(repo) {
     this.set('content', repo);
   },
