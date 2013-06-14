@@ -1,7 +1,5 @@
 var grunt = require('grunt');
 
-var assetHost = 'http://glazier.s3.amazonaws.com';
-
 module.exports = {
   compile: {
     files: [{
@@ -17,9 +15,10 @@ module.exports = {
       keepBasename: true,
       keepExtension: true,
       after: function (fileChanges, options) {
-        var manifest, key, file, from, to, name;
+        var manifest, key, file, from, to, name, assetHost;
 
-        name = 'yapplabs/github-repositories'; // TODO dynamic
+        name = grunt.config.process('<%= pkg.name %>');
+        assetHost = grunt.config.process('<%= pkg.assetHost %>');
 
         manifest = {}; // TOOD load manifest options (like consumes)
 

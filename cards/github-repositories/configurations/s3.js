@@ -1,6 +1,4 @@
-var name = 'yapplabs/github-repositories'; // TODO dynamic
-
-var cardDest = 'assets/cards' + name;
+var cardDest = 'assets/cards/<%= pkg.name %>';
 
 module.exports = {
   options: {

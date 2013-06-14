@@ -1,5 +1,6 @@
 {
-  "name": "glazier-github-issues",
+  "name": "yapplabs/github-repositories",
+  "assetHost": "http://glazier.s3.amazonaws.com",
   "version": "0.0.1",
   "description": "",
   "main": "card.js",
