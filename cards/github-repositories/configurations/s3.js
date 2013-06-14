@@ -11,16 +11,16 @@ module.exports = {
   main: {
     upload: [
       {
-        src: 'tmp/manifest.json',
-        dest: cardDest
+        src: 'dist/manifest.json',
+        dest: cardDest + '/'
       },
       {
-        src: 'tmp/md5/cards/**/*-*.js',
-        dest: cardDest + '/assets'
+        src: 'dist/*-*.js',
+        dest: cardDest + '/assets/'
       },
       {
-        src: 'tmp/md5/cards/**/*-*.css',
-        dest: cardDest + '/assets'
+        src: 'dist/*-*.css',
+        dest: cardDest + '/assets/'
       }
     ]
   }
