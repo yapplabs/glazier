@@ -54,34 +54,12 @@ module.exports = function(grunt) {
       manifest: {
         files: [{
           expand: true,
-          cwd: 'tmp/md5',
-          src: ['**/*'],
+          flatten: true,
+          cwd: 'tmp/',
+          src: ['manifest.json', 'md5/*.js', 'md5/*.css'],
           dest: 'dist/',
           filter: 'isFile'
-        }],
-        options: {
-          encoding: null,
-          keepBasename: true,
-          keepExtension: true,
-          after: function (fileChanges, options) {
-            var manifest, key, file, from, to, name;
-
-            name = 'yapplabs/github-repositories'; // TODO dynamic
-
-            manifest = {}; // TOOD load manifest options (like consumes)
-
-            for (key in fileChanges) {
-              file = fileChanges[key];
-
-              from = file.oldPath.replace(/^tmp\/md5/, '');
-              to = file.newPath.replace(/^dist/, '/assets/cards/' + name + '/assets');
-
-              manifest[from] = to;
-            }
-            grunt.file.write('tmp/manifest.json', JSON.stringify(manifest));
-          }
-
-        }
+        }]
       }
     },
     concat: {

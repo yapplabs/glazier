@@ -1,3 +1,7 @@
+var name = 'yapplabs/github-repositories'; // TODO dynamic
+
+var cardDest = 'assets/cards' + name;
+
 module.exports = {
   options: {
     key: '<%= env.GLAZIER_S3_KEY %>',
@@ -9,14 +13,17 @@ module.exports = {
   main: {
     upload: [
       {
+        src: 'tmp/manifest.json',
+        dest: cardDest
+      },
+      {
         src: 'tmp/md5/cards/**/*-*.js',
-        dest: 'assets/cards/'
+        dest: cardDest + '/assets'
       },
       {
         src: 'tmp/md5/cards/**/*-*.css',
-        dest: 'assets/cards/'
+        dest: cardDest + '/assets'
       }
-
     ]
   }
 };
