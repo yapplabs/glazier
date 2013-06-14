@@ -5,3 +5,24 @@
 body {
   font-family: Helvetica,Arial,'DejaVu Sans','Liberation Sans',Freesans,sans-serif;
 }
+.person {
+  float:left;
+  width:60px;
+  height:80px;
+}
+
+.person img {
+  width:50px;
+  height:50px;
+  display:block;
+  margin:5px;
+}
+.person span {
+  text-align:center;
+  display:block;
+  font-size:10px;
+  width:50px;
+  margin:0 5px 5px 5px;
+  text-overflow:ellipsis;
+  overflow: hidden;
+}
