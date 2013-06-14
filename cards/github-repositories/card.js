@@ -2,7 +2,7 @@ Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
 Conductor.require('/vendor/ember-latest.js');
 Conductor.require('/vendor/loader.js');
-Conductor.requireCSS('/cards/github-repositories.css');
+Conductor.requireCSS('/cards/github-repositories/card.css');
 
 var App;
 var card = Conductor.card({
