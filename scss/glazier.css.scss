@@ -1,19 +1,82 @@
+/*!
+* PocketGrid 0.1.0
+* Copyright 2013 Arnaud Leray
+* MIT License
+*/
+
+.block, .block:after, .block:before,
+.block-group, .block-group:after, .block-group:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.block-group {
+  clear: both;
+  *zoom: 1;
+}
+.block-group:before,
+.block-group:after {
+  display: table;
+  content: "";
+  line-height: 0;
+  clear: both;
+}
+
+.block-group > .block-group {
+  float: left;
+  margin: 0;
+  clear: none;
+}
+
+.block {
+  float: left;
+  width: 100%;
+}
+
+/* Gutters: can be removed if you don't want gutters */
+.block-group {
+  margin: -.5em;
+  // margin: -1em 0 0 -1em;
+}
+.block {
+  padding: .5em;
+  // padding: 1em 0 0 1em;
+}
+
+.pane-wrapper {
+  width: 50%;
+}
+
+.pane {
+  // position: relative;
+  overflow:scroll;
+
+  /* This style is stolen shamelessly from Twitter Bootstrap's navbar styling. */
+  padding: 20px;
+  // margin: 14px 0;
+
+  background-color: #fafafa;
+  background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
+  background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
+  background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+  background-repeat: repeat-x;
+  border: 1px solid #d4d4d4;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  // filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);
+  *zoom: 1;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+     -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+}
+
 #header {
   position: relative;
   border-bottom: 1px solid black;
-}
-
-#auth {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-.foo {
-  .bar {
-    color: orange;
-    font-size: 2em;
-  }
 }
 
 #footer {

@@ -32,10 +32,10 @@ var DashboardView = Ember.View.extend({
   },
 
   appendCard: function(card) {
-    var $cardWrapper = Ember.$("<div class='card-wrapper'>");
-    this.$('.cards').append($cardWrapper);
+    var $paneWrapper = Ember.$("<div class='pane-wrapper block'><div class='pane'>");
+    this.$('.panes').append($paneWrapper);
 
-    card.appendTo($cardWrapper[0]).then(function() {
+    card.appendTo($paneWrapper.find('.pane')[0]).then(function() {
       card.render();
     }).then(null, Conductor.error);
   }
