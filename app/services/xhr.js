@@ -42,7 +42,7 @@ var ManifestXHRService = Conductor.XHRService.extend({
       var processedUrl = cardManifestUrl(this.sandbox.card.id, url) || glazierUrl(url) || url;
 
       if (url !== processedUrl) {
-        console.log("ManifestXHRService get " + url + " -> " + processedUrl);
+        console.log("ManifestXHRService get ", url,  " -> ", processedUrl);
       }
 
       var xhrServiceGet = Conductor.XHRService.prototype.requests.get;
