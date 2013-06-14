@@ -10,6 +10,7 @@ module.exports = {
       '!tmp/public/cards/**'
     ],
     options: {
+      reporter: 'tasks/jshintreporter.js',
       jshintrc: '.jshintrc',
       force: true
     }
