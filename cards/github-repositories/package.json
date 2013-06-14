@@ -1,5 +1,6 @@
 {
-  "name": "yapplabs/github-repositories",
+  "name": "glazier-github-repositories",
+  "repositoryName": "yapplabs/github-repositories",
   "assetHost": "http://glazier.s3.amazonaws.com",
   "version": "0.0.1",
   "description": "",

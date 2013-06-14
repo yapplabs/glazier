@@ -17,7 +17,7 @@ module.exports = {
       after: function (fileChanges, options) {
         var manifest, key, file, from, to, name, assetHost;
 
-        name = grunt.config.process('<%= pkg.name %>');
+        name = grunt.config.process('<%= pkg.repositoryName %>');
         assetHost = grunt.config.process('<%= pkg.assetHost %>');
 
         manifest = {}; // TOOD load manifest options (like consumes)

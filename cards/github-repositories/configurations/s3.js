@@ -1,4 +1,4 @@
-var cardDest = 'assets/cards/<%= pkg.name %>';
+var cardDest = 'assets/cards/<%= pkg.repositoryName %>';
 
 module.exports = {
   options: {
