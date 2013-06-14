@@ -16,13 +16,14 @@ module.exports = {
 function proxyIndex(req, res, next){
   if (shouldProxyIndex(req.url)) {
     // TODO: don't hardcode configuration
-    var opts = {
-      pathname: 'index.html',
-      hostname: '0.0.0.0',
-      port: '3040'
-    };
 
-    var proxyReq =  request(opts, function (proxyRes) {
+    var theUrl = url.parse(req.url)
+    theUrl.headers = {};
+    theUrl.headers['Host'] = 'localhost:8000';
+    theUrl.hostname = '0.0.0.0';
+    theUrl.port = '3040';
+
+    var proxyReq =  request(theUrl, function (proxyRes) {
       res.writeHead(proxyRes.statusCode, proxyRes.headers);
       proxyRes.on('error', next);
       proxyRes.pipe(res);
