@@ -35,9 +35,9 @@ module.exports = {
 
           if (CARD_URL_REGEXP.test(file.newPath)) {
             manifest.cardUrl = to;
+          } else {
+            manifest.assets[from] = to;
           }
-
-          manifest.assets[from] = to;
         }
 
         if (!manifest.cardUrl) {
