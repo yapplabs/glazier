@@ -12,7 +12,7 @@ module.exports = {
     upload: [
       {
         src: 'dist/manifest.json',
-        dest: cardDest + '/'
+        dest: cardDest + '/manifest.json'
       },
       {
         src: 'dist/*-*.js',

@@ -17,21 +17,23 @@ module.exports = {
       keepBasename: true,
       keepExtension: true,
       after: function (fileChanges, options) {
-        var manifest, key, file, from, to, name, assetHost;
+        var manifest, key, file, from, to, repositoryName, assetHost;
 
-        name = grunt.config.process('<%= pkg.glazierConfig.repositoryName %>');
+        repositoryName = grunt.config.process('<%= pkg.glazierConfig.repositoryName %>');
         assetHost = grunt.config.process('<%= pkg.glazierConfig.assetHost %>');
 
         manifest = {
-          assets: {},
-          consumes: grunt.config.process('<%= pkg.glazierConfig.consumes%>')
+          name: repositoryName,
+          consumes: grunt.config.process('<%= pkg.glazierConfig.consumes%>'),
+          cardUrl: '',
+          assets: {}
         };
 
         for (key in fileChanges) {
           file = fileChanges[key];
 
           from = file.oldPath.replace(/^tmp\/dist/, '');
-          to = file.newPath.replace(/^tmp\/md5/, assetHost + '/assets/cards/' + name + '/assets');
+          to = file.newPath.replace(/^tmp\/md5/, assetHost + '/assets/cards/' + repositoryName + '/assets');
 
           if (CARD_URL_REGEXP.test(file.newPath)) {
             manifest.cardUrl = to;
@@ -42,7 +44,7 @@ module.exports = {
 
         if (!manifest.cardUrl) {
           console.error(manifest);
-          throw new Error("Missing cardUrl in: `" + name + "` manifest");
+          throw new Error("Missing cardUrl in: `" + repositoryName + "` manifest");
         }
 
         grunt.file.write('tmp/manifest.json', JSON.stringify(manifest));
