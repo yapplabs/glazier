@@ -1,5 +1,13 @@
+<h3>My Issues: {{repositoryName}}</h3>
+{{#each myIssues}}
+  <div>{{number}}: {{title}}</div>
+{{/each}}
+
+<hr>
+
 <h3>Github Issues for {{repositoryName}}</h3>
 
 {{#each}}
   <div>{{number}}: {{title}}</div>
 {{/each}}
+

@@ -73,7 +73,7 @@ CardType.FIXTURES = [
     id: '/cards/github-issues/manifest.json',
     manifest: {
       jsUrl: '/cards/github-issues.js',
-      consumes: [ 'github:authenticated:read', 'repository', 'unauthenticatedGithubApi', 'identity']
+      consumes: [ 'repository', 'authenticatedGithubApi', 'unauthenticatedGithubApi', 'identity']
     }
   }
 ];

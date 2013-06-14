@@ -1,42 +1,96 @@
 import 'card' as card;
 
-var Issues = {
-  findByRepositoryName: function(repositoryName) {
-    return card.consumers.unauthenticatedGithubApi.request("ajax", {
+var Issue = {
+  /*
+    @public
+
+    Fetches all issues given a repository name.
+
+    @method findAllByRepositoryName
+    @param  repositoryName {String}
+    @returns {Ember.RSVP.Promise}
+  */
+  findAllByRepositoryName: function(repositoryName) {
+    return card.consumers.authenticatedGithubApi.request("ajax", {
       url: '/repos/' + repositoryName + '/issues',
+      dataType: 'json'
+    });
+  },
+
+  /*
+    @public
+
+    Fetches the current issues given a repository name.
+
+    @method findMineByRepositoryName
+    @param  repositoryName {String}
+    @returns {Ember.RSVP.Promise}
+  */
+  findByUserAndRepositoryName: function(repositoryName, creator) {
+    return card.consumers.authenticatedGithubApi.request("ajax", {
+      url: '/repos/' + repositoryName + '/issues?creator=' + creator,
       dataType: 'json'
     });
   }
 };
 
 var Repo = {
+  /*
+    @public
+
+    Retrieves the current repository name.
+
+    @method getCurrentRepositoryName
+    @returns {Ember.RSVP.Promise}
+  */
   getCurrentRepositoryName: function(){
     return Ember.RSVP.resolve(card.consumers.repository.request('getRepository'));
   }
 };
 
+function fetch() {
+  return Ember.RSVP.hash({
+    user: card.consumers.identity.getCurrentUser(),
+    repositoryName: Repo.getCurrentRepositoryName()
+  }).then(function(hash){
+    var repositoryName = hash.repositoryName;
+    var user = hash.user;
 
-function retrieveIssues(route) {
-  var applicationController = route.controllerFor('application');
+    hash.allIssues = Issue.findAllByRepositoryName(repositoryName);
+    hash.usersIssues = user && Issue.findByUserAndRepositoryName(repositoryName, user.github_login);
 
-  return Repo.getCurrentRepositoryName().then(function(repositoryName) {
-    applicationController.set('repositoryName', repositoryName);
-
-    return Issues.findByRepositoryName(repositoryName).then(function(issues){
-      applicationController.set('model', issues);
-    });
-
-  }).then(null, Conductor.error);
+    return Ember.RSVP.hash(hash);
+  });
 }
 
 var ApplicationRoute = Ember.Route.extend({
   events: {
     currentUserChanged: function(user) {
-      retrieveIssues(this);
+      var route = this;
+      var applicationController = route.controllerFor('application');
+
+      fetch().then(function(hash){
+        if (hash.usersIssues) {
+          applicationController.set('myIssues', hash.userIssues);
+        }
+
+        applicationController.set('model', hash.issues);
+      }).then(null, Conductor.error);
     }
   },
+
   model: function(){
-    return retrieveIssues(this);
+    var applicationController = this.controllerFor('application');
+
+    return fetch().then(function(hash) {
+      applicationController.set('repositoryName', hash.repositoryName);
+
+      if (hash.usersIssues) {
+        applicationController.set('myIssues', hash.userIssues);
+      }
+
+      return hash.allIssues;
+    });
   }
 });
 
