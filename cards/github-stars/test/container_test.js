@@ -1,11 +1,11 @@
-module("Github::Issues Acceptances");
+module("Github::Stars Acceptances");
 import { inCard, TestService } from 'helpers/card_test_helpers';
 
 var conductor, card;
 
 if (/phantom/i.test(navigator.userAgent)) { return; }
 
-module("Github::Issues Acceptances", {
+module("Github::Stars Acceptances", {
   setup: function() {
 
     conductor = new Conductor({
@@ -21,7 +21,6 @@ module("Github::Issues Acceptances", {
         }
       }
     });
-
     Conductor.services['unauthenticatedGithubApi'] = Conductor.Oasis.Service.extend({
       requests: {
         ajax: function(promise, ajaxOpts) {
@@ -30,16 +29,8 @@ module("Github::Issues Acceptances", {
       }
     });
 
-    Conductor.services['identity'] = Conductor.Oasis.Service.extend({
-      requests: {
-        currentUser: function(promise) {
-          promise.resolve(null);
-        }
-      }
-    });
-
-    card = conductor.load('/cards/github-issues.js', 1, {
-      capabilities: ['test', 'repository', 'unauthenticatedGithubApi', 'identity']
+    card = conductor.load('/cards/github-stars.js', 1, {
+      capabilities: ['test', 'repository', 'unauthenticatedGithubApi']
     });
     card.then(null, function(e){ console.log(e); });
     card.appendTo('#qunit-fixture');
@@ -52,6 +43,10 @@ module("Github::Issues Acceptances", {
 
 asyncTest("it renders", 1, function(){
   inCard(card, function(card, resolver){
+    function fail(e) {
+      ok(false, e);
+      resolver.reject();
+    }
     function wait() {
       var promise, obj = {}, helperName;
 
@@ -69,14 +64,10 @@ asyncTest("it renders", 1, function(){
     }
     card.render().then(function(){
       wait().then(function(){
-        equal($('h3:last').text(), 'Github Issues for emberjs/ember.js');
+        equal($('h3').text(), 'Github Stargazers for emberjs/ember.js');
         start();
         resolver.resolve();
-      });
-    }, function(e){
-      ok(false, e);
-      resolver.reject();
-    });
-
+      }).then(null, fail);
+    }, fail);
   }).then(null, console.error);
 });

@@ -1,6 +1,6 @@
-var RepositoryController = Em.Controller.extend({
+var RepositoryController = Ember.Controller.extend({
   needs: ['dashboard'],
-  path: Em.computed.alias('controllers.dashboard.id')
+  path: Ember.computed.alias('controllers.dashboard.id')
 });
 
 export = RepositoryController;

@@ -5,12 +5,34 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     env: process.env,
     clean: ["tmp", "dist"],
+    ember_handlebars: {
+      compile: {
+        options: {
+          processName: function(filename) {
+            return filename.replace(/templates\//,'').replace(/\.handlebars$/,'');
+          }
+        },
+        files: {
+          "tmp/templates.js": "templates/*.handlebars"
+        }
+      }
+    },
     transpile: {
       code: {
         type: "amd",
         files: [{
           expand: true,
-          src: ['card.js', 'app/**/*.js'],
+          src: ['app/**/*.js', 'card.js'],
+          dest: 'tmp/'
+        }]
+      },
+
+      templates: {
+        type: "amd",
+        files: [{
+          expand: true,
+          cwd: 'tmp/',
+          src: ['**/templates.js'],
           dest: 'tmp/'
         }]
       }
@@ -20,7 +42,7 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            src: ['css/**', '!**/*.js'],
+            src: ['app/**', 'css/**', '!**/*.js'],
             dest: 'tmp'
           }
         ]
@@ -29,14 +51,14 @@ module.exports = function(grunt) {
     concat: {
       js: {
         src: ['tmp/**/*.js'],
-        dest: 'dist/github-auth.js',
+        dest: 'dist/github-stars.js',
         options: {
           footer: "requireModule('card');"
         }
       },
       css: {
         src: ['tmp/css/style.css'],
-        dest: 'dist/github-auth.css'
+        dest: 'dist/github-stars.css'
       }
     },
     jshint: {
@@ -50,6 +72,6 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('build', ['clean', 'transpile', 'jshint', 'copy', 'concat']);
+  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'jshint', 'copy', 'concat']);
   grunt.registerTask('default', ['build']);
 };

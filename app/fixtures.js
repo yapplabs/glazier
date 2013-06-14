@@ -7,11 +7,11 @@ import 'glazier/models/dashboard' as Dashboard;
 Dashboard.FIXTURES = [
   {
     id: 'emberjs/ember.js',
-    panes: ['1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2', 'c37b0ba4-cecc-11e2-8fa4-ef3e5db78e4d']
+    panes: ['1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2', 'c37b0ba4-cecc-11e2-8fa4-ef3e5db78e4d', 'e66028d8-d477-11e2-ac68-97cedea43709']
   },
   {
     id: 'yapplabs/glazier',
-    panes: ['d30608af-11d8-402f-80a3-1f458650dbef', 'dca13978-cecc-11e2-b9e3-e342ecfc2ff7']
+    panes: ['d30608af-11d8-402f-80a3-1f458650dbef', 'dca13978-cecc-11e2-b9e3-e342ecfc2ff7', 'f1274314-d477-11e2-9e9a-9f78f0c9dfa7']
   }
 ];
 
@@ -35,6 +35,16 @@ Pane.FIXTURES = [
     id: 'dca13978-cecc-11e2-b9e3-e342ecfc2ff7',
     type: '/cards/github-issues/manifest.json',
     capabilityProviders: ['dca13978-cecc-11e2-b9e3-e342ecfc2ff7,7f878b1a-34af-42ed-b477-878721cbc90d']
+  },
+  {
+    id: 'e66028d8-d477-11e2-ac68-97cedea43709',
+    type: '/cards/github-stars/manifest.json',
+    capabilityProviders: []
+  },
+  {
+    id: 'f1274314-d477-11e2-9e9a-9f78f0c9dfa7',
+    type: '/cards/github-stars/manifest.json',
+    capabilityProviders: []
   }
 ];
 
@@ -74,6 +84,13 @@ CardType.FIXTURES = [
     manifest: {
       jsUrl: '/cards/github-issues.js',
       consumes: [ 'repository', 'authenticatedGithubApi', 'unauthenticatedGithubApi', 'identity']
+    }
+  },
+  {
+    id: '/cards/github-stars/manifest.json',
+    manifest: {
+      jsUrl: '/cards/github-stars.js',
+      consumes: [ 'repository', 'unauthenticatedGithubApi', 'identity']
     }
   }
 ];

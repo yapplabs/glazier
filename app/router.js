@@ -1,5 +1,5 @@
 var Router = Ember.Router.extend({
-  location: 'history'
+  location: 'hash'
 });
 
 Router.map(function() {

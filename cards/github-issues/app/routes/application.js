@@ -10,8 +10,14 @@ var Issue = {
     @param  repositoryName {String}
     @returns {Ember.RSVP.Promise}
   */
-  findAllByRepositoryName: function(repositoryName) {
-    return card.consumers.authenticatedGithubApi.request("ajax", {
+  findAllByRepositoryName: function(repositoryName, user) {
+    var service;
+    if (user) {
+      service = card.consumers.authenticatedGithubApi;
+    } else {
+      service = card.consumers.unauthenticatedGithubApi;
+    }
+    return service.request("ajax", {
       url: '/repos/' + repositoryName + '/issues',
       dataType: 'json'
     });
@@ -56,7 +62,7 @@ function fetch() {
     var repositoryName = hash.repositoryName;
     var user = hash.user;
 
-    hash.allIssues = Issue.findAllByRepositoryName(repositoryName);
+    hash.allIssues = Issue.findAllByRepositoryName(repositoryName, user);
     hash.usersIssues = user && Issue.findByUserAndRepositoryName(repositoryName, user.github_login);
 
     return Ember.RSVP.hash(hash);
@@ -74,7 +80,7 @@ var ApplicationRoute = Ember.Route.extend({
           applicationController.set('myIssues', hash.userIssues);
         }
 
-        applicationController.set('model', hash.issues);
+        applicationController.set('model', hash.allIssues);
       }).then(null, Conductor.error);
     }
   },

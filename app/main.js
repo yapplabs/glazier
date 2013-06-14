@@ -6,7 +6,6 @@ import 'glazier/models/dashboard' as Dashboard;
 import 'glazier/models/capability_provider' as CapabilityProvider;
 
 import 'glazier/initializers/conductor_services' as conductorServicesInitializer;
-import 'glazier/initializers/github_auth_card' as githubAuthCardInitializer;
 import 'glazier/initializers/injections' as injectionsInitializer;
 import 'glazier/fixtures' as Fixtures;
 
@@ -19,6 +18,5 @@ Glazier.Dashboard = Dashboard;
 
 Ember.Application.initializer(injectionsInitializer);
 Ember.Application.initializer(conductorServicesInitializer);
-Ember.Application.initializer(githubAuthCardInitializer);
 
 export Glazier;

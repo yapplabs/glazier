@@ -13,8 +13,13 @@ var cardManifestUrl = function(cardId, url) {
 
 // Lookup a url in the manifest available to all cards
 var glazierUrl = function(url) {
-  var tranlatedUrl = Glazier.manifest[url];
-  if (tranlatedUrl) return Glazier.assetHost + tranlatedUrl;
+  if (Glazier.manifest) {
+    var translatedUrl = Glazier.manifest[url];
+    if (translatedUrl) {
+      return Glazier.assetHost + translatedUrl;
+    }
+  }
+  return null;
 };
 
 var ManifestXHRService = Conductor.XHRService.extend({

@@ -1,18 +1,16 @@
-<div id="footer" {{bindAttr class="isDrawerOpen"}}>
-  <div class="tabs">
-    <div class="logo">Glazier I/O</div>
-    {{render user}}
-    {{render repository}}
-    <div class="help">
-      Help
-    </div>
-    <div class="peek" {{action toggleAnalyticsDrawer}}>
-      ConductorPeek
-    </div>
+<div class="tabs">
+  <div class="logo">Glazier I/O</div>
+  {{render user}}
+  {{render repository}}
+  <div class="help">
+    Help
   </div>
-  <div class="panel">
-    <div class="analytics">
-      <pre class="output"></pre>
-    </div>
+  <div class="peek" {{action toggleAnalyticsDrawer}}>
+    ConductorPeek
+  </div>
+</div>
+<div class="panel">
+  <div class="analytics">
+    <pre class="output"></pre>
   </div>
 </div>

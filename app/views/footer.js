@@ -1,6 +1,8 @@
 var FooterView = Ember.View.extend({
+  elementId: "footer",
+  classNameBindings: ['controller.isDrawerOpen'],
   didInsertElement: function() {
-    StarterKit.initializeAnalytics('#footer .analytics');
+    StarterKit.initializeAnalytics(this.$('.analytics'));
   }
 });
 
