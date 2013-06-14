@@ -47,7 +47,7 @@ var CardManager = Ember.Object.extend({
     @return {Conductor.Card} the panes card
   */
   _load: function (pane) {
-    var manifest = pane.get('type.manifest');
+    var manifest = pane.get('cardManifest.manifest');
     var capabilities = [];
     var consumes = this._processConsumes(manifest, capabilities);
     var provides = this._processProvides(manifest, capabilities);
@@ -114,9 +114,12 @@ var CardManager = Ember.Object.extend({
   _getTargets: function (pane) {
     var targets = {};
     var instances = this.instances;
-    pane.get('capabilityProviders').forEach(function (capabilityProvider) {
-      targets[capabilityProvider.get('capability')] = instances[capabilityProvider.get('provider.id')];
-    });
+    var capabilityProviders = pane.get('capabilityProviders');
+    if (capabilityProviders) {
+      capabilityProviders.forEach(function (capabilityProvider) {
+        targets[capabilityProvider.get('capability')] = instances[capabilityProvider.get('provider.id')];
+      });
+    }
     return targets;
   }
 });

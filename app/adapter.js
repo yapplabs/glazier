@@ -7,4 +7,14 @@ var Adapter = DS.RESTAdapter.extend({
   }
 });
 
+
+Adapter.registerTransform('json', {
+  deserialize: function (serialized) {
+    return JSON.parse(serialized);
+  },
+  serialize: function(deserialized) {
+    return JSON.stringify(deserialized);
+  }
+});
+
 export = Adapter;

@@ -14,7 +14,7 @@ var DashboardView = Ember.View.extend({
 
       pane.then(function() {
         var providers = pane.get('capabilityProviders');
-        var type = pane.get('type');
+        var type = pane.get('cardManifest');
 
         return Ember.RSVP.all([type, providers]).then(function () {
           var card = cardManager.load(pane);

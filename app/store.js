@@ -1,5 +1,7 @@
+import 'glazier/adapter' as Adapter;
+
 var Store = DS.Store.extend({
-  adapter: DS.FixtureAdapter
+  adapter: Adapter
 });
 
 export = Store;
