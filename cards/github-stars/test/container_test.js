@@ -29,7 +29,7 @@ module("Github::Stars Acceptances", {
       }
     });
 
-    card = conductor.load('/cards/github-stars.js', 1, {
+    card = conductor.load('/cards/github-stars/card.js', 1, {
       capabilities: ['test', 'repository', 'unauthenticatedGithubApi']
     });
     card.then(null, function(e){ console.log(e); });

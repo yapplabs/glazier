@@ -38,7 +38,7 @@ module("Github::Issues Acceptances", {
       }
     });
 
-    card = conductor.load('/cards/github-issues.js', 1, {
+    card = conductor.load('/cards/github-issues/card.js', 1, {
       capabilities: ['test', 'repository', 'unauthenticatedGithubApi', 'identity']
     });
     card.then(null, function(e){ console.log(e); });

@@ -13,7 +13,12 @@ var PaneView = Ember.View.extend({
       var providers = pane.get('capabilityProviders');
       var type = pane.get('cardManifest');
 
-      return Ember.RSVP.all([type, providers]).then(function () {
+      var promises = [type];
+      if (providers && providers.get('length') > 0) {
+        promises.push(providers);
+      }
+
+      return Ember.RSVP.all(promises).then(function () {
         var card = cardManager.load(pane);
         self.appendCard(card);
       });
