@@ -74,6 +74,21 @@
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
 }
 
+.loading {
+  position: absolute;
+  width: 300px;
+  top: 50%;
+  text-align: center;
+  line-height: 50px;
+  margin-top: -45px;
+  left: 50%;
+  margin-left: -170px;
+  font-size: 36px;
+  background-color: rgba(255,255,255,0.4);
+  border-radius: 10px;
+  padding: 20px;
+}
+
 #header {
   position: relative;
   border-bottom: 1px solid black;
@@ -123,5 +138,18 @@
   }
   &.is-drawer-open {
     bottom:0;
+  }
+}
+
+.repository-sidebar {
+  padding-left: 6px;
+  h1 {
+    color: blue;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 0;
+  }
+  label {
+    font-weight: bold;
   }
 }

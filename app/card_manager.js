@@ -51,7 +51,14 @@ var CardManager = Ember.Object.extend({
     var capabilities = [];
     var consumes = this._processConsumes(manifest, capabilities);
     var provides = this._processProvides(manifest, capabilities);
-    var card = this.conductor.load(manifest.jsUrl, pane.get('id'), {
+
+    var cardUrl = manifest.cardUrl;
+
+    if (!cardUrl) {
+      throw new Error("cardUrl cannot be null or undefined");
+    }
+
+    var card = this.conductor.load(cardUrl, pane.get('id'), {
       capabilities: capabilities
     });
 

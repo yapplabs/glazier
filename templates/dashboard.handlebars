@@ -1,5 +1,7 @@
 <div class="block-group">
-  <div class="block" style="width:19%;height:500px"></div>
+  <div class="block" style="width:19%;height:500px">
+  {{render "repository_sidebar" }}
+  </div>
   <div class="panes block-group" style="width:80%">
   {{#each panes}}
     <div class='pane-wrapper block'>{{view Glazier.PaneView contentBinding=this}}</div>

@@ -51,14 +51,14 @@ module.exports = function(grunt) {
     concat: {
       js: {
         src: ['tmp/**/*.js'],
-        dest: 'dist/github-issues.js',
+        dest: 'dist/github-issues/card.js',
         options: {
           footer: "requireModule('card');"
         }
       },
       css: {
         src: ['tmp/css/style.css'],
-        dest: 'dist/github-issues.css'
+        dest: 'dist/github-issues/card.css'
       }
     },
     jshint: {

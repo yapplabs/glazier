@@ -1,5 +1,5 @@
 <h3>Github Stargazers for {{repositoryName}}</h3>
 
 {{#each}}
-  <div><img {{bindAttr src="avatar_url"}} /> {{login}}</div>
+  <div class="person"><img {{bindAttr src="avatar_url"}} /> <span>{{login}}</span></div>
 {{/each}}

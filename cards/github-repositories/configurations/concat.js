@@ -1,13 +1,13 @@
 module.exports = {
   js: {
     src: ['tmp/**/*.js'],
-    dest: 'tmp/dist/card.js',
+    dest: 'dist/github-repositories/card.js',
     options: {
       footer: "requireModule('card');"
     }
   },
   css: {
     src: ['tmp/css/style.css'],
-    dest: 'tmp/dist/card.css'
+    dest: 'dist/github-repositories/card.css'
   }
 };

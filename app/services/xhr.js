@@ -1,11 +1,8 @@
-// TODO - get these from somewhere
-var cardManifests = {
-  'card1_id': {'assets': {'card1.css': 'http://full-path-to/card1-fingerprint.css'}}
-};
-
 // Lookup a url in the manifest for this card
 var cardManifestUrl = function(cardId, url) {
-  var manifest = cardManifests[cardId];
+  // assume the manifest is already loaded, this is likely brittle
+  var manifest = Glazier.Pane.find(cardId).get('cardManifest.manifest');
+
   if (manifest && manifest.assets && manifest.assets[url]) {
     return manifest.assets[url];
   }
@@ -42,7 +39,7 @@ var ManifestXHRService = Conductor.XHRService.extend({
       var processedUrl = cardManifestUrl(this.sandbox.card.id, url) || glazierUrl(url) || url;
 
       if (url !== processedUrl) {
-        console.log("ManifestXHRService get ", url,  " -> ", processedUrl);
+        console.log("ManifestXHRService get", url, "->", processedUrl);
       }
 
       var xhrServiceGet = Conductor.XHRService.prototype.requests.get;
