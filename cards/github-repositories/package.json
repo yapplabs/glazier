@@ -1,7 +1,14 @@
 {
   "name": "glazier-github-repositories",
-  "repositoryName": "yapplabs/github-repositories",
-  "assetHost": "http://glazier.s3.amazonaws.com",
+  "glazierConfig": {
+    "consumes": [
+      "authenticatedGithubApi",
+      "repository",
+      "identity"
+    ],
+    "assetHost": "http://glazier.s3.amazonaws.com",
+    "repositoryName": "yapplabs/github-repositories"
+  },
   "version": "0.0.1",
   "description": "",
   "main": "card.js",
