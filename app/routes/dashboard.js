@@ -1,4 +1,18 @@
 var DashboardRoute = Ember.Route.extend({
+  setupController: function(controller, model) {
+    this._super(controller, model);
+    var id = model.get("id");
+    var url ="https://api.github.com/repos/" + id;
+    var self = this;
+    Ember.$.ajax({
+      type: 'get',
+      url: url
+    }).then(function(repo) {
+        Ember.run(function(){
+          self.controllerFor('repository_sidebar').setCurrentRepository(repo);
+        });
+      }).then(null, Conductor.error);
+  },
   serialize: function (object, params) {
     var parts = object.id.split('/'),
         hash = {};
