@@ -48,7 +48,7 @@ module.exports = {
           throw new Error("Missing cardUrl in: `" + repositoryName + "` manifest");
         }
 
-        grunt.file.write('tmp/manifest.json', JSON.stringify(manifest));
+        grunt.file.write('tmp/manifest.json', JSON.stringify(manifest, null, 2));
       }
     }
   }

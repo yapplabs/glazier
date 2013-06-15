@@ -27,7 +27,7 @@ module.exports = {
 
           manifest[from] = to;
         }
-        grunt.file.write('tmp/manifest.json', JSON.stringify(manifest));
+        grunt.file.write('tmp/manifest.json', JSON.stringify(manifest, null, 2));
       }
     }
   }
