@@ -14,7 +14,7 @@ module.exports = {
       flatten: true,
       cwd: 'tmp/',
       src: ['manifest.json', 'md5/*.js', 'md5/*.css'],
-      dest: 'dist/',
+      dest: 'dist/prod/',
       filter: 'isFile'
     }]
   }

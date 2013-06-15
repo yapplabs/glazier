@@ -4,7 +4,7 @@ var cards = glob.sync('*', {cwd: 'cards'});
 var cardDists = cards.map(function(card){
   return {
     expand: true,
-    cwd: 'cards/' + card + '/dist',
+    cwd: 'cards/' + card + '/dist/dev',
     src: ['**/*'],
     dest: 'tmp/public/cards/',
     filter: 'isFile'
