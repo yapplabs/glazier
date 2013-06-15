@@ -1,76 +1,19 @@
 module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+ 
+  function config(configFileName) {
+    return require('./configurations/' + configFileName);
+  }
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     env: process.env,
+    copy: config('copy'),
     clean: ["tmp", "dist"],
-    ember_handlebars: {
-      compile: {
-        options: {
-          processName: function(filename) {
-            return filename.replace(/templates\//,'').replace(/\.handlebars$/,'');
-          }
-        },
-        files: {
-          "tmp/templates.js": "templates/*.handlebars"
-        }
-      }
-    },
-    transpile: {
-      code: {
-        type: "amd",
-        files: [{
-          expand: true,
-          src: ['app/**/*.js', 'card.js'],
-          dest: 'tmp/'
-        }]
-      },
-
-      templates: {
-        type: "amd",
-        files: [{
-          expand: true,
-          cwd: 'tmp/',
-          src: ['**/templates.js'],
-          dest: 'tmp/'
-        }]
-      }
-    },
-    copy: {
-      all: {
-        files: [
-          {
-            expand: true,
-            src: ['app/**', 'css/**', '!**/*.js'],
-            dest: 'tmp'
-          }
-        ]
-      }
-    },
-    concat: {
-      js: {
-        src: ['tmp/**/*.js'],
-        dest: 'dist/github-issues/card.js',
-        options: {
-          footer: "requireModule('card');"
-        }
-      },
-      css: {
-        src: ['tmp/css/style.css'],
-        dest: 'dist/github-issues/card.css'
-      }
-    },
-    jshint: {
-      all: {
-        src: ['Gruntfile.js', 'tmp/**/*.js'],
-        options: {
-          reporter: 'tasks/jshintreporter.js',
-          jshintrc: '.jshintrc',
-          force: true
-        }
-      }
-    }
+    concat: config('concat'),
+    jshint: config('jshint'),
+    transpile: config('transpile'),
+    ember_handlebars: config('ember_handlebars')
   });
 
   grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'jshint', 'copy', 'concat']);
