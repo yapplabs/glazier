@@ -1,4 +1,6 @@
 module("Github::Stars Acceptances");
+
+import 'conductor' as Conductor;
 import { inCard, TestService } from 'helpers/card_test_helpers';
 
 var conductor, card;

@@ -1,3 +1,5 @@
+var Conductor = requireModule('conductor');
+
 var card = Conductor.card({
   consumers: {
     userStorage: Conductor.Oasis.Consumer.extend({}),

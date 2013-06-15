@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var OauthService = Conductor.Oasis.Service.extend({
 
   /*

@@ -1,4 +1,5 @@
-import 'glazier/card_manager'as CardManager;
+import 'glazier/card_manager' as CardManager;
+import 'conductor' as Conductor;
 
 var initializer = {
   name: 'injections',

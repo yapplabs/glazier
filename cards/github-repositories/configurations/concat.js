@@ -1,8 +1,9 @@
 module.exports = {
   js: {
-    src: ['tmp/**/*.js'],
+    src: ['../../vendor/loader.js', '../../vendor/oasis.amd.js', 'tmp/**/*.js'],
     dest: 'dist/github-repositories/card.js',
     options: {
+      header: 'hi',
       footer: "requireModule('card');"
     }
   },

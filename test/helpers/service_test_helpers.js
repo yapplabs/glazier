@@ -1,3 +1,4 @@
+var Conductor = requireModule('conductor');
 
 function createServiceForTesting(ServiceClass, cardId) {
   var port = {

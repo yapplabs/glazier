@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
 
   accessToken: function(){

@@ -37,5 +37,8 @@
     "matchdep": "~0.1.2",
     "grunt-sass": "~0.6.0",
     "glob": "~3.2.1"
+  },
+  "dependencies": {
+    "growl": "~1.7.0"
   }
 }

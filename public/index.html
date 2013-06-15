@@ -13,6 +13,7 @@
   </head>
   <body>
     <script>
+      window.Conductor = requireModule('conductor');
       window.Glazier = requireModule('glazier/main').Glazier;
       Glazier.manifest = <%= manifest %>;
       Glazier.assetHost = '<%= assetHost %>';

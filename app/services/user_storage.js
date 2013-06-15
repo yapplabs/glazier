@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var UserStorageService = Conductor.Oasis.Service.extend({
 
   /*

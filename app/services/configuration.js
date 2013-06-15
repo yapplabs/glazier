@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var ConfigurationService = Conductor.Oasis.Service.extend({
 
   /*

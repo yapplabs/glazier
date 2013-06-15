@@ -1,3 +1,5 @@
+var Conductor = requireModule('conductor');
+
 var card = Conductor.card({
   consumers: {
     fullXhr: Conductor.Oasis.Consumer.extend({}),

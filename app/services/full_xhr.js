@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var FullXhrService = Conductor.Oasis.Service.extend({
 
   /*

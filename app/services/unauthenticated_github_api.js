@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 /*
   Provides unauthenticated github api access
 

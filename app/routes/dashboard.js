@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var DashboardRoute = Ember.Route.extend({
   setupController: function(controller, model) {
     this._super(controller, model);
