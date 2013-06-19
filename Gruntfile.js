@@ -1,5 +1,9 @@
 module.exports = function(grunt) {
-  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+  require('matchdep').
+    filterDev('grunt-*').
+    filter(function(name){ return name !== 'grunt-cli'; }).
+      forEach(grunt.loadNpmTasks);
+
   grunt.loadTasks('tasks');
 
   function config(configFileName) {
