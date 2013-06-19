@@ -23,7 +23,7 @@ test("it exists", function(){
 });
 
 test("requesting issues", function(){
-  expect(3);
+  expect(4);
 
   var responseJSON = {
         someOther: 'data'
@@ -39,7 +39,13 @@ test("requesting issues", function(){
     var promise = new Conductor.Oasis.RSVP.Promise();
 
     equal(ajaxOpts.url, 'https://api.github.com/path', 'the url was re-written to include the path');
-    deepEqual(ajaxOpts.data, { access_token: 'abc123'}, 'adds access_token');
+    var xhr = {
+      setRequestHeader: function(header, value) {
+        equal(header, 'Authorization');
+        equal(value, 'token abc123')
+      }
+    }
+    ajaxOpts.beforeSend(xhr);
 
     setTimeout(function(){
       promise.resolve(responseJSON);
