@@ -14,7 +14,7 @@ var UserController = Ember.Controller.extend({
     var self = this;
     Ember.$.ajax({
       type: 'post',
-      url: 'http://localhost:8000' + "/api/oauth/github/exchange?code=" + authCode
+      url: "/api/oauth/github/exchange?code=" + authCode
     }).then(function(accessToken) {
       self.loginWithGithub(accessToken);
     }).then(null, Conductor.error);
