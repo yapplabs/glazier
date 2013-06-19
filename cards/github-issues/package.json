@@ -37,6 +37,8 @@
     "grunt-contrib-handlebars": "~0.5.8",
     "matchdep": "~0.1.2",
     "grunt-md5": "~0.1.11",
-    "grunt-s3": "~0.2.0-alpha.2"
+    "grunt-s3": "~0.2.0-alpha.2",
+    "underscore": "~1.4.4",
+    "glazier-card-grunt-config": "git://github.com/yapplabs/glazier-card-grunt-config.git#master"
   }
 }
