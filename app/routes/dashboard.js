@@ -1,19 +1,16 @@
 import 'conductor' as Conductor;
+import 'glazier/models/repository' as Repository;
 
 var DashboardRoute = Ember.Route.extend({
   setupController: function(controller, model) {
     this._super(controller, model);
+
     var id = model.get("id");
-    var url ="https://api.github.com/repos/" + id;
-    var self = this;
-    Ember.$.ajax({
-      type: 'get',
-      url: url
-    }).then(function(repo) {
-        Ember.run(function(){
-          self.controllerFor('repository_sidebar').setCurrentRepository(repo);
-        });
-      }).then(null, Conductor.error);
+    var repositorySidebarController = this.controllerFor('repositorySidebar');
+
+    Repository.find(model.id).then(function (repository) {
+      repositorySidebarController.setCurrentRepository(repository);
+    }).then(null, Conductor.error);
   },
   serialize: function (model, params) {
     var parts = model.id.split('/'),
@@ -28,7 +25,15 @@ var DashboardRoute = Ember.Route.extend({
   },
   model: function (params) {
     var id = params.github_user + '/' + params.github_repo;
-    return Glazier.Dashboard.find(id);
+
+    return Repository.find(id).then(function (repository) {
+      return Glazier.Dashboard.find(id);
+    });
+  },
+  events: {
+    error: function () {
+      this.transitionTo('notFound');
+    }
   }
 });
 
