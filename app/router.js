@@ -5,6 +5,7 @@ var Router = Ember.Router.extend({
 Router.map(function() {
   this.route('dashboard', { path: '/:github_user/:github_repo' });
   this.route('notFound');
+  this.route('error');
 });
 
 Router.router.log = Ember.Logger.debug;

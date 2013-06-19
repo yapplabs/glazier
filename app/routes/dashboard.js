@@ -7,10 +7,7 @@ var DashboardRoute = Ember.Route.extend({
 
     var id = model.get("id");
     var repositorySidebarController = this.controllerFor('repositorySidebar');
-
-    Repository.find(model.id).then(function (repository) {
-      repositorySidebarController.setCurrentRepository(repository);
-    }).then(null, Conductor.error);
+    repositorySidebarController.setCurrentRepository(model.get('repository'));
   },
   serialize: function (model, params) {
     var parts = model.id.split('/'),
@@ -27,12 +24,20 @@ var DashboardRoute = Ember.Route.extend({
     var id = params.github_user + '/' + params.github_repo;
 
     return Repository.find(id).then(function (repository) {
-      return Glazier.Dashboard.find(id);
+      return Glazier.Dashboard.find(id).then(function(dashboard){
+        dashboard.set('repository', repository);
+        return dashboard;
+      });
     });
   },
   events: {
-    error: function () {
-      this.transitionTo('notFound');
+    error: function (error) {
+      if (error.status === 404) {
+        this.transitionTo('notFound');
+      } else {
+        Ember.Logger.error(error);
+        this.transitionTo('error');
+      }
     }
   }
 });
