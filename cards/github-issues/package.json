@@ -38,6 +38,6 @@
     "matchdep": "~0.1.2",
     "grunt-md5": "~0.1.11",
     "grunt-s3": "~0.2.0-alpha.2",
-    "glazier-card-grunt-config": "git://github.com/yapplabs/glazier-card-grunt-config.git#master"
+    "glazier-card-grunt-config": "~0.0.1"
   }
 }
