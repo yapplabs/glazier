@@ -3,6 +3,9 @@ import assertResolved from 'helpers/promise_test_helpers';
 import { inCard, TestService } from 'helpers/card_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
 import mockAjax from 'helpers/ajax_test_helpers';
+
+import 'conductor' as Conductor;
+
 var conductor, card;
 
 if (!/phantom/i.test(navigator.userAgent)) {

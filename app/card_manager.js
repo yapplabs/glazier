@@ -1,4 +1,5 @@
 import 'glazier/services/proxy' as ProxyService;
+import 'conductor' as Conductor;
 
 /*
   @class CardManager

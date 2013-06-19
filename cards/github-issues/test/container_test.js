@@ -1,5 +1,6 @@
 module("Github::Issues Acceptances");
 import { inCard, TestService } from 'helpers/card_test_helpers';
+import 'conductor' as Conductor;
 
 var conductor, card;
 

@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var IdentityService = Conductor.Oasis.Service.extend({
   initialize: function(capabilty, port) {
     // unfortunately sandbox.destroy does not call a destroy method on the services

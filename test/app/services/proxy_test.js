@@ -1,6 +1,8 @@
 import 'glazier/services/proxy' as ProxyService;
 import { MockPort, MockChannel } from 'helpers/oasis_test_helpers';
 
+import 'conductor' as Conductor;
+
 module('Glazier ProxyService');
 
 test('test ProxyService for a provider', function () {

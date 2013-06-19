@@ -2,6 +2,8 @@ import 'glazier/services/identity' as IdentityService;
 import createServiceForTesting from 'helpers/service_test_helpers';
 import mockAjax from 'helpers/ajax_test_helpers';
 
+import 'conductor' as Conductor;
+
 module("Glazier IdentityService Unit", {
   setup: function() {
     this.userController = Ember.Controller.create();

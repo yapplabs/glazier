@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var PaneView = Ember.View.extend({
   classNames: ['pane'],
   init: function () {

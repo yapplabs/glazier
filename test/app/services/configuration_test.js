@@ -1,6 +1,8 @@
 import 'glazier/services/configuration' as ConfigurationService;
 import assertResolved from 'helpers/promise_test_helpers';
 
+import 'conductor' as Conductor;
+
 var conductor, card;
 
 if (!/phantom/i.test(navigator.userAgent)) {

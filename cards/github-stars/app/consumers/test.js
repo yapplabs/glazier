@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var TestConsumer = Conductor.Oasis.Consumer.extend({
   requests: {
     runTest:  function(promise, testData){

@@ -1,3 +1,5 @@
+var Conductor = requireModule('conductor');
+
 function inCard(card, fn) {
 
   if (arguments.length !== 2){

@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
 Conductor.require('/vendor/ember-latest.js');

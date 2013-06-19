@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var RepositoryService = Conductor.Oasis.Service.extend({
 
   /*

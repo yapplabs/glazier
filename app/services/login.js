@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var LoginService = Conductor.Oasis.Service.extend({
   /*
     @public

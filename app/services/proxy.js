@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 var ProxyService = Conductor.Oasis.Service.extend({
   /*
     @public

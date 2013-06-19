@@ -1,4 +1,5 @@
 import 'card' as card;
+import 'conductor' as Conductor;
 
 var ApplicationRoute = Ember.Route.extend({
   setupController: function(controller, model) {

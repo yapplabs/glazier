@@ -1,3 +1,5 @@
+import 'conductor' as Conductor;
+
 // Lookup a url in the manifest for this card
 var cardManifestUrl = function(cardId, url) {
   // assume the manifest is already loaded, this is likely brittle

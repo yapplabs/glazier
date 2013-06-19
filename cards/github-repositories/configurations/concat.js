@@ -3,6 +3,7 @@
     src: ['tmp/**/*.js'],
     dest: 'dist/dev/github-repositories/card.js',
     options: {
+      header: 'hi',
       footer: "requireModule('card');"
     }
   },

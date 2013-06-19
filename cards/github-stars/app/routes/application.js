@@ -1,4 +1,5 @@
 import 'card' as card;
+import 'conductor' as Conductor;
 
 var Stargazers = {
   findByRepositoryName: function(repositoryName) {

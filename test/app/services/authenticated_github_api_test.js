@@ -2,6 +2,8 @@ import 'glazier/services/authenticated_github_api' as AuthenticatedGithubApiServ
 import { MockPort, MockChannel } from 'helpers/oasis_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
 
+import 'conductor' as Conductor;
+
 var originalAjax = $.ajax;
 
 module("AuthenticatedGithubApiService", {

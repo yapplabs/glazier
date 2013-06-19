@@ -1,6 +1,8 @@
 import 'glazier/services/full_xhr' as FullXhrService;
 import { inCard, TestService } from 'helpers/card_test_helpers';
 
+import 'conductor' as Conductor;
+
 var conductor, card;
 
 if (!/phantom/i.test(navigator.userAgent)) {

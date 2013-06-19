@@ -3,6 +3,8 @@ import 'glazier/models/pane' as Pane;
 import 'glazier/models/card_manifest' as CardManifest;
 import 'glazier/models/capability_provider' as CapabilityProvider;
 
+import 'conductor' as Conductor;
+
 var cardManager, pane, store;
 
 if (/phantom/i.test(navigator.userAgent)) {
