@@ -1,5 +1,16 @@
 {
   "name": "glazier-github-issues",
+  "glazierConfig": {
+    "consumes": [
+      "unauthenticatedGithubApi",
+      "authenticatedGithubApi",
+      "repository",
+      "identity"
+    ],
+    "assetHost": "http://glazier.s3.amazonaws.com",
+    "shortName": "github-issues",
+    "repositoryName": "yapplabs/github-issues"
+  },
   "version": "0.0.1",
   "description": "",
   "main": "card.js",
@@ -24,6 +35,8 @@
     "grunt-ember-handlebars": "~0.6.0",
     "handlebars": "",
     "grunt-contrib-handlebars": "~0.5.8",
-    "matchdep": "~0.1.2"
+    "matchdep": "~0.1.2",
+    "grunt-md5": "~0.1.11",
+    "grunt-s3": "~0.2.0-alpha.2"
   }
 }

@@ -1,13 +1,13 @@
 module.exports = {
   js: {
-    src: ['../../vendor/loader.js', '../../vendor/oasis.amd.js', 'tmp/**/*.js'],
-    dest: 'dist/github-issues/card.js',
+    src: ['tmp/**/*.js'],
+    dest: 'dist/dev/github-issues/card.js',
     options: {
       footer: "requireModule('card');"
     }
   },
   css: {
     src: ['tmp/css/style.css'],
-    dest: 'dist/github-issues/card.css'
+    dest: 'dist/dev/github-issues/card.css'
   }
 };

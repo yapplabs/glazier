@@ -12,9 +12,12 @@ module.exports = function(grunt){
       data: {
         manifestUrl: function(path) {
           if(process.env.GLAZIER_ENV === "prod") {
-            path = path.replace(/\.js$/, '.min.js');
-            /* Our MD5 task adds the -MD5 directly before the .js */
-            console.log(process);
+            if (!manifest[path]) {
+              throw "No file found in manifest for path " + path;
+            } else {
+              console.log("Found entry for path " + path);
+            }
+
             return grunt.config.process('<%= pkg.assetHost %>') + manifest[path]; //.replace(/(-[^-]+)\.js$/, '$1.js');
           } else {
             return path;
