@@ -15,8 +15,8 @@ var DashboardRoute = Ember.Route.extend({
         });
       }).then(null, Conductor.error);
   },
-  serialize: function (object, params) {
-    var parts = object.id.split('/'),
+  serialize: function (model, params) {
+    var parts = model.id.split('/'),
         hash = {};
 
     Ember.assert(parts.length === 2 && params.length === 2, 'parts should equal params');
@@ -26,9 +26,8 @@ var DashboardRoute = Ember.Route.extend({
 
     return hash;
   },
-
-  deserialize: function (hash) {
-    var id = hash.github_user + '/' + hash.github_repo;
+  model: function (params) {
+    var id = params.github_user + '/' + params.github_repo;
     return Glazier.Dashboard.find(id);
   }
 });
