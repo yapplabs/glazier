@@ -3,3 +3,11 @@
 {{#each}}
   <div class="person"><img {{bindAttr src="avatar_url"}} /> <span>{{login}}</span></div>
 {{/each}}
+
+{{#if loggedIn}}
+  {{#if starredThisRepository}}
+    <a {{action unstar}}>Unstar</a>
+  {{else}}
+    <a {{action star}}>Star</a>
+  {{/if}}
+{{/if}}

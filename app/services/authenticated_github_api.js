@@ -32,8 +32,9 @@ var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
       }
 
       ajaxOpts.url = 'https://api.github.com' + ajaxOpts.url;
-      ajaxOpts.data.access_token = accessToken;
-
+      ajaxOpts.beforeSend = function(xhr){
+        xhr.setRequestHeader('Authorization', "token #{accessToken}");
+      };
       console.log('AuthenticatedGithubApiService.ajax', ajaxOpts);
 
       $.ajax(ajaxOpts).then(function(value){

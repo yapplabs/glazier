@@ -14,6 +14,7 @@ var card = Conductor.card({
     'test': TestConsumer,
     'identity': IdentityConsumer,
     'repository': Conductor.Oasis.Consumer,
+    'authenticatedGithubApi': Conductor.Oasis.Consumer,
     'unauthenticatedGithubApi': Conductor.Oasis.Consumer
   },
 
