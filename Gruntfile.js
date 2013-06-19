@@ -34,7 +34,15 @@ module.exports = function(grunt) {
     process.env.GLAZIER_ENV = 'prod';
   });
 
-  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'jshint', 'copy_glazier', 'sass', 'concat', 'shell:buildCards', 'copy:cards']);
+  grunt.registerTask("jsframe", function(){
+    var fs = require('fs'),
+        jsf = require('jsframe'),
+        out = fs.openSync('tmp/public/vendor/conductor.js.html', 'w');
+
+    jsf.process('tmp/public/vendor/conductor.js', out);
+  });
+
+  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'jshint', 'copy_glazier', 'sass', 'concat', 'jsframe', 'shell:buildCards', 'copy:cards']);
   grunt.registerTask('copy_glazier', ['copy:main', 'copy:test', 'copy:fixtures', 'copy:vendor']);
 
   grunt.registerTask('assets', ['build', /*'uglify:all',*/ 'md5', 'index.html']);

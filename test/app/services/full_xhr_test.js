@@ -9,7 +9,8 @@ if (!/phantom/i.test(navigator.userAgent)) {
   module("Glazier FullXhrService", {
     setup: function() {
       conductor = new Conductor({
-        testing: true
+        testing: true,
+        conductorURL: '/vendor/conductor.js.html'
       });
 
       Conductor.services['fullXhr'] = FullXhrService;
@@ -18,7 +19,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
       card = conductor.load('/test/fixtures/app/services/full_xhr_card.js', 1, {
         capabilities: ['fullXhr', 'test', 'assertion']
       });
-      card.then(null, function(e){ console.log(e); });
+      card.promise.then(null, function(e){ console.log(e); });
       card.appendTo('#qunit-fixture');
     }
   });

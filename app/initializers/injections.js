@@ -4,7 +4,11 @@ import 'conductor' as Conductor;
 var initializer = {
   name: 'injections',
   initialize: function (container, application) {
-    application.register('conductor:main', new Conductor(), { instantiate: false});
+
+    application.register('conductor:main', new Conductor({
+      conductorURL: '/vendor/conductor.js.html'
+    }), { instantiate: false});
+
     application.register('cardManager:main', CardManager);
 
     application.inject('cardManager:main', 'conductor', 'conductor:main');

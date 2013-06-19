@@ -15,16 +15,17 @@ function createServiceForTesting(ServiceClass, cardId) {
   var service = new ServiceClass(port, sandbox);
 
   service.simulateRequest = function(requestName, key, value) {
-    var promise = new Conductor.Oasis.RSVP.Promise(),
+    var defer = Conductor.Oasis.RSVP.defer(),
+
     handler = this.requests[requestName];
 
     if (!handler) {
       throw new Error("No such Request: `" + requestName + "`");
     }
 
-    handler.call(this, promise, key, value);
+    handler.call(this, defer, key, value);
 
-    return promise;
+    return defer.promise;
   };
 
   service.simulateSend = function(eventName, data) {

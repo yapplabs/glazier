@@ -34,9 +34,12 @@ var PaneView = Ember.View.extend({
   },
 
   appendCard: function(card) {
-    card.appendTo(this.get('element')).then(function() {
+    var element = this.get('element');
+
+    card.appendTo(element).promise.then(function(card) {
       card.render();
     }).then(null, Conductor.error);
+
   }
 });
 

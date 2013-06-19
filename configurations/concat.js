@@ -12,5 +12,10 @@ module.exports = {
   tests: {
     src: ['tmp/public/test/**/*.js', '!tmp/public/test/fixtures/**'],
     dest: 'tmp/public/test.js'
+  },
+
+  conductor: {
+    src: ['tmp/public/vendor/loader.js', 'tmp/public/vendor/conductor/**/*.js'],
+    dest: 'tmp/public/vendor/conductor.js'
   }
 };

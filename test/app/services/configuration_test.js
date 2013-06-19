@@ -16,7 +16,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
       card = conductor.load('/test/fixtures/app/services/configuration_card.js', 1, {
         capabilities: ['configuration']
       });
-      card.then(null, function(e){ console.log(e); });
+      card.promise.then(null, function(e){ console.log(e); });
       card.appendTo('#qunit-fixture');
       $('<meta>').attr('name', 'config_test').attr('content', 'foo').appendTo('head');
     },
@@ -26,7 +26,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
   });
 
   asyncTest("A card can return a configuration value by name", 2, function() {
-    assertResolved(card.then(function() {
+    assertResolved(card.promise.then(function() {
       return card.metadataFor('retrievedConfig');
     }).then(function(retrievedConfigValue) {
       start();

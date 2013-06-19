@@ -23,7 +23,7 @@ var ProxyService = Conductor.Oasis.Service.extend({
     @public
 
     @property targetPromise
-    @type Conductor.Oasis.RSVP.Promise
+    @type Conductor.Oasis.RSVP.Promise.defer
     @default 'null'
   */
   targetPromise: null,
@@ -42,7 +42,7 @@ var ProxyService = Conductor.Oasis.Service.extend({
     this._requests = {};
 
     if (this.sandbox.card.consumes[capability]) {
-      this.targetPromise = new Conductor.Oasis.RSVP.Promise();
+      this.targetPromise = Conductor.Oasis.RSVP.defer();
       port.all(this.forward, this);
     }
   },
@@ -100,7 +100,7 @@ var ProxyService = Conductor.Oasis.Service.extend({
 
     this.load(); //lazy load service
 
-    this.targetPromise.then(function (targetPort) {
+    this.targetPromise.promise.then(function (targetPort) {
       targetPort.send(eventName, data);
     }, console.error);
   },

@@ -36,7 +36,7 @@ test("requesting issues", function(){
   stop();
 
   $.ajax = function(ajaxOpts) {
-    var promise = new Conductor.Oasis.RSVP.Promise();
+    var deferred = Conductor.Oasis.RSVP.defer();
 
     equal(ajaxOpts.url, 'https://api.github.com/path', 'the url was re-written to include the path');
     var xhr = {
@@ -48,10 +48,10 @@ test("requesting issues", function(){
     ajaxOpts.beforeSend(xhr);
 
     setTimeout(function(){
-      promise.resolve(responseJSON);
+      deferred.resolve(responseJSON);
     }, 0);
 
-    return promise;
+    return deferred.promise;
   };
 
   this.service.simulateRequest('ajax', requestPayload).then(function(response){

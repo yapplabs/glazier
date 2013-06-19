@@ -6,10 +6,10 @@ function mockAjax() {
 
   Ember.$.ajax = function(options) {
     mockAjax.requests.push(options);
-    var promise = new Conductor.Oasis.RSVP.Promise();
-    promise.resolve(mockAjax.nextResponse || {});
-    mockAjax.nextResponse = null;
-    return promise;
+    return new Conductor.Oasis.RSVP.Promise(function(resolve, reject){
+      resolve(mockAjax.nextResponse || {});
+      mockAjax.nextResponse = null;
+    });
   };
 
   Ember.$.ajax.restore = function() {

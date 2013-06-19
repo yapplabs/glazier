@@ -51,7 +51,8 @@ CardManifest.FIXTURES = [
 module("CardManager", {
   setup: function() {
     var conductor = new Conductor({
-      testing: true
+      testing: true,
+      conductorURL: '/vendor/conductor.js.html'
     });
 
     var store = DS.Store.create({

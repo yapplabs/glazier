@@ -41,11 +41,11 @@ test('test ProxyService for a consumer', function () {
   var consumerChannel = new MockChannel('consumer', consumerCardPort, proxyServicePort);
   var providerChannel = new MockChannel('provider', proxyTargetPort, providerCardPort);
 
-  var targetActivePromise = new Conductor.Oasis.RSVP.Promise();
+  var deferred = new Conductor.Oasis.RSVP.defer();
 
   var targetCard = {
     sandbox: {
-      activatePromise: targetActivePromise,
+      activatePromise: deferred.promise,
       channels: {
         'service name': providerChannel
       }
@@ -89,7 +89,7 @@ test('test ProxyService for a consumer', function () {
   stop();
   consumerCardPort.send(requestEventName, requestEvent);
 
-  targetActivePromise.resolve();
+  deferred.resolve();
 });
 
 test('Test ProxyService with multiple consumers and one producer', function() {
@@ -113,10 +113,10 @@ test('Test ProxyService with multiple consumers and one producer', function() {
 
   var ajaxChannel = new MockChannel('provider', proxyTargetPort, ajaxCardPort);
 
-  var targetActivePromise = new Conductor.Oasis.RSVP.Promise();
+  var deferred = Conductor.Oasis.RSVP.defer();
   var targetCard = {
     sandbox: {
-      activatePromise: targetActivePromise,
+      activatePromise: deferred.promise,
       channels: {
         ajax: ajaxChannel
       }
@@ -213,7 +213,7 @@ test('Test ProxyService with multiple consumers and one producer', function() {
   // consumer1: ajax GET /posts -> proxy -> ajax
   consumer2CardPort.send('request', { requestId: 2, data: '/posts'});
 
-  targetActivePromise.resolve();
+  deferred.resolve();
 });
 
 test('test ProxyService that has no target', function () {
