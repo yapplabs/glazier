@@ -57,7 +57,7 @@ var ApplicationRoute = Ember.Route.extend({
       var user = this.controllerFor('user').get('content');
       var route = this;
       Stargazers.starRepository(repository, user).then(function(){
-        retrieveStargazers(route, user)
+        retrieveStargazers(route, user);
       });
     },
     unstar: function(){
@@ -65,9 +65,9 @@ var ApplicationRoute = Ember.Route.extend({
       var user = this.controllerFor('user').get('content');
       var route = this;
       Stargazers.unstarRepository(repository, user).then(function(){
-        retrieveStargazers(route, user)
+        retrieveStargazers(route, user);
       });
-    },
+    }
   },
   model: function(){
     var route = this;
