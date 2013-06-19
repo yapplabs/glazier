@@ -214,6 +214,10 @@ define("oasis",
         if (options.promise) {
           options.promise.then(function() {
             port.start();
+          }).then(null, function(reason){
+            setTimeout(function(){
+              throw reason;
+            }, 0);
           });
         } else {
           port.start();
@@ -524,6 +528,10 @@ define("oasis",
               requestId: requestId,
               data: data
             });
+          }).then(null, function(reason){
+            setTimeout(function(){
+              throw reason;
+            }, 0);
           });
 
           args.unshift(defered);
@@ -655,6 +663,10 @@ define("oasis",
       this.promise.then(function () {
         sandbox.createChannels();
         sandbox.connectPorts();
+      }).then(null, function(reason){
+        setTimeout(function(){
+          throw reason;
+        }, 0);
       });
     };
 
@@ -746,7 +758,11 @@ define("oasis",
         RSVP.all(allSandboxPortPromises).then(function (ports) {
           Logger.log("All " + ports.length + " ports created.  Transferring them.");
           this.adapter.connectPorts(this, ports);
-        }.bind(this));
+        }.bind(this)).then(null, function(reason){
+          setTimeout(function(){
+            throw reason;
+          }, 0);
+        });
       },
 
       start: function(options) {
