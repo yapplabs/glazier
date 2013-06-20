@@ -42,9 +42,9 @@ test("requesting issues", function(){
     var xhr = {
       setRequestHeader: function(header, value) {
         equal(header, 'Authorization');
-        equal(value, 'token abc123')
+        equal(value, 'token abc123');
       }
-    }
+    };
     ajaxOpts.beforeSend(xhr);
 
     setTimeout(function(){

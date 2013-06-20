@@ -25,7 +25,7 @@ var Stargazers = {
       }).then(function () {
         resolve(true);
       }, function (e) {
-        return e.status == 404 ? resolve(false) : reject(e);
+        return e.status === 404 ? resolve(false) : reject(e);
       });
     });
   },
