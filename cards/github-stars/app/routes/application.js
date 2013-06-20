@@ -53,16 +53,14 @@ var Repo = {
   }
 };
 
-
-function retrieveStargazers(route, user) {
-  var applicationController = route.controllerFor('application');
-
+function retrieveStargazers(user) {
   return Repo.getCurrentRepositoryName().then(function(repositoryName) {
     return Ember.RSVP.all([
       Stargazers.findByRepositoryName(repositoryName, user),
       Stargazers.currentUserStarred(repositoryName, user)
     ]).then(function (allResults) {
       return {
+        user: user,
         repositoryName: repositoryName,
         stargazers: allResults[0],
         isStarred: allResults[1]
@@ -74,31 +72,28 @@ function retrieveStargazers(route, user) {
 var ApplicationRoute = Ember.Route.extend({
   events: {
     currentUserChanged: function(user) {
-      this.controllerFor('user').set('model', user);
-      retrieveStargazers(this, user);
+      this.controller.set('user', user);
     },
     star: function(){
-      var repository = this.controller.get('repositoryName');
-      var user = this.controllerFor('user').get('content');
-      var controller = this.controller;
+      var controller = this.controller,
+          repository = controller.get('repositoryName'),
+          user = controller.get('user');
       Stargazers.starRepository(repository, user).then(function(){
         controller.set('isStarred', true);
       });
     },
     unstar: function(){
-      var repository = this.controller.get('repositoryName');
-      var user = this.controllerFor('user').get('content');
-      var controller = this.controller;
+      var controller = this.controller,
+          repository = controller.get('repositoryName'),
+          user = controller.get('user');
       Stargazers.unstarRepository(repository, user).then(function(){
         controller.set('isStarred', false);
       });
     }
   },
   model: function(){
-    var route = this;
     return card.consumers.identity.request("currentUser").then(function(user){
-      route.controllerFor('user').set('model', user);
-      return retrieveStargazers(route, user);
+      return retrieveStargazers(user);
     });
   }
 });
