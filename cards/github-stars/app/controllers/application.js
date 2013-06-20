@@ -1,6 +1,5 @@
-var ApplicationController = Ember.ArrayController.extend({
+var ApplicationController = Ember.ObjectController.extend({
   needs: ['user'],
-  repositoryName: null,
   user: Em.computed.oneWay('controllers.user.content'),
   loggedIn: Ember.computed.bool('user'),
   starredThisRepository: function(){
