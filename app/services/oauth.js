@@ -1,6 +1,7 @@
 import 'conductor' as Conductor;
 
 var OauthService = Conductor.Oasis.Service.extend({
+  oauthController: null,
 
   /*
     @public
@@ -31,21 +32,27 @@ var OauthService = Conductor.Oasis.Service.extend({
 
       // check if we already have an access token for this authorize_url in the session
       var self = this;
-      this.authorize(params.authorizeUrl).then(function (authCode) {
-        return self.exchange(params.exchangeUrl, authCode);
-      }).then(success, failure);
+      if (params.exchangeUrl) {
+        this.authorize(params.authorizeUrl).then(function (authCode) {
+          return self.exchange(params.exchangeUrl, authCode);
+        }).then(success, failure);
+      } else {
+        this.authorize(params.authorizeUrl).then(success, failure);
+      }
     }
   },
 
   /*
     @public
 
-    @method loginWithGithub
+    @method authorize
     @param  authorizeUrl {String}
   */
   authorize: function (authorizeUrl) {
-    // show UI with button for popup window
-    // return promise that resolves on popup window post message
+    var oauthOptions = {
+      authorizeUrl: authorizeUrl
+    };
+    return this.get('oauthController').beginFlow(oauthOptions);
   },
 
   /*
@@ -57,6 +64,14 @@ var OauthService = Conductor.Oasis.Service.extend({
   */
   exchange: function (exchangeUrl, authCode) {
     // return ajax promise for exchange authCode for accessToken
+    return Ember.$.ajax({
+      type: 'post',
+      url: exchangeUrl,
+      dataType: 'text',
+      data: {
+        code: authCode
+      }
+    });
   }
 });
 
