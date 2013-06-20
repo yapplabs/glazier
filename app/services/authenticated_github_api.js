@@ -39,11 +39,18 @@ var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
 
       $.ajax(ajaxOpts).then(function(value){
         promise.resolve(value);
-      }).then(null, function(reason) {
-        promise.reject(reason);
+      }).then(null, function(jqXhr) {
+        promise.reject(failureResultFromJqXhr(jqXhr));
       });
     }
   }
 });
 
+function failureResultFromJqXhr(jqXhr){
+  return {
+    responseText: jqXhr.responseText,
+    status: jqXhr.status,
+    rawHeaders: jqXhr.getAllResponseHeaders()
+  };
+}
 export = AuthenticatedGithubApiService;
