@@ -8,9 +8,9 @@ if (/phantom/i.test(navigator.userAgent)) { return; }
 
 module("Github::Issues Acceptances", {
   setup: function() {
-
     conductor = new Conductor({
-      testing: true
+      testing: true,
+      conductorURL: '/vendor/conductor.js.html'
     });
 
     Conductor.services['test'] = TestService;
@@ -42,7 +42,8 @@ module("Github::Issues Acceptances", {
     card = conductor.load('/cards/github-issues/card.js', 1, {
       capabilities: ['test', 'repository', 'unauthenticatedGithubApi', 'identity']
     });
-    card.then(null, function(e){ console.log(e); });
+
+    card.promise.then(null, Conductor.error);
     card.appendTo('#qunit-fixture');
   },
 

@@ -9,7 +9,8 @@ if (!/phantom/i.test(navigator.userAgent)) {
   module("Glazier ConfigurationService", {
     setup: function() {
       conductor = new Conductor({
-        testing: true
+        testing: true,
+        conductorURL: '/vendor/conductor.js.html'
       });
       Conductor.services['configuration'] = ConfigurationService;
 

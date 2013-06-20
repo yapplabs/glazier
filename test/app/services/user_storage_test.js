@@ -12,13 +12,14 @@ if (!/phantom/i.test(navigator.userAgent)) {
   module("Glazier UserStorageService Integration", {
     setup: function() {
       conductor = new Conductor({
-        testing: true
+        testing: true,
+        conductorURL: '/vendor/conductor.js.html'
       });
       Conductor.services['userStorage'] = UserStorageService;
       Conductor.services['test'] = TestService;
 
       card = conductor.load('/test/fixtures/app/services/user_storage_card.js', 1, {
-        capabilities: ['userStorage', 'test', 'assertion']
+        capabilities: ['userStorage', 'test']
       });
       card.promise.then(null, function(e){ console.log(e); });
       card.appendTo('#qunit-fixture');
