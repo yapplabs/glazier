@@ -1,3 +1,5 @@
 node_modules/
 tmp/
 dist/
+cards/stackoverflow-auth
+cards/stackoverflow-questions
