@@ -33,7 +33,7 @@ module("Github::Stars Acceptances", {
     });
 
     card = conductor.load('/cards/github-stars/card.js', 1, {
-      capabilities: ['test', 'repository', 'unauthenticatedGithubApi']
+      capabilities: ['test', 'repository', 'identity', 'authenticatedGithubApi', 'unauthenticatedGithubApi']
     });
 
     card.promise.then(null, Conductor.error);
