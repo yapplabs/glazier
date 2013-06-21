@@ -16,6 +16,7 @@ var Stargazers = {
     return new Ember.RSVP.Promise(function(resolve, reject) {
       if (!user) {
         resolve(false);
+        return;
       }
       var apiConsumer = Stargazers.getApiConsumer(user);
       return apiConsumer.request("ajax", {
