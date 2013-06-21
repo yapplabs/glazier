@@ -42,7 +42,18 @@ module.exports = function(grunt) {
     jsf.process('tmp/public/vendor/conductor.js', out);
   });
 
-  grunt.registerTask('build', ['clean', 'ember_handlebars', 'transpile', 'jshint', 'copy_glazier', 'sass', 'concat', 'jsframe', 'shell:buildCards', 'copy:cards']);
+  grunt.registerTask('build', [
+                       'clean',
+                       'ember_handlebars',
+                       'transpile',
+                       'jshint',
+                       'copy_glazier',
+                       'sass',
+                       'concat',
+                       'jsframe',
+                       'shell:buildCards',
+                       'copy:cards' ]);
+
   grunt.registerTask('copy_glazier', ['copy:main', 'copy:test', 'copy:fixtures', 'copy:vendor']);
 
   grunt.registerTask('assets', ['build', /*'uglify:all',*/ 'md5', 'index.html']);
