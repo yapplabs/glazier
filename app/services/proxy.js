@@ -78,7 +78,7 @@ var ProxyService = Conductor.Oasis.Service.extend({
       targetPort.all(self.back, self);
       self.targetPort = targetPort;
       self.targetPromise.resolve(targetPort);
-    }, console.error);
+    }, Conductor.error);
 
     this.loaded = true;
   },
