@@ -37,7 +37,10 @@ var OauthService = Conductor.Oasis.Service.extend({
           return self.exchange(params.exchangeUrl, authCode);
         }).then(success, failure);
       } else {
-        this.authorize(params.authorizeUrl).then(success, failure);
+        var redirectUri = window.location.origin + '/api/oauth/callback';
+        var clientId = '1693'; //TODO: this should come from the card's data
+
+        this.authorize(params.authorizeUrl, clientId, redirectUri).then(success, failure);
       }
     }
   },
@@ -48,9 +51,11 @@ var OauthService = Conductor.Oasis.Service.extend({
     @method authorize
     @param  authorizeUrl {String}
   */
-  authorize: function (authorizeUrl) {
+  authorize: function (authorizeUrl, clientId, redirectUri) {
     var oauthOptions = {
-      authorizeUrl: authorizeUrl
+      authorizeUrl: authorizeUrl,
+      clientId: clientId,
+      redirectUri: redirectUri
     };
     return this.oauthController.beginFlow(oauthOptions);
   },

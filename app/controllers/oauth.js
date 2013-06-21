@@ -1,5 +1,13 @@
 var OauthController = Ember.Controller.extend({
   showModal: false,
+  authorizeUrl: function(){
+    var oauthOptions = this.get('oauthOptions');
+    var url = oauthOptions.authorizeUrl;
+    url += "?response_type=token";
+    url += "&redirect_uri=" + encodeURIComponent(oauthOptions.redirectUri);
+    url += "&client_id=" + encodeURIComponent(oauthOptions.clientId);
+    return url;
+  }.property('oauthOptions'),
   beginFlow: function(oauthOptions) {
     this.deferred = new Ember.RSVP.defer();
     this.set('oauthOptions', oauthOptions);
@@ -9,9 +17,10 @@ var OauthController = Ember.Controller.extend({
   approve: function(){
     // spawn the popup
     var oauthOptions = this.get('oauthOptions'),
+        windowUrl = this.get('authorizeUrl'),
         width = oauthOptions.width || 960,
         height = oauthOptions.height || 410;
-    window.open(oauthOptions.authorizeUrl, "authwindow", "menubar=0,resizable=1,width=" + width + ",height=" + height);
+    window.open(windowUrl, "authwindow", "menubar=0,resizable=1,width=" + width + ",height=" + height);
     var self = this;
     function onmessage(e) {
       self.handleOauthCode(e);
