@@ -24,7 +24,14 @@ var OauthController = Ember.Controller.extend({
       Ember.Logger.debug('Invalid origin: ' + event.origin + ' vs ' + document.location.origin);
       return;
     }
-    this.deferred.resolve(event.data);
+    var results = {};
+    var params = event.data.split('&');
+    for (var i = 0; i < params.length; i++) {
+      var param = params[i],
+          pair = param.split('=');
+      results[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+    }
+    this.deferred.resolve(results.access_token);
   },
   decline: function(){
     this.set('showModal', false);
