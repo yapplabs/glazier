@@ -52,7 +52,7 @@ var OauthService = Conductor.Oasis.Service.extend({
     var oauthOptions = {
       authorizeUrl: authorizeUrl
     };
-    return this.get('oauthController').beginFlow(oauthOptions);
+    return this.oauthController.beginFlow(oauthOptions);
   },
 
   /*

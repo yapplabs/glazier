@@ -8,6 +8,7 @@ import 'conductor' as Conductor;
 var CardManager = Ember.Object.extend({
   init: function () {
     this.instances = {}; // track instances by id
+    this.providerCardDeferreds = {};
   },
 
   /*
@@ -66,7 +67,17 @@ var CardManager = Ember.Object.extend({
     // attach wiretapping for the analytics panel
     if (window.StarterKit) window.StarterKit.wiretapCard(card);
 
-    card.targets = this._getTargets(pane);
+    card.providerPromises = {};
+    //card.targets = this._getTargets(pane);
+    for (var capability in this.providerCardDeferreds) {
+      if (!this.providerCardDeferreds.hasOwnProperty(capability)) continue;
+      var deferred = this.providerCardDeferreds[capability];
+      if (consumes[capability]) {
+        card.providerPromises[capability] = deferred.promise;
+      } else if (provides[capability]) {
+        deferred.resolve(card);
+      }
+    }
     card.consumes = consumes;
     card.provides = provides;
     return card;
@@ -82,10 +93,16 @@ var CardManager = Ember.Object.extend({
   */
   _processConsumes: function (manifest, capabilities) {
     var conductorServices = this.conductor.services;
+    var providerCardDeferreds = this.providerCardDeferreds;
     var consumes = {};
     if (manifest.consumes) {
       manifest.consumes.forEach(function (capability) {
-        if (!conductorServices[capability]) conductorServices[capability] = ProxyService;
+        if (!conductorServices[capability]) {
+          conductorServices[capability] = ProxyService;
+          if (!providerCardDeferreds[capability]) {
+            providerCardDeferreds[capability] = Conductor.Oasis.RSVP.defer();
+          }
+        }
         consumes[capability] = true;
         capabilities.push(capability);
       });
@@ -101,10 +118,16 @@ var CardManager = Ember.Object.extend({
   */
   _processProvides: function (manifest, capabilities) {
     var conductorServices = this.conductor.services;
+    var providerCardDeferreds = this.providerCardDeferreds;
     var provides = {};
     if (manifest.provides) {
       manifest.provides.forEach(function (capability) {
-        if (!conductorServices[capability]) conductorServices[capability] = ProxyService;
+        if (!conductorServices[capability]) {
+          conductorServices[capability] = ProxyService;
+          if (!providerCardDeferreds[capability]) {
+            providerCardDeferreds[capability] = Conductor.Oasis.RSVP.defer();
+          }
+        }
         provides[capability] = true;
         capabilities.push(capability);
       });
