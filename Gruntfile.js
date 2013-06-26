@@ -61,7 +61,7 @@ module.exports = function(grunt) {
   grunt.registerTask('ingest', ['assets', 'shell:ingest']);
   grunt.registerTask('deploy', ['assets', 's3:dev']);
 
-  grunt.registerTask('ingestCards', ['build', 'shell:npmInstallForCards', 'shell:ingestCardManifests']);
+  grunt.registerTask('ingestCards', ['shell:npmInstallForCards', 'build', 'shell:ingestCardManifests']);
 
   grunt.registerTask('preview', ['build', /*'uglify:all',*/ 'md5', 'index.html', 'shell:ingest', 'connect', 'watch']);
   grunt.registerTask('preview:cdn', ['prod', 'deploy', 'shell:ingest', 'connect', 'watch']);
