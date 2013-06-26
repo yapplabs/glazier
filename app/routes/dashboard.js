@@ -1,5 +1,8 @@
 import 'conductor' as Conductor;
 import 'glazier/models/repository' as Repository;
+import 'glazier/models/dashboard' as Dashboard;
+
+var RSVP = Ember.RSVP;
 
 var DashboardRoute = Ember.Route.extend({
   setupController: function(controller, model) {
@@ -23,11 +26,17 @@ var DashboardRoute = Ember.Route.extend({
   model: function (params) {
     var id = params.github_user + '/' + params.github_repo,
         accessToken = this.controllerFor('user').get('accessToken');
-    return Repository.find(id, accessToken).then(function (repository) {
-      return Glazier.Dashboard.find(id).then(function(dashboard){
-        dashboard.set('repository', repository);
-        return dashboard;
-      });
+
+    return RSVP.hash({
+      repository: Repository.find(id, accessToken),
+      dashboard: Dashboard.find(id)
+    }).then(function(hash){
+      var dashboard = hash.dashboard,
+          repository = hash.repository;
+
+      dashboard.set('repository', repository);
+
+      return dashboard;
     });
   },
   events: {
