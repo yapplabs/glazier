@@ -54,13 +54,21 @@ var CardManager = Ember.Object.extend({
     var consumes = this._processConsumes(manifest, capabilities);
     var provides = this._processProvides(manifest, capabilities);
 
+    var paneId = pane.get('id');
     var cardUrl = manifest.cardUrl;
 
     if (!cardUrl) {
       throw new Error("cardUrl cannot be null or undefined");
     }
 
-    var card = this.conductor.load(cardUrl, pane.get('id'), {
+    var env = (/glazier\.herokuapp\.com/.test(window.location.hostname)) ? 'prod' : 'dev';
+    manifest.env = manifest.env || {};
+
+    this.conductor.loadData(cardUrl, paneId, {
+      env: manifest.env[env]
+    });
+
+    var card = this.conductor.load(cardUrl, paneId, {
       capabilities: capabilities
     });
 
