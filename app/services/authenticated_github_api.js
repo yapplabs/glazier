@@ -24,6 +24,7 @@ var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
       var accessToken = this.accessToken();
 
       if (!accessToken) {
+        // TODO: once request handlers following resolution precedures, we can simply throw
         try {
           throw new Error('no gthub acccess token');
         } catch(error) {
