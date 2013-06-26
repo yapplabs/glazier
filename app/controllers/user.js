@@ -4,6 +4,7 @@ var UserController = Ember.Controller.extend({
   content: null,
   isLoggedIn: Ember.computed.bool('content'),
   username:  Ember.computed.oneWay('content.github_login'),
+  accessToken: null,
   avatarUrl: function(){
     return "https://secure.gravatar.com/avatar/" + this.get('content.gravatar_id');
   }.property('content'),
