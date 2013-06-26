@@ -18,7 +18,7 @@ module.exports = {
     src: ['tmp/public/vendor/loader.js', 'tmp/public/vendor/conductor/**/*.js'],
     dest: 'tmp/public/vendor/conductor.js',
     options: {
-      footer: "requireModule('conductor');"
+      footer: "window.Conductor = requireModule('conductor');"
     }
   }
 };
