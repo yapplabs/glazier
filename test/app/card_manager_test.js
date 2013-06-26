@@ -86,7 +86,7 @@ module("CardManager", {
     }).then(null, function(e) {
       start();
       console.error('error:', e);
-    }).then(null, Conductor.error);;
+    }).then(null, Conductor.error);
 
     stop();
   },
@@ -102,7 +102,7 @@ asyncTest("loading a card sets providerPromises and consumes", 2, function(){
       var card = cardManager.load(pane);
       ok(card.providerPromises['github:authenticated:read'], "target was set on the loaded card");
       ok(card.consumes['github:authenticated:read'], "consumes was set on the loaded card");
-    }).then(null, Conductor.error);;
+    }).then(null, Conductor.error);
   });
 });
 

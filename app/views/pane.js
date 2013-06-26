@@ -35,7 +35,7 @@ var PaneView = Ember.View.extend({
       $paneElement = $element;
     } else {
       $element.addClass('block pane-wrapper');
-      $paneElement = Em.$("<div class='pane'>");
+      $paneElement = Ember.$("<div class='pane'>");
       $element.append($paneElement);
     }
 
