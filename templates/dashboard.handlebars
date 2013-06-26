@@ -3,9 +3,7 @@
   {{render "repository_sidebar" }}
   </div>
   <div class="panes block-group" style="width:80%">
-  {{#each panes}}
-    <div class='pane-wrapper block'>{{view Glazier.PaneView contentBinding=this}}</div>
-  {{/each}}
+  {{each panes itemViewClass="Glazier.PaneView"}}
   </div>
   <div class="block" style="width:1%;height:500px"></div>
 </div>

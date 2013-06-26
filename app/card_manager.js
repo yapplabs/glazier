@@ -80,6 +80,7 @@ var CardManager = Ember.Object.extend({
     }
     card.consumes = consumes;
     card.provides = provides;
+    card.hidden = (manifest.ui === false);
     return card;
   },
 

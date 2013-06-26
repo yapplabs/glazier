@@ -1,7 +1,6 @@
 import 'conductor' as Conductor;
 
 var PaneView = Ember.View.extend({
-  classNames: ['pane'],
   init: function () {
     this._super();
     this.cardManager = this.container.lookup('cardManager:main');
@@ -12,13 +11,8 @@ var PaneView = Ember.View.extend({
     var cardManager = this.cardManager;
     var pane = this.get('content');
     pane.then(function() {
-      var providers = pane.get('capabilityProviders');
       var type = pane.get('cardManifest');
-
       var promises = [type];
-      if (providers && providers.get('length') > 0) {
-        promises.push(providers);
-      }
 
       return Ember.RSVP.all(promises).then(function () {
         var card = cardManager.load(pane);
@@ -34,12 +28,20 @@ var PaneView = Ember.View.extend({
   },
 
   appendCard: function(card) {
-    var element = this.get('element');
+    var $paneElement, $element = this.$();
 
-    card.appendTo(element).promise.then(function(card) {
+    if (card.hidden) {
+      $element.addClass('hidden-pane');
+      $paneElement = $element;
+    } else {
+      $element.addClass('block pane-wrapper');
+      $paneElement = Em.$("<div class='pane'>");
+      $element.append($paneElement);
+    }
+
+    card.appendTo($paneElement[0]).promise.then(function(card) {
       card.render();
     }).then(null, Conductor.error);
-
   }
 });
 

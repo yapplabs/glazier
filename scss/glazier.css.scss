@@ -80,6 +80,13 @@ body {
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
 }
 
+.hidden-pane {
+  padding: 0;
+  border: 0 none;
+  height: 0;
+  width: 0;
+}
+
 .loading {
   position: absolute;
   width: 300px;
