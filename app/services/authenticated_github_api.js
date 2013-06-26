@@ -22,8 +22,13 @@ var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
     */
     ajax: function(promise, ajaxOpts) {
       var accessToken = this.accessToken();
+
       if (!accessToken) {
-        promise.reject();
+        try {
+          throw new Error('no gthub acccess token');
+        } catch(error) {
+          promise.reject(error);
+        }
         return;
       }
 
@@ -41,7 +46,7 @@ var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
         promise.resolve(value);
       }).then(null, function(jqXhr) {
         promise.reject(failureResultFromJqXhr(jqXhr));
-      });
+      }).then(null, Conductor.error);
     }
   }
 });
