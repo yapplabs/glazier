@@ -4,7 +4,7 @@ var UserController = Ember.Controller.extend({
   content: null,
   isLoggedIn: Ember.computed.bool('content'),
   username:  Ember.computed.oneWay('content.github_login'),
-  accessToken: null,
+  accessToken: Ember.computed.oneWay('content.github_access_token'),
   avatarUrl: function(){
     return "https://secure.gravatar.com/avatar/" + this.get('content.gravatar_id');
   }.property('content'),
@@ -25,7 +25,7 @@ var UserController = Ember.Controller.extend({
   },
   logout: function() {
     document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-    this.setCurrentUser(null);
+    this.set('content', null);
   },
   loginWithGithub: function(githubAccessToken) {
     var self = this;
@@ -37,15 +37,6 @@ var UserController = Ember.Controller.extend({
     }).then(function(data){
       self.set('content', data.user);
     }).then(null, Conductor.error);
-  },
-  setCurrentUser: function (user) {
-    var accessToken = null;
-    if (user) {
-      accessToken = user.github_access_token;
-      delete user.github_access_token;
-    }
-    this.set('content', user);
-    this.set('accessToken', accessToken);
   }
 });
 export = UserController;
