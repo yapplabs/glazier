@@ -32,10 +32,16 @@ var DashboardRoute = Ember.Route.extend({
   },
   events: {
     error: function (error) {
+
+      var responseText = JSON.parse(error.responseText);
+
       if (error.status === 404) {
         this.transitionTo('notFound');
+        this.controllerFor('notFound').set('content', responseText.message);
       } else {
         Ember.Logger.error(error);
+
+        this.controllerFor('error').set('content', responseText.message);
         this.transitionTo('error');
       }
     }
