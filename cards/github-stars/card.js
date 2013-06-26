@@ -4,7 +4,7 @@ Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
 Conductor.require('/vendor/ember-latest.js');
 Conductor.require('/vendor/loader.js');
-Conductor.requireCSS('/cards/github-stars/card.css');
+Conductor.requireCSS('card.css');
 
 import 'app/consumers/test' as TestConsumer;
 import 'app/consumers/identity' as IdentityConsumer;
@@ -22,7 +22,7 @@ var card = Conductor.card({
     if (!dimensions) {
       dimensions = {
         width: 500,
-        height: 500
+        height: 300
       };
     }
 
