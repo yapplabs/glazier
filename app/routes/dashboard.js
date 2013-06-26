@@ -21,9 +21,9 @@ var DashboardRoute = Ember.Route.extend({
     return hash;
   },
   model: function (params) {
-    var id = params.github_user + '/' + params.github_repo;
-
-    return Repository.find(id).then(function (repository) {
+    var id = params.github_user + '/' + params.github_repo,
+        accessToken = this.controllerFor('user').get('accessToken');
+    return Repository.find(id, accessToken).then(function (repository) {
       return Glazier.Dashboard.find(id).then(function(dashboard){
         dashboard.set('repository', repository);
         return dashboard;

@@ -1,7 +1,7 @@
 var promises = {};
 
 var Repository = {
-  find: function (id) {
+  find: function (id, accessToken) {
     var promise = promises[id];
 
     if (promise) {
@@ -21,6 +21,11 @@ var Repository = {
         type: 'get',
         url: 'https://api.github.com/repos/' + id,
         dataType: 'json',
+        beforeSend: function(xhr){
+          if (accessToken) {
+            xhr.setRequestHeader('Authorization', "token " + accessToken);
+          }
+        },
         success: success,
         error: error
       });

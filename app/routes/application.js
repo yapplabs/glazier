@@ -1,5 +1,5 @@
 var ApplicationRoute = Ember.Route.extend({
-  setupController: function(controller, model) {
+  beforeModel: function(){
     var user = getUserFromCookie();
     this.controllerFor('user').setCurrentUser(user);
   }
