@@ -81,12 +81,12 @@ module("CardManager", {
     var cardType = store.find(CardManifest, '/cards/github-auth/manifest.json');
 
     Ember.RSVP.all([authPane, cardType]).then(function() {
+      start();
       cardManager.load(authPane);
-      start();
     }).then(null, function(e) {
-      console.error('error:', e);
       start();
-    });
+      console.error('error:', e);
+    }).then(null, Conductor.error);;
 
     stop();
   },
@@ -95,20 +95,21 @@ module("CardManager", {
   }
 });
 
-asyncTest("loading a card sets targets and consumes", 2, function(){
+asyncTest("loading a card sets providerPromises and consumes", 2, function(){
   pane.then(function() {
     Ember.RSVP.all([pane.get('cardManifest'), pane.get('capabilityProviders')]).then(function () {
-      var card = cardManager.load(pane);
-      ok(card.targets['github:authenticated:read'], "target was set on the loaded card");
-      ok(card.consumes['github:authenticated:read'], "consumes was set on the loaded card");
       start();
-    });
+      var card = cardManager.load(pane);
+      ok(card.providerPromises['github:authenticated:read'], "target was set on the loaded card");
+      ok(card.consumes['github:authenticated:read'], "consumes was set on the loaded card");
+    }).then(null, Conductor.error);;
   });
 });
 
 asyncTest("loading and unloading a card", 2, function(){
   pane.then(function() {
     Ember.RSVP.all([pane.get('cardManifest'), pane.get('capabilityProviders')]).then(function () {
+      start();
       var card = cardManager.load(pane);
       var repeat = cardManager.load(pane);
       equal(card, repeat, 'The same instance of card was returned from successive calls to load');
@@ -118,7 +119,6 @@ asyncTest("loading and unloading a card", 2, function(){
       var afterUnload = cardManager.load(pane);
       notEqual(afterUnload, card, "After unloading, loading from the same pane returns a different card instance");
 
-      start();
-    });
+    }).then(null, Conductor.error);
   });
 });

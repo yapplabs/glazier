@@ -3,6 +3,8 @@ import { MockPort, MockChannel } from 'helpers/oasis_test_helpers';
 
 import 'conductor' as Conductor;
 
+var RSVP = Conductor.Oasis.RSVP;
+
 module('Glazier ProxyService');
 
 test('test ProxyService for a provider', function () {
@@ -43,14 +45,14 @@ test('test ProxyService for a consumer', function () {
 
   var deferred = new Conductor.Oasis.RSVP.defer();
 
-  var targetCard = {
+  var targetCard = RSVP.resolve({
     sandbox: {
       activatePromise: deferred.promise,
       channels: {
         'service name': providerChannel
       }
     }
-  };
+  });
 
   var sandbox = {
     card: {
@@ -58,7 +60,7 @@ test('test ProxyService for a consumer', function () {
       consumes: {
         'service name': true
       },
-      targets: {
+      providerPromises: {
         'service name': targetCard
       }
     }
@@ -114,18 +116,18 @@ test('Test ProxyService with multiple consumers and one producer', function() {
   var ajaxChannel = new MockChannel('provider', proxyTargetPort, ajaxCardPort);
 
   var deferred = Conductor.Oasis.RSVP.defer();
-  var targetCard = {
+  var targetCard = RSVP.resolve({
     sandbox: {
       activatePromise: deferred.promise,
       channels: {
         ajax: ajaxChannel
       }
     }
-  };
+  });
 
-  var proxyService1 = new ProxyService(proxyService1Port, { card : { id: '1', consumes: { ajax: true }, targets: { ajax: targetCard } } });
-  var proxyService2 = new ProxyService(proxyService2Port, { card : { id: '2', consumes: { ajax: true }, targets: { ajax: targetCard } } });
-  var proxyService3 = new ProxyService(proxyService3Port, { card : { id: '3', consumes: { ajax: true }, targets: { ajax: targetCard } } });
+  var proxyService1 = new ProxyService(proxyService1Port, { card : { id: '1', consumes: { ajax: true }, providerPromises: { ajax: targetCard } } });
+  var proxyService2 = new ProxyService(proxyService2Port, { card : { id: '2', consumes: { ajax: true }, providerPromises: { ajax: targetCard } } });
+  var proxyService3 = new ProxyService(proxyService3Port, { card : { id: '3', consumes: { ajax: true }, providerPromises: { ajax: targetCard } } });
 
   ok(proxyService1, 'created proxyService1');
   ok(proxyService2, 'created proxyService2');
@@ -235,7 +237,7 @@ test('test ProxyService that has no target', function () {
       consumes: {
         'nonexistentService': true
       },
-      targets: {}
+      providerPromises: {}
     }
   };
 
