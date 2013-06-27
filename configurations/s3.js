@@ -17,7 +17,7 @@ module.exports = {
         dest: 'assets/'
       },
       {
-        src: 'tmp/md5/vendor/**/*-*.js',
+        src: 'tmp/md5/vendor/**/*',
         dest: 'assets/vendor/'
       },
       {
