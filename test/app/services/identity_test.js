@@ -2,9 +2,11 @@ import 'glazier/services/identity' as IdentityService;
 import createServiceForTesting from 'helpers/service_test_helpers';
 import mockAjax from 'helpers/ajax_test_helpers';
 
+import 'glazier/controllers/user' as UserController;
+
 module("Glazier IdentityService Unit", {
   setup: function() {
-    this.userController = Ember.Controller.create();
+    this.userController = UserController.create();
     this.service = createServiceForTesting(IdentityService.extend({
       userController: this.userController
     }), 'card-id');
@@ -22,9 +24,9 @@ test("sends 'currentUserChanged' when userController content changes", function 
   var user = {};
 
   this.service.port.send = function(event, data) {
+    start();
     equal(event, 'currentUserChanged');
     equal(data, user);
-    start();
   };
 
   stop();
@@ -41,7 +43,7 @@ test("request 'currentUser' should resolve with the userController content", fun
 
   stop();
   this.service.simulateRequest('currentUser').then(function (userJson) {
-    equal(userJson, user);
     start();
+    equal(userJson, user);
   });
 });
