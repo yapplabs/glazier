@@ -75,8 +75,7 @@ Ensure that `glazier/tmp/public/index.html` is what you want to be used on produ
 
 Next, inside `glazier/glazier-server/`, run:
 
-    heroku surrogate rake
-'glazier:ingest_as_current[../tmp/public/index.html]' --app glazier
+    heroku surrogate rake 'glazier:ingest_as_current[../tmp/public/index.html]' --app glazier
 
 ## Ingesting card manifests
 
