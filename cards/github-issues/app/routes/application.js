@@ -12,7 +12,7 @@ function fetch() {
     var user = hash.user;
 
     hash.allIssues = Issue.findAllByRepositoryName(repositoryName, user);
-    hash.usersIssues = user && Issue.findByUserAndRepositoryName(repositoryName, user.github_login);
+    hash.userIssues = user && Issue.findByUserAndRepositoryName(repositoryName, user.github_login);
 
     return Ember.RSVP.hash(hash);
   });
@@ -25,11 +25,9 @@ var ApplicationRoute = Ember.Route.extend({
       var applicationController = route.controllerFor('application');
 
       fetch().then(function(hash){
-        if (hash.usersIssues) {
-          applicationController.set('myIssues', hash.userIssues);
-        }
-
+        applicationController.set('myIssues', hash.userIssues);
         applicationController.set('model', hash.allIssues);
+
       }).then(null, Conductor.error);
     }
   },
@@ -39,10 +37,7 @@ var ApplicationRoute = Ember.Route.extend({
 
     return fetch().then(function(hash) {
       applicationController.set('repositoryName', hash.repositoryName);
-
-      if (hash.usersIssues) {
-        applicationController.set('myIssues', hash.userIssues);
-      }
+      applicationController.set('myIssues', hash.userIssues);
 
       return hash.allIssues;
     });
