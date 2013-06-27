@@ -1,4 +1,5 @@
 import 'conductor' as Conductor;
+import 'app/consumers/identity' as IdentityConsumer;
 
 Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
@@ -6,7 +7,6 @@ Conductor.require('/vendor/ember-latest.js');
 Conductor.require('/vendor/loader.js');
 Conductor.requireCSS('/cards/github-repositories/card.css');
 
-var App;
 var card = Conductor.card({
   consumers: {
     authenticatedGithubApi: Conductor.Oasis.Consumer.extend({
@@ -25,11 +25,7 @@ var card = Conductor.card({
       }
     }),
     repository: Conductor.Oasis.Consumer,
-    identity: Conductor.Oasis.Consumer.extend({
-      getCurrentUser: function(){
-        return this.request('currentUser');
-      }
-    })
+    identity: IdentityConsumer
   },
 
   render: function (intent, dimensions) {
@@ -41,7 +37,7 @@ var card = Conductor.card({
 
   activate: function() {
     console.log("activate github-repositories");
-    App = requireModule('app/application');
+    window.App = requireModule('app/application');
   },
 
   metadata: {
