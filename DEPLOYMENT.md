@@ -77,6 +77,14 @@ Next, inside `glazier/glazier-server/`, run:
 
     heroku surrogate rake 'glazier:ingest_as_current[../tmp/public/index.html]' --app glazier
 
+## Uploading assets of cards in `glazier/cards` to s3
+
+in `glazier/`
+
+    grunt deployCards
+
+will run `grunt deploy` in each folder within `glazier/cards/`, and then a `heroku surrogate rails run` command that ingests the manifests that were just uploaded.
+
 ## Ingesting card manifests
 
 This guide assumes you have deployed card assets, including a `manifest.json` file for each card you want to use.

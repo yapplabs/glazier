@@ -22,7 +22,7 @@ module.exports = function(grunt) {
     ember_handlebars: config('ember_handlebars'),
     concat: config('concat'),
     sass: config('sass'),
-    shell: config('shell'),
+    shell: config('shell')(grunt),
     s3: config('s3'),
     jshint: config('jshint'),
     clean: ["tmp"],
@@ -60,9 +60,12 @@ module.exports = function(grunt) {
 
   grunt.registerTask('ingest', ['assets', 'shell:ingest']);
   grunt.registerTask('deploy', ['prod', 'assets', 's3:dev']);
+  grunt.registerTask('deployCards', ['shell:deployCards', 'shell:herokuIngestCards']);
 
   grunt.registerTask('ingestCards', ['shell:npmInstallForCards', 'build', 'shell:ingestCardManifests']);
   grunt.registerTask('preview', ['build', /*'uglify:all',*/ 'md5', 'index.html', 'shell:ingest', 'connect', 'watch']);
+
+
 
   grunt.registerTask('server', ['shell:glazierServer']);
   grunt.registerTask('test', ['shell:npmInstallForCards', 'build',  'connect', 'qunit:all']);
