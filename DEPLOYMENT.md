@@ -63,7 +63,7 @@ In the `package.json` file, ensure that the correct `assetHost` value is specifi
 
 ### Deployment
 
-Running `grunt prod deploy` will result in fingerprinted asset files being uploaded to s3.
+Running `grunt deploy` will result in fingerprinted asset files being uploaded to s3.
 
 It will also create a `tmp/public/index.html` file that uses the urls of those assets.
 
@@ -71,7 +71,7 @@ It will also create a `tmp/public/index.html` file that uses the urls of those a
 
 Now that you have your javascript and css files uploaded, we need to get the `index.html` page that glazier-server serves up to use them.
 
-Ensure that `glazier/tmp/public/index.html` is what you want to be used on production.  This file is created when you run `grunt prod deploy`.
+Ensure that `glazier/tmp/public/index.html` is what you want to be used on production.  This file is created when you run `grunt deploy`.
 
 Next, inside `glazier/glazier-server/`, run:
 
