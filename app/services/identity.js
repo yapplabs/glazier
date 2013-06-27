@@ -4,7 +4,7 @@ var IdentityService = Conductor.Oasis.Service.extend({
   initialize: function(capabilty, port) {
     // unfortunately sandbox.destroy does not call a destroy method on the services
     // it doesn't even hold references to the service instances, so this leaks for now
-    this.userController.addObserver('content', this, function () {
+    this.userController.addObserver('isLoggedIn', this, function () {
       this.port.send('currentUserChanged', this.userController.get('content'));
     });
   },
