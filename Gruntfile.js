@@ -22,7 +22,7 @@ module.exports = function(grunt) {
     ember_handlebars: config('ember_handlebars'),
     concat: config('concat'),
     sass: config('sass'),
-    shell: config('shell')(grunt),
+    shell: config('shell'),
     s3: config('s3'),
     jshint: config('jshint'),
     clean: ["tmp"],

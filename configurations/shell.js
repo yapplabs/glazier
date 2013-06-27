@@ -1,4 +1,5 @@
-var fs = require('fs')
+var fs = require('fs');
+var grunt = require('grunt');
 var opts = {
   stdout: true,
   stderr: true,
@@ -30,49 +31,47 @@ function cardIngestManigestCommand(cardName) {
   return cmd;
 }
 
-module.exports = function(grunt) {
-  function herokuIngestCommand(cardName) {
-    var deployJSON = grunt.file.readJSON('cards/' + cardName + '/package.json');
-    var glazierConfig = deployJSON.glazierConfig;
-    var url = glazierConfig.assetHost + '/assets/cards/' + glazierConfig.repositoryName + '/manifest.json';
-    var cmd = "cd glazier-server && heroku surrogate rails runner \"CardManifest.ingest('" + url + "')\" && cd ..";
-    return cmd;
-  }
-
-  return {
-    glazierServer: {
-      command: [
-        "cd glazier-server",
-        "PORT=3040 foreman start"
-      ].join(' && '),
-      options: opts
-    },
-    ingest: {
-      command: [
-        "cd glazier-server",
-        "bundle exec rake 'glazier:ingest_as_current[../tmp/public/index.html]'"
-      ].join(' && '),
-      options: opts
-    },
-    npmInstallForCards: {
-      command: fs.readdirSync('cards').filter(isCardDir).map(cardNpmInstallCommand).join(' && '),
-      options: opts
-    },
-    buildCards: {
-      command: fs.readdirSync('cards').filter(isCardDir).map(cardGruntCommand).join(' && '),
-      options: opts
-    },
-    ingestCardManifests: {
-      command: fs.readdirSync('cards').filter(isCardDir).map(cardIngestManigestCommand).join(' && '),
-      options: opts
-    },
-    deployCards: {
-      command: fs.readdirSync('cards').filter(isCardDir).map(cardGruntDeployCommand).join(' && '),
-      options: opts
-    },
-    herokuIngestCards: {
-      command: fs.readdirSync('cards').filter(isCardDir).map(herokuIngestCommand).join(' && '),
-      options: opts
-    }
-  };
+function herokuIngestCommand(cardName) {
+  var deployJSON = grunt.file.readJSON('cards/' + cardName + '/package.json');
+  var glazierConfig = deployJSON.glazierConfig;
+  var url = glazierConfig.assetHost + '/assets/cards/' + glazierConfig.repositoryName + '/manifest.json';
+  var cmd = "cd glazier-server && heroku surrogate rails runner \"CardManifest.ingest('" + url + "')\" && cd ..";
+  return cmd;
 }
+
+module.exports = {
+  glazierServer: {
+    command: [
+      "cd glazier-server",
+      "PORT=3040 foreman start"
+    ].join(' && '),
+    options: opts
+  },
+  ingest: {
+    command: [
+      "cd glazier-server",
+      "bundle exec rake 'glazier:ingest_as_current[../tmp/public/index.html]'"
+    ].join(' && '),
+    options: opts
+  },
+  npmInstallForCards: {
+    command: fs.readdirSync('cards').filter(isCardDir).map(cardNpmInstallCommand).join(' && '),
+    options: opts
+  },
+  buildCards: {
+    command: fs.readdirSync('cards').filter(isCardDir).map(cardGruntCommand).join(' && '),
+    options: opts
+  },
+  ingestCardManifests: {
+    command: fs.readdirSync('cards').filter(isCardDir).map(cardIngestManigestCommand).join(' && '),
+    options: opts
+  },
+  deployCards: {
+    command: fs.readdirSync('cards').filter(isCardDir).map(cardGruntDeployCommand).join(' && '),
+    options: opts
+  },
+  herokuIngestCards: {
+    command: fs.readdirSync('cards').filter(isCardDir).map(herokuIngestCommand).join(' && '),
+    options: opts
+  }
+};
