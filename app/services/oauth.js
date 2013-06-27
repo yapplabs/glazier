@@ -1,5 +1,17 @@
 import 'conductor' as Conductor;
 
+// Lookup a url in the manifest for this card
+var cardEnv = function(cardId) {
+  // assume the manifest is already loaded, this is likely brittle
+  var manifest = Glazier.Pane.find(cardId).get('cardManifest.manifest');
+
+  var env = (/glazier\.herokuapp\.com/.test(window.location.hostname)) ? 'prod' : 'dev';
+
+  if (manifest) {
+    return manifest.env[env];
+  }
+};
+
 var OauthService = Conductor.Oasis.Service.extend({
   oauthController: null,
 
@@ -38,7 +50,7 @@ var OauthService = Conductor.Oasis.Service.extend({
         }).then(success, failure);
       } else {
         var redirectUri = window.location.origin + '/api/oauth/callback';
-        var clientId = '1693'; //TODO: this should come from the card's data
+        var clientId = cardEnv(this.sandbox.card.id).oauthClientId;
 
         this.authorize(params.authorizeUrl, clientId, redirectUri).then(success, failure);
       }
