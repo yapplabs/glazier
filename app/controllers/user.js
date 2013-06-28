@@ -16,12 +16,17 @@ var UserController = Ember.Controller.extend({
   exchangeGithubOauthCode: function(authCode){
     var self = this;
 
+    function loginComplete() {
+      self.set('isLoggingIn', false);
+    }
+
     ajax(
       "/api/oauth/github/exchange?code=" + authCode, {
       type: 'post',
     }).then(function(accessToken) {
       self.loginWithGithub(accessToken);
-    }).then(null, Conductor.error);
+    }).then(null, Conductor.error).
+      then(loginComplete, loginComplete);
   },
   logout: function() {
     document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
@@ -29,6 +34,7 @@ var UserController = Ember.Controller.extend({
   },
   loginWithGithub: function(githubAccessToken) {
     var self = this;
+
     return ajax('/api/session.json', {
       type: 'POST',
       data: {

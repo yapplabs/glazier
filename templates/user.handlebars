@@ -1,5 +1,9 @@
 {{#if isLoggedIn}}
   <img {{bindAttr src="avatarUrl"}} /> {{username}}
 {{else}}
-  Login with Github
+  {{#if isLoggingIn}}
+    logging in...
+  {{else}}
+    Login with Github
+  {{/if}}
 {{/if}}
