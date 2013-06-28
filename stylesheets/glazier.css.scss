@@ -2,8 +2,6 @@
 
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
 
-
-
 body {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 14px;
@@ -31,6 +29,7 @@ iframe {
   overflow:hidden;
   border:0;overflow:hidden;
 }
+
 /*!
 * PocketGrid 0.1.0
 * Copyright 2013 Arnaud Leray
@@ -75,7 +74,9 @@ iframe {
   padding: .75em;
 }
 .panes {
-  padding: 2em;
+  width: 80%;
+  float: left;
+  padding: 3em;
 }
 .pane-wrapper {
   width: 50%;
@@ -123,7 +124,7 @@ iframe {
   margin-left: -170px;
   font-size: 36px;
   background-color: rgba(255,255,255,0.4);
-  border-radius: 10px;
+  border-radius: 2px;
   padding: 20px;
 }
 
@@ -191,6 +192,11 @@ iframe {
   &.is-drawer-open {
     bottom:0;
   }
+}
+
+#repository-sidebar-block {
+  width: 19%;
+  height: 500px;
 }
 
 .repository-sidebar {
