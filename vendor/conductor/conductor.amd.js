@@ -262,7 +262,7 @@ define("conductor",
             assertion: Conductor.assertionConsumer(assertionDefered, this),
             data: Conductor.dataConsumer(dataDefered, this),
             lifecycle: Conductor.lifecycleConsumer(activatePromise),
-            height: Conductor.heightConsumer(this),
+            // height: Conductor.heightConsumer(this),
             nestedWiretapping: Conductor.nestedWiretapping(this)
           }, options.consumers)
         };
