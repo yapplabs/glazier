@@ -37,6 +37,7 @@ var PaneView = Ember.View.extend({
       $element.addClass('block pane-wrapper');
       $paneElement = Ember.$("<div class='pane'>");
       $element.append($paneElement);
+      $paneElement.append("<div class='pane-footer'>");
     }
 
     card.appendTo($paneElement[0]).promise.then(function(card) {

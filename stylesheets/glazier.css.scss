@@ -73,12 +73,8 @@ a { }
 }
 
 .pane {
-  // position: relative;
+  position: relative;
   overflow:scroll;
-
-  /* This style is stolen shamelessly from Twitter Bootstrap's navbar styling. */
-  padding: 20px;
-  // margin: 14px 0;
 
   background-color: #DFF4F4;
   border: 1px solid #B4C8C8;
@@ -86,6 +82,16 @@ a { }
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.165);
      -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.165);
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.165);
+}
+
+.pane-footer {
+  background: #D6E3E2;
+  width: 100%;
+  height: 35px;
+  position: absolute;
+  bottom: 0;
+  opacity: 0.8;
+  border-top: 1px solid #D3D3D3;
 }
 
 .hidden-pane {

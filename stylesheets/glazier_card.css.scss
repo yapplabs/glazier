@@ -8,6 +8,7 @@ body {
   background: #DFF4F4;
   line-height: 1.51em;
   color: #808080;
+  padding: 1em;
 }
 
 h1 { font-size: 32px; color: #4B4B4B; line-height: 1.51em }
@@ -24,4 +25,8 @@ a { }
 #card {
   width:  320px;
   height: 240px;
+}
+
+#card > div {
+  padding-bottom: 100px;
 }
