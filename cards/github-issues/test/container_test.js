@@ -59,7 +59,7 @@ asyncTest("it renders", 1, function(){
 
       return new Ember.RSVP.Promise(function(resolve) {
         var watcher = setInterval(function() {
-          var routerIsLoading = window.App.__container__.lookup('router:main').router.isLoading;
+          var routerIsLoading = card.App.__container__.lookup('router:main').router.isLoading;
           if (routerIsLoading) { return; }
           if (Ember.run.hasScheduledTimers() || Ember.run.currentRunLoop) { return; }
           clearInterval(watcher);

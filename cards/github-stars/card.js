@@ -19,6 +19,8 @@ var card = Conductor.card({
     'unauthenticatedGithubApi': Conductor.Oasis.Consumer
   },
 
+  App: null,
+
   render: function (intent, dimensions) {
     if (!dimensions) {
       dimensions = {
@@ -29,13 +31,13 @@ var card = Conductor.card({
 
     document.body.innerHTML = "<div id=\"card\"></div>";
 
-    Ember.run(App, 'advanceReadiness');
+    Ember.run(this.App, 'advanceReadiness');
 
-    return App;
+    return this.App;
   },
 
   activate: function() {
-    window.App = requireModule('app/application');
+    this.App = requireModule('app/application');
   },
 
   metadata: {

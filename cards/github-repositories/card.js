@@ -29,16 +29,18 @@ var card = Conductor.card({
     identity: IdentityConsumer
   },
 
+  App: null,
+
   render: function (intent, dimensions) {
     if (!dimensions) { dimensions = {width:500,height:500}; }
     document.body.innerHTML = "<div id=\"card\"></div>";
     this.resize(dimensions);
-    App.advanceReadiness();
+    this.App.advanceReadiness();
   },
 
   activate: function() {
     console.log("activate github-repositories");
-    window.App = requireModule('app/application');
+    this.App = requireModule('app/application');
   },
 
   metadata: {
