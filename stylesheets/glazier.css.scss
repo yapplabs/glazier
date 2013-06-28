@@ -182,7 +182,7 @@ iframe {
   .tabs > .repository { width: 200px; }
   .panel {
     height:240px;
-    overflow:hidden;
+    overflow: scroll;
     position: relative;
     width: 100%;
     color: #eee;
