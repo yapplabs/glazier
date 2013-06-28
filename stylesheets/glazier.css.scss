@@ -139,6 +139,7 @@ iframe {
   bottom: -240px;
   right: 0;
   left: 0;
+  font-size: 16px;
 
   background: #1a1a1a;
 
@@ -155,13 +156,17 @@ iframe {
   }
 
   .tabs > div {
-    height: 40px;
-    line-height: 40px;
+    height: 50px;
+    line-height: 50px;
     text-align: center;
     padding: 0em 1.5em;
     cursor:pointer;
     display: table-cell;
-    border-left: 1px solid #2E2E2E;
+    border-left: 1px solid #333;
+  }
+
+  .tabs > div:last-child {
+    border-right: 1px solid #333;
   }
 
   .tabs > .logo {
@@ -177,10 +182,14 @@ iframe {
       width: 30px;
       height: 30px;
       vertical-align: middle;
+      margin-right: 0.5em;
     }
   }
 
-  .tabs > .repository { width: 200px; }
+  .tabs > .repository input{
+    margin-left: 0.5em;
+  }
+
   .panel {
     height:240px;
     overflow: scroll;
