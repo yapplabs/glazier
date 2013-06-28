@@ -2,12 +2,15 @@
 
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
 
+
+
 body {
   font-family: 'Source Sans Pro', sans-serif;
-  background: #9DDADD;
   font-size: 14px;
+  background: #DFF4F4;
   line-height: 1.51em;
-  color: #696D6E;
+  color: #808080;
+  padding: 1em;
 }
 
 h1 { font-size: 32px; color: #4B4B4B; line-height: 1.51em }
@@ -21,7 +24,13 @@ p { }
 
 a { }
 
+iframe {
+  width: 100%;
+  height: 100%;
 
+  overflow:hidden;
+  border:0;overflow:hidden;
+}
 /*!
 * PocketGrid 0.1.0
 * Copyright 2013 Arnaud Leray
@@ -61,11 +70,9 @@ a { }
 /* Gutters: can be removed if you don't want gutters */
 .block-group {
   margin: -.5em;
-  // margin: -1em 0 0 -1em;
 }
 .block {
-  padding: .5em;
-  // padding: 1em 0 0 1em;
+  padding: .75em;
 }
 .panes {
   padding: 2em;
@@ -76,7 +83,9 @@ a { }
 
 .pane {
   position: relative;
-  overflow:scroll;
+  overflow: hidden;
+
+  height: 260px;
 
   background-color: #DFF4F4;
   border: 1px solid #B4C8C8;
@@ -92,7 +101,7 @@ a { }
   height: 35px;
   position: absolute;
   bottom: 0;
-  opacity: 0.8;
+  opacity: 0.75;
   border-top: 1px solid #D3D3D3;
 }
 
@@ -124,38 +133,52 @@ a { }
 }
 
 #footer {
-  color: #B3B3B3;
-  background: #262626;
   position: fixed;
+  z-index: 100;
   bottom: -240px;
-  -webkit-transition: bottom 0.2s ease-out;
   right: 0;
   left: 0;
-  z-index: 100;
-  height: 300px;
+
+  background: #1a1a1a;
+
+  box-shadow: 0px 0px 5px #262626;
+  -webkit-transition: bottom 0.2s ease-out;
+
+  color: #B3B3B3;
+
+
   .tabs {
-    height: 60px;
-    border-right:1px solid #2E2E2E;
+    display: table;
+    margin: 0 auto;
+    min-width: 960px;
   }
+
   .tabs > div {
-    display:inline-block;
-    padding:10px;
-    height:40px;
-    line-height:40px;
-    width:100px;
-    border-right:1px solid #666;
-    font-size:13px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    padding: 0em 1.5em;
     cursor:pointer;
+    display: table-cell;
+    border-left: 1px solid #2E2E2E;
   }
-  .tabs > .logo { font-weight: bold; }
+
+  .tabs > .logo {
+    font-weight: bold;
+    background: url('/glazier.png') no-repeat center center;
+    width: 151px;
+    min-height: 50px;
+    text-indent: -9999em;
+  }
+
   .tabs > .user {
-    width: 200px;
     img {
       width: 30px;
       height: 30px;
       vertical-align: middle;
     }
   }
+
   .tabs > .repository { width: 200px; }
   .panel {
     height:240px;
