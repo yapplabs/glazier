@@ -9,12 +9,12 @@ module.exports = {
   dev: {
     upload: [
       {
-        src: 'tmp/md5/glazier*.js',
+        src: 'tmp/md5/glazier-*.js',
         dest: 'assets/'
       },
       {
-        src: 'tmp/md5/glazier*.css',
-        dest: 'assets/'
+        src: 'tmp/md5/css/**/*-*.css',
+        dest: 'assets/css'
       },
       {
         src: 'tmp/md5/vendor/**/*',
