@@ -56,7 +56,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('copy_glazier', ['copy:main', 'copy:test', 'copy:fixtures', 'copy:vendor']);
 
-  grunt.registerTask('assets', ['build', /*'uglify:all',*/ 'md5', 'index.html']);
+  grunt.registerTask('assets', ['build', /*'uglify:all',*/ 'md5', 'index.html', 'css_templating']);
 
   grunt.registerTask('ingest', ['assets', 'shell:ingest']);
   grunt.registerTask('deploy', ['prod', 'assets', 's3:dev']);
@@ -69,5 +69,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('server', ['shell:glazierServer']);
   grunt.registerTask('test', ['shell:npmInstallForCards', 'build',  'connect', 'qunit:all']);
-  grunt.registerTask('default', ['shell:npmInstallForCards','build', 'index.html', 'connect', 'watch']);
+  grunt.registerTask('default', ['shell:npmInstallForCards','build', 'index.html', 'css_templating', 'connect', 'watch']);
 };
