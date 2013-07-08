@@ -1,5 +1,4 @@
 import Consumer from 'conductor';
-import IdentityConsumer from 'app/consumers/identity';
 
 Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
@@ -12,21 +11,19 @@ var card = Conductor.card({
   consumers: {
     authenticatedGithubApi: Conductor.Oasis.Consumer.extend({
       getRepositories: function(){
-        var consumer = this;
-        return this.card.consumers.identity.getCurrentUser().then(function(userJson){
-          if (userJson) {
-            return consumer.request("ajax", {
-              url: '/user/repos',
-              dataType: 'json'
-            });
-          } else {
-            return null;
-          }
-        });
+        if (card.data.user) {
+          return this.request("ajax", {
+            url: '/user/repos',
+            dataType: 'json'
+          });
+        }
       }
-    }),
-    repository: Conductor.Oasis.Consumer,
-    identity: IdentityConsumer
+    })
+  },
+
+  /* called by data service */
+  didUpdateData: function(bucket, data) {
+    // TODO
   },
 
   App: null,

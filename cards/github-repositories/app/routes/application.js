@@ -16,13 +16,7 @@ var ApplicationRoute = Ember.Route.extend({
 
   setupController: function(controller, model) {
     this._super(controller, model);
-
-    var repositoryService = card.consumers['repository'];
-    var currentRepoRequest = repositoryService.request('getRepository');
-
-    currentRepoRequest.then(function(repoName) {
-      controller.set('currentRepository', repoName);
-    }).then(null, Conductor.error);
+    controller.set('currentRepository', card.data.repositoryName);
   },
 
   model: function(){
