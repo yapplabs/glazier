@@ -5,7 +5,7 @@ var request = require('http').request;
 module.exports = {
   server: {
     options: {
-      port: 8000,
+      port: process.env.port || 8000,
       hostname: '0.0.0.0',
       base: 'tmp/public',
       middleware: middleware
