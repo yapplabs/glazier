@@ -5,7 +5,7 @@ module.exports = {
     files: [{
       expand: true,
       cwd: 'tmp/public',
-      src: ['**/*'],
+      src: ['**/*', '!glazier/**/*', '!test/**/*'],
       dest: 'tmp/md5/',
       filter: 'isFile'
     }],
