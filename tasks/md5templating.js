@@ -30,8 +30,12 @@ var devConfig = {
   tempDir: "tmp",
   templateDir: "public",
   buildDir: "public",
-  sourceFile: function(template){ return [this.tempDir, this.templateDir, template].join("/"); },
-  writeFile: function(template){ return [this.tempDir, this.buildDir, template].join("/"); },
+  sourceFile: function(template){
+    return [this.tempDir, this.templateDir, template].join("/");
+  },
+  writeFile: function(template){
+    return [this.tempDir, this.buildDir, template].join("/");
+  },
   getData: function(){ return data; },
   data: {
     manifestUrl: function(path) {
@@ -69,7 +73,7 @@ function templateProdFile(templatePath) {
         } else {
           console.log("Found entry for path " + path);
         }
-        return grunt.config.process('<%= pkg.assetHost %>') + manifest[path]; //.replace(/(-[^-]+)\.js$/, '$1.js');
+        return grunt.config.process('<%= pkg.assetHost %>') + manifest[path];
       },
       manifest: JSON.stringify(manifest || {}),
       assetHost: assetHost
@@ -80,14 +84,15 @@ function templateProdFile(templatePath) {
 
 function getMD5Filename(manifest, path) {
   var file =  manifest["/"+path];
+
   if (!file) {
-    throw "No file found in manifest for path " + path;
+    throw new Error("No file found in manifest for path: " + path);
   } else {
     var md5FileArray = file.split("/");
     var md5File =  md5FileArray[md5FileArray.length-1];
     var pathArray = path.split("/");
     pathArray.pop();
-
   }
+
   return "tmp/md5/" + pathArray.join("/") + "/" + md5File;
 }
