@@ -1,8 +1,12 @@
 var UserView = Ember.View.extend({
   classNames: ['user'],
-  click: function(){
+  click: function(evt){
+    if ($(evt.target).hasClass('logout')) {
+      return; // the logout button has it's own action trigger
+    }
+
     if (this.get('controller.isLoggedIn')) {
-      this.get('controller').send('logout');
+      this.get('controller').send('clickedUser');
     } else {
       this.startGithubOauth();
     }

@@ -1,5 +1,10 @@
 {{#if isLoggedIn}}
   <img {{bindAttr src="avatarUrl"}} /> {{username}}
+  {{#if isShowingLogout}}
+    <button class="logout" {{action logout}}>
+      Log out
+    </button>
+  {{/if}}
 {{else}}
   {{#if isLoggingIn}}
     logging in...

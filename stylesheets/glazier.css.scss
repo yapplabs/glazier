@@ -178,11 +178,27 @@ iframe {
   }
 
   .tabs > .user {
+    position: relative;
     img {
       width: 30px;
       height: 30px;
       vertical-align: middle;
       margin-right: 0.5em;
+    }
+    button.logout {
+      left: 0;
+      position: absolute;
+      height: 50px;
+      right: 0;
+      top: -50px;
+      margin: 0;
+      padding: 0;
+      background: #1a1a1a;
+      box-shadow: 0px 0px 5px #262626;
+      color: #B3B3B3;
+      font-size: 16px;
+      border: 1px solid #333;
+      cursor:pointer;
     }
   }
 
