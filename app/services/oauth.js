@@ -26,13 +26,13 @@ var OauthService = Conductor.Oasis.Service.extend({
     /*
       @public
 
-      @method loginWithGithub
+      @method authorize
       @param promise {Conductor.Oasis.RSVP.Promise}
-      @param githubData {Object}
+      @param params {Object}
     */
     authorize: function(promise, params) {
       // params.authorizeUrl
-      // params.exchangeUrl TODO in future we could consider lack of exchange as implicit flow
+      // params.exchangeUrl (TODO: in the future we could consider lack of exchange as implicit flow)
 
       function success(accessToken) {
         promise.resolve(accessToken);
