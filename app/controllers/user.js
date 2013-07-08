@@ -24,7 +24,7 @@ var UserController = Ember.Controller.extend({
     }).then(null, Conductor.error)
   },
   clickedUser: function(){
-    this.toggleProperty('isShowingLogout')
+    this.toggleProperty('isShowingLogout');
   },
   logout: function() {
     document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
