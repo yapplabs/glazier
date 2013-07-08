@@ -14,4 +14,4 @@ var CardDataManager = Ember.Object.extend({
   }.observes('user')
 });
 
-export = CardDataManager;
+export default CardDataManager;
