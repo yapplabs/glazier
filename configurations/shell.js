@@ -39,6 +39,8 @@ function herokuIngestCommand(cardName) {
   return cmd;
 }
 
+herokuIngestIndexCommand = "cd glazier-server && heroku surrogate rake 'glazier:ingest_as_current[../tmp/public/index.html]' --app glazier && cd ..";
+
 module.exports = {
   glazierServer: {
     command: [
@@ -52,6 +54,10 @@ module.exports = {
       "cd glazier-server",
       "bundle exec rake 'glazier:ingest_as_current[../tmp/public/index.html]'"
     ].join(' && '),
+    options: opts
+  },
+  ingestIndex: {
+    command: herokuIngestIndexCommand,
     options: opts
   },
   npmInstallForCards: {

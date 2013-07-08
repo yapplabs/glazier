@@ -69,11 +69,9 @@ It will also create a `tmp/public/index.html` file that uses the urls of those a
 
 ## Updating the production database with the contents of `index.html`
 
-Now that you have your javascript and css files uploaded, we need to get the `index.html` page that glazier-server serves up to use them.
+Part of what `grunt deploy` does is upload the `index.html` that uses the assets that it uploads to s3.
 
-Ensure that `glazier/tmp/public/index.html` is what you want to be used on production.  This file is created when you run `grunt deploy`.
-
-Next, inside `glazier/glazier-server/`, run:
+It does this by running:
 
     heroku surrogate rake 'glazier:ingest_as_current[../tmp/public/index.html]' --app glazier
 

@@ -59,7 +59,7 @@ module.exports = function(grunt) {
   grunt.registerTask('assets', ['build', /*'uglify:all',*/ 'md5', 'index.html', 'templateCSS']);
 
   grunt.registerTask('ingest', ['assets', 'shell:ingest']);
-  grunt.registerTask('deploy', ['prod', 'assets', 's3:prod']);
+  grunt.registerTask('deploy', ['prod', 'assets', 's3:prod', 'shell:ingestIndex']);
   grunt.registerTask('deployCards', ['shell:deployCards', 'shell:herokuIngestCards']);
 
   grunt.registerTask('ingestCards', ['shell:npmInstallForCards', 'build', 'shell:ingestCardManifests']);
