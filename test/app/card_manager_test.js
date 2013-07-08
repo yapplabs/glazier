@@ -60,7 +60,12 @@ module("CardManager", {
     });
 
     cardManager = CardManager.create({
-      conductor: conductor
+      conductor: conductor,
+      cardDataManager: Ember.Object.create({
+        getAmbientData: function() {
+          return {};
+        }
+      })
     });
 
     store.load(CardManifest, '/cards/github-auth/manifest.json', {
