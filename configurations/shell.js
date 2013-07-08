@@ -25,6 +25,12 @@ function cardNpmInstallCommand(cardName) {
   return cmd;
 }
 
+function cardNpmRefreshCommand(cardName) {
+  var cmd = "cd cards/" + cardName + " && rm -rf node_modules && npm install && cd ../.."
+  return cmd;
+}
+
+
 function cardIngestManigestCommand(cardName) {
   var manifestPath = 'cards/' + cardName + '/dist/dev/' + cardName + '/manifest.json';
   var cmd = 'cd glazier-server && bundle exec rake "glazier:card:ingest[../' + manifestPath + ']" && cd ..'
@@ -58,6 +64,10 @@ module.exports = {
   },
   ingestIndex: {
     command: herokuIngestIndexCommand,
+    options: opts
+  },
+  npmRefreshForCards: {
+    command: fs.readdirSync('cards').filter(isCardDir).map(cardNpmRefreshCommand).join(' && '),
     options: opts
   },
   npmInstallForCards: {
