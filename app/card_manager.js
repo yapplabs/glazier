@@ -6,6 +6,8 @@ import Conductor from 'conductor';
   @extends Ember.Object
 */
 var CardManager = Ember.Object.extend({
+  cardDataManager: null,
+
   init: function () {
     this.instances = {}; // track instances by id
     this.providerCardDeferreds = {};
@@ -54,6 +56,8 @@ var CardManager = Ember.Object.extend({
         consumes = this._processConsumes(manifest, capabilities),
         provides = this._processProvides(manifest, capabilities),
         paneId = pane.get('id'),
+        ambientData, // should come from repository controller and user controller
+        data,
         cardData = this._cardData(pane, manifest),
         cardUrl = manifest.cardUrl;
 
@@ -61,7 +65,10 @@ var CardManager = Ember.Object.extend({
       throw new Error("cardUrl cannot be null or undefined");
     }
 
-    this.conductor.loadData(cardUrl, paneId, cardData);
+    ambientData = this.cardDataManager.getAmbientData();
+
+    data = Em.$.extend({}, ambientData, cardData);
+    this.conductor.loadData(cardUrl, paneId, data);
 
     var card = this.conductor.load(cardUrl, paneId, {
       capabilities: capabilities

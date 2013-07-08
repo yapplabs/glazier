@@ -21,7 +21,7 @@ var UserController = Ember.Controller.extend({
       type: 'post',
     }).then(function(accessToken) {
       self.loginWithGithub(accessToken);
-    }).then(null, Conductor.error)
+    }).then(null, Conductor.error);
   },
   clickedUser: function(){
     this.toggleProperty('isShowingLogout');

@@ -1,4 +1,5 @@
 import CardManager from 'glazier/card_manager';
+import CardDataManager from 'glazier/card_data_manager';
 import Conductor from 'conductor';
 
 function conductorUrl(){
@@ -18,6 +19,12 @@ var initializer = {
     }), { instantiate: false});
 
     application.register('cardManager:main', CardManager);
+    application.register('cardDataManager:main', CardDataManager);
+
+    application.inject('cardDataManager:main', 'userController', 'controller:user');
+    application.inject('cardDataManager:main', 'repositoryController', 'controller:repository');
+
+    application.inject('cardManager:main', 'cardDataManager', 'cardDataManager:main');
 
     application.inject('cardManager:main', 'conductor', 'conductor:main');
     application.inject('service:identity', 'userController', 'controller:user');
