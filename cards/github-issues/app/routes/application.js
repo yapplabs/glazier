@@ -1,7 +1,7 @@
-import 'card' as card;
-import 'conductor' as Conductor;
-import 'app/models/issue' as Issue;
-import 'app/models/repo' as Repo;
+import card from 'card';
+import Conductor from 'conductor';
+import Issue from 'app/models/issue';
+import Repo from 'app/models/repo';
 
 function fetch() {
   return Ember.RSVP.hash({
@@ -44,4 +44,4 @@ var ApplicationRoute = Ember.Route.extend({
   }
 });
 
-export = ApplicationRoute;
+export default ApplicationRoute;

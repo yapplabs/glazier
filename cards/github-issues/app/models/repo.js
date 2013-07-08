@@ -1,4 +1,4 @@
-import 'card' as card;
+import card from 'card';
 
 var Repo = {
   /*
@@ -14,4 +14,4 @@ var Repo = {
   }
 };
 
-export = Repo;
+export default Repo;

@@ -2,4 +2,4 @@ var ApplicationController = Ember.ObjectController.extend({
   loggedIn: Ember.computed.bool('user')
 });
 
-export = ApplicationController;
+export default ApplicationController;

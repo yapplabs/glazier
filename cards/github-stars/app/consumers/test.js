@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Consumer from 'conductor';
 
 var TestConsumer = Conductor.Oasis.Consumer.extend({
   requests: {
@@ -9,4 +9,4 @@ var TestConsumer = Conductor.Oasis.Consumer.extend({
   }
 });
 
-export = TestConsumer;
+export default TestConsumer;

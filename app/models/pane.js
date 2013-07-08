@@ -14,4 +14,4 @@ var Pane = DS.Model.extend({
   }.property('paneEntries', 'paneUserEntries', 'paneTypeUserEntries')
 });
 
-export = Pane;
+export default Pane;

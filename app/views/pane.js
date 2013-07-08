@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var PaneView = Ember.View.extend({
   init: function () {
@@ -46,4 +46,4 @@ var PaneView = Ember.View.extend({
   }
 });
 
-export = PaneView;
+export default PaneView;

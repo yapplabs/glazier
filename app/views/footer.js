@@ -6,4 +6,4 @@ var FooterView = Ember.View.extend({
   }
 });
 
-export = FooterView;
+export default FooterView;

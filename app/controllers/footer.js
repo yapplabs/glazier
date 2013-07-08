@@ -5,4 +5,4 @@ var FooterController = Ember.Controller.extend({
   }
 });
 
-export = FooterController;
+export default FooterController;

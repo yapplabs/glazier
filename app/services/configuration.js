@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var ConfigurationService = Conductor.Oasis.Service.extend({
 
@@ -24,4 +24,4 @@ var ConfigurationService = Conductor.Oasis.Service.extend({
   }
 });
 
-export = ConfigurationService;
+export default ConfigurationService;

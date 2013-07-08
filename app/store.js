@@ -1,7 +1,7 @@
-import 'glazier/adapter' as Adapter;
+import Adapter from 'glazier/adapter';
 
 var Store = DS.Store.extend({
   adapter: Adapter
 });
 
-export = Store;
+export default Store;

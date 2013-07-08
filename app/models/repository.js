@@ -37,4 +37,4 @@ var Repository = {
   }
 };
 
-export = Repository;
+export default Repository;

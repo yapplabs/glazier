@@ -1,5 +1,5 @@
 var camelize = Ember.String.camelize;
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var initializer = {
   name: 'conductorServices',
@@ -16,4 +16,4 @@ var initializer = {
   }
 };
 
-export = initializer;
+export default initializer;

@@ -4,4 +4,4 @@ var ErrorRoute = Ember.Route.extend({
   }
 });
 
-export = ErrorRoute;
+export default ErrorRoute;

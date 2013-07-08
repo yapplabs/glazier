@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 // Lookup a url in the manifest for this card
 var cardEnv = function(cardId) {
@@ -92,4 +92,4 @@ var OauthService = Conductor.Oasis.Service.extend({
   }
 });
 
-export = OauthService;
+export default OauthService;

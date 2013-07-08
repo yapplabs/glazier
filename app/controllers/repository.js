@@ -3,4 +3,4 @@ var RepositoryController = Ember.Controller.extend({
   path: Ember.computed.alias('controllers.dashboard.id')
 });
 
-export = RepositoryController;
+export default RepositoryController;

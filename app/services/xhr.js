@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 // Lookup a url in the manifest for this card
 var cardManifestUrl = function(cardId, url) {
@@ -50,4 +50,4 @@ var ManifestXHRService = Conductor.XHRService.extend({
   }
 });
 
-export = ManifestXHRService;
+export default ManifestXHRService;

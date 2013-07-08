@@ -1,8 +1,8 @@
-import 'glazier/services/identity' as IdentityService;
+import IdentityService from 'glazier/services/identity';
 import createServiceForTesting from 'helpers/service_test_helpers';
 import mockAjax from 'helpers/ajax_test_helpers';
 
-import 'glazier/controllers/user' as UserController;
+import UserController from 'glazier/controllers/user';
 
 module("Glazier IdentityService Unit", {
   setup: function() {

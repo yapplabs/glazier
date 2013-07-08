@@ -1,4 +1,4 @@
-import 'card' as card;
+import card from 'card';
 
 var Issue = {
   /*
@@ -42,4 +42,4 @@ var Issue = {
   }
 };
 
-export = Issue;
+export default Issue;

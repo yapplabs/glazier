@@ -1,3 +1,3 @@
 var ApplicationController = Ember.ArrayController.extend();
 
-export = ApplicationController;
+export default ApplicationController;

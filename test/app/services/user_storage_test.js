@@ -1,10 +1,10 @@
-import 'glazier/services/user_storage' as UserStorageService;
+import UserStorageService from 'glazier/services/user_storage';
 import assertResolved from 'helpers/promise_test_helpers';
 import { inCard, TestService } from 'helpers/card_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
 import mockAjax from 'helpers/ajax_test_helpers';
 
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var conductor, card;
 

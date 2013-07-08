@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Consumer from 'conductor';
 
 Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
@@ -7,8 +7,8 @@ Conductor.require('/vendor/loader.js');
 Conductor.requireCSS('/css/glazier_card.css');
 Conductor.requireCSS('/cards/github-stars/card.css');
 
-import 'app/consumers/test' as TestConsumer;
-import 'app/consumers/identity' as IdentityConsumer;
+import TestConsumer from 'app/consumers/test';
+import IdentityConsumer from 'app/consumers/identity';
 
 var card = Conductor.card({
   consumers: {
@@ -58,4 +58,4 @@ var card = Conductor.card({
   }
 });
 
-export = card;
+export default card;

@@ -1,5 +1,5 @@
-import 'conductor' as Conductor;
-import 'app/consumers/identity' as IdentityConsumer;
+import Consumer from 'conductor';
+import IdentityConsumer from 'app/consumers/identity';
 
 Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
@@ -60,4 +60,4 @@ var card = Conductor.card({
   }
 });
 
-export = card;
+export default card;

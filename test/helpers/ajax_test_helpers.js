@@ -17,4 +17,4 @@ function mockAjax() {
   };
 }
 
-export mockAjax;
+export default mockAjax;

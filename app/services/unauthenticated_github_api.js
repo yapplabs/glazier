@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 /*
   Provides unauthenticated github api access
@@ -47,4 +47,4 @@ function failureResultFromJqXhr(jqXhr){
   };
 }
 
-export = UnauthenticatedGithubApiService;
+export default UnauthenticatedGithubApiService;

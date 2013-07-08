@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var UserStorageService = Conductor.Oasis.Service.extend({
 
@@ -72,4 +72,4 @@ var UserStorageService = Conductor.Oasis.Service.extend({
   }
 });
 
-export = UserStorageService;
+export default UserStorageService;

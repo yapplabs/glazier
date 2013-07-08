@@ -1,4 +1,4 @@
-import 'glazier/utils/ajax' as ajax;
+import ajax from 'glazier/utils/ajax';
 
 var UserController = Ember.Controller.extend({
   content: null,
@@ -49,4 +49,5 @@ var UserController = Ember.Controller.extend({
       then(loginComplete, loginComplete);
   }
 });
-export = UserController;
+
+export default UserController;

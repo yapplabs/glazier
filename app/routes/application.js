@@ -17,4 +17,4 @@ function getUserFromCookie(){
   return null;
 }
 
-export = ApplicationRoute;
+export default ApplicationRoute;

@@ -7,4 +7,4 @@ var RepositorySidebarController = Ember.ObjectController.extend({
   }).property("content")
 });
 
-export = RepositorySidebarController;
+export default RepositorySidebarController;

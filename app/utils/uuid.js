@@ -13,4 +13,4 @@ function uuid() {
   });
 }
 
-export = uuid;
+export default uuid;

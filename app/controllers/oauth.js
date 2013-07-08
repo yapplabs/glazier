@@ -47,4 +47,6 @@ var OauthController = Ember.Controller.extend({
     this.deferred.reject("declined");
   },
 });
-export = OauthController;
+
+export default OauthController;
+

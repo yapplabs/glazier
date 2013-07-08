@@ -1,4 +1,4 @@
 var LoadingRoute = Ember.Route.extend({
 });
 
-export = LoadingRoute;
+export default LoadingRoute;

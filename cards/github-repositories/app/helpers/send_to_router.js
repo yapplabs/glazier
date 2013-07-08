@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 function sendToRouter(message) {
   return function (context){
@@ -9,4 +9,4 @@ function sendToRouter(message) {
   };
 }
 
-export = sendToRouter;
+export default sendToRouter;

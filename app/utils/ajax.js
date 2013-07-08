@@ -12,4 +12,4 @@ function ajax(url, options){
   });
 }
 
-export = ajax;
+export default ajax;

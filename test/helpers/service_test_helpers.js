@@ -41,4 +41,4 @@ function createServiceForTesting(ServiceClass, cardId) {
   return service;
 }
 
-export createServiceForTesting;
+export default createServiceForTesting;

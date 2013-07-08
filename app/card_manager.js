@@ -1,5 +1,5 @@
-import 'glazier/services/proxy' as ProxyService;
-import 'conductor' as Conductor;
+import ProxyService from 'glazier/services/proxy';
+import Conductor from 'conductor';
 
 /*
   @class CardManager
@@ -166,4 +166,4 @@ var CardManager = Ember.Object.extend({
   }
 });
 
-export = CardManager;
+export default CardManager;

@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var FullXhrService = Conductor.Oasis.Service.extend({
 
@@ -24,4 +24,4 @@ var FullXhrService = Conductor.Oasis.Service.extend({
   }
 });
 
-export = FullXhrService;
+export default FullXhrService;

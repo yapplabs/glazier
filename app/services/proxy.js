@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var ProxyService = Conductor.Oasis.Service.extend({
   /*
@@ -128,4 +128,4 @@ var ProxyService = Conductor.Oasis.Service.extend({
   }
 });
 
-export = ProxyService;
+export default ProxyService;

@@ -1,7 +1,7 @@
-import 'glazier/services/proxy' as ProxyService;
+import ProxyService from 'glazier/services/proxy';
 import { MockPort, MockChannel } from 'helpers/oasis_test_helpers';
 
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var RSVP = Conductor.Oasis.RSVP;
 

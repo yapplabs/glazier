@@ -4,4 +4,4 @@ var NotFoundRoute = Ember.Route.extend({
   }
 });
 
-export = NotFoundRoute;
+export default NotFoundRoute;

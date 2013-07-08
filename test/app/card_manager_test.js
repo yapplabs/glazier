@@ -1,9 +1,9 @@
-import 'glazier/card_manager' as CardManager;
-import 'glazier/models/pane' as Pane;
-import 'glazier/models/card_manifest' as CardManifest;
-import 'glazier/models/capability_provider' as CapabilityProvider;
+import CardManager from 'glazier/card_manager';
+import Pane from 'glazier/models/pane';
+import CardManifest from 'glazier/models/card_manifest';
+import CapabilityProvider from 'glazier/models/capability_provider';
 
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var cardManager, pane, store;
 

@@ -1,4 +1,4 @@
-import 'glazier/utils/uuid' as uuid;
+import uuid from 'glazier/utils/uuid';
 
 var Adapter = DS.RESTAdapter.extend({
   namespace: 'api',
@@ -26,4 +26,4 @@ Adapter.registerTransform('passthrough', {
   }
 });
 
-export = Adapter;
+export default Adapter;

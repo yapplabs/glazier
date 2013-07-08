@@ -1,7 +1,7 @@
-import 'glazier/services/configuration' as ConfigurationService;
-import assertResolved from 'helpers/promise_test_helpers';
+import ConfigurationService from 'glazier/services/configuration';
+import { assertResolved } from 'helpers/promise_test_helpers';
 
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var conductor, card;
 

@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
 
@@ -58,4 +58,4 @@ function failureResultFromJqXhr(jqXhr){
     rawHeaders: jqXhr.getAllResponseHeaders()
   };
 }
-export = AuthenticatedGithubApiService;
+export default AuthenticatedGithubApiService;

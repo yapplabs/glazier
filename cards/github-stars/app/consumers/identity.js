@@ -1,5 +1,5 @@
-import 'app/helpers/send_to_router' as sendToRouter;
-import 'conductor' as Conductor;
+import sendToRouter from 'app/helpers/send_to_router';
+import Consumer from 'conductor';
 
 var IdentityConsumer = Conductor.Oasis.Consumer.extend({
   events: {
@@ -7,4 +7,4 @@ var IdentityConsumer = Conductor.Oasis.Consumer.extend({
   }
 });
 
-export = IdentityConsumer;
+export default IdentityConsumer;

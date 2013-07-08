@@ -35,4 +35,4 @@ var UserView = Ember.View.extend({
   }
 });
 
-export = UserView;
+export default UserView;

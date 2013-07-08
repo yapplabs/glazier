@@ -1,4 +1,4 @@
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var IdentityService = Conductor.Oasis.Service.extend({
   initialize: function(capabilty, port) {
@@ -62,4 +62,4 @@ var IdentityService = Conductor.Oasis.Service.extend({
   }
 });
 
-export = IdentityService;
+export default IdentityService;

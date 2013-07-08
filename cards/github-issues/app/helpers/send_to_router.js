@@ -7,4 +7,4 @@ function sendToRouter(message) {
   };
 }
 
-export = sendToRouter;
+export default sendToRouter;

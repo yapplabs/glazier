@@ -1,8 +1,8 @@
-import 'glazier/services/unauthenticated_github_api' as UnauthenticatedGithubApiService;
+import UnauthenticatedGithubApiService from 'glazier/services/unauthenticated_github_api';
 import { MockPort, MockChannel } from 'helpers/oasis_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
 
-import 'conductor' as Conductor;
+import Conductor from 'conductor';
 
 var originalAjax = $.ajax;
 

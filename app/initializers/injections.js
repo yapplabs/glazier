@@ -1,5 +1,5 @@
-import 'glazier/card_manager' as CardManager;
-import 'conductor' as Conductor;
+import CardManager from 'glazier/card_manager';
+import Conductor from 'conductor';
 
 function conductorUrl(){
   var url = $("meta[name='glazier-conductor-url']").attr('content');
@@ -26,5 +26,5 @@ var initializer = {
   }
 };
 
-export = initializer;
+export default initializer;
 

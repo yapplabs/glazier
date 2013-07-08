@@ -1,6 +1,6 @@
-import 'conductor' as Conductor;
-import 'glazier/models/repository' as Repository;
-import 'glazier/models/dashboard' as Dashboard;
+import Conductor from 'conductor';
+import Repository from 'glazier/models/repository';
+import Dashboard from 'glazier/models/dashboard';
 
 var RSVP = Ember.RSVP;
 
@@ -57,4 +57,4 @@ var DashboardRoute = Ember.Route.extend({
   }
 });
 
-export = DashboardRoute;
+export default DashboardRoute;
