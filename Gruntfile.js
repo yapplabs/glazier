@@ -56,18 +56,16 @@ module.exports = function(grunt) {
 
   grunt.registerTask('copy_glazier', ['copy:main', 'copy:test', 'copy:fixtures', 'copy:vendor']);
 
-  grunt.registerTask('assets', ['build', /*'uglify:all',*/ 'md5', 'index.html', 'css_templating']);
+  grunt.registerTask('assets', ['build', /*'uglify:all',*/ 'md5', 'index.html', 'templateCSS']);
 
   grunt.registerTask('ingest', ['assets', 'shell:ingest']);
-  grunt.registerTask('deploy', ['prod', 'assets', 's3:dev']);
+  grunt.registerTask('deploy', ['prod', 'assets', 's3:prod']);
   grunt.registerTask('deployCards', ['shell:deployCards', 'shell:herokuIngestCards']);
 
   grunt.registerTask('ingestCards', ['shell:npmInstallForCards', 'build', 'shell:ingestCardManifests']);
   grunt.registerTask('preview', ['build', /*'uglify:all',*/ 'md5', 'index.html', 'shell:ingest', 'connect', 'watch']);
 
-
-
   grunt.registerTask('server', ['shell:glazierServer']);
   grunt.registerTask('test', ['shell:npmInstallForCards', 'build',  'connect', 'qunit:all']);
-  grunt.registerTask('default', ['shell:npmInstallForCards','build', 'index.html', 'css_templating', 'connect', 'watch']);
+  grunt.registerTask('default', ['shell:npmInstallForCards','build', 'index.html', 'templateCSS', 'connect', 'watch']);
 };

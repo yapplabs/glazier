@@ -1,10 +1,12 @@
+var grunt = require('grunt');
+
 /*
   Make substitutions for templated parts of files where substitutions
   need to happen after finger-printed keys generated.
  */
 
-module.exports = function(grunt){
-  var taskName = "css_templating"
+module.exports = function(grunt) {
+  var taskName = "templateCSS"
 
   //can add additional files here
   var templateFiles = ['css/glazier.css']
@@ -14,9 +16,9 @@ module.exports = function(grunt){
     for (var i=0; i<templateFiles.length; i++) {
       var templateFile = templateFiles[i];
       //always generate file for dev
-      template_dev_file(grunt, templateFile, devConfig);
+      templateDevFile(templateFile, devConfig);
       if(process.env.GLAZIER_ENV === "prod") {
-        template_prod_file(grunt, templateFile);
+        templateProdFile(templateFile);
       }
     }
   });
@@ -38,7 +40,7 @@ var devConfig = {
   }
 }
 
-function template_dev_file(grunt, templatePath, config) {
+function templateDevFile(templatePath, config) {
   var template = grunt.file.read(config.sourceFile(templatePath));
   var indexContents = grunt.template.process(template, { data: config.data});
   console.log(config.writeFile(templatePath));
@@ -53,9 +55,9 @@ function template_dev_file(grunt, templatePath, config) {
   unify the process for dev/prod generation but prod side
   needs a bit of unraveling
 */
-function template_prod_file(grunt, templatePath) {
+function templateProdFile(templatePath) {
   var manifest = grunt.file.readJSON('tmp/manifest.json');
-  var md5File = getMD5Filename(grunt, manifest, templatePath);
+  var md5File = getMD5Filename(manifest, templatePath);
   var template = grunt.file.read(md5File);
   var assetHost = grunt.config.get('pkg').assetHost || '';
 
@@ -76,7 +78,7 @@ function template_prod_file(grunt, templatePath) {
   grunt.file.write(md5File, indexContents);
 }
 
-function getMD5Filename(grunt, manifest, path) {
+function getMD5Filename(manifest, path) {
   var file =  manifest["/"+path];
   if (!file) {
     throw "No file found in manifest for path " + path;
