@@ -17,4 +17,13 @@ Adapter.registerTransform('json', {
   }
 });
 
+Adapter.registerTransform('passthrough', {
+  deserialize: function (serialized) {
+    return serialized;
+  },
+  serialize: function(deserialized) {
+    return deserialized;
+  }
+});
+
 export = Adapter;

@@ -49,24 +49,19 @@ var CardManager = Ember.Object.extend({
     @return {Conductor.Card} the panes card
   */
   _load: function (pane) {
-    var manifest = pane.get('cardManifest.manifest');
-    var capabilities = [];
-    var consumes = this._processConsumes(manifest, capabilities);
-    var provides = this._processProvides(manifest, capabilities);
-
-    var paneId = pane.get('id');
-    var cardUrl = manifest.cardUrl;
+    var capabilities = [],
+        manifest = pane.get('cardManifest.manifest'),
+        consumes = this._processConsumes(manifest, capabilities),
+        provides = this._processProvides(manifest, capabilities),
+        paneId = pane.get('id'),
+        cardData = this._cardData(pane, manifest),
+        cardUrl = manifest.cardUrl;
 
     if (!cardUrl) {
       throw new Error("cardUrl cannot be null or undefined");
     }
 
-    var env = (/glazier\.herokuapp\.com/.test(window.location.hostname)) ? 'prod' : 'dev';
-    manifest.env = manifest.env || {};
-
-    this.conductor.loadData(cardUrl, paneId, {
-      env: manifest.env[env]
-    });
+    this.conductor.loadData(cardUrl, paneId, cardData);
 
     var card = this.conductor.load(cardUrl, paneId, {
       capabilities: capabilities
@@ -90,6 +85,13 @@ var CardManager = Ember.Object.extend({
     card.provides = provides;
     card.hidden = (manifest.ui === false);
     return card;
+  },
+
+  _cardData: function(pane, manifest) {
+    var env = (/glazier\.herokuapp\.com/.test(window.location.hostname)) ? 'prod' : 'dev',
+        paneData = pane.get('cardData');
+    manifest.env = manifest.env || {};
+    return Ember.merge({ env: manifest.env[env] }, paneData);
   },
 
   /*
