@@ -20,3 +20,7 @@
   text-overflow:ellipsis;
   overflow: hidden;
 }
+
+#stargazers {
+  overflow: auto;
+}
