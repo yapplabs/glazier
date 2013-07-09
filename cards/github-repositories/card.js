@@ -21,13 +21,6 @@ var card = Conductor.card({
     })
   },
 
-  /* called by data service */
-  didUpdateData: function(bucket, data) {
-    if (bucket == 'user') {
-      this.App.__container__.lookup('router:main').send('currentUserChanged', data);
-    }
-  },
-
   App: null,
 
   render: function (intent, dimensions) {
@@ -40,6 +33,7 @@ var card = Conductor.card({
   activate: function() {
     console.log("activate github-repositories");
     this.App = requireModule('app/application');
+    this.App.register('card:main', this, { instantiate: false });
   },
 
   metadata: {

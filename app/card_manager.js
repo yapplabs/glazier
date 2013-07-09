@@ -51,7 +51,7 @@ var CardManager = Ember.Object.extend({
 
   _updateUserData: function (userData) {
     this._getCards().forEach(function(card) {
-      card.updateData('user', userData)
+      card.updateData('user', userData);
     });
   },
 

@@ -4,8 +4,12 @@ import Conductor from 'conductor';
 var ApplicationRoute = Ember.Route.extend({
   events: {
     currentUserChanged: function(user) {
-      if (!user) { return; }
       var applicationController = this.controllerFor('application');
+
+      if (!user) {
+        applicationController.set('model', []);
+        return;
+      }
 
       var repos = card.consumers.authenticatedGithubApi.getRepositories();
 
@@ -21,6 +25,7 @@ var ApplicationRoute = Ember.Route.extend({
   },
 
   model: function(){
+    if (!card.data.user) { return []; }
     return card.consumers.authenticatedGithubApi.getRepositories();
   }
 });
