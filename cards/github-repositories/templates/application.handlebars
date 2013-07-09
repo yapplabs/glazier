@@ -1,4 +1,7 @@
 <h3>My Repositories</h3>
+{{#unless user}}
+  <div>Please login to glazier to view your repositories...<div>
+{{/unless}}
 <ul>
   {{#each}}
     <li>{{name}}</li>
