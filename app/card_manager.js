@@ -99,7 +99,6 @@ var CardManager = Ember.Object.extend({
     if (window.StarterKit) window.StarterKit.wiretapCard(card);
 
     card.providerPromises = {};
-    //card.targets = this._getTargets(pane);
     for (var capability in this.providerCardDeferreds) {
       if (!this.providerCardDeferreds.hasOwnProperty(capability)) continue;
       var deferred = this.providerCardDeferreds[capability];
@@ -172,25 +171,6 @@ var CardManager = Ember.Object.extend({
       });
     }
     return provides;
-  },
-
-  /*
-    @private
-
-    @method _getTargets
-    @param pane {Glazier.Pane}
-    @return {Object} list of targets
-  */
-  _getTargets: function (pane) {
-    var targets = {};
-    var instances = this.instances;
-    var capabilityProviders = pane.get('capabilityProviders');
-    if (capabilityProviders) {
-      capabilityProviders.forEach(function (capabilityProvider) {
-        targets[capabilityProvider.get('capability')] = instances[capabilityProvider.get('provider.id')];
-      });
-    }
-    return targets;
   }
 });
 

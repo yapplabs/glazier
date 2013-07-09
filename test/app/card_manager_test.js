@@ -1,7 +1,6 @@
 import CardManager from 'glazier/card_manager';
 import Pane from 'glazier/models/pane';
 import PaneType from 'glazier/models/pane_type';
-import CapabilityProvider from 'glazier/models/capability_provider';
 
 import Conductor from 'conductor';
 
@@ -14,26 +13,11 @@ if (/phantom/i.test(navigator.userAgent)) {
 Pane.FIXTURES = [
   {
     id: '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2',
-    paneType: '/cards/github-repositories/manifest.json',
-    capabilityProviders: ['1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2,7f878b1a-34af-42ed-b477-878721cbc90d']
+    paneType: '/cards/github-repositories/manifest.json'
   },
   {
     id: 'd30608af-11d8-402f-80a3-1f458650dbef',
-    paneType: '/cards/github-repositories/manifest.json',
-    capabilityProviders: ['d30608af-11d8-402f-80a3-1f458650dbef,7f878b1a-34af-42ed-b477-878721cbc90d']
-  }
-];
-
-CapabilityProvider.FIXTURES = [
-  {
-    id: '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2,7f878b1a-34af-42ed-b477-878721cbc90d',
-    capability: 'github:authenticated:read',
-    provider: '7f878b1a-34af-42ed-b477-878721cbc90d'
-  },
-  {
-    id: 'd30608af-11d8-402f-80a3-1f458650dbef,7f878b1a-34af-42ed-b477-878721cbc90d',
-    capability: 'github:authenticated:read',
-    provider: '7f878b1a-34af-42ed-b477-878721cbc90d'
+    paneType: '/cards/github-repositories/manifest.json'
   }
 ];
 
@@ -102,7 +86,7 @@ module("CardManager", {
 
 asyncTest("loading a card sets providerPromises and consumes", 2, function(){
   pane.then(function() {
-    Ember.RSVP.all([pane.get('paneType'), pane.get('capabilityProviders')]).then(function () {
+    pane.get('paneType').then(function () {
       start();
       var card = cardManager.load(pane);
       ok(card.providerPromises['github:authenticated:read'], "target was set on the loaded card");
@@ -113,7 +97,7 @@ asyncTest("loading a card sets providerPromises and consumes", 2, function(){
 
 asyncTest("loading and unloading a card", 2, function(){
   pane.then(function() {
-    Ember.RSVP.all([pane.get('paneType'), pane.get('capabilityProviders')]).then(function () {
+    pane.get('paneType').then(function () {
       start();
       var card = cardManager.load(pane);
       var repeat = cardManager.load(pane);
