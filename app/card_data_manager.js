@@ -8,10 +8,7 @@ var CardDataManager = Ember.Object.extend({
       repositoryName: this.get('repositoryName'),
       user: this.get('user')
     };
-  },
-  userDidChange: function() {
-    // TODO: inform data service for cards
-  }.observes('user')
+  }
 });
 
 export default CardDataManager;

@@ -11,29 +11,28 @@ var isCardDir = function (dir){
 };
 
 function cardGruntCommand(cardName) {
-  var cmd = "cd cards/" + cardName + " && grunt && cd ../.."
+  var cmd = "cd cards/" + cardName + " && grunt && cd ../..";
   return cmd;
 }
 
 function cardGruntDeployCommand(cardName) {
-  var cmd = "cd cards/" + cardName + " && grunt deploy && cd ../.."
+  var cmd = "cd cards/" + cardName + " && grunt deploy && cd ../..";
   return cmd;
 }
 
 function cardNpmInstallCommand(cardName) {
-  var cmd = "cd cards/" + cardName + " && npm install && cd ../.."
+  var cmd = "cd cards/" + cardName + " && npm install && cd ../..";
   return cmd;
 }
 
 function cardNpmRefreshCommand(cardName) {
-  var cmd = "cd cards/" + cardName + " && rm -rf node_modules && npm install && cd ../.."
+  var cmd = "rm -rf cards/*/node_modules";
   return cmd;
 }
 
-
 function cardIngestManigestCommand(cardName) {
   var manifestPath = 'cards/' + cardName + '/dist/dev/' + cardName + '/manifest.json';
-  var cmd = 'cd glazier-server && bundle exec rake "glazier:card:ingest[../' + manifestPath + ']" && cd ..'
+  var cmd = 'cd glazier-server && bundle exec rake "glazier:card:ingest[../' + manifestPath + ']" && cd ..';
   return cmd;
 }
 

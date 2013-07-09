@@ -13,6 +13,12 @@ var CardManager = Ember.Object.extend({
     this.providerCardDeferreds = {};
   },
 
+  userDidChange: function() {
+    var userData = this.get('cardDataManager.user');
+    this._updateUserData(userData);
+  }.observes('cardDataManager.user'),
+
+
   /*
     @public
 
@@ -41,6 +47,21 @@ var CardManager = Ember.Object.extend({
   unload: function (pane) {
     // unload in the future should card.destroy
     delete this.instances[pane.get('id')];
+  },
+
+  _updateUserData: function (userData) {
+    this._getCards().forEach(function(card) {
+      card.updateData('user', userData)
+    });
+  },
+
+  _getCards: function () {
+    var card, cards = [];
+    Ember.keys(this.instances).forEach(function(paneId) {
+      card = this.instances[paneId];
+      cards.push(card);
+    }, this);
+    return cards;
   },
 
   /*

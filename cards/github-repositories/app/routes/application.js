@@ -4,6 +4,7 @@ import Conductor from 'conductor';
 var ApplicationRoute = Ember.Route.extend({
   events: {
     currentUserChanged: function(user) {
+      if (!user) { return; }
       var applicationController = this.controllerFor('application');
 
       var repos = card.consumers.authenticatedGithubApi.getRepositories();

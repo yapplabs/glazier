@@ -23,7 +23,9 @@ var card = Conductor.card({
 
   /* called by data service */
   didUpdateData: function(bucket, data) {
-    // TODO
+    if (bucket == 'user') {
+      this.App.__container__.lookup('router:main').send('currentUserChanged', data);
+    }
   },
 
   App: null,
