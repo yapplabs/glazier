@@ -1,6 +1,6 @@
 import CardManager from 'glazier/card_manager';
 import Pane from 'glazier/models/pane';
-import CardManifest from 'glazier/models/card_manifest';
+import PaneType from 'glazier/models/pane_type';
 import CapabilityProvider from 'glazier/models/capability_provider';
 
 import Conductor from 'conductor';
@@ -14,12 +14,12 @@ if (/phantom/i.test(navigator.userAgent)) {
 Pane.FIXTURES = [
   {
     id: '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2',
-    cardManifest: '/cards/github-repositories/manifest.json',
+    paneType: '/cards/github-repositories/manifest.json',
     capabilityProviders: ['1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2,7f878b1a-34af-42ed-b477-878721cbc90d']
   },
   {
     id: 'd30608af-11d8-402f-80a3-1f458650dbef',
-    cardManifest: '/cards/github-repositories/manifest.json',
+    paneType: '/cards/github-repositories/manifest.json',
     capabilityProviders: ['d30608af-11d8-402f-80a3-1f458650dbef,7f878b1a-34af-42ed-b477-878721cbc90d']
   }
 ];
@@ -37,7 +37,7 @@ CapabilityProvider.FIXTURES = [
   }
 ];
 
-CardManifest.FIXTURES = [
+PaneType.FIXTURES = [
   {
     id: '/cards/github-repositories/manifest.json',
     manifest: {
@@ -68,7 +68,7 @@ module("CardManager", {
       })
     });
 
-    store.load(CardManifest, '/cards/github-auth/manifest.json', {
+    store.load(PaneType, '/cards/github-auth/manifest.json', {
       manifest: {
         cardUrl: '/cards/github-auth/card.js',
         consumes: [ 'fullXhr', 'configuration', 'userStorage', 'identity' ],
@@ -77,13 +77,13 @@ module("CardManager", {
     });
 
     store.load(Pane, '7f878b1a-34af-42ed-b477-878721cbc90d', {
-      cardManifest: '/cards/github-auth/manifest.json'
+      paneType: '/cards/github-auth/manifest.json'
     });
 
     pane = store.find(Pane, '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2');
 
     var authPane = store.find(Pane, '7f878b1a-34af-42ed-b477-878721cbc90d');
-    var cardType = store.find(CardManifest, '/cards/github-auth/manifest.json');
+    var cardType = store.find(PaneType, '/cards/github-auth/manifest.json');
 
     Ember.RSVP.all([authPane, cardType]).then(function() {
       start();
@@ -102,7 +102,7 @@ module("CardManager", {
 
 asyncTest("loading a card sets providerPromises and consumes", 2, function(){
   pane.then(function() {
-    Ember.RSVP.all([pane.get('cardManifest'), pane.get('capabilityProviders')]).then(function () {
+    Ember.RSVP.all([pane.get('paneType'), pane.get('capabilityProviders')]).then(function () {
       start();
       var card = cardManager.load(pane);
       ok(card.providerPromises['github:authenticated:read'], "target was set on the loaded card");
@@ -113,7 +113,7 @@ asyncTest("loading a card sets providerPromises and consumes", 2, function(){
 
 asyncTest("loading and unloading a card", 2, function(){
   pane.then(function() {
-    Ember.RSVP.all([pane.get('cardManifest'), pane.get('capabilityProviders')]).then(function () {
+    Ember.RSVP.all([pane.get('paneType'), pane.get('capabilityProviders')]).then(function () {
       start();
       var card = cardManager.load(pane);
       var repeat = cardManager.load(pane);

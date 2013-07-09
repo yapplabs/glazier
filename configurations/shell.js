@@ -41,7 +41,7 @@ function herokuIngestCommand(cardName) {
   var deployJSON = grunt.file.readJSON('cards/' + cardName + '/package.json');
   var glazierConfig = deployJSON.glazierConfig;
   var url = glazierConfig.assetHost + '/assets/cards/' + glazierConfig.repositoryName + '/manifest.json';
-  var cmd = "cd glazier-server && heroku surrogate rails runner \"CardManifest.ingest('" + url + "')\" --app glazier && cd ..";
+  var cmd = "cd glazier-server && heroku surrogate rails runner \"PaneType.ingest('" + url + "')\" --app glazier && cd ..";
   return cmd;
 }
 
