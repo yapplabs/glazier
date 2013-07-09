@@ -11,7 +11,7 @@ var PaneView = Ember.View.extend({
     var cardManager = this.cardManager;
     var pane = this.get('content');
     pane.then(function() {
-      var type = pane.get('cardManifest');
+      var type = pane.get('paneType');
       var promises = [type];
 
       return Ember.RSVP.all(promises).then(function () {

@@ -1,7 +1,7 @@
 import Application from 'glazier/application';
 
 import Pane from 'glazier/models/pane';
-import CardManifest from 'glazier/models/card_manifest';
+import PaneType from 'glazier/models/pane_type';
 import Dashboard from 'glazier/models/dashboard';
 import CapabilityProvider from 'glazier/models/capability_provider';
 
@@ -14,7 +14,7 @@ var Glazier = Application.create();
 
 Glazier.Pane = Pane;
 Glazier.CapabilityProvider = CapabilityProvider;
-Glazier.CardManifest = CardManifest;
+Glazier.PaneType = PaneType;
 Glazier.Dashboard = Dashboard;
 
 Glazier.PaneView = PaneView;

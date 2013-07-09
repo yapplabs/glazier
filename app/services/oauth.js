@@ -3,7 +3,7 @@ import Conductor from 'conductor';
 // Lookup a url in the manifest for this card
 var cardEnv = function(cardId) {
   // assume the manifest is already loaded, this is likely brittle
-  var manifest = Glazier.Pane.find(cardId).get('cardManifest.manifest');
+  var manifest = Glazier.Pane.find(cardId).get('paneType.manifest');
 
   var env = (/glazier\.herokuapp\.com/.test(window.location.hostname)) ? 'prod' : 'dev';
 

@@ -91,10 +91,10 @@ Start the production console with `heroku run console`.
 
 Then, with each `manifest.json` url, run:
 
-    CardManifest.ingest(url)
+    PaneType.ingest(url)
 
 You can also reingest all previously-ingested manifests with
 
-    CardManifest.reingest_all
+    PaneType.reingest_all
 
 

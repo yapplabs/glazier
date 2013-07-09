@@ -3,7 +3,7 @@ import Conductor from 'conductor';
 // Lookup a url in the manifest for this card
 var cardManifestUrl = function(cardId, url) {
   // assume the manifest is already loaded, this is likely brittle
-  var manifest = Glazier.Pane.find(cardId).get('cardManifest.manifest');
+  var manifest = Glazier.Pane.find(cardId).get('paneType.manifest');
 
   if (manifest && manifest.assets && manifest.assets[url]) {
     return manifest.assets[url];

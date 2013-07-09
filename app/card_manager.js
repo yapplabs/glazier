@@ -52,7 +52,7 @@ var CardManager = Ember.Object.extend({
   */
   _load: function (pane) {
     var capabilities = [],
-        manifest = pane.get('cardManifest.manifest'),
+        manifest = pane.get('paneType.manifest'),
         consumes = this._processConsumes(manifest, capabilities),
         provides = this._processProvides(manifest, capabilities),
         paneId = pane.get('id'),
