@@ -22,31 +22,12 @@ var UserStorageService = Conductor.Oasis.Service.extend({
       var data = {};
       data[key] = value;
       $.ajax({
-        url: '/api/cards/' + this.sandbox.card.id + '/user.json',
-        type: 'POST',
+        url: '/api/pane_user_entries/' + this.sandbox.card.id + '.json',
+        type: 'PUT',
         data: {data: data, access: 'private'}
       }).then(function(r){
         promise.resolve(r);
       }, function(r){
-        promise.reject(r);
-      });
-    },
-
-    /*
-      @public
-
-      @method getItem
-      @param promise {Conductor.Oasis.RSVP.Promise}
-      @param key {String}
-    */
-    getItem: function(promise, key) {
-      $.ajax({
-        url: '/api/cards/' + this.sandbox.card.id + '.json',
-        type: 'GET',
-        dataType: 'json'
-      }).then(function(r) {
-        promise.resolve(r.card.private[key]);
-      }, function(r) {
         promise.reject(r);
       });
     },
@@ -60,7 +41,7 @@ var UserStorageService = Conductor.Oasis.Service.extend({
     */
     removeItem: function(promise, key) {
       $.ajax({
-        url: '/api/cards/' + this.sandbox.card.id + '/user.json',
+        url: '/api/pane_user_entries/' + this.sandbox.card.id + '.json',
         type: 'DELETE',
         data: {key: key, access: 'private'}
       }).then(function(r) {
