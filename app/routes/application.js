@@ -1,6 +1,12 @@
 var ApplicationRoute = Ember.Route.extend({
   beforeModel: function(){
     var user = getUserFromCookie();
+
+    if (user) {
+      // TODO: get real data
+      user.editableRepositories = user.editableRepositories || ['emberjs/ember.js'];
+    }
+
     this.controllerFor('user').set('content', user);
   }
 });
