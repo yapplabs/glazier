@@ -4,8 +4,7 @@
     "consumes": [
       "unauthenticatedGithubApi",
       "authenticatedGithubApi",
-      "repository",
-      "identity"
+      "repository"
     ],
     "assetHost": "http://glazier.s3.amazonaws.com",
     "shortName": "github-issues",

@@ -1,28 +1,28 @@
 import card from 'card';
 import Conductor from 'conductor';
 import Issue from 'app/models/issue';
-import Repo from 'app/models/repo';
 
 function fetch() {
-  return Ember.RSVP.hash({
-    user: card.consumers.identity.getCurrentUser(),
-    repositoryName: Repo.getCurrentRepositoryName()
-  }).then(function(hash){
-    var repositoryName = hash.repositoryName;
-    var user = hash.user;
+  var repositoryName = card.data.repositoryName;
+  var user = card.data.user;
 
-    hash.allIssues = Issue.findAllByRepositoryName(repositoryName, user);
-    hash.userIssues = user && Issue.findByUserAndRepositoryName(repositoryName, user.github_login);
+  var hash = {};
+  hash.allIssues = Issue.findAllByRepositoryName(repositoryName);
+  hash.userIssues = user && Issue.findByUserAndRepositoryName(repositoryName, user.github_login);
 
-    return Ember.RSVP.hash(hash);
-  });
+  return Ember.RSVP.hash(hash);
 }
 
 var ApplicationRoute = Ember.Route.extend({
   events: {
-    currentUserChanged: function(user) {
+    currentUserChanged: function() {
       var route = this;
       var applicationController = route.controllerFor('application');
+
+      if (!card.data.user) {
+        applicationController.set('myIssues', []);
+        return;
+      }
 
       fetch().then(function(hash){
         applicationController.set('myIssues', hash.userIssues);
@@ -34,11 +34,10 @@ var ApplicationRoute = Ember.Route.extend({
 
   model: function(){
     var applicationController = this.controllerFor('application');
+    applicationController.set('repositoryName', card.data.repositoryName);
 
     return fetch().then(function(hash) {
-      applicationController.set('repositoryName', hash.repositoryName);
       applicationController.set('myIssues', hash.userIssues);
-
       return hash.allIssues;
     });
   }

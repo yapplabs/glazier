@@ -15,14 +15,6 @@ module("Github::Issues Acceptances", {
 
     Conductor.services['test'] = TestService;
 
-    Conductor.services['repository'] = Conductor.Oasis.Service.extend({
-      requests: {
-        getRepository: function(promise) {
-          promise.resolve('emberjs/ember.js');
-        }
-      }
-    });
-
     Conductor.services['unauthenticatedGithubApi'] = Conductor.Oasis.Service.extend({
       requests: {
         ajax: function(promise, ajaxOpts) {
@@ -31,16 +23,9 @@ module("Github::Issues Acceptances", {
       }
     });
 
-    Conductor.services['identity'] = Conductor.Oasis.Service.extend({
-      requests: {
-        currentUser: function(promise) {
-          promise.resolve(null);
-        }
-      }
-    });
-
+    conductor.loadData('/cards/github-issues/card.js', 1, {user: null, repositoryName: 'emberjs/ember.js'});
     card = conductor.load('/cards/github-issues/card.js', 1, {
-      capabilities: ['test', 'repository', 'unauthenticatedGithubApi', 'identity']
+      capabilities: ['test', 'unauthenticatedGithubApi']
     });
 
     card.promise.then(null, Conductor.error);

@@ -10,10 +10,10 @@ var Issue = {
     @param  repositoryName {String}
     @returns {Ember.RSVP.Promise}
   */
-  findAllByRepositoryName: function(repositoryName, user) {
+  findAllByRepositoryName: function(repositoryName) {
     var service;
 
-    if (user) {
+    if (card.data.user) {
       service = card.consumers.authenticatedGithubApi;
     } else {
       service = card.consumers.unauthenticatedGithubApi;
