@@ -77,10 +77,10 @@ var CardManager = Ember.Object.extend({
         consumes = this._processConsumes(manifest, capabilities),
         provides = this._processProvides(manifest, capabilities),
         paneId = pane.get('id'),
-        ambientData, // should come from repository controller and user controller
-        data,
         cardData = this._cardData(pane, manifest),
-        cardUrl = manifest.cardUrl;
+        cardUrl = manifest.cardUrl,
+        ambientData,
+        data;
 
     if (!cardUrl) {
       throw new Error("cardUrl cannot be null or undefined");
@@ -88,7 +88,7 @@ var CardManager = Ember.Object.extend({
 
     ambientData = this.cardDataManager.getAmbientData();
 
-    data = Em.$.extend({}, ambientData, cardData);
+    data = Ember.$.extend({}, ambientData, cardData);
     this.conductor.loadData(cardUrl, paneId, data);
 
     var card = this.conductor.load(cardUrl, paneId, {
