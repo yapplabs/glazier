@@ -9,7 +9,7 @@ module.exports = {
       'templates/**',
       'stylesheets/**',
       'public/**/*'],
-    tasks: ['lock', 'build', 'unlock', 'jshint', 'qunit:all'],
+    tasks: ['lock', 'build', 'templateCSS', 'unlock', 'jshint', 'qunit:all'],
     options: {
       nospawn: true
     }
