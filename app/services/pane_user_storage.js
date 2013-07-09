@@ -1,6 +1,6 @@
 import Conductor from 'conductor';
 
-var UserStorageService = Conductor.Oasis.Service.extend({
+var PaneUserStorageService = Conductor.Oasis.Service.extend({
 
   /*
     @public
@@ -53,4 +53,4 @@ var UserStorageService = Conductor.Oasis.Service.extend({
   }
 });
 
-export default UserStorageService;
+export default PaneUserStorageService;

@@ -1,4 +1,4 @@
-import UserStorageService from 'glazier/services/user_storage';
+import PaneUserStorageService from 'glazier/services/pane_user_storage';
 import assertResolved from 'helpers/promise_test_helpers';
 import { inCard, TestService } from 'helpers/card_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
@@ -9,17 +9,17 @@ import Conductor from 'conductor';
 var conductor, card;
 
 if (!/phantom/i.test(navigator.userAgent)) {
-  module("Glazier UserStorageService Integration", {
+  module("Glazier PaneUserStorageService Integration", {
     setup: function() {
       conductor = new Conductor({
         testing: true,
         conductorURL: '/vendor/conductor.js.html'
       });
-      Conductor.services['userStorage'] = UserStorageService;
+      Conductor.services['paneUserStorage'] = PaneUserStoraueService;
       Conductor.services['test'] = TestService;
 
-      card = conductor.load('/test/fixtures/app/services/user_storage_card.js', 1, {
-        capabilities: ['userStorage', 'test']
+      card = conductor.load('/test/fixtures/app/services/pane_user_storage_card.js', 1, {
+        capabilities: ['paneUserStorage', 'test']
       });
       card.promise.then(null, function(e){ console.log(e); });
       card.appendTo('#qunit-fixture');
@@ -33,7 +33,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
 
   asyncTest("A card can persist a key value pair via the service", 2, function() {
     inCard(card, function(card, resolver){
-      var service = card.consumers.userStorage;
+      var service = card.consumers.paneUserStorage;
       service.request('setItem', 'foo', 'bar').then(function(){
         resolver.resolve('setItemCalled');
       }, function(){
@@ -52,9 +52,9 @@ if (!/phantom/i.test(navigator.userAgent)) {
 }
 
 // var port, card, sandbox;
-module("Glazier UserStorageService Unit", {
+module("Glazier PaneUserStorageService Unit", {
   setup: function() {
-    this.service = createServiceForTesting(UserStorageService, 'card-id');
+    this.service = createServiceForTesting(PaneUserStorageService, 'card-id');
     mockAjax();
   },
   teardown: function() {

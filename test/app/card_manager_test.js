@@ -55,7 +55,7 @@ module("CardManager", {
     store.load(PaneType, '/cards/github-auth/manifest.json', {
       manifest: {
         cardUrl: '/cards/github-auth/card.js',
-        consumes: [ 'fullXhr', 'configuration', 'userStorage', 'identity' ],
+        consumes: [ 'fullXhr', 'configuration', 'paneUserStorage', 'identity' ],
         provides: ['github:authenticated:read']
       }
     });

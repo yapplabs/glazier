@@ -1,6 +1,6 @@
 var card = Conductor.card({
   consumers: {
-    userStorage: Conductor.Oasis.Consumer.extend({}),
+    paneUserStorage: Conductor.Oasis.Consumer.extend({}),
     test: Conductor.Oasis.Consumer.extend({
       requests: {
         runTest:  function(promise, testData){
