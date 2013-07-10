@@ -3,6 +3,7 @@ import Consumer from 'conductor';
 Conductor.require('/vendor/jquery.js');
 Conductor.require('/vendor/handlebars.js');
 Conductor.require('/vendor/ember-latest.js');
+Conductor.require('/vendor/ember_card_bridge.js');
 Conductor.require('/vendor/loader.js');
 Conductor.requireCSS('/css/glazier_card.css');
 Conductor.requireCSS('/cards/github-repositories/card.css');
