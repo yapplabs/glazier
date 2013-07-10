@@ -11,17 +11,17 @@ var isCardDir = function (dir){
 };
 
 function cardGruntCommand(cardName) {
-  var cmd = "cd cards/" + cardName + " && grunt && cd ../..";
+  var cmd = "(cd cards/" + cardName + " && grunt)";
   return cmd;
 }
 
 function cardGruntDeployCommand(cardName) {
-  var cmd = "cd cards/" + cardName + " && grunt deploy && cd ../..";
+  var cmd = "(cd cards/" + cardName + " && grunt deploy)";
   return cmd;
 }
 
 function cardNpmInstallCommand(cardName) {
-  var cmd = "cd cards/" + cardName + " && npm install && cd ../..";
+  var cmd = "(cd cards/" + cardName + " && npm install)";
   return cmd;
 }
 
@@ -32,7 +32,7 @@ function cardNpmRefreshCommand(cardName) {
 
 function cardIngestManigestCommand(cardName) {
   var manifestPath = 'cards/' + cardName + '/dist/dev/' + cardName + '/manifest.json';
-  var cmd = 'cd glazier-server && bundle exec rake "glazier:card:ingest[../' + manifestPath + ']" && cd ..';
+  var cmd = '(cd glazier-server && bundle exec rake "glazier:card:ingest[../' + manifestPath + ']")';
   return cmd;
 }
 
@@ -40,11 +40,11 @@ function herokuIngestCommand(cardName) {
   var deployJSON = grunt.file.readJSON('cards/' + cardName + '/package.json');
   var glazierConfig = deployJSON.glazierConfig;
   var url = glazierConfig.assetHost + '/assets/cards/' + glazierConfig.repositoryName + '/manifest.json';
-  var cmd = "cd glazier-server && heroku surrogate rails runner \"PaneType.ingest('" + url + "')\" --app glazier && cd ..";
+  var cmd = "(cd glazier-server && heroku surrogate rails runner \"PaneType.ingest('" + url + "')\" --app glazier)";
   return cmd;
 }
 
-herokuIngestIndexCommand = "cd glazier-server && heroku surrogate rake 'glazier:ingest_as_current[../tmp/public/index.html]' --app glazier && cd ..";
+herokuIngestIndexCommand = "(cd glazier-server && heroku surrogate rake 'glazier:ingest_as_current[../tmp/public/index.html]' --app glazier)";
 
 module.exports = {
   glazierServer: {
