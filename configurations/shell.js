@@ -30,7 +30,7 @@ function cardNpmRefreshCommand(cardName) {
   return cmd;
 }
 
-function cardIngestManigestCommand(cardName) {
+function cardIngestManifestCommand(cardName) {
   var manifestPath = 'cards/' + cardName + '/dist/dev/' + cardName + '/manifest.json';
   var cmd = '(cd glazier-server && bundle exec rake "glazier:card:ingest[../' + manifestPath + ']")';
   return cmd;
@@ -78,7 +78,7 @@ module.exports = {
     options: opts
   },
   ingestCardManifests: {
-    command: fs.readdirSync('cards').filter(isCardDir).map(cardIngestManigestCommand).join(' && '),
+    command: fs.readdirSync('cards').filter(isCardDir).map(cardIngestManifestCommand).join(' && '),
     options: opts
   },
   deployCards: {
