@@ -52,6 +52,16 @@ function herokuIngestCommand(dirname) {
 herokuIngestIndexCommand = "(cd glazier-server && heroku surrogate rake 'glazier:ingest_as_current[../tmp/public/index.html]' --app glazier)";
 
 module.exports = {
+  updateAllTheThings: {
+    command: [
+      'git pull --ff-only',
+      'npm install',
+      '(cd glazier-server && bundle && bundle exec rake db:reset)',
+      'for card in `ls cards`; do (cd cards/$card && git pull --ff-only && rm -rf node_modules && npm install); done',
+      'grunt ingest',
+      'grunt ingestCards'
+    ].join('&&')
+  },
   glazierServer: {
     command: [
       "cd glazier-server",
