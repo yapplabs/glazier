@@ -1,4 +1,4 @@
-import PaneUserStorageService from 'glazier/services/pane_user_storage';
+import PaneTypeUserStorageService from 'glazier/services/pane_type_user_storage';
 import assertResolved from 'helpers/promise_test_helpers';
 import { inCard, TestService } from 'helpers/card_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
@@ -9,17 +9,19 @@ import Conductor from 'conductor';
 var conductor, card;
 
 if (!/phantom/i.test(navigator.userAgent)) {
-  module("Glazier PaneUserStorageService Integration", {
+  module("Glazier PaneTypeUserStorageService Integration", {
     setup: function() {
       conductor = new Conductor({
         testing: true,
         conductorURL: '/vendor/conductor.js.html'
       });
-      Conductor.services['paneUserStorage'] = PaneUserStorageService;
+      Conductor.services['paneTypeUserStorage'] = PaneTypeUserStorageService;
       Conductor.services['test'] = TestService;
 
-      card = conductor.load('/test/fixtures/app/services/pane_user_storage_card.js', 1, {
-        capabilities: ['paneUserStorage', 'test']
+      var cardUrl = '/test/fixtures/app/services/pane_type_user_storage_card.js';
+      conductor.loadData(cardUrl, 1, { cardType: 'card-type'});
+      card = conductor.load(cardUrl, 1, {
+        capabilities: ['paneTypeUserStorage', 'test']
       });
       card.promise.then(null, function(e){ console.log(e); });
       card.appendTo('#qunit-fixture');
@@ -33,7 +35,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
 
   asyncTest("A card can persist a key value pair via the service", 2, function() {
     inCard(card, function(card, resolver){
-      var service = card.consumers.paneUserStorage;
+      var service = card.consumers.paneTypeUserStorage;
       service.request('setItem', 'foo', 'bar').then(function(){
         resolver.resolve('setItemCalled');
       }, function(){
@@ -52,9 +54,9 @@ if (!/phantom/i.test(navigator.userAgent)) {
 }
 
 // var port, card, sandbox;
-module("Glazier PaneUserStorageService Unit", {
+module("Glazier PaneTypeUserStorageService Unit", {
   setup: function() {
-    this.service = createServiceForTesting(PaneUserStorageService, 'card-id');
+    this.service = createServiceForTesting(PaneTypeUserStorageService, 'card-id', { cardType: 'card-type' });
     mockAjax();
   },
   teardown: function() {
@@ -62,12 +64,12 @@ module("Glazier PaneUserStorageService Unit", {
   }
 });
 
-asyncTest("setItem PUTs to /api/pane_user_entries/:card_id.json", 4, function() {
+asyncTest("setItem PUTs to /api/pane_type_user_entries/:pane_type_name.json", 4, function() {
   this.service.simulateRequest('setItem', "name", "stef").then(function() {
     var ajaxRequest = mockAjax.requests[0];
     ok(ajaxRequest, 'made an ajax request');
     equal(ajaxRequest.type, 'PUT', 'made a PUT request');
-    equal(ajaxRequest.url, '/api/pane_user_entries/card-id.json', 'made a request to the correct endpoint');
+    equal(ajaxRequest.url, '/api/pane_type_user_entries/card-type.json', 'made a request to the correct endpoint');
     deepEqual(ajaxRequest.data, { data: {name: 'stef'}, access: 'private' }, 'has expected payload ' + JSON.stringify(ajaxRequest.data) );
     start();
   }, function(e) {
@@ -76,11 +78,11 @@ asyncTest("setItem PUTs to /api/pane_user_entries/:card_id.json", 4, function() 
   });
 });
 
-asyncTest("removeItem DELETEs to /api/pane_user_entries/:card_id.json", 3, function() {
+asyncTest("removeItem DELETEs to /api/pane_type_user_entries/:pane_type_name.json", 3, function() {
   this.service.simulateRequest('removeItem', "name").then(function() {
     var ajaxRequest = mockAjax.requests[0];
     equal(ajaxRequest.type, 'DELETE', 'made a DELETE request');
-    equal(ajaxRequest.url, '/api/pane_user_entries/card-id.json', 'made a request to the correct endpoint');
+    equal(ajaxRequest.url, '/api/pane_type_user_entries/card-type.json', 'made a request to the correct endpoint');
     deepEqual(ajaxRequest.data, { key: 'name', access: 'private' }, 'has expected payload ' + JSON.stringify(ajaxRequest.data) );
     start();
   }, function() {

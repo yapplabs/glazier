@@ -1,6 +1,6 @@
 var Conductor = requireModule('conductor');
 
-function createServiceForTesting(ServiceClass, cardId) {
+function createServiceForTesting(ServiceClass, cardId, data) {
   var port = {
     on: function(prop, callback) {},
     onRequest: function(prop, callback) {}
@@ -9,7 +9,8 @@ function createServiceForTesting(ServiceClass, cardId) {
     id: cardId
   };
   var sandbox = {
-    card: card
+    card: card,
+    data: data
   };
 
   var service = new ServiceClass(port, sandbox);

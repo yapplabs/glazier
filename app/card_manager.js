@@ -118,7 +118,7 @@ var CardManager = Ember.Object.extend({
     var env = (/glazier\.herokuapp\.com/.test(window.location.hostname)) ? 'prod' : 'dev',
         paneData = pane.get('cardData');
     manifest.env = manifest.env || {};
-    return Ember.merge({ env: manifest.env[env] }, paneData);
+    return Ember.merge({ env: manifest.env[env], cardType: manifest.name }, paneData);
   },
 
   /*
