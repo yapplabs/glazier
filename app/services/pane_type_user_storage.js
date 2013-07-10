@@ -19,10 +19,11 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
       @param value {Object}
     */
     setItem: function(promise, key, value) {
-      var data = {};
+      var cardTypeName = this.sandbox.card.manifest.name,
+          data = {};
       data[key] = value;
       $.ajax({
-        url: '/api/pane_type_user_entries/' + encodeURIComponent(this.sandbox.data.cardType) + '.json',
+        url: '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json',
         type: 'PUT',
         data: {data: data, access: 'private'}
       }).then(function(r){
@@ -40,8 +41,9 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
       @param key {String}
     */
     removeItem: function(promise, key) {
+      var cardTypeName = this.sandbox.card.manifest.name;
       $.ajax({
-        url: '/api/pane_type_user_entries/' + encodeURIComponent(this.sandbox.data.cardType) + '.json',
+        url: '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json',
         type: 'DELETE',
         data: {key: key, access: 'private'}
       }).then(function(r) {

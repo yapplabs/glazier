@@ -19,10 +19,12 @@ if (!/phantom/i.test(navigator.userAgent)) {
       Conductor.services['test'] = TestService;
 
       var cardUrl = '/test/fixtures/app/services/pane_type_user_storage_card.js';
-      conductor.loadData(cardUrl, 1, { cardType: 'card-type'});
       card = conductor.load(cardUrl, 1, {
         capabilities: ['paneTypeUserStorage', 'test']
       });
+      card.manifest = {
+        name: 'card-type'
+      };
       card.promise.then(null, function(e){ console.log(e); });
       card.appendTo('#qunit-fixture');
 
@@ -56,7 +58,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
 // var port, card, sandbox;
 module("Glazier PaneTypeUserStorageService Unit", {
   setup: function() {
-    this.service = createServiceForTesting(PaneTypeUserStorageService, 'card-id', { cardType: 'card-type' });
+    this.service = createServiceForTesting(PaneTypeUserStorageService, 'card-id', { name: 'card-type' });
     mockAjax();
   },
   teardown: function() {
