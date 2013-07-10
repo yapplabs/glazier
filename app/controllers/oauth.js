@@ -29,6 +29,7 @@ var OauthController = Ember.Controller.extend({
     window.addEventListener("message", onmessage);
   },
   handleOauthCode: function(event){
+    this.set('showModal', false);
     if (event.origin !== document.location.origin) {
       Ember.Logger.debug('Invalid origin: ' + event.origin + ' vs ' + document.location.origin);
       return;
