@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "dependencies": {
     "glazier-card-grunt-config": {
-      "version": "0.1.0",
-      "from": "glazier-card-grunt-config@~0.1.0"
+      "version": "0.1.1",
+      "from": "glazier-card-grunt-config@0.1.1",
+      "resolved": "https://registry.npmjs.org/glazier-card-grunt-config/-/glazier-card-grunt-config-0.1.1.tgz"
     },
     "grunt-contrib-clean": {
       "version": "0.4.1",
@@ -12,7 +13,8 @@
     },
     "grunt-contrib-concat": {
       "version": "0.3.0",
-      "from": "grunt-contrib-concat@~0.3.0"
+      "from": "grunt-contrib-concat@~0.3.0",
+      "resolved": "https://registry.npmjs.org/grunt-contrib-concat/-/grunt-contrib-concat-0.3.0.tgz"
     },
     "grunt-contrib-copy": {
       "version": "0.4.1",
@@ -20,7 +22,8 @@
     },
     "grunt-md5": {
       "version": "0.1.11",
-      "from": "grunt-md5@~0.1.11"
+      "from": "grunt-md5@~0.1.11",
+      "resolved": "https://registry.npmjs.org/grunt-md5/-/grunt-md5-0.1.11.tgz"
     },
     "lodash": {
       "version": "1.3.1",
@@ -70,12 +73,12 @@
           "dependencies": {
             "lru-cache": {
               "version": "2.3.0",
-              "from": "lru-cache@2"
+              "from": "lru-cache@2",
+              "resolved": "https://registry.npmjs.org/lru-cache/-/lru-cache-2.3.0.tgz"
             },
             "sigmund": {
               "version": "1.0.0",
-              "from": "sigmund@~1.0.0",
-              "resolved": "https://registry.npmjs.org/sigmund/-/sigmund-1.0.0.tgz"
+              "from": "sigmund@~1.0.0"
             }
           }
         }
@@ -87,7 +90,8 @@
       "dependencies": {
         "async": {
           "version": "0.1.22",
-          "from": "async@~0.1.22"
+          "from": "async@~0.1.22",
+          "resolved": "https://registry.npmjs.org/async/-/async-0.1.22.tgz"
         },
         "coffee-script": {
           "version": "1.3.3",
@@ -109,6 +113,7 @@
         "findup-sync": {
           "version": "0.1.2",
           "from": "findup-sync@~0.1.0",
+          "resolved": "https://registry.npmjs.org/findup-sync/-/findup-sync-0.1.2.tgz",
           "dependencies": {
             "lodash": {
               "version": "1.0.1",
@@ -123,7 +128,8 @@
           "dependencies": {
             "graceful-fs": {
               "version": "1.2.3",
-              "from": "graceful-fs@~1.2.0"
+              "from": "graceful-fs@~1.2.0",
+              "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-1.2.3.tgz"
             },
             "inherits": {
               "version": "1.0.0",
@@ -141,7 +147,8 @@
         },
         "minimatch": {
           "version": "0.2.12",
-          "from": "minimatch@~0.2.6",
+          "from": "minimatch@~0.2.11",
+          "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-0.2.12.tgz",
           "dependencies": {
             "lru-cache": {
               "version": "2.3.0",
@@ -150,24 +157,26 @@
             },
             "sigmund": {
               "version": "1.0.0",
-              "from": "sigmund@~1.0.0",
-              "resolved": "https://registry.npmjs.org/sigmund/-/sigmund-1.0.0.tgz"
+              "from": "sigmund@~1.0.0"
             }
           }
         },
         "nopt": {
           "version": "1.0.10",
           "from": "nopt@~1.0.10",
+          "resolved": "https://registry.npmjs.org/nopt/-/nopt-1.0.10.tgz",
           "dependencies": {
             "abbrev": {
               "version": "1.0.4",
-              "from": "abbrev@1"
+              "from": "abbrev@1",
+              "resolved": "https://registry.npmjs.org/abbrev/-/abbrev-1.0.4.tgz"
             }
           }
         },
         "rimraf": {
           "version": "2.0.3",
           "from": "rimraf@~2.0.2",
+          "resolved": "https://registry.npmjs.org/rimraf/-/rimraf-2.0.3.tgz",
           "dependencies": {
             "graceful-fs": {
               "version": "1.1.14",
@@ -180,7 +189,7 @@
           "from": "lodash@~0.9.0"
         },
         "underscore.string": {
-          "version": "2.2.1",
+          "version": "2.2.0-rc",
           "from": "underscore.string@~2.2.0rc"
         },
         "which": {
@@ -194,7 +203,6 @@
             "argparse": {
               "version": "0.1.15",
               "from": "argparse@~ 0.1.11",
-              "resolved": "https://registry.npmjs.org/argparse/-/argparse-0.1.15.tgz",
               "dependencies": {
                 "underscore": {
                   "version": "1.4.4",
@@ -214,13 +222,41 @@
         }
       }
     },
+    "grunt-es6-module-transpiler": {
+      "version": "0.3.0",
+      "from": "grunt-es6-module-transpiler@git://github.com/stefanpenner/grunt-es6-module-transpiler.git",
+      "resolved": "git://github.com/stefanpenner/grunt-es6-module-transpiler.git#768aacdfe5b1764b138f20514e7c70af958f32ae",
+      "dependencies": {
+        "es6-module-transpiler": {
+          "version": "0.2.0",
+          "from": "es6-module-transpiler@~0.2.0",
+          "dependencies": {
+            "coffee-script": {
+              "version": "1.3.3",
+              "from": "coffee-script@~1.3.3"
+            },
+            "optimist": {
+              "version": "0.3.7",
+              "from": "optimist@~0.3.5",
+              "dependencies": {
+                "wordwrap": {
+                  "version": "0.0.2",
+                  "from": "wordwrap@~0.0.2"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "grunt-s3": {
       "version": "0.2.0-alpha.2",
       "from": "grunt-s3@~0.2.0-alpha.2",
       "dependencies": {
         "underscore.deferred": {
           "version": "0.1.5",
-          "from": "underscore.deferred@~0.1.4"
+          "from": "underscore.deferred@~0.1.4",
+          "resolved": "https://registry.npmjs.org/underscore.deferred/-/underscore.deferred-0.1.5.tgz"
         },
         "knox": {
           "version": "0.8.3",
@@ -269,41 +305,14 @@
         }
       }
     },
-    "grunt-es6-module-transpiler": {
-      "version": "0.3.0",
-      "from": "grunt-es6-module-transpiler@git://github.com/stefanpenner/grunt-es6-module-transpiler.git",
-      "resolved": "git://github.com/stefanpenner/grunt-es6-module-transpiler.git#768aacdfe5b1764b138f20514e7c70af958f32ae",
-      "dependencies": {
-        "es6-module-transpiler": {
-          "version": "0.2.0",
-          "from": "es6-module-transpiler@~0.2.0",
-          "dependencies": {
-            "coffee-script": {
-              "version": "1.3.3",
-              "from": "coffee-script@~1.3.3",
-              "resolved": "https://registry.npmjs.org/coffee-script/-/coffee-script-1.3.3.tgz"
-            },
-            "optimist": {
-              "version": "0.3.7",
-              "from": "optimist@~0.3.5",
-              "dependencies": {
-                "wordwrap": {
-                  "version": "0.0.2",
-                  "from": "wordwrap@~0.0.2"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "handlebars": {
       "version": "1.0.12",
       "from": "handlebars@",
+      "resolved": "https://registry.npmjs.org/handlebars/-/handlebars-1.0.12.tgz",
       "dependencies": {
         "optimist": {
           "version": "0.3.7",
-          "from": "optimist@~0.3.5",
+          "from": "optimist@~0.3",
           "dependencies": {
             "wordwrap": {
               "version": "0.0.2",
@@ -343,7 +352,8 @@
           "dependencies": {
             "abbrev": {
               "version": "1.0.4",
-              "from": "abbrev@1"
+              "from": "abbrev@1",
+              "resolved": "https://registry.npmjs.org/abbrev/-/abbrev-1.0.4.tgz"
             }
           }
         },
@@ -354,11 +364,11 @@
             "glob": {
               "version": "3.1.21",
               "from": "glob@~3.1.21",
-              "resolved": "https://registry.npmjs.org/glob/-/glob-3.1.21.tgz",
               "dependencies": {
                 "minimatch": {
                   "version": "0.2.12",
                   "from": "minimatch@~0.2.11",
+                  "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-0.2.12.tgz",
                   "dependencies": {
                     "lru-cache": {
                       "version": "2.3.0",
@@ -367,14 +377,14 @@
                     },
                     "sigmund": {
                       "version": "1.0.0",
-                      "from": "sigmund@~1.0.0",
-                      "resolved": "https://registry.npmjs.org/sigmund/-/sigmund-1.0.0.tgz"
+                      "from": "sigmund@~1.0.0"
                     }
                   }
                 },
                 "graceful-fs": {
                   "version": "1.2.3",
-                  "from": "graceful-fs@~1.2.0"
+                  "from": "graceful-fs@~1.2.0",
+                  "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-1.2.3.tgz"
                 },
                 "inherits": {
                   "version": "1.0.0",
@@ -390,8 +400,7 @@
         },
         "resolve": {
           "version": "0.3.1",
-          "from": "resolve@~0.3.1",
-          "resolved": "https://registry.npmjs.org/resolve/-/resolve-0.3.1.tgz"
+          "from": "resolve@~0.3.1"
         }
       }
     },
@@ -414,7 +423,7 @@
             },
             "underscore": {
               "version": "1.4.4",
-              "from": "underscore@~1.4.3"
+              "from": "underscore@1.4.x"
             },
             "peakle": {
               "version": "0.0.1",
@@ -423,6 +432,7 @@
             "cli": {
               "version": "0.4.4-2",
               "from": "cli@0.4.x",
+              "resolved": "https://registry.npmjs.org/cli/-/cli-0.4.4-2.tgz",
               "dependencies": {
                 "glob": {
                   "version": "3.2.1",
@@ -444,6 +454,7 @@
             "minimatch": {
               "version": "0.2.12",
               "from": "minimatch@0.x.x",
+              "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-0.2.12.tgz",
               "dependencies": {
                 "lru-cache": {
                   "version": "2.3.0",
@@ -452,8 +463,7 @@
                 },
                 "sigmund": {
                   "version": "1.0.0",
-                  "from": "sigmund@~1.0.0",
-                  "resolved": "https://registry.npmjs.org/sigmund/-/sigmund-1.0.0.tgz"
+                  "from": "sigmund@~1.0.0"
                 }
               }
             }
