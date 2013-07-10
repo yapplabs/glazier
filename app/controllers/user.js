@@ -6,7 +6,10 @@ var UserController = Ember.Controller.extend({
   username:  Ember.computed.oneWay('content.github_login'),
   accessToken: Ember.computed.oneWay('content.github_access_token'),
   avatarUrl: function(){
-    return "https://secure.gravatar.com/avatar/" + this.get('content.gravatar_id');
+    avatar_id = this.get('content.gravatar_id');
+    if (avatar_id) {
+      return "https://secure.gravatar.com/avatar/" + avatar_id;
+    }
   }.property('content'),
   githubClientId: function(){
     // TODO: Not this here:
@@ -18,7 +21,7 @@ var UserController = Ember.Controller.extend({
 
     ajax(
       "/api/oauth/github/exchange?code=" + authCode, {
-      type: 'post',
+      type: 'post'
     }).then(function(accessToken) {
       self.loginWithGithub(accessToken);
     }).then(null, Conductor.error);
