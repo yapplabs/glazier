@@ -1,6 +1,6 @@
 var OauthController = Ember.Controller.extend({
   needs: ['user'],
-  allowOauth: Em.computed.alias('controllers.user.model'),
+  allowOauth: Ember.computed.alias('controllers.user.model'),
   showModal: false,
   authorizeUrl: function(){
     var oauthOptions = this.get('oauthOptions');
