@@ -20,18 +20,8 @@ var card = Conductor.card({
   App: null,
 
   render: function (intent, dimensions) {
-    if (!dimensions) {
-      dimensions = {
-        width: 500,
-        height: 2000
-      };
-    }
-
     document.body.innerHTML = "<div id=\"card\"></div>";
-
     Ember.run(this.App, 'advanceReadiness');
-
-    return this.App;
   },
 
   activate: function() {
@@ -44,15 +34,6 @@ var card = Conductor.card({
         title: "Github Issues"
       });
     }
-  },
-
-  resize: function(dimensions) {
-    var width = Math.min(dimensions.width, 500);
-    var height = Math.min(dimensions.height, 500);
-
-    $('body>div').css({
-      width: width
-    });
   }
 });
 
