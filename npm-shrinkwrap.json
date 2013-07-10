@@ -1,0 +1,11 @@
+{
+  "name": "glazier",
+  "version": "0.0.1",
+  "dependencies": {
+    "growl": {
+      "version": "1.7.0",
+      "from": "growl@~1.7.0",
+      "resolved": "https://registry.npmjs.org/growl/-/growl-1.7.0.tgz"
+    }
+  }
+}
