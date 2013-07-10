@@ -66,7 +66,8 @@ asyncTest("it renders", 1, function(){
         }, 10);
       });
     }
-    card.render().then(function(){
+    card.render();
+    card.App.then(function(){
       wait().then(function(){
         equal($('h3').text(), 'Github Stargazers for emberjs/ember.js');
         start();
