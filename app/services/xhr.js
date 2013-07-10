@@ -1,12 +1,9 @@
 import Conductor from 'conductor';
 
 // Lookup a url in the manifest for this card
-var cardManifestUrl = function(cardId, url) {
-  // assume the manifest is already loaded, this is likely brittle
-  var manifest = Glazier.Pane.find(cardId).get('paneType.manifest');
-
-  if (manifest && manifest.assets && manifest.assets[url]) {
-    return manifest.assets[url];
+var cardManifestUrl = function(cardManifest, url) {
+  if (cardManifest && cardManifest.assets && cardManifest.assets[url]) {
+    return cardManifest.assets[url];
   }
 };
 
@@ -38,7 +35,7 @@ var ManifestXHRService = Conductor.XHRService.extend({
       @param url {String}
     */
     get: function(promise, url) {
-      var processedUrl = cardManifestUrl(this.sandbox.card.id, url) || glazierUrl(url) || url;
+      var processedUrl = cardManifestUrl(this.sandbox.card.manifest, url) || glazierUrl(url) || url;
 
       if (url !== processedUrl) {
         console.log("ManifestXHRService get", url, "->", processedUrl);
