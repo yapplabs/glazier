@@ -1,3 +1,8 @@
-{{#each}}
-  {{#linkTo dashboard this}}{{id}}{{/linkTo}}
-{{/each}}
+<div id="dashboards">
+  <h1>Dashboards</h1>
+  <ul>
+  {{#each}}
+    <li>{{#linkTo dashboard this}}{{id}}{{/linkTo}}</li>
+  {{/each}}
+  </ul>
+</div>
