@@ -3,7 +3,10 @@ var RepositorySidebarController = Ember.ObjectController.extend({
     this.set('content', repo);
   },
   gravatarUrl: (function(){
-    return "https://secure.gravatar.com/avatar/" + this.get('content.owner.gravatar_id');
+    var gravatar_id = this.get('content.owner.gravatar_id');
+    if (gravatar_id) {
+      return "https://secure.gravatar.com/avatar/" + gravatar_id;
+    }
   }).property("content")
 });
 

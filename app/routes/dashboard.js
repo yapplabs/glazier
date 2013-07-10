@@ -2,8 +2,6 @@ import Conductor from 'conductor';
 import Repository from 'glazier/models/repository';
 import Dashboard from 'glazier/models/dashboard';
 
-var RSVP = Ember.RSVP;
-
 var DashboardRoute = Ember.Route.extend({
   setupController: function(controller, model) {
     this._super(controller, model);
@@ -26,17 +24,27 @@ var DashboardRoute = Ember.Route.extend({
   model: function (params) {
     var id = params.github_user + '/' + params.github_repo,
         accessToken = this.controllerFor('user').get('accessToken');
-
-    return RSVP.hash({
-      repository: Repository.find(id, accessToken),
-      dashboard: Dashboard.find(id)
-    }).then(function(hash){
-      var dashboard = hash.dashboard,
-          repository = hash.repository;
-
-      dashboard.set('repository', repository);
-
-      return dashboard;
+    // We check if the repo exists before hitting the server
+    // since we need to do this for the sidebar and this
+    // saves the server from having to repeat it
+    return Repository.find(id, accessToken).then(function (repository) {
+      return Glazier.Dashboard.find(id).then(function(dashboard){
+        dashboard.set('repository', repository);
+        return dashboard;
+      });
+    });
+  },
+  afterModel: function (resolvedModel) {
+    // If we routed to this providing the dashboard as context
+    // then the model hook isn't run, we need to ensure the
+    // repository is there
+    if (resolvedModel.get('repository')) {
+      return;
+    }
+    var id = resolvedModel.get('id'),
+        accessToken = this.controllerFor('user').get('accessToken');
+    return Repository.find(id, accessToken).then(function (repository) {
+      resolvedModel.set('repository', repository);
     });
   },
   events: {
