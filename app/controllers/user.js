@@ -6,9 +6,9 @@ var UserController = Ember.Controller.extend({
   username:  Ember.computed.oneWay('content.github_login'),
   accessToken: Ember.computed.oneWay('content.github_access_token'),
   avatarUrl: function(){
-    avatar_id = this.get('content.gravatar_id');
-    if (avatar_id) {
-      return "https://secure.gravatar.com/avatar/" + avatar_id;
+    var avatarId = this.get('content.gravatar_id');
+    if (avatarId) {
+      return "https://secure.gravatar.com/avatar/" + avatarId;
     }
   }.property('content'),
   githubClientId: function(){
