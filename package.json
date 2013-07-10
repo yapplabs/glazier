@@ -34,12 +34,10 @@
     "grunt-s3": "~0.2.0-alpha.1",
     "grunt-contrib-handlebars": "~0.5.8",
     "grunt-contrib-uglify": "~0.2.1",
-    "matchdep": "~0.1.2",
     "grunt-sass": "~0.6.0",
     "glob": "~3.2.1",
-    "jsframe": "~0.1.0-3"
-  },
-  "dependencies": {
-    "growl": "~1.7.0"
+    "jsframe": "~0.1.0-3",
+    "growl": "~1.7.0",
+    "matchdep": "~0.1.2"
   }
 }

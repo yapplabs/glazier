@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
-  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
+  require('matchdep').
+    filterDev('grunt-*').
+    forEach(grunt.loadNpmTasks);
 
   var glazierCardGruntConfig = require('glazier-card-grunt-config'),
     sharedConfig = glazierCardGruntConfig.createSharedConfig(grunt);
