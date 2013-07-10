@@ -5,7 +5,7 @@ Conductor.require('/vendor/handlebars.js');
 Conductor.require('/vendor/ember-latest.js');
 Conductor.require('/vendor/loader.js');
 Conductor.requireCSS('/css/glazier_card.css');
-Conductor.requireCSS('/cards/github-stars/card.css');
+Conductor.requireCSS('card.css');
 
 import TestConsumer from 'app/consumers/test';
 import IdentityConsumer from 'app/consumers/identity';

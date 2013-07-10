@@ -10,34 +10,39 @@ var isCardDir = function (dir){
   return dir[0] != ".";
 };
 
-function cardGruntCommand(cardName) {
-  var cmd = "(cd cards/" + cardName + " && grunt)";
+function cardGruntCommand(dirname) {
+  var cmd = "(cd cards/" + dirname + " && grunt)";
   return cmd;
 }
 
-function cardGruntDeployCommand(cardName) {
-  var cmd = "(cd cards/" + cardName + " && grunt deploy)";
+function cardGruntDeployCommand(dirname) {
+  var cmd = "(cd cards/" + dirname + " && grunt deploy)";
   return cmd;
 }
 
-function cardNpmInstallCommand(cardName) {
-  var cmd = "(cd cards/" + cardName + " && npm install)";
+function cardNpmInstallCommand(dirname) {
+  var cmd = "(cd cards/" + dirname + " && npm install)";
   return cmd;
 }
 
-function cardNpmRefreshCommand(cardName) {
+function cardNpmRefreshCommand() {
   var cmd = "rm -rf cards/*/node_modules";
   return cmd;
 }
 
-function cardIngestManifestCommand(cardName) {
-  var manifestPath = 'cards/' + cardName + '/dist/dev/' + cardName + '/manifest.json';
+function pkgAt(path) {
+  return grunt.file.readJSON(path + '/package.json' );
+}
+
+function cardIngestManifestCommand(dirname) {
+  var name = pkgAt('cards/' + dirname).name;
+  var manifestPath = 'cards/' + dirname + '/dist/dev/' + name + '/manifest.json';
   var cmd = '(cd glazier-server && bundle exec rake "glazier:card:ingest[../' + manifestPath + ']")';
   return cmd;
 }
 
-function herokuIngestCommand(cardName) {
-  var deployJSON = grunt.file.readJSON('cards/' + cardName + '/package.json');
+function herokuIngestCommand(dirname) {
+  var deployJSON = pkgAt('cards/' + dirname);
   var glazierConfig = deployJSON.glazierConfig;
   var url = glazierConfig.assetHost + '/assets/cards/' + glazierConfig.repositoryName + '/manifest.json';
   var cmd = "(cd glazier-server && heroku surrogate rails runner \"PaneType.ingest('" + url + "')\" --app glazier)";

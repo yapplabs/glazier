@@ -1,26 +1,25 @@
 {
   "name": "glazier-github-issues",
   "glazierConfig": {
+    "displayName": "github-issues",
     "consumes": [
       "unauthenticatedGithubApi",
       "authenticatedGithubApi",
       "repository"
     ],
-    "assetHost": "http://glazier.s3.amazonaws.com",
-    "shortName": "github-issues",
-    "repositoryName": "yapplabs/github-issues"
-  },
-  "version": "0.0.1",
+    "assetHost": "http://glazier.s3.amazonaws.com"
+ },
+ "version": "0.0.1",
   "description": "",
   "main": "card.js",
   "scripts": {
     "test": "grunt test"
   },
+  "author": "Yapp Labs",
   "repository": {
     "type": "git",
     "url": "https://github.com/yapplabs/glazier.git"
   },
-  "author": "Yapp Labs",
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
