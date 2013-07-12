@@ -48,27 +48,39 @@ When you submit the form you will get a **client id** and **client secret**. Set
     #these are needed in the windows running both the proxy and the server
 
 
-### Setup the Database and start the server
+### Setup the database and prepare the server
 
     cd glazier-server
     bundle install
     rake db:create
     rake db:migrate
-    bundle exec rails server -p 3040
 
 ### Install the Glazier proxy dependencies and start the proxy
 
     #open a separate window and navigate to the top glazier directory
     #make sure client id and client secret are set in this window
     npm install
+    grunt              //interrupt this task when it reaches the Waiting state
     grunt ingest
+    grunt ingestCards
     grunt
+
+### Start the server
+
+    grunt server   //from the top glazier directory
 
 ### Navigate to the app in your browser
 
     http://localhost:8000/api/
 
-# Running specs
+## Adding Node Packages
+
+Glazier uses [npm shrinkwrapping](https://npmjs.org/doc/shrinkwrap.html) to prevent 
+dependency version problems.  If you add or change dependencies in the package.json 
+files (either container or cards), make sure to run `npm shrinkwrap` in the appropriate
+place.
+
+## Running specs
 
 Start the grunt server with `grunt`, then visit:
 
