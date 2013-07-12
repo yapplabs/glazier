@@ -7,11 +7,25 @@ module.exports = {
       'vendor/**',
       'test/**',
       'templates/**',
-      'stylesheets/**',
+      //'stylesheets/**',
       'public/**/*'],
     tasks: ['lock', 'build', 'templateCSS', 'unlock', 'jshint', 'qunit:all'],
     options: {
       nospawn: true
+    }
+  },
+  sass: {
+    files: [
+      'stylesheets/**'
+    ],
+    tasks: ['sass']
+  },
+  css: {
+    files: [
+      'tmp/public/css/*.css'
+    ],
+    options: {
+      livereload: true
     }
   }
 };

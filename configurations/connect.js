@@ -1,4 +1,5 @@
 var proxy = require('proxy-middleware');
+var lrSnippet = require('connect-livereload');
 var url = require('url');
 var request = require('http').request;
 
@@ -66,6 +67,7 @@ function middleware(connect, options) {
   theUrl.route = '/api';
 
   return [
+    lrSnippet(),
     blockDuringBuild,
     proxy(theUrl),
     proxyIndex,
