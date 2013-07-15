@@ -18,7 +18,7 @@ module.exports = {
     files: [
       'stylesheets/**'
     ],
-    tasks: ['sass']
+    tasks: ['sass', 'templateCSS'],
   },
   css: {
     files: [

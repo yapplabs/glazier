@@ -1,9 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700,200italic,400italic,700italic);
-
-@import "compass";
-@import "compass/reset";
-
-$page-padding: 25px;
+@import "base";
 
 body {
   font-family: 'Source Sans Pro', sans-serif;
@@ -12,17 +7,6 @@ body {
   line-height: 1.51em;
   color: #808080;
 }
-
-h1 { font-size: 45px; color: #4d4d4d; line-height: 1.51em }
-h2 { font-size: 34px; color: #4d4d4d; line-height: 1.51em }
-h3 { font-size: 20px; color: #666666; line-height: 1.51em }
-h4 { font-size: 18px; color: #808080; line-height: 1.51em }
-h5 { font-size: 16px; color: #4B4B4B; line-height: 1.51em }
-h6 { font-size: 14px; color: #4B4B4B; line-height: 1.51em }
-
-p { }
-
-a { }
 
 iframe {
   width: 100%;
@@ -45,10 +29,12 @@ iframe {
 }
 
 .pane {
+  @include box-sizing(border-box);
   position: relative;
   overflow: hidden;
 
   height: 260px;
+  padding-bottom: 35px;
 
   background-color: #FFFFFF;
 }
