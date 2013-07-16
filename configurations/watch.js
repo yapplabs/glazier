@@ -7,7 +7,6 @@ module.exports = {
       'vendor/**',
       'test/**',
       'templates/**',
-      //'stylesheets/**',
       'public/**/*'],
     tasks: ['lock', 'build', 'templateCSS', 'unlock', 'jshint', 'qunit:all'],
     options: {
@@ -18,7 +17,7 @@ module.exports = {
     files: [
       'stylesheets/**'
     ],
-    tasks: ['sass', 'templateCSS'],
+    tasks: ['sass', 'templateCSS']
   },
   css: {
     files: [

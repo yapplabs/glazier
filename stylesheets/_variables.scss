@@ -1,1 +1,14 @@
 $page-padding: 25px;
+
+$base-color: hsl(194, 53%, 49%);
+
+$base-lightest: adjust_hue(saturate(lighten($base-color, 48%), 47%), -18deg);
+$base-lighter: adjust_hue(saturate(lighten($base-color, 23%), 7%), -15deg);
+$base-light: adjust_hue(lighten($base-color, 8%), -10deg);
+$base-dark: adjust_hue(saturate(darken($base-color, 15%), 10%), -2deg);
+
+$tooltip-bg: hsl(0, 0%, 30%);
+
+$logo-size: 4em;
+$logo-speed: 3s;
+$logo-easing: cubic-bezier(.5,0,.3,1);

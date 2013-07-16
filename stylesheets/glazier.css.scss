@@ -23,9 +23,10 @@ iframe {
 
 .pane-wrapper {
   @include box-sizing(border-box);
+  float: left;
+  margin-bottom: $page-padding;
   padding-right: $page-padding;
   width: 50%;
-  float: left;
 }
 
 .pane {

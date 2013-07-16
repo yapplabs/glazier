@@ -1,26 +1,33 @@
+.num {
+  // position: absolute;
+  // left: 0;
+  // width: 80px;
+}
+
 .person {
-  float:left;
-  width:60px;
+  position: relative;
+  float: left;
+  width: 40px;
+  margin-right: 10px;
+
+  img {
+    display: block;
+    width: 100%;
+    padding-top: 10px;
+  }
 }
 
-.person img {
-  display:block;
-
-  width: 50px;
-  height:50px;
-  margin:5px;
-}
-
-.person span {
+/*.person span {
   font-size: 10px;
   line-height: 1.31em;
   width: 50px;
-  text-align:center;
-  display:block;
-  text-overflow:ellipsis;
+  text-align: center;
+  display: block;
+  text-overflow: ellipsis;
   overflow: hidden;
-}
+}*/
 
 #stargazers {
-  overflow: auto;
+  position: relative;
+  overflow: visible;
 }
