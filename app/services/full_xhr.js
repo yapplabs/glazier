@@ -18,7 +18,10 @@ var FullXhrService = Conductor.Oasis.Service.extend({
     */
     ajax: function(ajaxOpts) {
       console.log('FullXhrService.ajax', ajaxOpts);
-      return Ember.$.ajax(ajaxOpts);
+      return Conductor.Oasis.RSVP.resolve(Ember.$.ajax(ajaxOpts)).then(function(data) {
+        var x = ajaxOpts;
+        return data;
+      });
     }
   }
 });

@@ -567,7 +567,9 @@ define("oasis",
 
 
     function getRequestId() {
-      return OasisState.oasisId + '-' + OasisState.requestId++;
+      var id = OasisState.oasisId + '-' + OasisState.requestId++;
+      console.log("getRequestId: ", id);
+      return id;
     };
 
     OasisPort.prototype = {
@@ -696,6 +698,7 @@ define("oasis",
               });
 
           RSVP.resolve(getResponse).then(function (value) {
+            console.log("request id send (success)", requestId);
             self.send('@response:' + eventName, {
               requestId: requestId,
               data: value
@@ -708,6 +711,7 @@ define("oasis",
                 stack: error.stack
               }
             }
+            console.log("request id send (error)", requestId);
             self.send('@errorResponse:' + eventName, {
               requestId: requestId,
               data: value
@@ -1191,7 +1195,7 @@ define("oasis",
       return obj;
     };
 
-    // If it turns out we need a better polyfill we can grab mozilla's at: 
+    // If it turns out we need a better polyfill we can grab mozilla's at:
     // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.removeEventListener?redirectlocale=en-US&redirectslug=DOM%2FEventTarget.removeEventListener#Polyfill_to_support_older_browsers
     function addEventListener(receiver, eventName, fn) {
       if (receiver.addEventListener) {
@@ -1335,7 +1339,7 @@ define("oasis",
 
         // 9. return A
         return A;
-      };  
+      };
 
     __exports__.o_create = o_create;
     __exports__.a_forEach = a_forEach;

@@ -452,11 +452,17 @@ define("rsvp/promise",
     }
 
     function fulfill(promise, value) {
-      config.async(function() {
-        promise.trigger('promise:resolved', { detail: value });
-        promise.isFulfilled = true;
-        promise.fulfillmentValue = value;
-      });
+      var error;
+      try {
+        throw new Error();
+      } catch (e) {
+        error = e;
+      }
+      // config.async(function() {
+      promise.trigger('promise:resolved', { detail: value });
+      promise.isFulfilled = true;
+      promise.fulfillmentValue = value;
+      // });
     }
 
     function reject(promise, value) {
