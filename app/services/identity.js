@@ -56,8 +56,8 @@ var IdentityService = Conductor.Oasis.Service.extend({
     }
   },
   requests: {
-    currentUser: function (promise) {
-      promise.resolve(this.currentUser());
+    currentUser: function () {
+      return this.currentUser();
     }
   }
 });

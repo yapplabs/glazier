@@ -27,32 +27,23 @@ var OauthService = Conductor.Oasis.Service.extend({
       @public
 
       @method authorize
-      @param promise {Conductor.Oasis.RSVP.Promise}
       @param params {Object}
     */
-    authorize: function(promise, params) {
+    authorize: function(params) {
       // params.authorizeUrl
       // params.exchangeUrl (TODO: in the future we could consider lack of exchange as implicit flow)
-
-      function success(accessToken) {
-        promise.resolve(accessToken);
-      }
-
-      function failure(e) {
-        promise.reject(e);
-      }
 
       // check if we already have an access token for this authorize_url in the session
       var self = this;
       if (params.exchangeUrl) {
-        this.authorize(params.authorizeUrl).then(function (authCode) {
+        return this.authorize(params.authorizeUrl).then(function (authCode) {
           return self.exchange(params.exchangeUrl, authCode);
-        }).then(success, failure);
+        });
       } else {
         var redirectUri = window.location.origin + '/api/oauth/callback';
         var clientId = cardEnv(this.sandbox.card.id).oauthClientId;
 
-        this.authorize(params.authorizeUrl, clientId, redirectUri).then(success, failure);
+        return this.authorize(params.authorizeUrl, clientId, redirectUri);
       }
     }
   },

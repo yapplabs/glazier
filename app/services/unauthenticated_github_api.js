@@ -19,10 +19,9 @@ var UnauthenticatedGithubApiService = Conductor.Oasis.Service.extend({
       @public
 
       @method ajax
-      @param promise {Conductor.Oasis.RSVP.Promise}
       @param ajaxOpts {Object}
     */
-    ajax: function (promise, ajaxOpts) {
+    ajax: function (ajaxOpts) {
       var card = this.card;
 
       ajaxOpts.data = ajaxOpts.data = {};
@@ -30,21 +29,20 @@ var UnauthenticatedGithubApiService = Conductor.Oasis.Service.extend({
       ajaxOpts.url = 'https://api.github.com' + ajaxOpts.url;
       delete ajaxOpts.data.access_token;
 
-      $.ajax(ajaxOpts).then(function(value){
-        promise.resolve(value);
-      }).then(null, function(jqXhr) {
-        promise.reject(failureResultFromJqXhr(jqXhr));
-      });
+      return Conductor.Oasis.RSVP.resolve($.ajax(ajaxOpts)).
+        then(null, failureResultFromJqXhr);
     }
   }
 });
 
 function failureResultFromJqXhr(jqXhr){
-  return {
+  var parsedError = {
     responseText: jqXhr.responseText,
     status: jqXhr.status,
     rawHeaders: jqXhr.getAllResponseHeaders()
   };
+
+  throw parsedError;
 }
 
 export default UnauthenticatedGithubApiService;

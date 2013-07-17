@@ -14,22 +14,18 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
       @public
 
       @method setItem
-      @param promise {Conductor.Oasis.RSVP.Promise}
       @param key {String}
       @param value {Object}
     */
-    setItem: function(promise, key, value) {
+    setItem: function(key, value) {
       var cardTypeName = this.sandbox.card.manifest.name,
           data = {};
       data[key] = value;
-      $.ajax({
+
+      return $.ajax({
         url: '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json',
         type: 'PUT',
         data: {data: data, access: 'private'}
-      }).then(function(r){
-        promise.resolve(r);
-      }, function(r){
-        promise.reject(r);
       });
     },
 
@@ -37,19 +33,15 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
       @public
 
       @method remoteItem
-      @param promise {Conductor.Oasis.RSVP.Promise}
       @param key {String}
     */
-    removeItem: function(promise, key) {
+    removeItem: function(key) {
       var cardTypeName = this.sandbox.card.manifest.name;
-      $.ajax({
+
+      return $.ajax({
         url: '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json',
         type: 'DELETE',
         data: {key: key, access: 'private'}
-      }).then(function(r) {
-        promise.resolve(r);
-      }, function(r) {
-        promise.reject(r);
       });
     }
   }
