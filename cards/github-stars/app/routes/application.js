@@ -11,7 +11,7 @@ var Stargazers = {
       url: '/repos/' + repositoryName + '/stargazers?sort=updated',
       dataType: 'jsonp'
     }).then(function(stargazers) {
-      if(stargazers.meta.Link) {
+      if (stargazers.meta.Link) {
         var lastPageUrl = stargazers.meta.Link[1][0];
         return Stargazers.getTotal(lastPageUrl, user).then(function(total) {
           return {
@@ -30,9 +30,11 @@ var Stargazers = {
     return apiConsumer.request("ajax", {
       url: url,
       dataType: 'json'
-    }).then(function(lastPage) {
-      var pages = Number(url.slice(url.indexOf('page=')+5));
-      return (pages-1) * 30 + (lastPage.length);
+    }).then(function(lastPageStargazers) {
+      var lastPageParam = url.slice(url.indexOf('page=') + 5);
+      var pageCount = parseInt(lastPageParam, 10);
+      var fullPageCount = pageCount - 1;
+      return fullPageCount * 30 + lastPageStargazers.length;
     });
   },
   currentUserStarred: function(repositoryName, user) {
@@ -71,26 +73,21 @@ var Stargazers = {
   }
 };
 
-var Repo = {
-  getCurrentRepositoryName: function(){
-    return Ember.RSVP.resolve(card.consumers.repository.request('getRepository'));
-  }
-};
-
 function retrieveStargazers(user) {
-  return Repo.getCurrentRepositoryName().then(function(repositoryName) {
-    return Ember.RSVP.all([
-      Stargazers.findByRepositoryName(repositoryName, user),
-      Stargazers.currentUserStarred(repositoryName, user)
-    ]).then(function (allResults) {
-      return {
-        user: user,
-        repositoryName: repositoryName,
-        stargazers: allResults[0].data,
-        totalStargazers: allResults[0].total || allResults[0].data.length,
-        isStarred: allResults[1]
-      };
-    });
+  var repositoryName = card.data.repositoryName;
+
+  return Ember.RSVP.hash({
+    stargazers: Stargazers.findByRepositoryName(repositoryName, user),
+    isStarred: Stargazers.currentUserStarred(repositoryName, user)
+  }).then(function (hash) {
+    var stargazers = hash.stargazers;
+    return {
+      user: user,
+      repositoryName: repositoryName,
+      stargazers: stargazers.data,
+      totalStargazers: stargazers.total || stargazers.data.length,
+      isStarred: hash.isStarred
+    };
   }).then(null, Conductor.error);
 }
 
@@ -117,9 +114,7 @@ var ApplicationRoute = Ember.Route.extend({
     }
   },
   model: function(){
-    return card.consumers.identity.request("currentUser").then(function(user){
-      return retrieveStargazers(user);
-    });
+    return retrieveStargazers(card.data.user);
   }
 });
 
