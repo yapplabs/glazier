@@ -12,7 +12,10 @@ var initializer = {
         var fullName = 'service:' + match[1];
         Conductor.services[keyWithoutType] = container.lookup(fullName);
       }
+
     });
+    // Remove the height service
+    delete Conductor.services.height;
   }
 };
 
