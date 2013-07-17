@@ -3,11 +3,9 @@ var card = Conductor.card({
     configuration: Conductor.Oasis.Consumer.extend({})
   },
   metadata: {
-    retrievedConfig: function(resolver) {
+    retrievedConfig: function() {
       var service = this.consumers.configuration;
-      service.request('configurationValue', 'config_test').then(function(result){
-        resolver.resolve(result);
-      }).then(null, resolver.reject);
+      return service.request('configurationValue', 'config_test');
     }
   }
 });

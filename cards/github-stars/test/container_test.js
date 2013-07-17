@@ -24,10 +24,11 @@ module("Github::Stars Acceptances", {
         }
       }
     });
+
     Conductor.services['unauthenticatedGithubApi'] = Conductor.Oasis.Service.extend({
       requests: {
-        ajax: function(promise, ajaxOpts) {
-          promise.resolve([]);
+        ajax: function(ajaxOpts) {
+          return [];
         }
       }
     });
@@ -51,6 +52,7 @@ asyncTest("it renders", 1, function(){
       ok(false, e);
       resolver.reject();
     }
+
     function wait() {
       var promise, obj = {}, helperName;
 

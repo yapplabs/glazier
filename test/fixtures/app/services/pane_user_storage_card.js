@@ -3,10 +3,10 @@ var card = Conductor.card({
     paneUserStorage: Conductor.Oasis.Consumer.extend({}),
     test: Conductor.Oasis.Consumer.extend({
       requests: {
-        runTest:  function(promise, testData){
+        runTest:  function(testData){
           var testFn = new Function('return ' + testData.fnString)();
 
-          testFn.call(window, card, promise);
+          return testFn.call(window, card);
         }
       }
     })

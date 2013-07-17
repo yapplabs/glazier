@@ -2,9 +2,15 @@ import Conductor from 'conductor';
 
 var TestConsumer = Conductor.Oasis.Consumer.extend({
   requests: {
-    runTest:  function(resolver, testData){
+    runTest:  function(testData) {
       var testFn = new Function('return ' + testData.fnString)();
-      testFn.call(window, this.card, resolver);
+
+      return Conductor.Oasis.RSVP.Promise(function(resolve, reject){
+        testFn.call(window, this.card, {
+          resolve: resolve,
+          reject: reject
+        });
+      });
     }
   }
 });

@@ -1,22 +1,24 @@
-function assertResolved(thennable){
+function assertResolved(thennable) {
   stop();
-  thennable.then(function(){
+  thennable.then(function() {
     start();
     ok(true, "resolved");
-  }, function(e){
+  }, function(e) {
     start();
     ok(false, e);
+    throw e;
   });
 }
 
-function assertRejected(thennable){
+function assertRejected(thennable) {
   stop();
-  thennable.then(function(fulfilledWith){
+  thennable.then(function(fulfilledWith) {
     start();
     ok(false, fulfilledWith);
-  }, function(e){
+  }, function(e) {
     start();
     ok(true, "rejected as expected");
+    throw 3;
   });
 }
 

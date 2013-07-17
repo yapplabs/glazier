@@ -6,7 +6,6 @@ function inCard(card, fn) {
     throw new TypeError('inCard requires 2 arguments, (card, function)');
   }
 
-  fn.deferred = new Conductor.Oasis.RSVP.defer();
   fn.testId = Ember.guidFor(fn);
 
   return card.sandbox.activatePromise.then(function(){

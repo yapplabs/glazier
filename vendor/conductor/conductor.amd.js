@@ -457,7 +457,7 @@ define("conductor",
             render: Conductor.renderConsumer(renderDefered, this),
             metadata: Conductor.metadataConsumer(this),
             // TODO: this should be a custom consumer provided in tests
-            //assertion: Conductor.assertionConsumer(assertionDefered, this),
+            assertion: Conductor.assertionConsumer(assertionDefered, this),
             data: Conductor.dataConsumer(dataDefered, this),
             lifecycle: Conductor.lifecycleConsumer(activatePromise),
             height: Conductor.heightConsumer(this),

@@ -12,14 +12,20 @@ if (!/phantom/i.test(navigator.userAgent)) {
         testing: true,
         conductorURL: '/vendor/conductor.js.html'
       });
+
       Conductor.services['configuration'] = ConfigurationService;
 
       card = conductor.load('/test/fixtures/app/services/configuration_card.js', 1, {
         capabilities: ['configuration']
       });
-      card.promise.then(null, function(e){ console.log(e); });
+
       card.appendTo('#qunit-fixture');
-      $('<meta>').attr('name', 'config_test').attr('content', 'foo').appendTo('head');
+
+      $('<meta>').
+        attr('name', 'config_test').
+        attr('content', 'foo').
+          appendTo('head');
+
     },
     teardown: function() {
       $('meta[name=config_test]').remove();
