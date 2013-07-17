@@ -4,9 +4,7 @@
     "displayName": "github-stars",
     "consumes": [
       "authenticatedGithubApi",
-      "unauthenticatedGithubApi",
-      "repository",
-      "identity"
+      "unauthenticatedGithubApi"
     ],
     "assetHost": "http://glazier.s3.amazonaws.com"
   },

@@ -3,9 +3,7 @@
   "glazierConfig": {
     "displayName": "github-repositories",
     "consumes": [
-      "authenticatedGithubApi",
-      "repository",
-      "identity"
+      "authenticatedGithubApi"
     ],
     "assetHost": "http://glazier.s3.amazonaws.com"
   },

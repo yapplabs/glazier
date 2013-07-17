@@ -12,7 +12,6 @@ import TestConsumer from 'app/consumers/test';
 var card = Conductor.card({
   consumers: {
     'test': TestConsumer,
-    'repository': Conductor.Oasis.Consumer,
     'authenticatedGithubApi': Conductor.Oasis.Consumer,
     'unauthenticatedGithubApi': Conductor.Oasis.Consumer
   },

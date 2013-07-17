@@ -27,7 +27,7 @@ module("Github::Stars Acceptances", {
 
     conductor.loadData('/cards/glazier-github-stars/card.js', 1, { user: null, repositoryName: 'emberjs/ember.js' });
     card = conductor.load('/cards/glazier-github-stars/card.js', 1, {
-      capabilities: ['test', 'repository', 'identity', 'authenticatedGithubApi', 'unauthenticatedGithubApi']
+      capabilities: ['test', 'authenticatedGithubApi', 'unauthenticatedGithubApi']
     });
 
     card.promise.then(null, Conductor.error);
