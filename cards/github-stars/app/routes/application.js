@@ -88,7 +88,7 @@ function retrieveStargazers(user) {
         repositoryName: repositoryName,
         stargazers: allResults[0].data,
         totalStargazers: allResults[0].total || allResults[0].data.length,
-        isStarred: allResults[1],
+        isStarred: allResults[1]
       };
     });
   }).then(null, Conductor.error);

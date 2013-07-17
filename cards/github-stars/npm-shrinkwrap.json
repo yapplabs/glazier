@@ -4,8 +4,8 @@
   "dependencies": {
     "glazier-card-grunt-config": {
       "version": "0.1.1",
-      "from": "glazier-card-grunt-config@0.0.7",
-      "resolved": "https://registry.npmjs.org/glazier-card-grunt-config/-/glazier-card-grunt-config-0.0.7.tgz"
+      "from": "glazier-card-grunt-config@0.1.1",
+      "resolved": "https://registry.npmjs.org/glazier-card-grunt-config/-/glazier-card-grunt-config-0.1.1.tgz"
     },
     "grunt-contrib-clean": {
       "version": "0.4.1",
