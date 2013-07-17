@@ -1,9 +1,12 @@
 <h3>Github Stargazers for {{repositoryName}}</h3>
 <div id="stargazers">
+  <div class="num">
+    {{totalStargazers}}
+  </div>
   {{#each stargazers}}
   <div class="person">
-    <img {{bindAttr src="avatar_url"}} />
-    <span>{{login}}</span>
+    <img data-tooltip="true" {{bindAttr src="avatar_url"}} />
+    <span class="tooltip tooltip-top">{{login}}</span>
   </div>
   {{/each}}
 </div>

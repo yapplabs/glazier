@@ -5,3 +5,4 @@ cards/stackoverflow-auth
 cards/stackoverflow-questions
 cards/github-people
 npm-debug.log
+.sass-cache

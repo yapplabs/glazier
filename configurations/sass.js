@@ -1,4 +1,7 @@
 module.exports = {
+	options: {
+		compass: true
+	},
   dist: {
     files: {
       'tmp/public/css/glazier.css': 'stylesheets/glazier.css.scss',

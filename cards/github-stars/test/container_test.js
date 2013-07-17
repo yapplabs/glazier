@@ -17,24 +17,17 @@ module("Github::Stars Acceptances", {
 
     Conductor.services['test'] = TestService;
 
-    Conductor.services['repository'] = Conductor.Oasis.Service.extend({
-      requests: {
-        getRepository: function(promise) {
-          promise.resolve('emberjs/ember.js');
-        }
-      }
-    });
-
     Conductor.services['unauthenticatedGithubApi'] = Conductor.Oasis.Service.extend({
       requests: {
         ajax: function(ajaxOpts) {
-          return [];
+          return { meta: {}, data: [] };
         }
       }
     });
 
+    conductor.loadData('/cards/glazier-github-stars/card.js', 1, { user: null, repositoryName: 'emberjs/ember.js' });
     card = conductor.load('/cards/glazier-github-stars/card.js', 1, {
-      capabilities: ['test', 'repository', 'identity', 'authenticatedGithubApi', 'unauthenticatedGithubApi']
+      capabilities: ['test', 'authenticatedGithubApi', 'unauthenticatedGithubApi']
     });
 
     card.promise.then(null, Conductor.error);
