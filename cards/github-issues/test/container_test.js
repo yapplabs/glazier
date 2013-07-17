@@ -23,8 +23,8 @@ module("Github::Issues Acceptances", {
       }
     });
 
-    conductor.loadData('/cards/github-issues/card.js', 1, {user: null, repositoryName: 'emberjs/ember.js'});
-    card = conductor.load('/cards/github-issues/card.js', 1, {
+    conductor.loadData('/cards/glazier-github-issues/card.js', 1, {user: null, repositoryName: 'emberjs/ember.js'});
+    card = conductor.load('/cards/glazier-github-issues/card.js', 1, {
       capabilities: ['test', 'unauthenticatedGithubApi']
     });
 
