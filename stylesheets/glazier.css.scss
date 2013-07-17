@@ -1,25 +1,12 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700,200italic,400italic,700italic);
-
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+@import "base";
 
 body {
   font-family: 'Source Sans Pro', sans-serif;
-  background: #DFF4F4;
+  background: #f2f2f2;
   font-size: 13px;
   line-height: 1.51em;
   color: #808080;
 }
-
-h1 { font-size: 45px; color: #4d4d4d; line-height: 1.51em }
-h2 { font-size: 34px; color: #4d4d4d; line-height: 1.51em }
-h3 { font-size: 20px; color: #666666; line-height: 1.51em }
-h4 { font-size: 18px; color: #808080; line-height: 1.51em }
-h5 { font-size: 16px; color: #4B4B4B; line-height: 1.51em }
-h6 { font-size: 14px; color: #4B4B4B; line-height: 1.51em }
-
-p { }
-
-a { }
 
 iframe {
   width: 100%;
@@ -29,80 +16,37 @@ iframe {
   border:0;overflow:hidden;
 }
 
-/*!
-* PocketGrid 0.1.0
-* Copyright 2013 Arnaud Leray
-* MIT License
-*/
-
-.block, .block:after, .block:before,
-.block-group, .block-group:after, .block-group:before {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.block-group {
-  clear: both;
-  *zoom: 1;
-}
-.block-group:before,
-.block-group:after {
-  display: table;
-  content: "";
-  line-height: 0;
-  clear: both;
-}
-
-.block-group > .block-group {
-  float: left;
-  margin: 0;
-  clear: none;
-}
-
-.block {
-  float: left;
-  width: 100%;
-}
-
-/* Gutters: can be removed if you don't want gutters */
-.block-group {
-  margin: -.5em;
-}
-.block {
-  padding: .75em;
-}
 .panes {
-  width: 80%;
-  float: left;
-  padding: 3em;
+  @include clearfix;
+  padding-left: $page-padding;
 }
+
 .pane-wrapper {
+  @include box-sizing(border-box);
+  float: left;
+  margin-bottom: $page-padding;
+  padding-right: $page-padding;
   width: 50%;
 }
 
 .pane {
+  @include box-sizing(border-box);
   position: relative;
   overflow: hidden;
 
   height: 260px;
+  padding-bottom: 35px;
 
-  background-color: #DFF4F4;
-  border: 1px solid #B4C8C8;
-
-  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.165);
-     -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.165);
-          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.165);
+  background-color: #FFFFFF;
 }
 
 .pane-footer {
-  background: #D6E3E2;
+  background: #e6e6e6;
+  color: #999999;
   width: 100%;
   height: 35px;
   position: absolute;
   bottom: 0;
-  opacity: 0.75;
-  border-top: 1px solid #D3D3D3;
 }
 
 .hidden-pane {
@@ -218,15 +162,18 @@ iframe {
   }
 }
 
-#repository-sidebar-block {
-  width: 19%;
-  height: 500px;
-}
-
 .repository-sidebar {
-  padding-left: 6px;
-  label {
-    font-weight: bold;
+  @include clearfix;
+
+  padding: $page-padding;
+  img {
+    width: 45px;
+    margin-right: $page-padding;
+    float: left;
+  }
+  h2 {
+    color: #4d4d4d;
+    font-size: 22px;
   }
 }
 

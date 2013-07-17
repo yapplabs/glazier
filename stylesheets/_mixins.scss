@@ -1,0 +1,14 @@
+// Justify for responsive layout
+// http://www.barrelny.com/blog/text-align-justify-and-rwd/
+@mixin just {
+	text-align: justify;
+	&:after {
+		content: "";
+		display: inline-block;
+		width: 100%;
+	}
+
+	> * {
+		display: inline-block;
+	}
+}
