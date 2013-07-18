@@ -10,7 +10,6 @@ if (typeof define !== 'function' && typeof requireModule !== 'function') {
 
     requireModule = function(name) {
       if (seen[name]) { return seen[name]; }
-      seen[name] = {};
 
       var mod = registry[name];
 
@@ -32,6 +31,7 @@ if (typeof define !== 'function' && typeof requireModule !== 'function') {
       }
 
       var value = callback.apply(this, reified);
+
       return seen[name] = exports || value;
     };
 
