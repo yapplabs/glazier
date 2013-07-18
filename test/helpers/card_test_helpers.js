@@ -17,6 +17,10 @@ function inCard(card, fn) {
     };
 
     return service.request('runTest', run);
+  }).then(null, function(reason) {
+    start();
+    ok(false, QUnit.jsDump.parse(reason));
+    throw reason;
   });
 }
 

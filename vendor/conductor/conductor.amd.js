@@ -1182,7 +1182,7 @@ define("conductor",
     Conductor.services = {
       xhr: Conductor.XHRService,
       metadata: Conductor.MetadataService,
-      //assertion: Conductor.AssertionService,
+      assertion: Conductor.AssertionService,
       render: Conductor.RenderService,
       lifecycle: Conductor.LifecycleService,
       data: Conductor.DataService,

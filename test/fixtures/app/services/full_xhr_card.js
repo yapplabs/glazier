@@ -6,11 +6,8 @@ var card = Conductor.card({
         runTest:  function(testData) {
           var testFn = new Function('return ' + testData.fnString)();
 
-          return Conductor.Oasis.RSVP.Promise(function(resolve, reject){
-            testFn.call(window, card, {
-              resolve: resolve,
-              reject: reject
-            });
+          return Conductor.Oasis.RSVP.Promise(function(resolve, reject) {
+            resolve(testFn.call(window, card));
           });
         }
       }

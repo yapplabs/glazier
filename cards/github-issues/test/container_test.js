@@ -17,8 +17,8 @@ module("Github::Issues Acceptances", {
 
     Conductor.services['unauthenticatedGithubApi'] = Conductor.Oasis.Service.extend({
       requests: {
-        ajax: function(promise, ajaxOpts) {
-          promise.resolve([]);
+        ajax: function(ajaxOpts) {
+          return [];
         }
       }
     });
@@ -38,11 +38,12 @@ module("Github::Issues Acceptances", {
 });
 
 asyncTest("it renders", 1, function(){
-  inCard(card, function(card, resolver){
+
+  inCard(card, function(card){
     function wait() {
       var promise, obj = {}, helperName;
 
-      return new Ember.RSVP.Promise(function(resolve) {
+      return new Conductor.Oasis.RSVP.Promise(function(resolve) {
         var watcher = setInterval(function() {
           var routerIsLoading = card.App.__container__.lookup('router:main').router.isLoading;
           if (routerIsLoading) { return; }
@@ -54,17 +55,13 @@ asyncTest("it renders", 1, function(){
         }, 10);
       });
     }
+
     card.render();
-    card.App.then(function(){
-      wait().then(function(){
+    return card.App.then(function(){
+      return wait().then(function(){
         equal($('h3:last').text(), 'Github Issues for emberjs/ember.js');
         start();
-        resolver.resolve();
       });
-    }, function(e){
-      ok(false, e);
-      resolver.reject();
     });
-
-  }).then(null, console.error);
+  });
 });

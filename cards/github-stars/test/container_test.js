@@ -39,13 +39,8 @@ module("Github::Stars Acceptances", {
   }
 });
 
-asyncTest("it renders", 1, function(){
-  inCard(card, function(card, resolver){
-    function fail(e) {
-      ok(false, e);
-      resolver.reject();
-    }
-
+asyncTest("it renders", 1, function() {
+  inCard(card, function(card){
     function wait() {
       var promise, obj = {}, helperName;
 
@@ -61,13 +56,14 @@ asyncTest("it renders", 1, function(){
         }, 10);
       });
     }
+
     card.render();
-    card.App.then(function(){
-      wait().then(function(){
-        equal($('h3').text(), 'Github Stargazers for emberjs/ember.js');
+
+    return card.App.then(function(){
+      return wait().then(function(){
         start();
-        resolver.resolve();
-      }).then(null, fail);
-    }, fail);
-  }).then(null, console.error);
+        equal($('h3').text(), 'Github Stargazers for emberjs/ember.js');
+      });
+    });
+  });
 });
