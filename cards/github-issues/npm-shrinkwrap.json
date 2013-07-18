@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "dependencies": {
     "glazier-card-grunt-config": {
-      "version": "0.1.2",
-      "from": "glazier-card-grunt-config@0.1.2",
-      "resolved": "https://registry.npmjs.org/glazier-card-grunt-config/-/glazier-card-grunt-config-0.1.2.tgz"
+      "version": "0.2.0",
+      "from": "glazier-card-grunt-config@0.2.0",
+      "resolved": "https://registry.npmjs.org/glazier-card-grunt-config/-/glazier-card-grunt-config-0.2.0.tgz"
     },
     "grunt-contrib-clean": {
       "version": "0.4.1",
@@ -14,13 +14,15 @@
     },
     "grunt-contrib-concat": {
       "version": "0.3.0",
-      "from": "grunt-contrib-concat@~0.3.0",
-      "resolved": "https://registry.npmjs.org/grunt-contrib-concat/-/grunt-contrib-concat-0.3.0.tgz"
+      "from": "grunt-contrib-concat@~0.3.0"
     },
     "grunt-contrib-copy": {
       "version": "0.4.1",
-      "from": "grunt-contrib-copy@~0.4.1",
-      "resolved": "https://registry.npmjs.org/grunt-contrib-copy/-/grunt-contrib-copy-0.4.1.tgz"
+      "from": "grunt-contrib-copy@~0.4.1"
+    },
+    "grunt-ember-templates": {
+      "version": "0.4.10",
+      "from": "grunt-ember-templates@~0.4.10"
     },
     "grunt-md5": {
       "version": "0.1.11",
@@ -29,13 +31,11 @@
     },
     "lodash": {
       "version": "1.3.1",
-      "from": "lodash@~1.3.1",
-      "resolved": "https://registry.npmjs.org/lodash/-/lodash-1.3.1.tgz"
+      "from": "lodash@~1.3.1"
     },
     "grunt-contrib-sass": {
       "version": "0.4.1",
       "from": "grunt-contrib-sass@~0.4.1",
-      "resolved": "https://registry.npmjs.org/grunt-contrib-sass/-/grunt-contrib-sass-0.4.1.tgz",
       "dependencies": {
         "dargs": {
           "version": "0.1.0",
@@ -47,26 +47,6 @@
     "grunt-contrib-handlebars": {
       "version": "0.5.10",
       "from": "grunt-contrib-handlebars@~0.5.8",
-      "resolved": "https://registry.npmjs.org/grunt-contrib-handlebars/-/grunt-contrib-handlebars-0.5.10.tgz",
-      "dependencies": {
-        "grunt-lib-contrib": {
-          "version": "0.5.3",
-          "from": "grunt-lib-contrib@~0.5.1",
-          "resolved": "https://registry.npmjs.org/grunt-lib-contrib/-/grunt-lib-contrib-0.5.3.tgz",
-          "dependencies": {
-            "zlib-browserify": {
-              "version": "0.0.1",
-              "from": "zlib-browserify@0.0.1",
-              "resolved": "https://registry.npmjs.org/zlib-browserify/-/zlib-browserify-0.0.1.tgz"
-            }
-          }
-        }
-      }
-    },
-    "grunt-ember-handlebars": {
-      "version": "0.6.0",
-      "from": "grunt-ember-handlebars@~0.6.0",
-      "resolved": "https://registry.npmjs.org/grunt-ember-handlebars/-/grunt-ember-handlebars-0.6.0.tgz",
       "dependencies": {
         "grunt-lib-contrib": {
           "version": "0.5.3",
@@ -85,11 +65,10 @@
     "matchdep": {
       "version": "0.1.2",
       "from": "matchdep@~0.1.2",
-      "resolved": "https://registry.npmjs.org/matchdep/-/matchdep-0.1.2.tgz",
       "dependencies": {
         "minimatch": {
           "version": "0.2.12",
-          "from": "minimatch@~0.2.9",
+          "from": "minimatch@~0.2.6",
           "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-0.2.12.tgz",
           "dependencies": {
             "lru-cache": {
@@ -109,7 +88,6 @@
     "grunt": {
       "version": "0.4.1",
       "from": "grunt@~0.4.1",
-      "resolved": "https://registry.npmjs.org/grunt/-/grunt-0.4.1.tgz",
       "dependencies": {
         "async": {
           "version": "0.1.22",
@@ -296,7 +274,6 @@
     "grunt-s3": {
       "version": "0.2.0-alpha.2",
       "from": "grunt-s3@~0.2.0-alpha.2",
-      "resolved": "https://registry.npmjs.org/grunt-s3/-/grunt-s3-0.2.0-alpha.2.tgz",
       "dependencies": {
         "underscore.deferred": {
           "version": "0.1.5",
@@ -404,7 +381,6 @@
     "grunt-cli": {
       "version": "0.1.9",
       "from": "grunt-cli@~0.1.8",
-      "resolved": "https://registry.npmjs.org/grunt-cli/-/grunt-cli-0.1.9.tgz",
       "dependencies": {
         "nopt": {
           "version": "1.0.10",
@@ -474,7 +450,6 @@
     "grunt-contrib-jshint": {
       "version": "0.4.3",
       "from": "grunt-contrib-jshint@~0.4.3",
-      "resolved": "https://registry.npmjs.org/grunt-contrib-jshint/-/grunt-contrib-jshint-0.4.3.tgz",
       "dependencies": {
         "jshint": {
           "version": "1.1.0",

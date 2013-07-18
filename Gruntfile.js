@@ -19,7 +19,7 @@ module.exports = function(grunt) {
     transpile: config('transpile'),
     copy: config('copy'),
     qunit: config('qunit'),
-    ember_handlebars: config('ember_handlebars'),
+    emberTemplates: config('ember_templates'),
     concat: config('concat'),
     sass: config('sass'),
     shell: config('shell'),
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
                        'clean',
-                       'ember_handlebars',
+                       'emberTemplates',
                        'transpile',
                        'jshint',
                        'copy_glazier',
@@ -67,5 +67,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('server', ['shell:glazierServer']);
   grunt.registerTask('test', ['shell:npmInstallForCards', 'build',  'connect', 'qunit:all']);
-  grunt.registerTask('default', ['shell:npmInstallForCards','build', 'index.html', 'templateCSS', 'connect', 'watch']);
+  grunt.registerTask('fastBoot',['build', 'index.html', 'templateCSS', 'connect', 'watch']);
+  grunt.registerTask('default', ['shell:npmInstallForCards','fastBoot']);
 };
