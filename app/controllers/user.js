@@ -35,6 +35,7 @@ var UserController = Ember.Controller.extend({
     this.set('content', null);
   },
   loginWithGithub: function(githubAccessToken) {
+    debugger;
     var self = this;
 
     function loginComplete() {
