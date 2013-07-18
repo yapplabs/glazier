@@ -39,7 +39,7 @@ module.exports = function(grunt) {
         jsf = require('jsframe'),
         out = fs.openSync('tmp/public/vendor/conductor.js.html', 'w');
 
-    jsf.process('tmp/public/vendor/conductor.js', out);
+    jsf.process('tmp/conductor.js', out);
   });
 
   grunt.registerTask('build', [
