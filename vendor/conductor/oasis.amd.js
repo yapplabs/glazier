@@ -460,7 +460,11 @@ define("oasis",
       },
 
       oasisLoaded: function() {
-        window.parent.postMessage(this.oasisLoadedMessage, '*', []);
+        if (/PhantomJS/.test(navigator.userAgent)){
+          // something bad
+        } else {
+          window.parent.postMessage(this.oasisLoadedMessage, '*', []);
+        }
       },
 
       didConnect: function() {
