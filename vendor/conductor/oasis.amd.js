@@ -460,11 +460,7 @@ define("oasis",
       },
 
       oasisLoaded: function() {
-        if (/PhantomJS/.test(navigator.userAgent)){
-          // something bad
-        } else {
-          window.parent.postMessage(this.oasisLoadedMessage, '*', []);
-        }
+        window.parent.postMessage(this.oasisLoadedMessage, '*', []);
       },
 
       didConnect: function() {
@@ -995,6 +991,10 @@ define("oasis",
 
 
     function initializeSandbox () {
+      if (/PhantomJS/.test(navigator.userAgent)){ 
+        // bail for now.. :(
+        return;
+      }
       if (typeof window !== 'undefined') {
         iframeAdapter.connectSandbox(ports);
       } else {
