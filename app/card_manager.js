@@ -16,6 +16,7 @@ var CardManager = Ember.Object.extend({
   userDidChange: function() {
     var userData = this.get('cardDataManager.user');
     this._updateUserData(userData);
+    this._updateUserRelatedPanesData();
   }.observes('cardDataManager.user'),
 
 
@@ -47,6 +48,18 @@ var CardManager = Ember.Object.extend({
   unload: function (pane) {
     // unload in the future should card.destroy
     delete this.instances[pane.get('id')];
+  },
+
+  _updateUserRelatedPanesData: function() {
+    var paneIds = Ember.keys(this.instances);
+    var cardManager = this;
+    Glazier.Pane.query({ids: paneIds}).then(function(panes) {
+      panes.forEach(function(pane) {
+        var card = cardManager.instances[pane.get('id')];
+        card.updateData('paneUserDataEntries', pane.get('paneUserDataEntries'));
+        card.updateData('paneTypeUserDataEntries', pane.get('paneTypeUserDataEntries'));
+      });
+    });
   },
 
   _updateUserData: function (userData) {
