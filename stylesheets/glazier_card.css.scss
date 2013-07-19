@@ -39,3 +39,20 @@ a { }
 #card > div {
   padding-bottom: 60px;
 }
+
+#card .people {
+  position: relative;
+  overflow: visible;
+}
+#card .person {
+  position: relative;
+  float: left;
+  width: 40px;
+  margin-right: 10px;
+
+  img {
+    display: block;
+    width: 100%;
+    padding-top: 10px;
+  }
+}
