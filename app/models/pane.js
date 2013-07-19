@@ -1,5 +1,6 @@
 var Pane = DS.Model.extend({
   paneType: DS.belongsTo('Glazier.PaneType'),
+  dashboard: DS.belongsTo('Glazier.Dashboard'),
 
   paneEntries: DS.attr('passthrough'),
   paneUserEntries: DS.attr('passthrough'),
