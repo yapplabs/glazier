@@ -1,6 +1,8 @@
 @import "base";
 
 body {
+  min-width: $min-page-width;
+  margin: auto;
   font-family: 'Source Sans Pro', sans-serif;
   background: #f2f2f2;
   font-size: 13px;
@@ -166,14 +168,55 @@ iframe {
   @include clearfix;
 
   padding: $page-padding;
-  img {
-    width: 45px;
-    margin-right: $page-padding;
-    float: left;
+  padding-bottom: $page-padding * 2;
+  white-space: nowrap;
+
+  > * {
+    display: inline-block;
+    vertical-align: top;
+    white-space: normal;
   }
+
+  img {
+    width: 43px;
+    margin-right: $page-padding;
+  }
+
   h2 {
-    color: #4d4d4d;
-    font-size: 22px;
+    font-size: 1.7em;
+    line-height: 1;
+    color: hsl(0, 0%, 30%);
+  }
+
+  h3 {
+    font-size: 1.1em;
+    line-height: 1;
+    margin-top: 8px;
+    color: hsl(0, 0%, 60%);
+  }
+
+  .repository-name, .repository-info {
+    height: 50px;
+  }
+
+  .repository-name {
+    min-width: 120px;
+    margin-right: 25px;
+    border-right: 1px solid hsl(0, 0%, 84%);
+
+    h2, h3 {
+      margin-right: $page-padding;
+    }
+  }
+
+  .repository-description {
+    font-size: 1.15em;
+    line-height: 1.8;
+  }
+
+  .repository-link {
+    line-height: 1;
+    margin-top: 4px;
   }
 }
 
