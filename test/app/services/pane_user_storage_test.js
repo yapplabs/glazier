@@ -68,7 +68,8 @@ asyncTest("setItem PUTs to /api/pane_user_entries/:card_id.json", 4, function() 
     ok(ajaxRequest, 'made an ajax request');
     equal(ajaxRequest.type, 'PUT', 'made a PUT request');
     equal(ajaxRequest.url, '/api/pane_user_entries/card-id.json', 'made a request to the correct endpoint');
-    deepEqual(ajaxRequest.data, { data: {name: 'stef'}, access: 'private' }, 'has expected payload ' + JSON.stringify(ajaxRequest.data) );
+    var value = JSON.stringify('stef');
+    deepEqual(ajaxRequest.data, { data: {name: value}, access: 'private' }, 'has expected payload ' + JSON.stringify(ajaxRequest.data) );
     start();
   }, function(e) {
     ok(false, "failed");
