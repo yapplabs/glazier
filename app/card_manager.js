@@ -66,14 +66,18 @@ var CardManager = Ember.Object.extend({
   },
 
   _updateUserRelatedPanesData: function() {
-    var paneIds = Ember.keys(this.instances);
-    if (paneIds.length === 0) { return; }
+    var paneIds = Glazier.Pane.all().mapProperty('id');
     var cardManager = this;
+
+    if (paneIds.length === 0) { return; }
+
     Glazier.Pane.query({ids: paneIds}).then(function(panes) {
       panes.forEach(function(pane) {
         var card = cardManager.instances[pane.get('id')];
-        card.updateData('paneUserDataEntries', pane.get('paneUserDataEntries'));
-        card.updateData('paneTypeUserDataEntries', pane.get('paneTypeUserDataEntries'));
+        if (card) {
+          card.updateData('paneUserDataEntries', pane.get('paneUserDataEntries'));
+          card.updateData('paneTypeUserDataEntries', pane.get('paneTypeUserDataEntries'));
+        }
       });
     });
   },
