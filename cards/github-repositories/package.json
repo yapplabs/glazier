@@ -29,7 +29,6 @@
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-ember-templates": "~0.4.10",
-    "handlebars": "",
     "grunt-contrib-handlebars": "~0.5.8",
     "matchdep": "~0.1.2",
     "grunt-md5": "~0.1.11",
