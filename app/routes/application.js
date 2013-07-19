@@ -8,7 +8,7 @@ var ApplicationRoute = Ember.Route.extend({
       url: '/api/user',
       dataType: 'json'
     }).then(function(data) {
-      userController.set('content', data.user);
+      userController.set('content', data && data.user);
     });
   }
 });
