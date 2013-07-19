@@ -1,5 +1,6 @@
 var ApplicationController = Ember.ArrayController.extend({
-  repositoryName: null
+  repositoryName: null,
+  isDisabled: false
 });
 
 export default ApplicationController;

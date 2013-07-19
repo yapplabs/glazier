@@ -13,6 +13,19 @@ function fetch() {
   return Ember.RSVP.hash(hash);
 }
 
+function isErrorDueToIssuesBeingDisabled(error) {
+  if (error.status !== 410) {
+    return false;
+  }
+  try {
+    var responseData = JSON.parse(error.responseText);
+    if (responseData.message === 'Issues are disabled for this repo') {
+      return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
 var ApplicationRoute = Ember.Route.extend({
   events: {
     currentUserChanged: function() {
@@ -27,7 +40,6 @@ var ApplicationRoute = Ember.Route.extend({
       fetch().then(function(hash){
         applicationController.set('myIssues', hash.userIssues);
         applicationController.set('model', hash.allIssues);
-
       }).then(null, Conductor.error);
     }
   },
@@ -39,6 +51,13 @@ var ApplicationRoute = Ember.Route.extend({
     return fetch().then(function(hash) {
       applicationController.set('myIssues', hash.userIssues);
       return hash.allIssues;
+    }, function(error){
+      if (isErrorDueToIssuesBeingDisabled(error)) {
+        applicationController.set('isDisabled', true);
+        return [];
+      } else {
+        throw error;
+      }
     });
   }
 });

@@ -1,13 +1,16 @@
-<h3>My Issues: {{repositoryName}}</h3>
-{{#each myIssues}}
-  <div>{{number}}: {{title}}</div>
-{{/each}}
+{{#if isDisabled}}
+  <p>This repository does not use Github Issues.</p>
+{{else}}
+  <h3>My Issues: {{repositoryName}}</h3>
+  {{#each myIssues}}
+    <div>{{number}}: {{title}}</div>
+  {{/each}}
 
-<hr>
+  <hr>
 
-<h3>Github Issues for {{repositoryName}}</h3>
+  <h3>Github Issues for {{repositoryName}}</h3>
 
-{{#each}}
-  <div>{{number}}: {{title}}</div>
-{{/each}}
-
+  {{#each}}
+    <div>{{number}}: {{title}}</div>
+  {{/each}}
+{{/if}}
