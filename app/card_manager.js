@@ -13,12 +13,13 @@ var CardManager = Ember.Object.extend({
     this.providerCardDeferreds = {};
   },
 
-  userDidChange: function() {
-    var userData = this.get('cardDataManager.user');
-    this._updateUserData(userData);
-    this._updateUserRelatedPanesData();
-  }.observes('cardDataManager.user'),
-
+  userDataDidChange: function() {
+    Em.run.once(this, function() {
+      var userData = this.get('cardDataManager.userData');
+      this._updateUserData(userData);
+      this._updateUserRelatedPanesData();
+    });
+  }.observes('cardDataManager.userData', 'cardDataManager.isAdmin'),
 
   /*
     @public
@@ -65,7 +66,8 @@ var CardManager = Ember.Object.extend({
   _updateUserData: function (userData) {
     this._getCards().forEach(function(card) {
       card.updateData('user', userData);
-    });
+      card.updateData('isAdmin', this.get('cardDataManager.isAdmin'));
+    }, this);
   },
 
   _getCards: function () {
@@ -99,7 +101,7 @@ var CardManager = Ember.Object.extend({
       throw new Error("cardUrl cannot be null or undefined");
     }
 
-    ambientData = this.cardDataManager.getAmbientData();
+    ambientData = this.cardDataManager.get('ambientData');
 
     data = Ember.$.extend({}, ambientData, cardData);
     this.conductor.loadData(cardUrl, paneId, data);

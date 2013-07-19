@@ -3,18 +3,31 @@ var CardDataManager = Ember.Object.extend({
   repositoryController: null,
   repositoryName: Ember.computed.alias('repositoryController.path'),
   user: Ember.computed.alias('userController.content'),
-  getAmbientData: function() {
+
+  isAdmin: function() {
+    var user = this.get('user'),
+      repositoryName = this.get('repositoryName'),
+      repos = user && user.editable_repositories;
+    return repos && repos.indexOf(repositoryName) !== -1;
+  }.property('user', 'repositoryName'),
+
+  userData: function() {
+    var user = this.get('user');
+    if (!user) {return null;}
+
+    return {
+      name: user.name,
+      github_id: user.github_id // TODO - camelize keys for cards?
+    };
+  }.property('user'),
+
+  ambientData: function() {
     return {
       repositoryName: this.get('repositoryName'),
-      user: this.get('user'),
-      userCanEditRepistory: true // editableRepositoryController.content includes repositoryName
+      user: this.get('userData'),
+      isAdmin: this.get('isAdmin')
     };
-  }
+  }.property('userData', 'repositoryName', 'isAdmin')
 });
 
 export default CardDataManager;
-
-// include editbble repos in user data
-// fetch them if logged in but they are missing (from user serialize)
-// creating session returns it
-// if you have session but don't have editbble repos in user model, fetch it.  cookie only has user id and always fetch if we need it
