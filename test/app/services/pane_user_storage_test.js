@@ -31,13 +31,13 @@ if (!/phantom/i.test(navigator.userAgent)) {
     }
   });
 
-  asyncTest("A card can persist a key value pair via the service", 2, function() {
-    inCard(card, function(card, resolver){
+  asyncTest("A card can persist a key value pair via the service", 3, function() {
+    inCard(card, function(card){
       var service = card.consumers.paneUserStorage;
-      service.request('setItem', 'foo', 'bar').then(function(){
-        resolver.resolve('setItemCalled');
+      return service.request('setItem', 'foo', 'bar').then(function(){
+        ok(true, 'setItem called');
       }, function(){
-        resolver.reject('service request setItem failed');
+        ok(!true, 'service request setItem failed');
       });
     }).then(function(){
       var ajaxRequest = mockAjax.requests[0];
