@@ -4,12 +4,6 @@ body {
   padding-right: 15px;
 }
 
-#stargazers {
-  @include pie-clearfix;
-  position: relative;
-  overflow: visible;
-}
-
 .stargazers-total {
   position: relative;
   float: left;
@@ -20,17 +14,4 @@ body {
   text-align: center;
   font-size: 3.4em;
   line-height: 40px;
-}
-
-.person {
-  position: relative;
-  float: left;
-  width: 40px;
-  margin-right: 15px;
-
-  img {
-    display: block;
-    width: 100%;
-    padding-top: 15px;
-  }
 }
