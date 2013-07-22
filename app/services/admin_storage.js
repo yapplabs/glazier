@@ -1,6 +1,6 @@
 import Conductor from 'conductor';
 
-var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
+var AdminStorageService = Conductor.Oasis.Service.extend({
 
   /*
     @public
@@ -18,14 +18,13 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
       @param value {Object}
     */
     setItem: function(key, value) {
-      var cardTypeName = this.sandbox.card.manifest.name,
-          data = {};
+      var data = {};
       data[key] = JSON.stringify(value);
 
       return $.ajax({
-        url: '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json',
+        url: '/api/pane_entries/' + this.sandbox.card.id + '.json',
         type: 'PUT',
-        data: {data: data, access: 'private'}
+        data: {data: data}
       });
     },
 
@@ -36,15 +35,13 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
       @param key {String}
     */
     removeItem: function(key) {
-      var cardTypeName = this.sandbox.card.manifest.name;
-
       return $.ajax({
-        url: '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json',
+        url: '/api/pane_entries/' + this.sandbox.card.id + '.json',
         type: 'DELETE',
-        data: {key: key, access: 'private'}
+        data: {key: key}
       });
     }
   }
 });
 
-export default PaneTypeUserStorageService;
+export default AdminStorageService;

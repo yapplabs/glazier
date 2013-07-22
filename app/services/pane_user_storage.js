@@ -19,7 +19,7 @@ var PaneUserStorageService = Conductor.Oasis.Service.extend({
     */
     setItem: function(key, value) {
       var data = {};
-      data[key] = value;
+      data[key] = JSON.stringify(value);
 
       return $.ajax({
         url: '/api/pane_user_entries/' + this.sandbox.card.id + '.json',
