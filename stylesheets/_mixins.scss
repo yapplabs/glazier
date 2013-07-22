@@ -12,3 +12,14 @@
 		display: inline-block;
 	}
 }
+
+// Center element using absolute positioning
+@mixin absolute-center($width, $height: $width) {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: $width;
+	height: $height;
+	margin-left: ($width / -2);
+	margin-top: ($height / -2);
+}

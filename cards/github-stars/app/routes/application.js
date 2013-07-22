@@ -31,10 +31,14 @@ var Stargazers = {
       url: url,
       dataType: 'json'
     }).then(function(lastPageStargazers) {
-      var lastPageParam = url.slice(url.indexOf('page=') + 5);
-      var pageCount = parseInt(lastPageParam, 10);
-      var fullPageCount = pageCount - 1;
-      return fullPageCount * 30 + lastPageStargazers.length;
+      var pageCount = parseInt(url.slice(url.indexOf('page=') + 5), 10) - 1;
+      var total = pageCount * 30 + lastPageStargazers.length;
+
+      if(total > 999) {
+        return (Math.floor(total / 100) / 10) + 'k';
+      } else {
+        return total;
+      }
     });
   },
   currentUserStarred: function(repositoryName, user) {

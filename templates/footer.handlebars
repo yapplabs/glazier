@@ -1,14 +1,18 @@
-<div class="tabs">
-  <div class="logo">
-    {{#linkTo "index"}}Glazier I/O{{/linkTo}}
-  </div>
-  {{render user}}
-  {{render repository}}
-  <div class="help">
-    Help
-  </div>
-  <div class="peek" {{action toggleAnalyticsDrawer}}>
-    ConductorPeek
+<div class="tabs-wrapper">
+  <div class="tabs">
+    <div class="logo">
+      {{#linkTo "index"}}
+        {{partial "logo"}} glazier.io
+      {{/linkTo}}
+    </div>
+    {{render user}}
+    {{render repository}}
+    <div class="help">
+      Help
+    </div>
+    <div class="peek" {{action toggleAnalyticsDrawer}}>
+      ConductorPeek
+    </div>
   </div>
 </div>
 <div class="panel">

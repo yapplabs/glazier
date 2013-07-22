@@ -1,6 +1,13 @@
 @import "base";
+@import "logo";
+@import "footer";
 
 body {
+  @include box-sizing(border-box);
+  min-width: $min-page-width;
+  max-width: $max-page-width;
+  margin: auto;
+  padding-bottom: 50px;
   font-family: 'Source Sans Pro', sans-serif;
   background: #f2f2f2;
   font-size: 13px;
@@ -13,7 +20,7 @@ iframe {
   height: 100%;
 
   overflow:hidden;
-  border:0;overflow:hidden;
+  border:0;
 }
 
 .panes {
@@ -76,104 +83,59 @@ iframe {
   border-bottom: 1px solid black;
 }
 
-#footer {
-  position: fixed;
-  z-index: 100;
-  bottom: -240px;
-  right: 0;
-  left: 0;
-  font-size: 16px;
-
-  background: #1a1a1a;
-
-  box-shadow: 0px 0px 5px #262626;
-  -webkit-transition: bottom 0.2s ease-out;
-
-  color: #B3B3B3;
-
-
-  .tabs {
-    display: table;
-    margin: 0 auto;
-    min-width: 960px;
-  }
-
-  .tabs > div {
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-    padding: 0em 1.5em;
-    cursor:pointer;
-    display: table-cell;
-    border-left: 1px solid #333;
-  }
-
-  .tabs > div:last-child {
-    border-right: 1px solid #333;
-  }
-
-  .tabs > .logo {
-    font-weight: bold;
-    background: url("<%= manifestUrl('/glazier.png') %>") no-repeat center center;
-    width: 151px;
-    min-height: 50px;
-    text-indent: -9999em;
-  }
-
-  .tabs > .user {
-    position: relative;
-    img {
-      width: 30px;
-      height: 30px;
-      vertical-align: middle;
-      margin-right: 0.5em;
-    }
-    button.logout {
-      left: 0;
-      position: absolute;
-      height: 50px;
-      right: 0;
-      top: -50px;
-      margin: 0;
-      padding: 0;
-      background: #1a1a1a;
-      box-shadow: 0px 0px 5px #262626;
-      color: #B3B3B3;
-      font-size: 16px;
-      border: 1px solid #333;
-      cursor:pointer;
-    }
-  }
-
-  .tabs > .repository input{
-    margin-left: 0.5em;
-  }
-
-  .panel {
-    height:240px;
-    overflow: scroll;
-    position: relative;
-    width: 100%;
-    color: #eee;
-    background-color: rgba(0,0,0,0.8);
-  }
-  &.is-drawer-open {
-    bottom:0;
-  }
-}
-
 .repository-sidebar {
   @include clearfix;
 
   padding: $page-padding;
-  img {
-    width: 45px;
-    margin-right: $page-padding;
-    float: left;
+  padding-bottom: $page-padding * 2;
+  white-space: nowrap;
+
+  > * {
+    display: inline-block;
+    vertical-align: top;
+    white-space: normal;
   }
+
+  img {
+    width: 43px;
+    margin-right: $page-padding;
+  }
+
   h2 {
-    color: #4d4d4d;
-    font-size: 22px;
+    font-size: 1.7em;
+    line-height: 1;
+    color: hsl(0, 0%, 30%);
+  }
+
+  h3 {
+    font-size: 1.1em;
+    line-height: 1;
+    margin-top: 8px;
+    color: hsl(0, 0%, 60%);
+  }
+
+  .repository-name, .repository-info {
+    height: 50px;
+  }
+
+  .repository-name {
+    min-width: 120px;
+    margin-right: 25px;
+    border-right: 1px solid hsl(0, 0%, 84%);
+
+    h2, h3 {
+      margin-right: $page-padding;
+    }
+  }
+
+  .repository-description {
+    font-size: 1.15em;
+    line-height: 1.8;
+  }
+
+  .repository-link {
+    line-height: 1;
+    margin-top: 4px;
   }
 }
 
