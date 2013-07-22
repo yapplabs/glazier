@@ -49,13 +49,16 @@ body {
   .person {
     position: relative;
     float: left;
-    width: 40px;
-    margin-right: 15px;
+    width: (100% / 10);
+    height: 40px;
+    padding-top: 15px;
+    text-align: center;
+    @media (max-width: 600px) {
+      width: (100% / 8);
+    }
 
     img {
-      display: block;
-      width: 100%;
-      padding-top: 15px;
+      @include absolute-center(40px);
     }
   }
 }

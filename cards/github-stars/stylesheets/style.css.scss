@@ -1,17 +1,13 @@
-@import "compass/utilities";
-
-body {
-  padding-right: 15px;
-}
-
 .stargazers-total {
   position: relative;
   float: left;
-  width: 95px;
-  height: 40px;
-  margin-top: 15px;
-  margin-right: 15px;
+  width: (100% / 10 * 2);
+  height: 55px;
   text-align: center;
   font-size: 3.4em;
-  line-height: 40px;
+  line-height: 55px;
+
+  @media (max-width: 600px) {
+    width: (100% / 8 * 2);
+  }
 }

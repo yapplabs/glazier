@@ -1,9 +1,14 @@
-.logo {
-	display: block;
+$logo-size: 1em;
+$logo-speed: 3s;
+$logo-easing: cubic-bezier(.5,0,.3,1);
+
+.logo-css {
+	display: inline-block;
 	position: relative;
 	width: $logo-size; height: $logo-size;
 	background: $base-lightest;
 	overflow: hidden;
+	vertical-align: baseline;
 
 	.logo-static {
 		width: 100%;
