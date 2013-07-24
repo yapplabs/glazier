@@ -54,8 +54,7 @@ var PaneView = Ember.View.extend({
     this.set('card', card); // template will update to get a .pane element
 
     Em.run.scheduleOnce('afterRender', function() {
-      var $pane = view.$('.pane')
-
+      var $pane = view.$('.pane');
       var expand = view.$('.toggle-full-size');
 
       expand.click(function(e) {
