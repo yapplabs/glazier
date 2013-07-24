@@ -1,12 +1,12 @@
 $logo-size: 1em;
-$logo-speed: 3s;
+$logo-speed: 1500ms;
 $logo-easing: cubic-bezier(.5,0,.3,1);
 
 .logo-css {
 	display: inline-block;
 	position: relative;
 	width: $logo-size; height: $logo-size;
-	background: $base-color-lightest;
+	background: transparentize($base-color, .5);
 	overflow: hidden;
 	vertical-align: baseline;
 
