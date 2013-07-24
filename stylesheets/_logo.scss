@@ -6,7 +6,7 @@ $logo-easing: cubic-bezier(.5,0,.3,1);
 	display: inline-block;
 	position: relative;
 	width: $logo-size; height: $logo-size;
-	background: $base-lightest;
+	background: $base-color-lightest;
 	overflow: hidden;
 	vertical-align: baseline;
 
@@ -30,7 +30,7 @@ $logo-easing: cubic-bezier(.5,0,.3,1);
 	.logo-pane-1 {
 		@extend %half;
 		top: 0;
-		background: $base-dark;
+		background: $base-color-dark;
 	}
 
 	.logo-pane-2 {
@@ -43,21 +43,21 @@ $logo-easing: cubic-bezier(.5,0,.3,1);
 	.logo-pane-3 {
 		@extend %half;
 		bottom: 0;
-		background: $base-lighter;
+		background: $base-color-lighter;
 		overflow: hidden;
 	}
 
 	.logo-pane-4 {
 		left: 0; top: ($logo-size / -2);
 		width: 0; height: 0;
-		border-top: $logo-size solid $base-light;
+		border-top: $logo-size solid $base-color-light;
 		border-right: $logo-size solid transparent;
 	}
 
 	.logo-pane-5 {
 		right: 0; top: 0;
 		width: 0; height: 0;
-		border-bottom: $logo-size solid $base-light;
+		border-bottom: $logo-size solid $base-color-light;
 		border-left: $logo-size solid transparent;
 		z-index: 1;
 	}

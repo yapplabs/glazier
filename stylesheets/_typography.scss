@@ -1,13 +1,45 @@
-h1 { font-size: 45px; color: #4d4d4d; line-height: 1.51em }
-h2 { font-size: 34px; color: #4d4d4d; line-height: 1.51em }
-h3 { font-size: 20px; color: #666666; line-height: 1.51em }
-h4 { font-size: 18px; color: #808080; line-height: 1.51em }
-h5 { font-size: 16px; color: #4B4B4B; line-height: 1.51em }
-h6 { font-size: 14px; color: #4B4B4B; line-height: 1.51em }
+h1 { font-size: 45px; color: $gray-dark; line-height: 1.51em }
+h2 { font-size: 34px; color: $gray-dark; line-height: 1.51em }
+h3 { font-size: 20px; color: $gray-light; line-height: 1.51em }
+h4 { font-size: 18px; color: $gray-light; line-height: 1.51em }
+h5 { font-size: 16px; color: $gray-dark; line-height: 1.51em }
+h6 { font-size: 14px; color: $gray-dark; line-height: 1.51em }
 
 p { }
 
 a {
 	@include hover-link;
-	@include link-colors(hsl(0, 0%, 60%), hsl(0, 0%, 30%));
+	@include link-colors($gray-lighter, $gray);
+}
+
+.text-base-color {
+	color: $base-color;
+}
+.text-base-color-dark {
+	color: $base-color-dark;
+}
+.text-base-color-light {
+	color: $base-color-light;
+}
+.text-base-color-lighter {
+	color: $base-color-lighter;
+}
+.text-base-color-lightest {
+	color: $base-color-lightest;
+}
+
+.bg-base-color {
+	background: $base-color;
+}
+.bg-base-color-dark {
+	background: $base-color-dark;
+}
+.bg-base-color-light {
+	background: $base-color-light;
+}
+.bg-base-color-lighter {
+	background: $base-color-lighter;
+}
+.bg-base-color-lightest {
+	background: $base-color-lightest;
 }
