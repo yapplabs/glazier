@@ -8,8 +8,10 @@ var PaneView = Ember.View.extend({
   templateName: 'pane',
   classNameBindings: [
     'view.isHidden:hidden-pane',
-    ':pane-wrapper'
+    ':pane-wrapper',
+    'fullSize'
   ],
+  fullSize: false,
   showCard: false,
   init: function () {
     this._super();
@@ -53,6 +55,13 @@ var PaneView = Ember.View.extend({
 
     Em.run.scheduleOnce('afterRender', function() {
       var $pane = view.$('.pane')
+
+      var expand = view.$('.toggle-full-size');
+
+      expand.click(function(e) {
+        e.preventDefault();
+        view.toggleProperty("fullSize");
+      });
 
       view.set('isHidden', card.hidden);
 
