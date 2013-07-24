@@ -10,9 +10,15 @@
       {{#each addablePanes}}
         <div>{{manifest.displayName}}</div>
       {{/each}}
+
+      {{#if addablePanes.isUpdating}}
+        <div>Loading Panes...</div>
+      {{/if}}
+
+      <a href="#" {{action "toggleAddingPanes"}}>close</a>
     {{else}}
       {{#if canAddPanes}}
-        <a href="#" {{action "addPane"}}>Add a Pane</a>
+        <a href="#" {{action "toggleAddingPanes"}}>Add a Pane</a>
       {{/if}}
     {{/if}}
   </div>

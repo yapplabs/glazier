@@ -3,11 +3,6 @@ var DashboardController = Ember.ObjectController.extend({
   user: Ember.computed.alias('controllers.user'),
   repositoryName: Ember.computed.alias('id'),
 
-  init: function() {
-    this._super();
-    Glazier.PaneType.find();
-  },
-
   canAddPanes: function() {
     return this.get('isAdmin') && !this.get('addingPane');
   }.property('isAdmin', 'addingPane'),
@@ -20,11 +15,12 @@ var DashboardController = Ember.ObjectController.extend({
   },
 
   addablePanes: function() {
-    return Glazier.PaneType.all();
+    return Glazier.PaneType.find();
   }.property(),
 
   addingPane: false,
-  addPane: function() {
+
+  toggleAddingPanes: function() {
     this.toggleProperty('addingPane');
   }
 });
