@@ -15,7 +15,7 @@ body {
   font-size: 13px;
   line-height: 1.51em;
   color: #808080;
-  padding: 0 2.3em;
+  padding: 0 30px;
   position: relative;
 
   &:after {
@@ -29,30 +29,36 @@ body {
   }
 }
 
-p { }
-
-a { }
-
 #card {
-}
+  > div {
+    padding-bottom: 60px;
+  }
 
-#card > div {
-  padding-bottom: 60px;
-}
+  h3:first-of-type {
+    color: $base-color;
+    font-size: 1.7em;
+    margin-top: 15px;
+  }
 
-#card .people {
-  position: relative;
-  overflow: visible;
-}
-#card .person {
-  position: relative;
-  float: left;
-  width: 40px;
-  margin-right: 10px;
+  .people {
+    @include pie-clearfix;
+    position: relative;
+    overflow: visible;
+  }
 
-  img {
-    display: block;
-    width: 100%;
-    padding-top: 10px;
+  .person {
+    position: relative;
+    float: left;
+    width: (100% / 10);
+    height: 40px;
+    padding-top: 15px;
+    text-align: center;
+    @media (max-width: 600px) {
+      width: (100% / 8);
+    }
+
+    img {
+      @include absolute-center(40px);
+    }
   }
 }
