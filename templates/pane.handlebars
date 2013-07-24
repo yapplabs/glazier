@@ -1,14 +1,10 @@
 {{#if view.card}}
-  {{#unless view.card.hidden}}
-    <div class='block pane-wrapper'>
-      <div class='pane'>
-        <div class='pane-footer'>
-          {{#if controller.isAdmin}}
-            <a href="" {{action "removePane" this}}> remove </a>
-          {{/if}}
-        </div>
-        <!-- iframe goes here -->
-      </div>
+  <div class="pane">
+    <div class="pane-footer">
+      {{#if controller.isAdmin}}
+        <a href="" {{action "removePane" this}}> remove </a>
+      {{/if}}
     </div>
-  {{/unless}}
+    <!-- appended sandbox -->
+  </div>
 {{/if}}
