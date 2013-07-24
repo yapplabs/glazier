@@ -30,10 +30,6 @@ body {
 }
 
 #card {
-  > div {
-    padding-bottom: 60px;
-  }
-
   h3:first-of-type {
     color: $base-color;
     font-size: 1.7em;

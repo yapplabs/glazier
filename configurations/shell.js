@@ -6,9 +6,11 @@ var opts = {
   failOnError: true
 };
 
-var isCardDir = function (dir){
+var cards = fs.readdirSync('cards').filter(isCardDir);
+
+function isCardDir(dir){
   return dir[0] != ".";
-};
+}
 
 function cardGruntCommand(dirname) {
   var cmd = "(cd cards/" + dirname + " && grunt)";
@@ -42,9 +44,18 @@ function cardIngestManifestCommand(dirname) {
 }
 
 function herokuIngestCommand(dirname) {
-  var deployJSON = pkgAt('cards/' + dirname);
-  var glazierConfig = deployJSON.glazierConfig;
-  var url = glazierConfig.assetHost + '/assets/cards/' + glazierConfig.repositoryName + '/manifest.json';
+  var pkg = pkgAt('cards/' + dirname);
+  var glazierConfig = pkg.glazierConfig;
+
+  if (!glazierConfig.assetHost) {
+    throw new Error("Missing property: glazierConfig.assetHost");
+  }
+
+  if (!pkg.name) {
+    throw new Error("Missing property: pkg.name");
+  }
+
+  var url = glazierConfig.assetHost + '/assets/cards/' + pkg.name + '/manifest.json';
   var cmd = "(cd glazier-server && heroku surrogate rails runner \"PaneType.ingest('" + url + "')\" --app glazier)";
   return cmd;
 }
@@ -81,27 +92,27 @@ module.exports = {
     options: opts
   },
   npmRefreshForCards: {
-    command: fs.readdirSync('cards').filter(isCardDir).map(cardNpmRefreshCommand).join(' && '),
+    command: cards.map(cardNpmRefreshCommand).join(' && '),
     options: opts
   },
   npmInstallForCards: {
-    command: fs.readdirSync('cards').filter(isCardDir).map(cardNpmInstallCommand).join(' && '),
+    command: cards.map(cardNpmInstallCommand).join(' && '),
     options: opts
   },
   buildCards: {
-    command: fs.readdirSync('cards').filter(isCardDir).map(cardGruntCommand).join(' && '),
+    command: cards.map(cardGruntCommand).join(' && '),
     options: opts
   },
   ingestCardManifests: {
-    command: fs.readdirSync('cards').filter(isCardDir).map(cardIngestManifestCommand).join(' && '),
+    command: cards.map(cardIngestManifestCommand).join(' && '),
     options: opts
   },
   deployCards: {
-    command: fs.readdirSync('cards').filter(isCardDir).map(cardGruntDeployCommand).join(' && '),
+    command: cards.map(cardGruntDeployCommand).join(' && '),
     options: opts
   },
   herokuIngestCards: {
-    command: fs.readdirSync('cards').filter(isCardDir).map(herokuIngestCommand).join(' && '),
+    command: cards.filter(isCardDir).map(herokuIngestCommand).join(' && '),
     options: opts
   }
 };
