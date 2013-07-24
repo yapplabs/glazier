@@ -1,8 +1,16 @@
 import Conductor from 'conductor';
 
+function render (card) { 
+  card.render();
+  return card;
+}
 var PaneView = Ember.View.extend({
-  classNameBindings: ['hiddenPane'],
   templateName: 'pane',
+  classNameBindings: [
+    'view.isHidden:hidden-pane',
+    ':pane-wrapper'
+  ],
+  showCard: false,
   init: function () {
     this._super();
     this.cardManager = this.container.lookup('cardManager:main');
@@ -13,19 +21,22 @@ var PaneView = Ember.View.extend({
     var cardManager = this.cardManager;
     var pane = this.get('content');
 
-    var success = function() {
+    function success() {
       var card = cardManager.load(pane);
       self.appendCard(card);
-    };
+    }
+
+    function error() {
+      console.error('failed to load Pane');
+    }
 
     if (pane.get('isSaving')) {
-      pane.one('becameError', function() { console.error('failed to load Pane'); });
+      pane.one('becameError',error);
       return pane.one('didCreate', success);
     }
 
     pane.then(function() {
       var type = pane.get('paneType');
-
       return type.then(success);
     }).then(null, Conductor.error);
   },
@@ -36,23 +47,18 @@ var PaneView = Ember.View.extend({
   },
 
   appendCard: function(card) {
-    var $paneElement, view = this;
+    var view = this;
 
     this.set('card', card); // template will update to get a .pane element
-    if (card.hidden) {
-      view.set('hiddenPane', true);
-    }
 
     Em.run.scheduleOnce('afterRender', function() {
-      if (card.hidden) {
-        $paneElement = view.$();
-      } else {
-        $paneElement = view.$('.pane');
-      }
+      var $pane = view.$('.pane')
 
-      card.appendTo($paneElement[0]).promise.then(function(card) {
-        card.render();
-      }).then(null, Conductor.error);
+      view.set('isHidden', card.hidden);
+
+      card.appendTo($pane[0]).promise.
+        then(render).
+        then(null, Conductor.error);
     });
   }
 });
