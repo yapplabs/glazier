@@ -7,8 +7,8 @@
     {{#if addingPane}}
       <div>Add a pane: {{addablePanes.length}}</div>
 
-      {{#each addablePanes}}
-        <div>{{manifest.displayName}}</div>
+      {{#each addablePaneTypes}}
+        <div><a href="" {{action "addPane" this}}>{{manifest.displayName}}</a></div>
       {{/each}}
 
       {{#if paneTypes.isUpdating}}

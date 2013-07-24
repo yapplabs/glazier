@@ -18,7 +18,7 @@ var DashboardController = Ember.ObjectController.extend({
     return Glazier.PaneType.find();
   }.property(),
 
-  addablePanes: function() {
+  addablePaneTypes: function() {
     var paneTypes = this.get('paneTypes');
     var myPaneTypes = this.get('panes').mapProperty('paneType');
 
@@ -31,6 +31,15 @@ var DashboardController = Ember.ObjectController.extend({
 
   toggleAddingPanes: function() {
     this.toggleProperty('addingPane');
+  },
+
+  addPane: function(paneType) {
+    var record = Glazier.Pane.createRecord({
+      dashboard: this.get('content'),
+      paneType: paneType
+    });
+
+    record.store.commit();
   }
 });
 export default DashboardController;

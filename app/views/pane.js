@@ -10,15 +10,21 @@ var PaneView = Ember.View.extend({
     var self = this;
     var cardManager = this.cardManager;
     var pane = this.get('content');
+
+    var success = function() {
+      var card = cardManager.load(pane);
+      self.appendCard(card);
+    };
+
+    if (pane.get('isSaving')) {
+      pane.one('becameError', function() { console.error('failed to load Pane'); });
+      return pane.one('didCreate', success);
+    }
+
     pane.then(function() {
       var type = pane.get('paneType');
-      var promises = [type];
 
-      return Ember.RSVP.all(promises).then(function () {
-        var card = cardManager.load(pane);
-        self.appendCard(card);
-      });
-
+      return type.then(success);
     }).then(null, Conductor.error);
   },
 
