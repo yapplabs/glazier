@@ -1,6 +1,7 @@
 @import "base";
 @import "icons";
 @import "logo";
+@import "panes";
 @import "footer";
 
 body {
@@ -22,46 +23,6 @@ iframe {
 
   overflow:hidden;
   border:0;
-}
-
-.panes {
-  @include clearfix;
-  padding-left: $page-padding;
-}
-
-.pane-wrapper {
-  @include box-sizing(border-box);
-  float: left;
-  margin-bottom: $page-padding;
-  padding-right: $page-padding;
-  width: 50%;
-}
-
-.pane {
-  @include box-sizing(border-box);
-  position: relative;
-  overflow: hidden;
-
-  height: 260px;
-  padding-bottom: 35px;
-
-  background-color: #FFFFFF;
-}
-
-.pane-footer {
-  background: #e6e6e6;
-  color: #999999;
-  width: 100%;
-  height: 35px;
-  position: absolute;
-  bottom: 0;
-}
-
-.hidden-pane {
-  padding: 0;
-  border: 0 none;
-  height: 0;
-  width: 0;
 }
 
 .loading {
@@ -141,3 +102,5 @@ iframe {
 #dashboards {
   padding: 20px 20px 50px;
 }
+
+@import "dark";

@@ -24,18 +24,19 @@
     &:before, &:after {
       content: "";
       position: absolute;
-      width: 40px; height: 40px;
+      width: 80px; height: 40px;
       top: 50%; margin-top: -20px;
-      margin-left: -20px;
       background: inherit;
       pointer-events: none;
       z-index: -1;
     }
     &:before {
       left: 25%;
+      margin-left: -20px;
     }
     &:after {
-      left: 75%;
+      right: 25%;
+      margin-right: -20px;
     }
   }
 }

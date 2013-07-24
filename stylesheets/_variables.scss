@@ -2,11 +2,11 @@ $min-page-width: 1024px;
 $max-page-width: 1440px;
 $page-padding: 25px;
 
-$base-color: hsl(194, 53%, 49%);
-$base-color-lightest: adjust_hue(saturate(lighten($base-color, 48%), 47%), -18deg);
-$base-color-lighter: adjust_hue(saturate(lighten($base-color, 23%), 7%), -15deg);
-$base-color-light: adjust_hue(lighten($base-color, 8%), -10deg);
-$base-color-dark: adjust_hue(saturate(darken($base-color, 15%), 10%), -2deg);
+$base-color: #1795b5;
+$base-color-lightest: lighten($base-color, 50%);
+$base-color-lighter: lighten($base-color, 30%);
+$base-color-light: lighten($base-color, 10%);
+$base-color-dark: darken($base-color, 10%);
 
 $gray: #666666;
 $gray-lightest: #f2f2f2;
