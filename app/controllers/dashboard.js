@@ -14,9 +14,18 @@ var DashboardController = Ember.ObjectController.extend({
     return repos && repos.indexOf(repositoryName) !== -1;
   },
 
-  addablePanes: function() {
+  paneTypes: function() {
     return Glazier.PaneType.find();
   }.property(),
+
+  addablePanes: function() {
+    var paneTypes = this.get('paneTypes');
+    var myPaneTypes = this.get('panes').mapProperty('paneType');
+
+    return paneTypes.filter(function(paneType) {
+      return !myPaneTypes.contains(paneType);
+    });
+  }.property('paneTypes.[]', 'panes.@each.paneType'),
 
   addingPane: false,
 
