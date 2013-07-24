@@ -25,7 +25,7 @@ which in turn uses [Oasis.js](https://github.com/tildeio/oasis.js). These librar
 
 ## High-Level Architecture
 
-- Diagram TK -
+![Overview Diagram](./docs/diagrams/overview.png?raw=true)
 
 ## How the Glazier Container Environment Works
   Ember.js Container
