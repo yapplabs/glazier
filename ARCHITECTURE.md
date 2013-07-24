@@ -21,24 +21,41 @@ from having direct access to Glazier's back-end.
 
 To achieve this, Glazier uses a library called
 [Conductor.js](https://github.com/tildeio/conductor.js),
-which in turn uses [Oasis.js](https://github.com/tildeio/oasis.js). These libraries will be discussed below.
+which in turn uses [Oasis.js](https://github.com/tildeio/oasis.js). These
+libraries will be discussed below.
 
 ## High-Level Architecture
 
 ![Overview Diagram](./docs/diagrams/overview.png?raw=true)
 
-## How the Glazier Container Environment Works
-  Ember.js Container
-    Conductor
-      Oasis
-    Integrating Ember.js and Conductor
-      Routes
-      Services
-      Persisting Cards with Ember-Data
-  Rails back-end
-    Persisting cards
-    Persisting card data
-  Authentication
+At a high-level the major components of Glazier consist of the cards, the
+container, the server, and persistence (database).
+
+The server, written in Ruby on Rails, provides an API that uses the persistence
+layer (PostgreSQL) to read and write dashboard data, data about the layout of
+cards, as well as persistence of data owned by cards.
+
+The container, written in Ember.js, communicates with that API as well as
+hosting cards and providing services to those cards. The card hosting and
+communication is handled by leveraging Oasis.js and Conductor.js.
+
+## Glazier Container Architecture
+
+### Conductor & Oasis
+### Integrating Ember.js and Conductor
+#### Routes
+#### Services
+#### Persisting Cards with Ember-Data
+
+## Glazier Server Architecture
+
+### Rails back-end
+#### Persisting cards
+#### Persisting card data
+
+## Authentication in Glazier
+
+TODO: detail auth flow
 
 ## How to Make Your Own Card
 
