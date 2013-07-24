@@ -1,4 +1,6 @@
 @import "base";
+@import "icons";
+@import "list";
 
 html, body {
   overflow: hidden;
@@ -14,8 +16,8 @@ body {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 13px;
   line-height: 1.51em;
-  color: #808080;
-  padding: 0 30px;
+  color: $gray-light;
+  padding: 0 30px 30px;
   position: relative;
 
   &:after {

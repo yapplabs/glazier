@@ -1,10 +1,9 @@
 {{#if isLoggedIn}}
   <img {{bindAttr src="avatarUrl"}} /> {{username}}
-  {{#if isShowingLogout}}
-    <button class="logout" {{action logout}}>
-      Log out
-    </button>
-  {{/if}}
+  <a class="logout" {{action logout}}>
+    <span class="icon-log-out" data-tooltip="true"></span>
+    <span class="tooltip tooltip-top">Log Out</span>
+  </a>
 {{else}}
   {{#if isLoggingIn}}
     logging in...
