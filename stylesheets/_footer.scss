@@ -11,9 +11,7 @@
 
   .tabs-wrapper {
     @include pie-clearfix;
-    max-width: $max-page-width;
     min-width: $min-page-width;
-    margin: 0 auto;
   }
 
   .tabs {
@@ -22,11 +20,11 @@
     > div {
       display: inline-block;
       float: left;
-      height: 50px;
+      height: $footer-height;
       min-width: 100px;
       padding: 0em 1.75em;
       font-size: 0.875em;
-      line-height: 50px;
+      line-height: $footer-height;
       text-align: center;
       cursor:pointer;
       border-left: 1px solid #333;
@@ -38,7 +36,7 @@
     .logo {
       font-family: 'Ubuntu', sans-serif;
       color: #CCCCCC;
-      font-size: 1.15em;
+      font-size: 18px;
       padding: 0;
 
       > a {
@@ -51,26 +49,27 @@
 
     .user {
       position: relative;
+
       img {
         width: 1.3em;
         height: 1.3em;
         vertical-align: text-top;
         margin-right: 0.5em;
       }
-      button.logout {
-        left: 0;
-        position: absolute;
-        height: 50px;
-        right: 0;
-        top: -50px;
-        margin: 0;
-        padding: 0;
-        background: #1a1a1a;
-        box-shadow: 0px 0px 5px #262626;
-        color: #B3B3B3;
-        font-size: 16px;
-        border: 1px solid #333;
-        cursor:pointer;
+
+      a.logout {
+        position: relative;
+        padding: 7px 0;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        @include link-colors($gray, $gray-lighter);
+
+        .icon-log-out {
+          font-size: 0.9em;
+          line-height: 25px;
+          padding: 10px;
+        }
       }
     }
 

@@ -1,7 +1,7 @@
 var UserView = Ember.View.extend({
   classNames: ['user'],
   click: function(evt){
-    if ($(evt.target).hasClass('logout')) {
+    if ($(evt.target).hasClass('logout') || $(evt.target).parent().hasClass('logout')) {
       return; // the logout button has it's own action trigger
     }
 

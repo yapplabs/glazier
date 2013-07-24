@@ -1,16 +1,18 @@
 {{#if isDisabled}}
   <p>This repository does not use Github Issues.</p>
 {{else}}
-  <h3>My Issues: {{repositoryName}}</h3>
-  {{#each myIssues}}
-    <div>{{number}}: {{title}}</div>
-  {{/each}}
-
-  <hr>
-
   <h3>Github Issues for {{repositoryName}}</h3>
-
+  
+  <ul class="list">
   {{#each}}
-    <div>{{number}}: {{title}}</div>
+    <li><span class="icon-issue stick-left"></span> <span>{{title}}</span> <span class="pull-right">#{{number}}</span></li>
   {{/each}}
+  </ul>
+
+  {{#if myIssues}}
+    <h3>My Issues: {{repositoryName}}</h3>
+    {{#each myIssues}}
+      <div>{{number}}: {{title}}</div>
+    {{/each}}
+  {{/if}}
 {{/if}}

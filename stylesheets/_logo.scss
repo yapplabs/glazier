@@ -1,12 +1,17 @@
 $logo-size: 1em;
-$logo-speed: 3s;
+$logo-speed: 2000ms;
 $logo-easing: cubic-bezier(.5,0,.3,1);
+
+$logo-color-lightest: adjust_hue(saturate(lighten($base-color, 48%), 47%), -18deg);
+$logo-color-lighter: adjust_hue(saturate(lighten($base-color, 23%), 7%), -15deg);
+$logo-color-light: adjust_hue(lighten($base-color, 8%), -10deg);
+$logo-color-dark: adjust_hue(saturate(darken($base-color, 15%), 10%), -2deg);
 
 .logo-css {
 	display: inline-block;
 	position: relative;
 	width: $logo-size; height: $logo-size;
-	background: $base-lightest;
+	background: transparentize($base-color, .5);
 	overflow: hidden;
 	vertical-align: baseline;
 
@@ -30,7 +35,7 @@ $logo-easing: cubic-bezier(.5,0,.3,1);
 	.logo-pane-1 {
 		@extend %half;
 		top: 0;
-		background: $base-dark;
+		background: $logo-color-dark;
 	}
 
 	.logo-pane-2 {
@@ -43,21 +48,21 @@ $logo-easing: cubic-bezier(.5,0,.3,1);
 	.logo-pane-3 {
 		@extend %half;
 		bottom: 0;
-		background: $base-lighter;
+		background: $logo-color-lighter;
 		overflow: hidden;
 	}
 
 	.logo-pane-4 {
 		left: 0; top: ($logo-size / -2);
 		width: 0; height: 0;
-		border-top: $logo-size solid $base-light;
+		border-top: $logo-size solid $logo-color-light;
 		border-right: $logo-size solid transparent;
 	}
 
 	.logo-pane-5 {
 		right: 0; top: 0;
 		width: 0; height: 0;
-		border-bottom: $logo-size solid $base-light;
+		border-bottom: $logo-size solid $logo-color-light;
 		border-left: $logo-size solid transparent;
 		z-index: 1;
 	}
