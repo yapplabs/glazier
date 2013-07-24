@@ -12,7 +12,7 @@ var DashboardController = Ember.ObjectController.extend({
       repositoryName = this.get('repositoryName'),
       repos = user && user.editable_repositories;
     return repos && repos.indexOf(repositoryName) !== -1;
-  },
+  }.property('user.content', 'repositoryName'),
 
   paneTypes: function() {
     return Glazier.PaneType.find();
@@ -40,6 +40,11 @@ var DashboardController = Ember.ObjectController.extend({
     });
 
     record.store.commit();
+  },
+
+  removePane: function(pane) {
+    pane.deleteRecord();
+    pane.store.commit();
   }
 });
 export default DashboardController;
