@@ -1,6 +1,8 @@
 import Conductor from 'conductor';
 
 var PaneView = Ember.View.extend({
+  classNameBindings: ['hiddenPane'],
+  templateName: 'pane',
   init: function () {
     this._super();
     this.cardManager = this.container.lookup('cardManager:main');
@@ -34,21 +36,24 @@ var PaneView = Ember.View.extend({
   },
 
   appendCard: function(card) {
-    var $paneElement, $element = this.$();
+    var $paneElement, view = this;
 
+    this.set('card', card); // template will update to get a .pane element
     if (card.hidden) {
-      $element.addClass('hidden-pane');
-      $paneElement = $element;
-    } else {
-      $element.addClass('block pane-wrapper');
-      $paneElement = Ember.$("<div class='pane'>");
-      $element.append($paneElement);
-      $paneElement.append("<div class='pane-footer'>");
+      view.set('hiddenPane', true);
     }
 
-    card.appendTo($paneElement[0]).promise.then(function(card) {
-      card.render();
-    }).then(null, Conductor.error);
+    Em.run.scheduleOnce('afterRender', function() {
+      if (card.hidden) {
+        $paneElement = view.$();
+      } else {
+        $paneElement = view.$('.pane');
+      }
+
+      card.appendTo($paneElement[0]).promise.then(function(card) {
+        card.render();
+      }).then(null, Conductor.error);
+    });
   }
 });
 
