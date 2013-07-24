@@ -4,25 +4,27 @@
 @import "panes";
 @import "footer";
 
-body {
+html {
   @include box-sizing(border-box);
+  min-height: 100%;
+}
+
+body {
   min-width: $min-page-width;
-  max-width: $max-page-width;
+  min-height: 100%;
   margin: auto;
-  padding-bottom: 50px;
   font-family: 'Source Sans Pro', sans-serif;
   background: $gray-lightest;
   font-size: 13px;
   line-height: 1.51em;
   color: $gray-light;
-}
+  
 
-iframe {
-  width: 100%;
-  height: 100%;
-
-  overflow:hidden;
-  border:0;
+  @include box-sizing(border-box);
+  position: absolute;
+  top: 0;
+  left: 0; right: 0;
+  padding-bottom: $footer-height;
 }
 
 .loading {
@@ -47,10 +49,13 @@ iframe {
 
 .repository-sidebar {
   @include clearfix;
+  @include box-sizing(border-box);
 
   padding: $page-padding;
   padding-bottom: $page-padding * 2;
   white-space: nowrap;
+
+  height: 125px;
 
   > * {
     display: inline-block;

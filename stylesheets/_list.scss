@@ -1,0 +1,29 @@
+.list {
+	font-size: 1.1em;
+	color: $gray;
+
+	li {
+		@include clearfix;
+		@include box-sizing(border-box);
+		height: 50px;
+		line-height: 50px;
+		padding: 0 25px;
+		position: relative;
+
+		border-top: 1px solid #e6e6e6;
+		&:first-of-type {
+			border-top: none;
+		}
+	}
+}
+
+.pull-right {
+	float: right;
+}
+
+.stick-left {
+	position: absolute;
+	left: 0;
+	top: 0; bottom: 0;
+	line-height: inherit;
+}

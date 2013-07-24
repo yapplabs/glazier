@@ -11,9 +11,7 @@
 
   .tabs-wrapper {
     @include pie-clearfix;
-    max-width: $max-page-width;
     min-width: $min-page-width;
-    margin: 0 auto;
   }
 
   .tabs {
@@ -22,11 +20,11 @@
     > div {
       display: inline-block;
       float: left;
-      height: 50px;
+      height: $footer-height;
       min-width: 100px;
       padding: 0em 1.75em;
       font-size: 0.875em;
-      line-height: 50px;
+      line-height: $footer-height;
       text-align: center;
       cursor:pointer;
       border-left: 1px solid #333;
