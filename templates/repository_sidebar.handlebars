@@ -1,15 +1,15 @@
 <div class="repository-sidebar">
   <img {{bindAttr src="gravatarUrl"}} />
   <div class="repository-name">
-	  <h2>{{name}}</h2>
-	  <h3>{{owner.login}}</h3>
-	</div>
-	
-	<div class="repository-info">
-	  <p class="repository-description">{{description}}</p>
-	  {{#if homepage}}
-		  <p class="repository-link"><a {{bindAttr href="homepage"}} target="_blank">{{homepage}}</a></p>
-		{{/if}}
-	</div>
+    <h2>{{name}}</h2>
+    <h3>{{owner.login}}</h3>
+  </div>
+
+  <div class="repository-info">
+    <p class="repository-description">{{description}}</p>
+    {{#if homepage}}
+      <p class="repository-link"><a {{bindAttr href="homepage"}} target="_blank">{{homepage}}</a></p>
+    {{/if}}
+  </div>
 </div>
 

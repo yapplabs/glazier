@@ -14,9 +14,7 @@ define("oasis",
 
     var Oasis = {};
 
-    //Logger.enable();
-
-    //verifySandbox();
+    // Logger.enable();
 
     Oasis.adapters = {
       iframe: iframeAdapter,
@@ -146,12 +144,13 @@ define("oasis",
         function initializeOasisSandbox(event) {
           if (!event.data.isOasisInitialization) { return; }
 
+          removeEventListener(receiver, 'message', initializeOasisSandbox);
+
           configuration.eventCallback(function () {
             Logger.log("Sandbox initializing.");
 
             configuration.oasisURL = event.data.oasisURL;
 
-            removeEventListener(receiver, 'message', initializeOasisSandbox);
             adapter.loadScripts(event.data.base, event.data.scriptURLs);
 
             connectCapabilities(event.data.capabilities, event.ports);
@@ -420,9 +419,9 @@ define("oasis",
         }
 
         iframe.oasisLoadHandler = function () {
-          configuration.eventCallback(function () {
-            removeEventListener(iframe, 'load', iframe.oasisLoadHandler);
+          removeEventListener(iframe, 'load', iframe.oasisLoadHandler);
 
+          configuration.eventCallback(function () {
             sandbox.iframeLoaded = true;
 
             Logger.log("iframe loading oasis");
@@ -711,10 +710,11 @@ define("oasis",
               args = data.args,
               getResponse = new RSVP.Promise(function (resolve, reject) {
                 var value = callback.apply(binding, data.args);
-                if (undefined === value) {
+                if (undefined !== value) {
+                  resolve(value);
+                } else {
                   reject("@request:" + eventName + " [" + data.requestId + "] did not return a value.  If you want to return a literal `undefined` return `RSVP.resolve(undefined)`");
                 }
-                resolve(value);
               });
 
           getResponse.then(function (value) {
@@ -870,6 +870,7 @@ define("oasis",
       this.envPortDefereds = {};
       this.sandboxPortDefereds = {};
       this.channels = {};
+      this.ports = {};
       this.options = options;
 
       var loadPromise = adapter.initializeSandbox(this);
@@ -959,6 +960,7 @@ define("oasis",
             // Law of Demeter violation
             port = sandboxPort;
 
+            this.ports[capability] = environmentPort;
             this.envPortDefereds[capability].resolve(environmentPort);
           }
 
@@ -1421,15 +1423,6 @@ define("oasis",
       }
     }
 
-    function verifySandbox() {
-      var iframe = document.createElement('iframe');
-
-      iframe.sandbox = 'allow-scripts';
-      assert(iframe.getAttribute('sandbox') === 'allow-scripts', "The current version of Oasis requires Sandboxed iframes, which are not supported on your current platform. See http://caniuse.com/#feat=iframe-sandbox");
-
-      assert(typeof MessageChannel !== 'undefined', "The current version of Oasis requires MessageChannel, which is not supported on your current platform. A near-future version of Oasis will polyfill MessageChannel using the postMessage API");
-    }
-
     function mustImplement(className, name) {
       return function() {
         throw new Error("Subclasses of " + className + " must implement " + name);
@@ -1469,7 +1462,6 @@ define("oasis",
     __exports__.assert = assert;
     __exports__.extend = extend;
     __exports__.mustImplement = mustImplement;
-    __exports__.verifySandbox = verifySandbox;
     __exports__.rsvpErrorHandler = rsvpErrorHandler;
   });define("oasis/webworker_adapter",
   ["oasis/util", "oasis/config", "oasis/shims", "rsvp", "oasis/logger", "oasis/base_adapter"],
