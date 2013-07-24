@@ -5,8 +5,10 @@
   <div class="panes block-group">
     {{each panes itemViewClass="Glazier.PaneView"}}
     {{#if addingPane}}
-      {{#each pane in addablePanes}}
-        <div>{{pane.name}}</div>
+      <div>Add a pane: {{addablePanes.length}}</div>
+
+      {{#each addablePanes}}
+        <div>{{manifest.displayName}}</div>
       {{/each}}
     {{else}}
       {{#if canAddPanes}}

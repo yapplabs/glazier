@@ -1,7 +1,7 @@
 {
   "name": "glazier-github-stars",
   "glazierConfig": {
-    "displayName": "github-stars",
+    "displayName": "Github Stars",
     "consumes": [
       "authenticatedGithubApi",
       "unauthenticatedGithubApi"
@@ -34,7 +34,7 @@
     "matchdep": "~0.1.2",
     "grunt-md5": "~0.1.11",
     "grunt-s3": "~0.2.0-alpha.2",
-    "glazier-card-grunt-config": "~0.2.2",
+    "glazier-card-grunt-config": "~0.2.3",
     "lodash": "~1.3.1",
     "grunt-contrib-sass": "~0.4.1"
   }
