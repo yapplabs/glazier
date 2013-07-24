@@ -3,6 +3,15 @@
   {{render "repository_sidebar" }}
   </div>
   <div class="panes block-group">
-  {{each panes itemViewClass="Glazier.PaneView"}}
+    {{each panes itemViewClass="Glazier.PaneView"}}
+    {{#if addingPane}}
+      {{#each pane in addablePanes}}
+        <div>{{pane.name}}</div>
+      {{/each}}
+    {{else}}
+      {{#if canAddPanes}}
+        <a href="#" {{action "addPane"}}>Add a Pane</a>
+      {{/if}}
+    {{/if}}
   </div>
 </div>
