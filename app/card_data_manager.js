@@ -17,6 +17,7 @@ var CardDataManager = Ember.Object.extend({
 
     return {
       name: user.name,
+      github_login: user.github_login,
       github_id: user.github_id // TODO - camelize keys for cards?
     };
   }.property('user'),
