@@ -1,4 +1,5 @@
-var grunt = require('grunt');
+var grunt = require('grunt'),
+  manifestUrl = require('../grunt-utils/manifest_url.js').manifestUrl;
 
 /*
   Make substitutions for templated parts of files where substitutions
@@ -67,14 +68,7 @@ function templateProdFile(templatePath) {
 
   var indexContents = grunt.template.process(template, {
     data: {
-      manifestUrl: function(path) {
-        if (!manifest[path]) {
-          throw "No file found in manifest for path " + path;
-        } else {
-          console.log("Found entry for path " + path);
-        }
-        return grunt.config.process('<%= pkg.assetHost %>') + manifest[path] + "?cors-fix";
-      },
+      manifestUrl: manifestUrl(manifest),
       manifest: JSON.stringify(manifest || {}),
       assetHost: assetHost
     }
