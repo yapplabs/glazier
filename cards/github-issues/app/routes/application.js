@@ -14,14 +14,13 @@ var ApplicationRoute = Ember.Route.extend({
     currentUserChanged: function() {
       var route = this;
       var applicationController = route.controllerFor('application');
+      var repositoryName = card.data.repositoryName;
+      var user = card.data.user;
 
-      if (!card.data.user) {
+      if (!user) {
         applicationController.set('myIssues', []);
         return;
       }
-
-      var repositoryName = card.data.repositoryName;
-      var user = card.data.user;
 
       Issue.
         findByUserAndRepositoryName(repositoryName, user).
@@ -40,11 +39,12 @@ var ApplicationRoute = Ember.Route.extend({
   model: function(){
     var applicationController = this.controllerFor('application');
 
-    applicationController.set('repositoryName', card.data.repositoryName);
+    var repositoryName = card.data.repositoryName;
+
+    applicationController.set('repositoryName', repositoryName);
 
     var route = this;
 
-    var repositoryName = card.data.repositoryName;
     var user = card.data.user;
 
     function handleRejection(reason) {
@@ -55,7 +55,7 @@ var ApplicationRoute = Ember.Route.extend({
       }
     }
 
-    function process(value) {
+    function process(hash) {
       applicationController.set('myIssues', hash.userIssues);
       return hash.allIssues;
     }

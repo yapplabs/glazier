@@ -10,12 +10,12 @@ var PaneView = Ember.View.extend({
 
   expand: function(){
     var $pane = this.$();
-    this.set('fullSize', true)
+    this.set('fullSize', true);
   },
 
   collapse: function(){
     var $pane = this.$();
-    this.set('fullSize', false)
+    this.set('fullSize', false);
   },
 });
 
