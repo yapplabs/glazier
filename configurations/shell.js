@@ -13,6 +13,11 @@ function isCardDir(dir){
 }
 
 function cardGruntCommand(dirname) {
+  var cardsToBuild = process.env.CARDS ? process.env.CARDS.split(',') : [];
+  if (process.env.CARDS && cardsToBuild.indexOf(dirname) == -1) {
+    console.log('skipping build for ' + dirname + ' - not in CARDS');
+    return ':'; // no-op so join(' && ') works
+  }
   var cmd = "(cd cards/" + dirname + " && grunt)";
   return cmd;
 }
