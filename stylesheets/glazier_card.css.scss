@@ -21,10 +21,10 @@ body {
   position: relative;
 
   &:after {
-    @include stretch;
     position: fixed;
     content: "";
-    top: auto;
+    bottom: 0;
+    left: 0; right: 0;
     height: 15px;
     pointer-events: none;
     @include background-image(linear-gradient(transparentize(white, 1), transparentize(white, 0.4)));
