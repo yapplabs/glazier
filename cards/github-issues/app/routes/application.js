@@ -16,6 +16,7 @@ var ApplicationRoute = Ember.Route.extend({
       var applicationController = route.controllerFor('application');
       var repositoryName = card.data.repositoryName;
       var user = card.data.user;
+      var githubLogin = user && user.githubLogin;
 
       if (!user) {
         applicationController.set('myIssues', []);
@@ -23,7 +24,7 @@ var ApplicationRoute = Ember.Route.extend({
       }
 
       Issue.
-        findByUserAndRepositoryName(repositoryName, user).
+        findEverything(repositoryName, githubLogin).
           then(updateTheApplicationController).
           then(null, Conductor.error);
 
@@ -37,19 +38,17 @@ var ApplicationRoute = Ember.Route.extend({
   },
 
   model: function(){
+    var route = this;
+    var user = card.data.user;
+    var githubLogin = user && user.githubLogin;
     var applicationController = this.controllerFor('application');
-
     var repositoryName = card.data.repositoryName;
 
     applicationController.set('repositoryName', repositoryName);
 
-    var route = this;
-
-    var user = card.data.user;
-
     function handleRejection(reason) {
       if (Issue.isErrorDueToIssuesBeingDisabled(reason)) {
-        route.transitionTo('disabled')
+        route.transitionTo('disabled');
       } else {
         throw reason;
       }
@@ -60,8 +59,8 @@ var ApplicationRoute = Ember.Route.extend({
       return hash.allIssues;
     }
 
-    return Issue.findByUserAndRepositoryName(repositoryName, user).
-      then(process, handleRejection);
+    return Issue.findEverything(repositoryName, githubLogin).
+                   then(process, handleRejection);
   }
 });
 

@@ -6,17 +6,16 @@ var Issue = {
 
     Fetches and aggregates all issues for a given repo and user
 
-    @method findAllByRepoNameAndUser
+    @method  findEverything
     @param  repositoryName {String}
+    @param  githubLoigin {String}
     @returns {Ember.RSVP.Promise}
   */
-  findAllByRepoNameAndUser: function(repositoryName, user ){
-    var repositoryName = card.data.repositoryName;
-    var user = card.data.user;
-
+  findEverything: function(repositoryName, githubLogin){
     var hash = {};
+
     hash.allIssues = Issue.findAllByRepositoryName(repositoryName);
-    hash.userIssues = user && Issue.findByUserAndRepositoryName(repositoryName, user.github_login);
+    hash.userIssues = githubLogin && Issue.findByRepositoryNameAndGithubLogin(repositoryName, githubLogin);
 
     return Ember.RSVP.hash(hash);
   },
@@ -49,13 +48,14 @@ var Issue = {
 
     Fetches the current issues given a repository name.
 
-    @method findMineByRepositoryName
+    @method findByRepositoryNameAndGithubLogin
     @param  repositoryName {String}
+    @param  githubLogin {String}
     @returns {Ember.RSVP.Promise}
   */
-  findByUserAndRepositoryName: function(repositoryName, creator) {
+  findByRepositoryNameAndGithubLogin: function(repositoryName, githubLogin) {
     return card.consumers.authenticatedGithubApi.request("ajax", {
-      url: '/repos/' + repositoryName + '/issues?creator=' + creator,
+      url: '/repos/' + repositoryName + '/issues?creator=' + githubLogin,
       dataType: 'json'
     });
   },
