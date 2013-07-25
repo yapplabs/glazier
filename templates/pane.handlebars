@@ -1,11 +1,15 @@
-{{#if view.card}}
-  <div class="pane">
-    <div class="pane-footer">
-      {{#if controller.isAdmin}}
-        <a href="" {{action "removePane" this}}> remove </a>
-      {{/if}}
-      <a class="toggle-full-size"href="#">expand</a>
-    </div>
-    <!-- appended sandbox -->
+<div class="pane">
+  {{#unless isHidden}}
+  <div class="pane-footer">
+    {{#if controller.isAdmin}}
+      <a href="" {{action "removePane" this}}> remove </a>
+    {{/if}}
+    {{#if view.fullSize}}
+      <a {{action "collapse" target="view"}} href="#">collapse</a>
+    {{else}}
+      <a {{action "expand" target="view"}} href="#">expand</a>
+    {{/if}}
   </div>
-{{/if}}
+  {{/unless}}
+  {{view 'card'}}
+</div>

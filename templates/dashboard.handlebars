@@ -3,7 +3,7 @@
   {{render "repository_sidebar" }}
   </div>
   <div class="panes block-group">
-    {{each panes itemViewClass="Glazier.PaneView"}}
+    {{render "panes" panes}}
     {{#if addingPane}}
       <div>Add a pane: {{addablePanes.length}}</div>
 
