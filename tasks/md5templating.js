@@ -73,7 +73,7 @@ function templateProdFile(templatePath) {
         } else {
           console.log("Found entry for path " + path);
         }
-        return grunt.config.process('<%= pkg.assetHost %>') + manifest[path];
+        return grunt.config.process('<%= pkg.assetHost %>') + manifest[path] + "?cors-fix";
       },
       manifest: JSON.stringify(manifest || {}),
       assetHost: assetHost
