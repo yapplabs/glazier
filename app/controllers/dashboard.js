@@ -56,7 +56,6 @@ var DashboardController = Ember.ObjectController.extend({
     var paneTypes = this.get('paneTypes');
 
     consumes.forEach(function(consume) {
-      debugger;
       if (!paneProvides.contains(consume) && !conductorServices.hasOwnProperty(consume)) {
         dep = paneTypes.find(function(paneType) {
           var provides = paneType.get('manifest.provides');
