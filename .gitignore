@@ -6,3 +6,4 @@ cards/stackoverflow-questions
 cards/github-people
 npm-debug.log
 .sass-cache
+connect.lock
