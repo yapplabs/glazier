@@ -20,12 +20,20 @@ var DashboardController = Ember.ObjectController.extend({
 
   addablePaneTypes: function() {
     var paneTypes = this.get('paneTypes');
-    var myPaneTypes = this.get('panes').mapProperty('paneType');
+    var panes = this.get('panes');
 
-    return paneTypes.filter(function(paneType) {
-      return !myPaneTypes.contains(paneType);
+    return Glazier.PaneType.filter(function(paneType) {
+      var isProvider = paneType.get('isProvider'),
+        hasUI = paneType.get('hasUI');
+
+      if (hasUI) {
+        if (isProvider) {
+          return !panes.someProperty('paneType', paneType);
+        }
+        return true;
+      }
     });
-  }.property('paneTypes.[]', 'panes.@each.paneType'),
+  }.property('panes.[]'),
 
   addingPane: false,
 
@@ -34,6 +42,44 @@ var DashboardController = Ember.ObjectController.extend({
   },
 
   addPane: function(paneType) {
+    // search current panes for what they provide
+    var consumes = paneType.get('manifest.consumes');
+    var conductorServices = Conductor.services;
+    var paneProvides = [];
+    this.get('panes').forEach(function(pane) {
+      var provides = pane.get('manifest.provides');
+      if (provides && provides.length) {
+        paneProvides = paneProvides.concat(provides);
+      }
+    });
+    var dep, deps = [];
+    var paneTypes = this.get('paneTypes');
+
+    consumes.forEach(function(consume) {
+      debugger;
+      if (!paneProvides.contains(consume) && !conductorServices.hasOwnProperty(consume)) {
+        dep = paneTypes.find(function(paneType) {
+          var provides = paneType.get('manifest.provides');
+          if (provides) {
+            return provides.contains(consume);
+          }
+        });
+        if (dep) {
+          deps.push(dep);
+        }
+      }
+    }, this);
+
+    // TODO: make recursively handle dependencies. (YAGNI?)
+    if (deps) {
+      deps.forEach(function(paneType) {
+        Glazier.Pane.createRecord({
+          dashboard: this.get('content'),
+          paneType: paneType
+        });
+      }, this);
+    }
+
     var record = Glazier.Pane.createRecord({
       dashboard: this.get('content'),
       paneType: paneType

@@ -5,7 +5,7 @@
   <div class="panes block-group">
     {{render "panes" panes}}
     {{#if addingPane}}
-      <div>Add a pane: {{addablePanes.length}}</div>
+      <div>Add a pane:</div>
 
       {{#each addablePaneTypes}}
         <div><a href="" {{action "addPane" this}}>{{manifest.displayName}}</a></div>
