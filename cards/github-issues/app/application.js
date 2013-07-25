@@ -6,6 +6,10 @@ var App = Ember.Application.create({
   resolver: Resolver
 });
 
+App.Router.map(function(){
+  this.route('disabled');
+});
+
 App.deferReadiness();
 requireModule('templates');
 

@@ -2,17 +2,6 @@ import card from 'card';
 import Conductor from 'conductor';
 import Issue from 'app/models/issue';
 
-function fetch() {
-  var repositoryName = card.data.repositoryName;
-  var user = card.data.user;
-
-  var hash = {};
-  hash.allIssues = Issue.findAllByRepositoryName(repositoryName);
-  hash.userIssues = user && Issue.findByUserAndRepositoryName(repositoryName, user.github_login);
-
-  return Ember.RSVP.hash(hash);
-}
-
 function isErrorDueToIssuesBeingDisabled(error) {
   if (error.status !== 410) {
     return false;
@@ -27,6 +16,13 @@ function isErrorDueToIssuesBeingDisabled(error) {
 }
 
 var ApplicationRoute = Ember.Route.extend({
+  redirect: function(){
+    var applicationController = this.controllerFor('application');
+
+    if (applicationController.get('isDisabled')) {
+      this.transitionTo('disabled');
+    }
+  },
   events: {
     currentUserChanged: function() {
       var route = this;
@@ -37,28 +33,48 @@ var ApplicationRoute = Ember.Route.extend({
         return;
       }
 
-      fetch().then(function(hash){
+      var repositoryName = card.data.repositoryName;
+      var user = card.data.user;
+
+      Issue.
+        findByUserAndRepositoryName(repositoryName, user).
+          then(updateTheApplicationController).
+          then(null, Conductor.error);
+
+      function updateTheApplicationController(hash) {
         applicationController.set('myIssues', hash.userIssues);
         applicationController.set('model', hash.allIssues);
-      }).then(null, Conductor.error);
+
+        return hash;
+      }
     }
   },
 
   model: function(){
     var applicationController = this.controllerFor('application');
+
     applicationController.set('repositoryName', card.data.repositoryName);
 
-    return fetch().then(function(hash) {
+    var route = this;
+
+    var repositoryName = card.data.repositoryName;
+    var user = card.data.user;
+
+    function handleRejection(reason) {
+      if (isErrorDueToIssuesBeingDisabled(reason)) {
+        route.transitionTo('disabled')
+      } else {
+        throw reason;
+      }
+    }
+
+    function process(value) {
       applicationController.set('myIssues', hash.userIssues);
       return hash.allIssues;
-    }, function(error){
-      if (isErrorDueToIssuesBeingDisabled(error)) {
-        applicationController.set('isDisabled', true);
-        return [];
-      } else {
-        throw error;
-      }
-    });
+    }
+
+    return Issue.findByUserAndRepositoryName(repositoryName, user).
+      then(process, handleRejection);
   }
 });
 

@@ -4,6 +4,25 @@ var Issue = {
   /*
     @public
 
+    Fetches and aggregates all issues for a given repo and user
+
+    @method findAllByRepoNameAndUser
+    @param  repositoryName {String}
+    @returns {Ember.RSVP.Promise}
+  */
+  findAllByRepoNameAndUser: function(repositoryName, user ){
+    var repositoryName = card.data.repositoryName;
+    var user = card.data.user;
+
+    var hash = {};
+    hash.allIssues = Issue.findAllByRepositoryName(repositoryName);
+    hash.userIssues = user && Issue.findByUserAndRepositoryName(repositoryName, user.github_login);
+
+    return Ember.RSVP.hash(hash);
+  },
+  /*
+    @public
+
     Fetches all issues given a repository name.
 
     @method findAllByRepositoryName
