@@ -48,7 +48,7 @@ var ApplicationRoute = Ember.Route.extend({
     var user = card.data.user;
 
     function handleRejection(reason) {
-      if (Issues.isErrorDueToIssuesBeingDisabled(reason)) {
+      if (Issue.isErrorDueToIssuesBeingDisabled(reason)) {
         route.transitionTo('disabled')
       } else {
         throw reason;

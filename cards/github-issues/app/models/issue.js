@@ -58,7 +58,7 @@ var Issue = {
       url: '/repos/' + repositoryName + '/issues?creator=' + creator,
       dataType: 'json'
     });
-  }
+  },
 
   /*
     @public
