@@ -43,7 +43,7 @@ var OauthController = Ember.Controller.extend({
           pair = param.split('=');
       results[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
     }
-    this.deferred.resolve(results.access_token);
+    this.deferred.resolve(results);
   },
   decline: function(){
     this.set('showModal', false);
