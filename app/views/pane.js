@@ -1,13 +1,13 @@
 import Conductor from 'conductor';
 
-function render (card) { 
+function render (card) {
   card.render();
   return card;
 }
 var PaneView = Ember.View.extend({
   templateName: 'pane',
   classNameBindings: [
-    'view.isHidden:hidden-pane',
+    'isHidden:hidden-pane',
     ':pane-wrapper',
     'fullSize'
   ],
@@ -53,7 +53,7 @@ var PaneView = Ember.View.extend({
 
     this.set('card', card); // template will update to get a .pane element
 
-    Em.run.scheduleOnce('afterRender', function() {
+    Ember.run.scheduleOnce('afterRender', function() {
       var $pane = view.$('.pane');
       var expand = view.$('.toggle-full-size');
 

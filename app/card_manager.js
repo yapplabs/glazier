@@ -15,7 +15,7 @@ var CardManager = Ember.Object.extend({
   },
 
   userDataDidChange: function() {
-    Em.run.once(this, function() {
+    Ember.run.once(this, function() {
       var userData = this.get('cardDataManager.userData');
       this._updateUserData(userData);
       this._updateUserRelatedPanesData();
