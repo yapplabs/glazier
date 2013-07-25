@@ -3,8 +3,17 @@
     content: "";
     @include stretch;
     position: fixed;
-    background: transparentize(black, .75);
+    background: inherit;
     z-index: 999;
+  }
+}
+
+@mixin scroll-after($height) {
+  &:after {
+    content: "";
+    position: absolute;
+    top: 100%; height: $height;
+    left: 0; right: 0;
   }
 }
 
@@ -20,7 +29,8 @@ iframe {
   @include pie-clearfix;
   position: absolute;
   left: 0; right: 0;
-  top: 125px;
+  top: $header-height;
+  bottom: $footer-height;
   padding-left: $page-padding;
 }
 
@@ -31,50 +41,63 @@ iframe {
   margin-bottom: $page-padding;
   padding-right: $page-padding;
   width: 50%;
+  @include background-clip(content-box);
+  @include transition(background 500ms);
 
   &.full-size {
     position: static;
-    height: 260px;
+    height: $min-card-height;
+    background-color: transparentize(black, .75);
     @include pseudo-overlay;
 
     .pane {
-      @include box-sizing(border-box);
+      @include box-sizing(content-box);
+      @include backface-visibility(hidden);
       position: absolute;
       left: 10%; right: 10%;
-      top: 10%; height: 500px;
-      max-width: 1280px;
+      top: $page-padding; bottom: $header-height - $footer-height + $page-padding;
+      height: auto;
+      max-width: ($min-card-width * 3);
       margin: auto;
       z-index: 1000;
-    }
+      @include scroll-after($footer-height + $page-padding);
 
-    .pane-footer {
-      @include box-sizing(border-box);
+      @media (max-height: ($header-height * 2) + ($page-padding * 2) + $min-card-height + $card-footer-height) {
+        bottom: auto;
+        height: $min-card-height;
+        iframe {
+          min-height: $min-card-height;
+        }
+      }
     }
   }
 
-  @media (min-width: 1440px) {
-    width: (100% / 3);
-  }
-  @media (min-width: 2000px) {
-    width: (100% / 4);
+  @for $i from 3 to 6 {
+    @media (min-width: ($min-card-width * $i)) {
+      width: (100% / $i);
+    }
   }
 }
 
 .pane {
   @include box-sizing(border-box);
   position: relative;
-  overflow: hidden;
 
-  height: 260px;
-  padding-bottom: 35px;
+  height: $min-card-height;
+  padding-bottom: $card-footer-height;
 
   background-color: #FFFFFF;
+
+  &.transition-position {
+    @include transition(left 500ms, right 500ms, top 500ms, bottom 500ms);
+    @include transition-timing-function(ease);
+  }
 }
 
 .pane-footer {
   position: absolute;
   left: 0; right: 0;
-  height: 35px;
+  height: $card-footer-height;
   bottom: 0;
   color: #999999;
   background: #e6e6e6;
