@@ -6,7 +6,7 @@
   font-size: 1.2em;
   color: #B3B3B3;
   background: #000000;
-  z-index: 100;
+  z-index: 5000;
   @include transition(bottom 0.2s ease-out);
 
   .tabs-wrapper {

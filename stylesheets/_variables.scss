@@ -1,5 +1,8 @@
-$min-page-width: 1024px;
-$max-page-width: 1440px;
+$min-card-width: 512px;
+$min-card-height: 260px;
+$card-footer-height: 35px;
+
+$min-page-width: $min-card-width * 2;
 $page-padding: 25px;
 
 $header-height: 125px;
