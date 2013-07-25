@@ -2,6 +2,7 @@ var proxy = require('proxy-middleware');
 var lrSnippet = require('connect-livereload');
 var url = require('url');
 var request = require('http').request;
+var lockFile = require('lockfile');
 
 module.exports = {
   server: {
@@ -43,21 +44,15 @@ function proxyIndex(req, res, next){
   }
 }
 
-function blockDuringBuild(req,res,next){
-  if (process.isLockedDuringBuild) {
-    var tryAgainSoon = function() {
-      setTimeout(function(){
-        if (process.isLockedDuringBuild) {
-          tryAgainSoon();
-        } else {
-          next();
-        }
-      }, 100);
-    };
-    tryAgainSoon();
-  } else {
-    next();
-  }
+// works with tasks/locking.js
+function lock(req, res, next) {
+  (function retry() {
+    if (lockFile.checkSync('connect.lock')) {
+      setTimeout(retry, 100);
+    } else {
+      next();
+    }
+  }());
 }
 
 function middleware(connect, options) {
@@ -68,7 +63,7 @@ function middleware(connect, options) {
 
   return [
     lrSnippet(),
-    blockDuringBuild,
+    lock,
     proxy(theUrl),
     proxyIndex,
     connect['static'](options.base),
