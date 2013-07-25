@@ -12,7 +12,7 @@ module.exports = {
       'public/**/*'],
     tasks: ['lock', 'build', 'templateCSS', 'unlock', 'jshint', 'qunit:all'],
     options: {
-      nospawn: true
+      interrupt: true
     }
   },
   sass: {
