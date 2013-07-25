@@ -48,19 +48,19 @@ var DashboardController = Ember.ObjectController.extend({
     // TODO: make recursively handle dependencies. (YAGNI?)
     if (dependencies) {
       dependencies.forEach(function(paneType) {
-        transaction.createRecord({
+        transaction.createRecord(Glazier.Pane, {
           dashboard: this.get('content'),
           paneType: paneType
         });
       }, this);
     }
 
-    var record = transaction.createRecord({
+    transaction.createRecord(Glazier.Pane, {
       dashboard: this.get('content'),
       paneType: paneType
     });
 
-    store.commit();
+    transaction.commit();
   },
 
   paneTypesToAdd: function(paneType) {
