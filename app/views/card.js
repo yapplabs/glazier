@@ -1,6 +1,6 @@
 import Conductor from 'conductor';
 
-function render (card) { 
+function render (card) {
   card.render();
   return card;
 }
@@ -49,7 +49,7 @@ var CardView = Ember.View.extend({
     this.set('controller.card', card);
     this.set('controller.isHidden', card.hidden);
 
-    Em.run.scheduleOnce('afterRender', function() {
+    Ember.run.scheduleOnce('afterRender', function() {
       card.appendTo(element).promise.
         then(render).
         then(null, Conductor.error);
@@ -57,4 +57,4 @@ var CardView = Ember.View.extend({
   }
 });
 
-export default CardView;;
+export default CardView;
