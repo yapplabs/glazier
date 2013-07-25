@@ -15,14 +15,14 @@ var DashboardController = Ember.ObjectController.extend({
   }.property('user.content', 'repositoryName'),
 
   paneTypes: function() {
-    return Glazier.PaneType.find();
+    return this.get('store').find(Glazier.PaneType);
   }.property(),
 
   addablePaneTypes: function() {
     var paneTypes = this.get('paneTypes');
     var panes = this.get('panes');
 
-    return Glazier.PaneType.filter(function(paneType) {
+    return this.get('store').filter(Glazier.PaneType, function(paneType) {
       var isProvider = paneType.get('isProvider'),
         hasUI = paneType.get('hasUI');
 
@@ -42,9 +42,31 @@ var DashboardController = Ember.ObjectController.extend({
   },
 
   addPane: function(paneType) {
-    // search current panes for what they provide
+    var store = this.get('store');
+    var dependencies = this.paneTypesToAdd(paneType);
+    var transaction = store.transaction();
+    // TODO: make recursively handle dependencies. (YAGNI?)
+    if (dependencies) {
+      dependencies.forEach(function(paneType) {
+        transaction.createRecord({
+          dashboard: this.get('content'),
+          paneType: paneType
+        });
+      }, this);
+    }
+
+    var record = transaction.createRecord({
+      dashboard: this.get('content'),
+      paneType: paneType
+    });
+
+    store.commit();
+  },
+
+  paneTypesToAdd: function(paneType) {
     var consumes = paneType.get('manifest.consumes');
     var conductorServices = Conductor.services;
+
     var paneProvides = [];
     this.get('panes').forEach(function(pane) {
       var provides = pane.get('manifest.provides');
@@ -52,7 +74,7 @@ var DashboardController = Ember.ObjectController.extend({
         paneProvides = paneProvides.concat(provides);
       }
     });
-    var dep, deps = [];
+    var dep, dependencies = [];
     var paneTypes = this.get('paneTypes');
 
     consumes.forEach(function(consume) {
@@ -64,27 +86,12 @@ var DashboardController = Ember.ObjectController.extend({
           }
         });
         if (dep) {
-          deps.push(dep);
+          dependencies.push(dep);
         }
       }
     }, this);
 
-    // TODO: make recursively handle dependencies. (YAGNI?)
-    if (deps) {
-      deps.forEach(function(paneType) {
-        Glazier.Pane.createRecord({
-          dashboard: this.get('content'),
-          paneType: paneType
-        });
-      }, this);
-    }
-
-    var record = Glazier.Pane.createRecord({
-      dashboard: this.get('content'),
-      paneType: paneType
-    });
-
-    record.store.commit();
+    return dependencies;
   },
 
   removePane: function(pane) {
