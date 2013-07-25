@@ -2,19 +2,6 @@ import card from 'card';
 import Conductor from 'conductor';
 import Issue from 'app/models/issue';
 
-function isErrorDueToIssuesBeingDisabled(error) {
-  if (error.status !== 410) {
-    return false;
-  }
-  try {
-    var responseData = JSON.parse(error.responseText);
-    if (responseData.message === 'Issues are disabled for this repo') {
-      return true;
-    }
-  } catch(e) {}
-  return false;
-}
-
 var ApplicationRoute = Ember.Route.extend({
   redirect: function(){
     var applicationController = this.controllerFor('application');
@@ -61,7 +48,7 @@ var ApplicationRoute = Ember.Route.extend({
     var user = card.data.user;
 
     function handleRejection(reason) {
-      if (isErrorDueToIssuesBeingDisabled(reason)) {
+      if (Issues.isErrorDueToIssuesBeingDisabled(reason)) {
         route.transitionTo('disabled')
       } else {
         throw reason;

@@ -59,6 +59,29 @@ var Issue = {
       dataType: 'json'
     });
   }
+
+  /*
+    @public
+
+    Given an error, will reason if it is due to the issues
+    being disabled or not.
+
+    @method isErrorDueToIssuesBeingDisabled
+    @param  error {Error}
+    @returns {Boolean}
+  */
+  isErrorDueToIssuesBeingDisabled: function(error) {
+    if (error.status !== 410) {
+      return false;
+    }
+    try {
+      var responseData = JSON.parse(error.responseText);
+      if (responseData.message === 'Issues are disabled for this repo') {
+        return true;
+      }
+    } catch(e) {}
+    return false;
+  }
 };
 
 export default Issue;
