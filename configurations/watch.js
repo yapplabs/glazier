@@ -4,6 +4,8 @@ module.exports = {
       'app/**',
       'cards/**',
       '!cards/*/node_modules/**',
+      '!cards/*/tmp/**',
+      '!cards/*/dist/**',
       'vendor/**',
       'test/**',
       'templates/**',
