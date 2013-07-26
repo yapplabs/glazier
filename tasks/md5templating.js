@@ -10,7 +10,7 @@ module.exports = function(grunt) {
   var taskName = "templateCSS"
 
   //can add additional files here
-  var templateFiles = ['css/glazier.css']
+  var templateFiles = ['css/glazier.css', 'css/glazier_card.css'];
 
   var description = "process " + taskName;
   grunt.registerTask(taskName, description, function() {
