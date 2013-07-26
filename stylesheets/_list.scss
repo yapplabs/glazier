@@ -1,6 +1,6 @@
 .list {
 	font-size: 1.1em;
-	color: $gray;
+	color: $gray-light;
 
 	li {
 		@include clearfix;
@@ -13,6 +13,10 @@
 		border-top: 1px solid #e6e6e6;
 		&:first-of-type {
 			border-top: none;
+		}
+
+		.icon-issue {
+			font-size: 16px;
 		}
 	}
 }
