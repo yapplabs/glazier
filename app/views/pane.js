@@ -21,6 +21,10 @@ var PaneView = Ember.View.extend({
   afterExpand: function() {
     var $pane = this.$().children('.pane');
 
+    $pane.on('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', '*', function(evt) {
+      evt.stopPropagation();
+    });
+
     $pane.one('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function() {
       $pane.removeClass('transition-position');
     });
@@ -54,6 +58,8 @@ var PaneView = Ember.View.extend({
 
     $pane.attr('style', '');
     $paneWrapper.attr('style', '');
+
+    $pane.off('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd');
   },
 
   originalPosition: function() {
