@@ -2,7 +2,7 @@
   {{#unless isHidden}}
   <div class="pane-footer">
     {{#if controller.isAdmin}}
-      <a href="" {{action "removePane" this}}> remove </a>
+      <a href="#" {{action "removePane" this}}> remove </a>
     {{/if}}
     {{#if view.fullSize}}
       <a {{action "collapse" target="view"}} href="#">collapse</a>

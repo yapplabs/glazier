@@ -101,6 +101,12 @@ iframe {
   bottom: 0;
   color: #999999;
   background: #e6e6e6;
+
+  a {
+    line-height: 35px;
+    padding: 0 0.5em;
+    float: right;
+  }
 }
 
 .hidden-pane {
