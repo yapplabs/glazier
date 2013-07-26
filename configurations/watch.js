@@ -12,7 +12,6 @@ module.exports = {
       'public/**/*'],
     tasks: ['lock', 'build', 'templateCSS', 'unlock', 'jshint', 'qunit:all'],
     options: {
-      interrupt: true,
       debounceDelay: 200
     }
   },
