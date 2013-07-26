@@ -20,4 +20,6 @@ Glazier.PaneView = PaneView;
 Ember.Application.initializer(injectionsInitializer);
 Ember.Application.initializer(conductorServicesInitializer);
 
+Conductor.Oasis.configure('eventCallback', Ember.run);
+
 export { Glazier };
