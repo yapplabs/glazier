@@ -11,12 +11,11 @@ var ApplicationRoute = Ember.Route.extend({
     }
   },
   events: {
-    currentUserChanged: function() {
+    currentUserChanged: function(user) {
       var route = this;
       var applicationController = route.controllerFor('application');
       var repositoryName = card.data.repositoryName;
-      var user = card.data.user;
-      var githubLogin = user && user.githubLogin;
+      var githubLogin = user && user.github_login;
 
       if (!user) {
         applicationController.set('myIssues', []);
@@ -29,7 +28,7 @@ var ApplicationRoute = Ember.Route.extend({
           then(null, Conductor.error);
 
       function updateTheApplicationController(hash) {
-        applicationController.set('myIssues', hash.userIssues);
+        applicationController.set('myIssues', hash.userIssues || []);
         applicationController.set('model', hash.allIssues);
 
         return hash;
@@ -40,7 +39,7 @@ var ApplicationRoute = Ember.Route.extend({
   model: function(){
     var route = this;
     var user = card.data.user;
-    var githubLogin = user && user.githubLogin;
+    var githubLogin = user && user.github_login;
     var applicationController = this.controllerFor('application');
     var repositoryName = card.data.repositoryName;
 
@@ -55,7 +54,7 @@ var ApplicationRoute = Ember.Route.extend({
     }
 
     function process(hash) {
-      applicationController.set('myIssues', hash.userIssues);
+      applicationController.set('myIssues', hash.userIssues || []);
       return hash.allIssues;
     }
 

@@ -1,6 +1,9 @@
 <h3>Github Issues for {{repositoryName}}</h3>
-{{#if myIssues}}
+{{#if user}}
   <h3>My Issues:</h3>
-  {{render 'issues' myIssues}}
+  {{#if myIssues}}
+    {{render 'issues' myIssues}}
+  {{/if}}
+  <h3>All Issues:</h3>
 {{/if}}
 {{render 'issues' this}}
