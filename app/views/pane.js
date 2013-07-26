@@ -12,12 +12,7 @@ var PaneView = Ember.View.extend({
     var $paneWrapper = this.$();
     var $pane = $paneWrapper.children('.pane');
 
-    $pane.css({
-      left: $paneWrapper.offset().left,
-      right: $paneWrapper.parent().innerWidth() - ($paneWrapper.offset().left + $paneWrapper.width()),
-      top: $paneWrapper.position().top,
-      bottom: $paneWrapper.parent().height() - $paneWrapper.height()
-    });
+    $pane.css(this.originalPosition());
 
     Ember.run.scheduleOnce('afterRender', this, this.afterExpand);
     this.set('fullSize', true);
@@ -47,12 +42,7 @@ var PaneView = Ember.View.extend({
       self.set('fullSize', false);
     });
     
-    $pane.addClass('transition-position').css({
-      left: $paneWrapper.offset().left,
-      right: $paneWrapper.parent().innerWidth() - ($paneWrapper.offset().left + $paneWrapper.width()),
-      top: $paneWrapper.position().top,
-      bottom: $paneWrapper.parent().height() - $paneWrapper.height()
-    });
+    $pane.addClass('transition-position').css(this.originalPosition());
     $paneWrapper.css({
       'background-color': 'transparent'
     });
@@ -64,6 +54,17 @@ var PaneView = Ember.View.extend({
 
     $pane.attr('style', '');
     $paneWrapper.attr('style', '');
+  },
+
+  originalPosition: function() {
+    var $paneWrapper = this.$();
+
+    return {
+      left: $paneWrapper.offset().left,
+      right: $paneWrapper.offsetParent().innerWidth() - ($paneWrapper.offset().left + $paneWrapper.width()),
+      top: $paneWrapper.position().top,
+      bottom: $paneWrapper.offsetParent().height() - ($paneWrapper.position().top + $paneWrapper.height())
+    };
   }
 });
 
