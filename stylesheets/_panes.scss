@@ -14,6 +14,8 @@
     position: absolute;
     top: 100%; height: $height;
     left: 0; right: 0;
+    pointer-events: none;
+    z-index: -1;
   }
 }
 
@@ -43,6 +45,7 @@ iframe {
   width: 50%;
   @include background-clip(content-box);
   @include transition(background 500ms);
+  @include scroll-after($footer-height + $page-padding);
 
   &.full-size {
     position: static;
@@ -60,7 +63,6 @@ iframe {
       max-width: ($min-card-width * 3);
       margin: auto;
       z-index: 1000;
-      @include scroll-after($footer-height + $page-padding);
 
       @media (max-height: ($header-height * 2) + ($page-padding * 2) + $min-card-height + $card-footer-height) {
         bottom: auto;
@@ -82,6 +84,7 @@ iframe {
 .pane {
   @include box-sizing(border-box);
   position: relative;
+  overflow: hidden;
 
   height: $min-card-height;
   padding-bottom: $card-footer-height;
@@ -101,11 +104,93 @@ iframe {
   bottom: 0;
   color: #999999;
   background: #e6e6e6;
+  text-align: right;
+  font-size: 1.075em;
 
   a {
     line-height: 35px;
     padding: 0 0.5em;
     float: right;
+    color: inherit;
+    text-decoration: none;
+    &:hover {
+      color: inherit;
+      background-color: #dbdbdb;
+    }
+    &:active {
+      color: #4d4d4d;
+      background-color: #cfcfcf;
+    }
+  }
+}
+
+.pane-actions {
+  width: $card-footer-height;
+  height: $card-footer-height;
+  float: right;
+  &:hover {
+    .toggle-actions {
+      color: #4d4d4d;
+      background-color: #cfcfcf;
+    }
+
+    .actions-list {
+      display: block;
+    }
+  }
+
+  .toggle-actions {
+    display: block;
+    width: 100%; height: $card-footer-height;
+    margin: 0; padding: 0;
+    text-align: center;
+    text-decoration: none;
+    span {
+      font-size: 15px;
+      line-height: $card-footer-height;
+    }
+  }
+
+  .actions-list-wrapper {
+    position: absolute;
+    bottom: 100%; right: 0;
+    overflow: hidden;
+  }
+
+  .actions-list {
+    display: none;
+    position: relative;
+    background-color: #cfcfcf;
+    text-align: left;
+    @include animation(slideUp 200ms ease-out);
+    @include clearfix;
+  
+    li {
+      display: block;
+      height: 25px;
+      line-height: 25px;
+      font-size: 12px;
+      @include clearfix;
+    }
+
+    a {
+      float: none;
+      display: block;
+      height: 25px;
+      line-height: 25px;
+      padding: 0 10px;
+      &:hover, &:active {
+        color: inherit;
+        background-color: #dbdbdb;
+      }
+
+      > span {
+        display: inline-block;
+        font-size: 10px;
+        width: 10px;
+        padding-right: 10px;
+      }
+    }
   }
 }
 
@@ -114,4 +199,13 @@ iframe {
   border: 0 none;
   height: 0;
   width: 0;
+}
+
+@include keyframes(slideUp) {
+  0% {
+    @include transform(translateY(100%));
+  }
+  100% {
+    @include transform(translateY(0));
+  }
 }
