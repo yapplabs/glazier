@@ -95,8 +95,10 @@ var DashboardController = Ember.ObjectController.extend({
   },
 
   removePane: function(pane) {
-    pane.deleteRecord();
-    pane.store.commit();
+    if (window.confirm('Are you sure you want to remove ' + pane.get('manifest.displayName') + '?')) {
+      pane.deleteRecord();
+      pane.store.commit();
+    }
   }
 });
 export default DashboardController;
