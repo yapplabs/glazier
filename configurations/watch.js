@@ -3,6 +3,8 @@ module.exports = {
     files: [
       'app/**',
       'cards/**',
+      '!node_modules/**',
+      '!tmp/**',
       '!cards/*/node_modules/**',
       '!cards/*/tmp/**',
       '!cards/*/dist/**',
