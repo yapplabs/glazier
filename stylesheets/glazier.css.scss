@@ -18,7 +18,7 @@ body {
   font-size: 13px;
   line-height: 1.51em;
   color: $gray-light;
-  
+
 
   @include box-sizing(border-box);
   position: absolute;
@@ -47,7 +47,7 @@ body {
   border-bottom: 1px solid black;
 }
 
-.repository-sidebar {
+.repository-header {
   @include clearfix;
   @include box-sizing(border-box);
 

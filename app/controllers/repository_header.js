@@ -1,4 +1,4 @@
-var RepositorySidebarController = Ember.ObjectController.extend({
+var RepositoryHeaderController = Ember.ObjectController.extend({
   setCurrentRepository: function(repo) {
     this.set('content', repo);
   },
@@ -10,4 +10,4 @@ var RepositorySidebarController = Ember.ObjectController.extend({
   }).property("content")
 });
 
-export default RepositorySidebarController;
+export default RepositoryHeaderController;

@@ -7,8 +7,8 @@ var DashboardRoute = Ember.Route.extend({
     this._super(controller, model);
 
     var id = model.get("id");
-    var repositorySidebarController = this.controllerFor('repositorySidebar');
-    repositorySidebarController.setCurrentRepository(model.get('repository'));
+    var repositoryHeaderController = this.controllerFor('repositoryHeader');
+    repositoryHeaderController.setCurrentRepository(model.get('repository'));
   },
   serialize: function (model, params) {
     var parts = model.id.split('/'),
