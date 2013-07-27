@@ -27,7 +27,7 @@ Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
 [class*="icon-"] {
 */
-.icon-star, .icon-watch, .icon-commit, .icon-tag, .icon-fork, .icon-issue, .icon-build-status, .icon-user, .icon-help, .icon-github, .icon-arrow-up, .icon-arrow-down, .icon-log-out {
+.icon-star, .icon-watch, .icon-commit, .icon-tag, .icon-fork, .icon-issue, .icon-build-status, .icon-user, .icon-help, .icon-github, .icon-arrow-up, .icon-arrow-down, .icon-log-out, .icon-edit, .icon-x, .icon-cards, .icon-plus, .icon-edit-card, .icon-gear {
 	font-family: 'Glazier-Icons';
 	speak: none;
 	font-style: normal;
@@ -75,4 +75,22 @@ you can use the generic selector below, but it's slower:
 }
 .icon-log-out:before {
 	content: "\e00c";
+}
+.icon-edit:before {
+	content: "\e00d";
+}
+.icon-x:before {
+	content: "\e00e";
+}
+.icon-cards:before {
+	content: "\e00f";
+}
+.icon-plus:before {
+	content: "\e010";
+}
+.icon-edit-card:before {
+	content: "\e011";
+}
+.icon-gear:before {
+	content: "\e012";
 }

@@ -9,7 +9,7 @@
 
 	&:hover, [data-tooltip="true"]:hover + & {
 		display: inline-block;
-		@include animation(fadeIn 200ms ease-out);
+		@include animation(fadeIn $fast ease-out);
 	}
 
 	&.tooltip-top {
