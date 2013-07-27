@@ -1,25 +1,9 @@
 <div class="block-group">
   <div id="repository-header-block" class="block">
-  {{render "repository_header" }}
+    {{render "repository_header" }}
+    {{render "dashboard_controls" }}
   </div>
   <div class="panes block-group">
     {{render "panes" panes}}
-    {{#if addingPane}}
-      <div>Add a pane:</div>
-
-      {{#each addablePaneTypes}}
-        <div><a href="" {{action "addPane" this}}>{{manifest.displayName}}</a></div>
-      {{/each}}
-
-      {{#if paneTypes.isUpdating}}
-        <div>Loading Panes...</div>
-      {{/if}}
-
-      <a href="#" {{action "toggleAddingPanes"}}>close</a>
-    {{else}}
-      {{#if canAddPanes}}
-        <a href="#" {{action "toggleAddingPanes"}}>Add a Pane</a>
-      {{/if}}
-    {{/if}}
   </div>
 </div>

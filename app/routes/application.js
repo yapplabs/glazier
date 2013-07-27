@@ -10,6 +10,22 @@ var ApplicationRoute = Ember.Route.extend({
     }).then(function(data) {
       userController.set('content', data && data.user);
     });
+  },
+  showModal: function(name){
+    this.render(name, { into: 'modal' });
+    this.controllerFor('modal').set('isVisible', true);
+  },
+  events: {
+    startOauthFlow: function(opts) {
+      this.showModal('oauth');
+      this.controllerFor('oauth').beginFlow(opts);
+    },
+    showAddPane: function() {
+      this.showModal('add_pane');
+    },
+    hideModal: function() {
+      this.controllerFor('modal').set('isVisible', false);
+    }
   }
 });
 

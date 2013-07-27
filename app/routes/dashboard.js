@@ -3,13 +3,6 @@ import Repository from 'glazier/models/repository';
 import Dashboard from 'glazier/models/dashboard';
 
 var DashboardRoute = Ember.Route.extend({
-  setupController: function(controller, model) {
-    this._super(controller, model);
-
-    var id = model.get("id");
-    var repositoryHeaderController = this.controllerFor('repositoryHeader');
-    repositoryHeaderController.setCurrentRepository(model.get('repository'));
-  },
   serialize: function (model, params) {
     var parts = model.id.split('/'),
         hash = {};

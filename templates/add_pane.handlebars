@@ -1,0 +1,9 @@
+<div>Add a pane:</div>
+
+{{#each addablePaneTypes}}
+  <div><a href="" {{action "addPane" this}}>{{manifest.displayName}}</a></div>
+{{/each}}
+
+{{#if paneTypes.isUpdating}}
+  <div>Loading Panes...</div>
+{{/if}}

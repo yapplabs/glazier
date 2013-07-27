@@ -1,0 +1,8 @@
+{{#if isAdmin}}
+  <div class="dashboard-card-controls">
+    {{#if canAddPanes}}
+      <button {{action "showAddPane"}}>Add Pane</button>
+    {{/if}}
+    <button>Reorder Panes</button>
+  </div>
+{{/if}}

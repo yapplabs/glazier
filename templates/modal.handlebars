@@ -1,0 +1,6 @@
+<div id="modal" {{bindAttr class="isVisible"}}>
+  <div id="modal-content">
+    {{outlet}}
+  </div>
+</div>
+<div id="modal-overlay" {{bindAttr class="isVisible"}} {{action hideModal}}></div>
