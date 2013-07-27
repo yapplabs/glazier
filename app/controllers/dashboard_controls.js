@@ -2,9 +2,10 @@ var DashboardControlsController = Ember.ObjectController.extend({
   needs: ['dashboard'],
   content: Ember.computed.alias('controllers.dashboard.content'),
   isAdmin: Ember.computed.alias('controllers.dashboard.isAdmin'),
-  canAddPanes: function() {
-    return this.get('isAdmin') && !this.get('addingPane');
-  }.property('isAdmin', 'addingPane')
+  canAddPanes: Ember.computed.alias('isAdmin'),
+  canReorderPanes: function(){
+    return this.get('isAdmin') && (this.get('panes.length') > 1);
+  }.property('isAdmin', 'panes.length')
 });
 
 export default DashboardControlsController;

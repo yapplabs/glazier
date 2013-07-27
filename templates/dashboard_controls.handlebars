@@ -3,6 +3,8 @@
     {{#if canAddPanes}}
       <button {{action "showAddPane"}}>Add Pane</button>
     {{/if}}
-    <button>Reorder Panes</button>
+    {{#if canReorderPanes}}
+      <button {{action "showReorderPanes"}}>Reorder Panes</button>
+    {{/if}}
   </div>
 {{/if}}
