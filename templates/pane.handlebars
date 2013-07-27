@@ -1,13 +1,21 @@
 <div class="pane">
   {{#unless isHidden}}
   <div class="pane-footer">
-    {{#if view.fullSize}}
-      <a {{action "collapse" target="view"}} href="#">collapse</a>
-    {{else}}
-      <a {{action "expand" target="view"}} href="#">expand</a>
-    {{/if}}
     {{#if isAdmin}}
-      <a href="#" {{action "removePane" this}}> remove </a>
+      <div class="pane-actions">
+        <a class="toggle-actions" href="#"><span class="icon-gear"></span></a>
+        <div class="actions-list-wrapper">
+          <ul class="actions-list">
+            <li><a href="#"><span class="icon-edit-card"></span>Edit Card</a></li>
+            <li><a href="#" {{action "removePane" this}}><span class="icon-x"></span>Remove Card</a></li>
+          </ul>
+        </div>
+      </div>
+    {{/if}}
+    {{#if view.fullSize}}
+      <a class="toggle-size" {{action "collapse" target="view"}} href="#">Collapse</a>
+    {{else}}
+      <a class="toggle-size" {{action "expand" target="view"}} href="#">Expand</a>
     {{/if}}
   </div>
   {{/unless}}

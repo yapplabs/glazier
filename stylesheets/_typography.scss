@@ -10,6 +10,9 @@ p { }
 a {
 	@include hover-link;
 	@include link-colors($gray-lighter, $gray);
+	&:hover {
+		@include transition(color $fast, background $fast);
+	}
 }
 
 .text-base-color {
