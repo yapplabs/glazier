@@ -19,15 +19,14 @@ var ApplicationRoute = Ember.Route.extend({
     this.controllerFor('modal').set('isVisible', false);
   },
   events: {
-    startOauthFlow: function(opts) {
-      this.showModal('oauth');
-      this.controllerFor('oauth').beginFlow(opts);
-    },
     showAddPane: function() {
       this.showModal('add_pane');
     },
     showReorderPanes: function() {
       this.showModal('reorder_panes');
+    },
+    showModal: function(name) {
+      this.showModal(name);
     },
     hideModal: function() {
       this.hideModal();

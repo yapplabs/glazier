@@ -13,7 +13,7 @@ var cardEnv = function(cardId) {
 };
 
 var OauthService = Conductor.Oasis.Service.extend({
-  router: null, // injected
+  oauthController: null, // injected
 
   /*
     @public
@@ -60,7 +60,7 @@ var OauthService = Conductor.Oasis.Service.extend({
       clientId: clientId,
       redirectUri: redirectUri
     };
-    return this.router.send('startOauthFlow', oauthOptions);
+    return this.oauthController.startOauthFlow(oauthOptions);
   },
 
   /*

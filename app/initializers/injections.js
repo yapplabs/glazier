@@ -29,7 +29,7 @@ var initializer = {
     application.inject('cardManager:main', 'conductor', 'conductor:main');
     application.inject('service:identity', 'userController', 'controller:user');
     application.inject('service:authenticatedGithubApi', 'userController', 'controller:user');
-    application.inject('service:oauth', 'router', 'router:main');
+    application.inject('service:oauth', 'oauthController', 'controller:oauth');
   }
 };
 

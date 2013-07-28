@@ -1,7 +1,6 @@
 var OauthController = Ember.Controller.extend({
   needs: ['user'],
   allowOauth: Ember.computed.alias('controllers.user.model'),
-  showModal: false,
   authorizeUrl: function(){
     var oauthOptions = this.get('oauthOptions');
     var url = oauthOptions.authorizeUrl;
@@ -10,10 +9,13 @@ var OauthController = Ember.Controller.extend({
     url += "&client_id=" + encodeURIComponent(oauthOptions.clientId);
     return url;
   }.property('oauthOptions'),
+  startOauthFlow: function(opts) {
+    this.send('showModal', 'oauth');
+    return this.beginFlow(opts);
+  },
   beginFlow: function(oauthOptions) {
     this.deferred = new Ember.RSVP.defer();
     this.set('oauthOptions', oauthOptions);
-    this.set('showModal', true);
     return this.deferred.promise;
   },
   approve: function(){
@@ -31,7 +33,7 @@ var OauthController = Ember.Controller.extend({
     window.addEventListener("message", onmessage);
   },
   handleOauthCode: function(event){
-    this.set('showModal', false);
+    this.send('hideModal');
     if (event.origin !== document.location.origin) {
       Ember.Logger.debug('Invalid origin: ' + event.origin + ' vs ' + document.location.origin);
       return;
@@ -46,7 +48,7 @@ var OauthController = Ember.Controller.extend({
     this.deferred.resolve(results);
   },
   decline: function(){
-    this.set('showModal', false);
+    this.send('hideModal');
     this.deferred.reject("declined");
   },
 });

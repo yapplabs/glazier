@@ -1,6 +1,5 @@
 var OauthView = Ember.View.extend({
-  templateName: 'oauth',
-  isVisible: Ember.computed.oneWay('controller.showModal')
+  templateName: 'oauth'
 });
 
 export default OauthView;
