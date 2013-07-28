@@ -1,5 +1,6 @@
-// render should have generated an array controller automatically
-// render 'panes' <RecordArray>
-var PanesController = Ember.ArrayController.extend();
+// content gets set via render helper {{render 'panes' <RecordArray>}}
+var PanesController = Ember.ArrayController.extend({
+  sortProperties: ['position']
+});
 
 export default PanesController;

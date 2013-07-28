@@ -54,6 +54,11 @@ var DashboardRoute = Ember.Route.extend({
         this.controllerFor('error').set('content', responseText.message);
         this.transitionTo('error');
       }
+    },
+    reorderedPanes: function(){
+      this.send('hideModal');
+      this.controller.propertyWillChange('panes');
+      this.controller.propertyDidChange('panes');
     }
   }
 });

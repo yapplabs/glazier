@@ -137,7 +137,13 @@ body {
   height: auto;
   z-index: 7000;
   visibility: hidden;
-  @include transform(translateX(-50%) translateY(-50%));
+
+  // applying translateX/Y transforms makes drag-drop ghost image in the reorder pane
+  // appear offscreen.
+  // @include transform(translateX(-50%) translateY(-50%));
+  margin-left: -25%;
+  margin-top: -25%;
+
   #modal-content {
     background: $gray-lightest;
     font-size: 13px;
@@ -175,5 +181,29 @@ body {
     visibility: visible;
   }
 }
-
+.reorder-panes {
+  .sortable-list {
+    li {
+      list-style: none;
+      padding: 5px;
+      height: 30px;
+      width: 300px;
+      cursor: move;
+      background-color: $gray-lighter;
+      color: $gray-darker;
+      border: 1px solid $gray-darker;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      &.sortable-placeholder {
+        border-style: dashed;
+        background: none;
+      }
+      &.sortable-dragging {
+        opacity:0.9;
+      }
+    }
+  }
+}
 @import "dark";
