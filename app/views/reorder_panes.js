@@ -1,11 +1,13 @@
+function listItemHtml(pane){
+  var html = "<li draggable='true' data-pane-id='" + pane.get('id') + "'>";
+  html = html + pane.get('manifest.displayName');
+  return html + "</li>";
+}
+
 var ReorderPanesView = Ember.View.extend({
   classNames: ['reorder-panes'],
   didInsertElement: function(){
-    var listItemsHtml = this.get('controller.panes').map(function(pane){
-      var html = "<li draggable='true' data-pane-id='" + pane.get('id') + "'>";
-      html = html + pane.get('manifest.displayName');
-      return html + "</li>";
-    });
+    var listItemsHtml = this.get('controller.orderablePanes').map(listItemHtml);
     this.$('.sortable-list').append(listItemsHtml);
     Ember.run.scheduleOnce('afterRender', this, this.applySortable);
   },
