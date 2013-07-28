@@ -32,14 +32,16 @@ var AddPaneController = Ember.ObjectController.extend({
       dependencies.forEach(function(paneType) {
         transaction.createRecord(Glazier.Pane, {
           dashboard: this.get('content'),
-          paneType: paneType
+          paneType: paneType,
+          position: this.get('content.nextPanePosition')
         });
       }, this);
     }
 
     transaction.createRecord(Glazier.Pane, {
       dashboard: this.get('content'),
-      paneType: paneType
+      paneType: paneType,
+      position: this.get('content.nextPanePosition')
     });
 
     transaction.commit();
