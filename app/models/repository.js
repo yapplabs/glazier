@@ -14,6 +14,7 @@ var Repository = {
       }
 
       function error(jqXHR, textStatus, errorThrown) {
+        delete promises[id];
         Ember.run(null, reject, jqXHR);
       }
 

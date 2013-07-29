@@ -33,6 +33,9 @@ var ApplicationRoute = Ember.Route.extend({
     },
     reorderedPanes: function(){
       this.hideModal();
+    },
+    userDidChange: function(){
+
     }
   }
 });

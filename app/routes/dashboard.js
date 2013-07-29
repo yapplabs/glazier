@@ -48,6 +48,11 @@ var DashboardRoute = Ember.Route.extend({
       if (error.status === 404) {
         this.transitionTo('notFound');
         this.controllerFor('notFound').set('content', responseText.message);
+      } else if (error.status === 403 &&
+                 error.getResponseHeader('X-RateLimit-Remaining') === '0') {
+        var reset = new Date(parseInt(error.getResponseHeader('X-RateLimit-Reset'),10)*1000);
+        this.controllerFor('rateLimitExceeded').set('reset', reset);
+        this.transitionTo('rateLimitExceeded');
       } else {
         Ember.Logger.error(error);
 

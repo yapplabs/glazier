@@ -2,6 +2,12 @@ import ajax from 'glazier/utils/ajax';
 
 var UserController = Ember.Controller.extend({
   content: null,
+  userDidChange: function () {
+    try {
+      this.get('target').send('userDidChange');
+    } catch(e) {
+    }
+  }.observes('content'),
   isLoggedIn: Ember.computed.bool('content'),
   username:  Ember.computed.oneWay('content.github_login'),
   accessToken: Ember.computed.oneWay('content.github_access_token'),
