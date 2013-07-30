@@ -47,9 +47,17 @@ body {
   border-bottom: 1px solid black;
 }
 
+#content {
+  @include box-sizing(border-box);
+  position: absolute;
+  top: 0; bottom: $header-height + $footer-height;
+  left: 0; right: 0;
+}
+
 #repository-header-block {
   position: relative;
 }
+
 .repository-header {
   @include clearfix;
   @include box-sizing(border-box);
