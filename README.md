@@ -2,7 +2,8 @@ glazier
 ==============
 [![Build Status](https://travis-ci.org/yapplabs/glazier.png?branch=master)](https://travis-ci.org/yapplabs/glazier)
 
-Dashboard for Github projects using Conductor.js and Oasis.js.
+Dashboard for Github projects using [Conductor.js](https://github.com/tildeio/conductor.js) and 
+[Oasis.js](https://github.com/tildeio/oasis.js).
 
 
 ## Setup
@@ -59,6 +60,7 @@ When you submit the form you will get a **client id** and **client secret**. Set
 
     #open a separate window and navigate to the top glazier directory
     #make sure client id and client secret are set in this window
+    bundle install
     npm install
     grunt              //interrupt this task when it reaches the Waiting state
     grunt ingest
@@ -96,3 +98,13 @@ glazier-server uses RSpec for unit tests. To run them:
 To automatically execute glazier-server specs as you update code and specs:
 
     bundle exec guard
+
+## Troubleshooting
+
+**500 Internal Server Error**
+
+If this occurs immediately after you update the project, its possible the database structure has
+changed and you haven't migrated.  Run:
+
+    #in glazier/glazier-server directory
+    rake db:migrate

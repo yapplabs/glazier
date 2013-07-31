@@ -14,7 +14,7 @@ var UserView = Ember.View.extend({
   startGithubOauth: function(){
     this.get('controller').set('isLoggingIn', true);
 
-    var githubUri = "https://github.com/login/oauth/authorize?scope=user,public_repo" +
+    var githubUri = "https://github.com/login/oauth/authorize?scope=user:email,public_repo" +
       "&client_id=" + this.get('controller.githubClientId');
     window.open(githubUri, "authwindow", "menubar=0,resizable=1,width=960,height=410");
     var self = this;
