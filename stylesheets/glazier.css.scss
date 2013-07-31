@@ -55,6 +55,11 @@ body {
   position: absolute;
   top: 0; bottom: $header-height + $footer-height;
   left: 0; right: 0;
+  @include transition(500ms);
+
+  &.modal-is-visible {
+    @include transform(scale(0.9));
+  }
 }
 
 #repository-header-block {

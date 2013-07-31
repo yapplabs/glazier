@@ -28,7 +28,7 @@
     color: $gray;
     opacity: 0;
     @include transform(scale(1.5));
-    @include transition(1s);
+    @include transition(500ms);
     .modal-header {
       padding: 0.5em 0;
       text-align: center;
@@ -44,6 +44,7 @@
       background: white;
     }
   }
+
   &.is-visible {
     visibility: visible;
     #modal-content {
@@ -61,7 +62,7 @@
   left: 0;
   z-index: 6000;
   opacity: 0;
-  background: transparentize(black, .75);
+  background: transparentize(black, .5);
   @include transition(opacity 1s);
   &.is-visible {
     opacity: 1;
