@@ -14,9 +14,16 @@ var ApplicationRoute = Ember.Route.extend({
   showModal: function(name){
     this.render(name, { into: 'modal' });
     this.controllerFor('modal').set('isVisible', true);
+    this.controllerFor('application').set('modalIsVisible', true);
+
+    if(name == 'reorder_panes') {
+      this.controllerFor('dashboard').set('hidePanes', true);
+    }
   },
   hideModal: function(){
     this.controllerFor('modal').set('isVisible', false);
+    this.controllerFor('application').set('modalIsVisible', false);
+    this.controllerFor('dashboard').set('hidePanes', false);
   },
   events: {
     showAddPane: function() {

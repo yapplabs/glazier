@@ -15,6 +15,34 @@ a {
 	}
 }
 
+button {
+	padding: 0;
+	font: inherit;
+	color: inherit;
+	background: none;
+	border: none;
+	border-radius: 0;
+	&:hover {
+		cursor: pointer;
+	}
+	&.modal-cancel {
+		padding: 0.75em;
+		margin: 1em 0;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+	&.modal-confirm {
+		color: white;
+		background: #666;
+		padding: 0.75em 2em;
+		margin: 1em;
+		&:hover {
+			background: #808080;
+		}
+	}
+}
+
 .text-base-color {
 	color: $base-color;
 }

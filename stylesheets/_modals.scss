@@ -1,0 +1,71 @@
+#modal {
+  position: fixed;
+  top: 0;
+  left: 0; right: 0;
+  height: 100%; width: 50%;
+  margin: auto;
+  min-width: $min-page-width * .5;
+  //max-width: 630px;
+  //min-width: 320px;
+  z-index: 7000;
+  visibility: hidden;
+  display: table;
+
+  // applying translateX/Y transforms makes drag-drop ghost image in the reorder pane
+  // appear offscreen.
+  // @include transform(translateX(-50%) translateY(-50%));
+  //margin-left: -25%;
+  //margin-top: -25%;
+
+  #modal-content {
+    @include box-sizing(border-box);
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    margin: 0 auto;
+    font-size: 1.1em;
+    line-height: 1.51em;
+    color: $gray;
+    opacity: 0;
+    @include transform(scale(1.5));
+    @include transition(500ms);
+    .modal-header {
+      padding: 0.5em 0;
+      text-align: center;
+      background: $gray-lightest;
+    }
+    .modal-main {
+      padding: 1.5em 2em;
+      background: white;
+    }
+    .modal-footer {
+      padding: 0 1em;
+      padding-bottom: 1em;
+      background: white;
+    }
+  }
+
+  &.is-visible {
+    visibility: visible;
+    #modal-content {
+      opacity: 1;
+      @include transform(scale(1));
+    }
+  }
+}
+#modal-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  top: 0;
+  left: 0;
+  z-index: 6000;
+  opacity: 0;
+  background: transparentize(black, .5);
+  @include transition(opacity 1s);
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
