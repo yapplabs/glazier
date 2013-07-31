@@ -2,6 +2,7 @@ var DashboardController = Ember.ObjectController.extend({
   needs: ['user'],
   user: Ember.computed.alias('controllers.user'),
   repositoryName: Ember.computed.alias('id'),
+  hidePanes: false,
 
   isAdmin: function() {
     var user = this.get('user.content'),
