@@ -16,7 +16,7 @@ var ApplicationRoute = Ember.Route.extend({
     this.controllerFor('modal').set('isVisible', true);
     this.controllerFor('application').set('modalIsVisible', true);
 
-    if(name == 'reorder_panes') {
+    if (name === 'reorder_panes') {
       this.controllerFor('dashboard').set('hidePanes', true);
     }
   },

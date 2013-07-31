@@ -1,12 +1,12 @@
 <div class="modal-header">
-	<h3>Add a Pane</h3>
+  <h3>Add a Pane</h3>
 </div>
 <div class="modal-main">
-	{{#each addablePaneTypes}}
-	  <div><a href="" {{action "addPane" this}}>{{manifest.displayName}}</a></div>
-	{{/each}}
+  {{#each addablePaneTypes}}
+    <div><a href="" {{action "addPane" this}}>{{manifest.displayName}}</a></div>
+  {{/each}}
 
-	{{#if paneTypes.isUpdating}}
-	  <div>Loading Panes...</div>
-	{{/if}}
+  {{#if paneTypes.isUpdating}}
+    <div>Loading Panes...</div>
+  {{/if}}
 </div>
