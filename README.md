@@ -60,6 +60,7 @@ When you submit the form you will get a **client id** and **client secret**. Set
 
     #open a separate window and navigate to the top glazier directory
     #make sure client id and client secret are set in this window
+    bundle install
     npm install
     grunt              //interrupt this task when it reaches the Waiting state
     grunt ingest
