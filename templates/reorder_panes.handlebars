@@ -1,10 +1,12 @@
-<h3>Reorder Panes</h3>
+<div class="modal-header">
+	<h3>Reorder Panes</h3>
+</div>
 
 {{! list items are added by the view}}
-<ol class="sortable-list">
+<ol class="modal-main sortable-list">
 </ol>
 
 <div class="modal-footer">
-  <button {{action hideModal}}>Cancel</button>
-  <button {{action applyNewOrder target="view"}}>Save</button>
+  <button class="modal-confirm" {{action applyNewOrder target="view"}}>Save</button>
+  <button class="modal-cancel" {{action hideModal}}>Cancel</button>
 </div>

@@ -2,6 +2,7 @@
 @import "icons";
 @import "logo";
 @import "panes";
+@import "modals";
 @import "footer";
 
 html {
@@ -14,9 +15,9 @@ body {
   min-height: 100%;
   margin: auto;
   font-family: 'Source Sans Pro', sans-serif;
-  background: $gray-lightest;
   font-size: 13px;
   line-height: 1.51em;
+  background: $gray-lightest;
   color: $gray-light;
 
 
@@ -25,6 +26,8 @@ body {
   top: 0;
   left: 0; right: 0;
   padding-bottom: $footer-height;
+
+  @extend body.theme-dark;
 }
 
 .loading {
@@ -83,7 +86,7 @@ body {
     font-size: 1.7em;
     line-height: 1;
     a {
-      color: inherit;
+      color: inherit !important;
     }
   }
 
@@ -135,83 +138,40 @@ body {
   padding: 20px 20px 50px;
 }
 
-#modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 50%;
-  max-width: 630px;
-  min-width: 320px;
-  height: auto;
-  z-index: 7000;
-  visibility: hidden;
-
-  // applying translateX/Y transforms makes drag-drop ghost image in the reorder pane
-  // appear offscreen.
-  // @include transform(translateX(-50%) translateY(-50%));
-  margin-left: -25%;
-  margin-top: -25%;
-
-  #modal-content {
-    background: $gray-lightest;
-    font-size: 13px;
-    line-height: 1.51em;
-    color: $gray-light;
-    position: relative;
-    border-radius: 3px;
-    margin: 0 auto;
-    opacity: 0;
-    min-height: 240px;
-    @include transform(translateY(20%));
-    @include transition(all 0.3s);
-  }
-  &.is-visible {
-    visibility: visible;
-    #modal-content {
-      @include transform(translateY(0));
-      opacity: 1;
-    }
-  }
-}
-#modal-overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  visibility: hidden;
-  top: 0;
-  left: 0;
-  z-index: 6000;
-  opacity: 0;
-  background: rgba(0,0,0,0.75);
-  @include transition(opacity 0.3s);
-  &.is-visible {
-    opacity: 1;
-    visibility: visible;
-  }
-}
 .reorder-panes {
   .sortable-list {
+    @include clearfix;
+    list-style: none;
+    padding-right: 1em !important;
+    padding-bottom: 1em !important;
     li {
-      list-style: none;
-      padding: 5px;
-      height: 30px;
-      width: 300px;
+      @include box-sizing(border-box);
+      float: left;
+      width: (100% / 2);
+      padding-right: 1em;
+      margin-bottom: 1em;
+      height: ($min-card-height / 2);
+      line-height: ($min-card-height / 2);
       cursor: move;
-      background-color: $gray-lighter;
+      text-align: center;
       color: $gray-darker;
-      border: 1px solid $gray-darker;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+      background-color: $gray-lighter;
+      @include background-clip(content-box);
+      @include user-select(none);
       &.sortable-placeholder {
-        border-style: dashed;
-        background: none;
+        background-color: transparentize($gray-lighter, .75);
       }
       &.sortable-dragging {
         opacity:0.9;
       }
+
+      @for $i from 3 to 6 {
+        @media (min-width: ($min-card-width * $i)) {
+          width: (100% / $i);
+        }
+      }
     }
   }
 }
-@import "dark";
+
+@import "themes";

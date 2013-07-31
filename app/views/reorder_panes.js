@@ -1,7 +1,7 @@
 function listItemHtml(pane){
-  var html = "<li draggable='true' data-pane-id='" + pane.get('id') + "'>";
+  var html = "<li draggable='true' data-pane-id='" + pane.get('id') + "'><div class='mini-pane'>";
   html = html + pane.get('manifest.displayName');
-  return html + "</li>";
+  return html + "</div></li>";
 }
 
 var ReorderPanesView = Ember.View.extend({
