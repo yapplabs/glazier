@@ -9,6 +9,6 @@ var ReorderPanesController = Ember.ObjectController.extend({
   },
   orderablePanes: function(){
     return this.get('panes').filterProperty('paneType.hasUI');
-  }.property('panes')
+  }.property('panes.[]')
 });
 export default ReorderPanesController;
