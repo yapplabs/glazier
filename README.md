@@ -2,7 +2,8 @@ glazier
 ==============
 [![Build Status](https://travis-ci.org/yapplabs/glazier.png?branch=master)](https://travis-ci.org/yapplabs/glazier)
 
-Dashboard for Github projects using Conductor.js and Oasis.js.
+Dashboard for Github projects using [Conductor.js](https://github.com/tildeio/conductor.js) and 
+[Oasis.js](https://github.com/tildeio/oasis.js).
 
 
 ## Setup
@@ -96,3 +97,13 @@ glazier-server uses RSpec for unit tests. To run them:
 To automatically execute glazier-server specs as you update code and specs:
 
     bundle exec guard
+
+## Troubleshooting
+
+**500 Internal Server Error**
+
+If this occurs immediately after you update the project, its possible the database structure has
+changed and you haven't migrated.  Run:
+
+    #in glazier/glazier-server directory
+    rake db:migrate
