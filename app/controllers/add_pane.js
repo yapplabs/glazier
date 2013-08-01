@@ -46,6 +46,18 @@ var AddPaneController = Ember.ObjectController.extend({
 
     transaction.commit();
     this.send('hideModal');
+
+    this.scrollLastPaneIntoView();
+  },
+
+  scrollLastPaneIntoView: function() {
+    // Scroll the new pane into view after for modal-close animation is done
+    // Doing it sooner results in an odd scroll position
+    Ember.run.later(this, function() {
+      var lastPane = $('.pane').last();
+      var scrollTop = lastPane.offset().top + lastPane.height();
+      $('body').scrollTop(scrollTop);
+    }, 500);
   },
 
   paneTypesToAdd: function(paneType) {
