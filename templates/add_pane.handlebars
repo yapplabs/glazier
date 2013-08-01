@@ -3,7 +3,7 @@
 </div>
 <div class="modal-main">
   {{#each addablePaneTypes}}
-    <div><a href="" {{action "addPane" this}}>{{manifest.displayName}}</a></div>
+    <div><a href="" {{action "addPane" this}}>{{displayName}}</a></div>
   {{/each}}
 
   {{#if paneTypes.isUpdating}}
