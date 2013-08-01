@@ -36,6 +36,11 @@ var card = Conductor.card({
       return {
         title: "Github Issues"
       };
+    },
+    card: function() {
+      return {
+        isEditable: false
+      }
     }
   }
 });

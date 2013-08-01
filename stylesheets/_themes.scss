@@ -1,0 +1,46 @@
+body {
+  &.theme-light {
+    background: $gray-lightest;
+    color: $gray-light;
+
+    a {
+      @include link-colors($gray-lighter, $gray);
+    }
+
+    h2 {
+      color: $gray-dark;
+    }
+
+    h3 {
+      color: $gray-light;
+    }
+
+    .repository-header {
+      .repository-name {
+        border-right: 1px solid hsl(0, 0%, 84%);
+      }
+    }
+  }
+  &.theme-dark {
+    background: $gray-darker;
+    color: $gray-lighter;
+
+    a {
+      @include link-colors($gray-light, $gray-lighter);
+    }
+
+    h2 {
+      color: $gray-lightest;
+    }
+
+    h3 {
+      color: $gray-light;
+    }
+
+    .repository-header {
+      .repository-name {
+        border-right: 1px solid $gray-light;
+      }
+    }
+  }
+}
