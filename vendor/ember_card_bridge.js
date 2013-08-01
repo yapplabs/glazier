@@ -38,6 +38,7 @@ Ember.onLoad('Ember.Application', function(Application){
     initialize: function(container, application) {
       var card = container.lookup('card:main');
       Ember.keys(Object.getPrototypeOf(card.consumers)).forEach(function(name){
+        card.consumers[name].container = container;
         application.register('consumer:' + name, card.consumers[name], { instantiate: false });
       }, this);
     }
