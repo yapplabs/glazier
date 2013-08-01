@@ -9,6 +9,9 @@ var maxProperty = function(array, property) {
 };
 
 var maxValue = function(array, property){
+  if (Ember.isEmpty(array)) {
+    return null;
+  }
   return maxProperty(array, property).get(property);
 };
 
@@ -24,7 +27,8 @@ var Dashboard = DS.Model.extend({
     transaction.commit();
   },
   nextPanePosition: function(){
-    return maxValue(this.get('panes'), 'position') + 1;
+    var max = maxValue(this.get('panes'), 'position') || 0;
+    return max + 1;
   }.property().volatile()
 });
 
