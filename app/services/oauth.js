@@ -41,9 +41,12 @@ var OauthService = Conductor.Oasis.Service.extend({
         });
       } else {
         var redirectUri = window.location.origin + '/api/oauth/callback';
-        var clientId = cardEnv(this.sandbox.card.id).oauthClientId;
+        var card = this.sandbox.card;
+        var manifest = card.manifest;
+        var clientId = cardEnv(card.id).oauthClientId;
+        var paneDisplayName = (manifest && manifest.displayName || manifest.name);
 
-        return this.authorize(params.authorizeUrl, clientId, redirectUri);
+        return this.authorize(params.authorizeUrl, clientId, redirectUri, paneDisplayName);
       }
     }
   },
@@ -54,11 +57,12 @@ var OauthService = Conductor.Oasis.Service.extend({
     @method authorize
     @param  authorizeUrl {String}
   */
-  authorize: function (authorizeUrl, clientId, redirectUri) {
+  authorize: function (authorizeUrl, clientId, redirectUri, paneDisplayName) {
     var oauthOptions = {
       authorizeUrl: authorizeUrl,
       clientId: clientId,
-      redirectUri: redirectUri
+      redirectUri: redirectUri,
+      paneDisplayName: paneDisplayName
     };
     return this.oauthController.startOauthFlow(oauthOptions);
   },

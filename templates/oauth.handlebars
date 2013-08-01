@@ -1,10 +1,13 @@
 <div class="modal-header">
-  <h3>Oauth</h3>
+  <h3>
+    The {{oauthOptions.paneDisplayName}} Pane would like you to Oauth
+    against {{oauthOptions.authorizeUrl}}
+  </h3>
 </div>
 <div class="modal-main">
   {{#if allowOauth}}
-    <button {{action approve}}>Approve Oauth</button>
-    <button {{action decline}}>Decline Oauth</button>
+    <a href="#" {{action approve}}>Approve Oauth</a>
+    <a href="#" {{action decline}}>Decline Oauth</a>
   {{else}}
     A pane has requested Oauth, but you must log in to Glazier first.
   {{/if}}
