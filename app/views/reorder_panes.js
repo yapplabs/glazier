@@ -1,6 +1,6 @@
 function listItemHtml(pane){
   var html = "<li draggable='true' data-pane-id='" + pane.get('id') + "'><div class='mini-pane'>";
-  html = html + pane.get('manifest.displayName');
+  html = html + pane.get('displayName');
   return html + "</div></li>";
 }
 

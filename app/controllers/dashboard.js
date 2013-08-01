@@ -12,7 +12,7 @@ var DashboardController = Ember.ObjectController.extend({
   }.property('user.content', 'repositoryName'),
 
   removePane: function(pane) {
-    if (window.confirm('Are you sure you want to remove ' + pane.get('manifest.displayName') + '?')) {
+    if (window.confirm('Are you sure you want to remove ' + pane.get('displayName') + '?')) {
       pane.deleteRecord();
       pane.store.commit();
     }

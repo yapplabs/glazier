@@ -14,7 +14,8 @@ var Pane = DS.Model.extend({
     };
   }.property('paneEntries', 'paneUserEntries', 'paneTypeUserEntries'),
 
-  manifest: Ember.computed.alias('paneType.manifest')
+  manifest: Ember.computed.alias('paneType.manifest'),
+  displayName: Ember.computed.alias('paneType.displayName')
 });
 
 export default Pane;
