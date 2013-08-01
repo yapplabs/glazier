@@ -2,10 +2,13 @@ import ajax from 'glazier/utils/ajax';
 
 var UserController = Ember.Controller.extend({
   content: null,
+  needs: ['application'],
+  applicationIsReady: Ember.computed.alias('controllers.application.isReady'),
   userDidChange: function () {
-    try {
+
+    // Don't fire before routes have loaded.
+    if (this.get('applicationIsReady')) {
       this.get('target').send('userDidChange');
-    } catch(e) {
     }
   }.observes('content'),
   isLoggedIn: Ember.computed.bool('content'),

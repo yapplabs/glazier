@@ -11,6 +11,9 @@ var ApplicationRoute = Ember.Route.extend({
       userController.set('content', data && data.user);
     });
   },
+  setupController: function(data) {
+    this.controllerFor('application').set('isReady', true);
+  },
   showModal: function(name){
     this.render(name, { into: 'modal' });
     this.controllerFor('modal').set('isVisible', true);
