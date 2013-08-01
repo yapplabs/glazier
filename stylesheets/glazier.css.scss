@@ -30,19 +30,21 @@ body {
   @extend body.theme-dark;
 }
 
-.loading {
-  position: absolute;
-  width: 300px;
-  top: 50%;
-  text-align: center;
-  line-height: 50px;
-  margin-top: -45px;
-  left: 50%;
-  margin-left: -170px;
-  font-size: 36px;
-  background-color: rgba(255,255,255,0.4);
-  border-radius: 2px;
-  padding: 20px;
+#loading {
+  p {
+    position: absolute;
+    width: 300px;
+    top: 50%;
+    text-align: center;
+    line-height: 50px;
+    margin-top: -45px;
+    left: 50%;
+    margin-left: -170px;
+    font-size: 36px;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 2px;
+    padding: 20px;
+  }
 }
 
 #header {
@@ -177,6 +179,16 @@ body {
       }
     }
   }
+}
+
+.pane-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  color: white;
 }
 
 @import "themes";

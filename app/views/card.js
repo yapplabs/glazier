@@ -1,8 +1,8 @@
 import Conductor from 'conductor';
 
-function render (card) {
-  card.render();
-  return card;
+function render(cardReference) {
+  cardReference.render();
+  return cardReference;
 }
 
 function error() {
@@ -11,6 +11,8 @@ function error() {
 
 var CardView = Ember.View.extend({
   tagName: 'span',
+  classNameBindings: 'isLoaded',
+  isLoaded: Ember.computed.oneWay('controller.cardIsLoaded'),
   init: function () {
     this._super();
     this.cardManager = this.container.lookup('cardManager:main');
@@ -22,8 +24,8 @@ var CardView = Ember.View.extend({
     var pane = this.get('controller.model');
 
     function success() {
-      var card = cardManager.load(pane);
-      self.appendCard(card);
+      var cardReference = cardManager.load(pane);
+      self.appendCard(cardReference);
     }
 
     if (pane.get('isSaving')) {
@@ -42,15 +44,15 @@ var CardView = Ember.View.extend({
     this.cardManager.unload(pane);
   },
 
-  appendCard: function(card) {
+  appendCard: function(cardReference) {
     var element = this.get('element');
     var parentView = this.get('parentView');
 
-    this.set('controller.card', card);
-    this.set('controller.isHidden', card.hidden);
+    this.set('controller.card', cardReference);
+    this.set('controller.isHidden', cardReference.hidden);
 
     Ember.run.scheduleOnce('afterRender', function() {
-      card.appendTo(element).promise.
+      cardReference.appendTo(element).promise.
         then(render).
         then(null, Conductor.error);
     });

@@ -5,6 +5,7 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   isAdmin: Ember.computed.alias('controllers.dashboard.isAdmin'),
   isHidden: false,
   card: null,
+  cardIsLoaded: false,
   cardMetadata: null, // set by syncCardMetaData
   isEditable: Ember.computed.alias('cardMetadata.isEditable'),
   editPane: function(){ // action handler
@@ -25,6 +26,21 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
       controller.set('cardMetadata', null);
     }
   }.observes('card'),
+
+  watchForCardLoad: function() {
+    var controller = this,
+        cardReference = this.get('card');
+
+    if (!cardReference) {
+      this.set('cardIsLoaded', false);
+      return;
+    }
+
+    cardReference.sandbox.activatePromise.then(function() {
+      controller.set('cardIsLoaded', true);
+    });
+  }.observes('card'),
+
   attachToMetadataPort: function(){
     var controller = this,
         cardReference = this.get('card');
