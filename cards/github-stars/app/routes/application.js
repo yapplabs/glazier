@@ -96,6 +96,16 @@ function retrieveStargazers(user) {
 }
 
 var ApplicationRoute = Ember.Route.extend({
+  refreshStargazers: function() {
+    var controller = this.controller,
+        repository = controller.get('repositoryName'),
+        user = controller.get('user');
+
+    return Stargazers.findByRepositoryName(repository, user).then(function(stargazers) {
+      controller.set('model.stargazers', stargazers.data);
+      controller.set('model.totalStargazers', stargazers.total || stargazers.data.length);
+    });
+  },
   events: {
     currentUserChanged: function(user) {
       this.controller.set('user', user);
@@ -106,7 +116,7 @@ var ApplicationRoute = Ember.Route.extend({
           user = controller.get('user');
       Stargazers.starRepository(repository, user).then(function(){
         controller.set('isStarred', true);
-      });
+      }).then($.proxy(this.refreshStargazers, this)).then(null, Conductor.error);
     },
     unstar: function(){
       var controller = this.controller,
@@ -114,7 +124,7 @@ var ApplicationRoute = Ember.Route.extend({
           user = controller.get('user');
       Stargazers.unstarRepository(repository, user).then(function(){
         controller.set('isStarred', false);
-      });
+      }).then($.proxy(this.refreshStargazers, this)).then(null, Conductor.error);
     }
   },
   model: function(){
