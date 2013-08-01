@@ -32,10 +32,15 @@ var card = Conductor.card({
   },
 
   metadata: {
-    document: function(promise) {
-      promise.resolve({
+    document: function() {
+      return {
         title: "Github Issues"
-      });
+      };
+    },
+    card: function() {
+      return {
+        isEditable: false
+      }
     }
   }
 });

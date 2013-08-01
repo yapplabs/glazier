@@ -45,6 +45,11 @@ var card = Conductor.card({
       promise.resolve({
         title: "Github Respositories"
       });
+    },
+    card: function() {
+      return {
+        isEditable: false
+      }
     }
   },
 

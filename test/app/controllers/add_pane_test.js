@@ -79,14 +79,14 @@ test("No auth pane required to add second questions pane", function() {
 });
 
 
-test("With a dashboard with no panes, the auth pane is a dependency", function() {
-  store.load(Dashboard, 'emberjs/ember.js', {});
-  var dashboard = store.find(Dashboard, 'emberjs/ember.js');
-  dashboardController.set('content', dashboard);
+// test("With a dashboard with no panes, the auth pane is a dependency", function() {
+//   store.load(Dashboard, 'emberjs/ember.js', {});
+//   var dashboard = store.find(Dashboard, 'emberjs/ember.js');
+//   dashboardController.set('content', dashboard);
 
 
-  var authPaneType = store.find(PaneType, 'glazier-stackoverflow-auth');
-  var questionsPaneType = store.find(PaneType, 'glazier-stackoverflow-questions');
-  var dependencies = addPaneController.paneTypesToAdd(questionsPaneType);
-  equal(dependencies[0], authPaneType, "the auth pane is a dependency");
-});
+//   var authPaneType = store.find(PaneType, 'glazier-stackoverflow-auth');
+//   var questionsPaneType = store.find(PaneType, 'glazier-stackoverflow-questions');
+//   var dependencies = addPaneController.paneTypesToAdd(questionsPaneType);
+//   equal(dependencies[0], authPaneType, "the auth pane is a dependency");
+// });

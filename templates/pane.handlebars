@@ -6,7 +6,9 @@
         <div class="toggle-actions"><span class="icon-gear"></span></div>
         <div class="actions-list-wrapper">
           <ul class="actions-list">
-            <li><a href="#"><span class="icon-edit-card"></span>Edit Card</a></li>
+            {{#if isEditable}}
+              <li><a href="#" {{action "editPane" this}}><span class="icon-edit-card"></span>Edit Card</a></li>
+            {{/if}}
             <li><a href="#" {{action "removePane" this}}><span class="icon-x"></span>Remove Card</a></li>
           </ul>
         </div>
