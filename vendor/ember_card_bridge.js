@@ -32,4 +32,61 @@ Ember.onLoad('Ember.Application', function(Application){
       cardDataStore.dataDidChange('*', card.data);
     }
   });
+
+  Application.initializer({
+    name: 'registerConsumers',
+    initialize: function(container, application) {
+      var card = container.lookup('card:main');
+      Ember.keys(Object.getPrototypeOf(card.consumers)).forEach(function(name){
+        application.register('consumer:' + name, card.consumers[name], { instantiate: false });
+      }, this);
+    }
+  });
+
+  Application.initializer({
+    name: 'remoteEmberObjectConsumer',
+    after: 'registerConsumers',
+    initialize: function(container, application) {
+      var consumer = container.lookup('consumer:remoteEmberObject');
+      if (!consumer) { return; }
+      Ember.EnumerableUtils.forEach(consumer.controllers, function(name){
+        var controller = container.lookup('controller:' + name);
+        var bucket = {
+          updateData: function(data) {
+            consumer.updateData(name, data);
+          }
+        };
+        controller.set('bucket', bucket);
+      })
+    }
+  });
 });
+
+define("glazier/remote-ember-object-mixin",
+  [],
+  function() {
+    return Ember.Mixin.create({
+      bucket: null,
+      init: function(){
+        var thisArg = this;
+        this._super();
+
+        var publishedProperties = this.get('publishedProperties');
+
+        // install observers for each publishedProperties
+        Ember.EnumerableUtils.forEach(publishedProperties, function(propertyName){
+          Ember.addObserver(thisArg, propertyName, function(){
+            // schedule updateRemoteData for the bucket
+            Ember.run.once(thisArg, '_updateData');
+          });
+        });
+      },
+      getBucketData: function(){
+        return this.getProperties(this.get('publishedProperties'));
+      },
+      _updateData: function(){
+        this.get('bucket').updateData(this.getBucketData());
+      }
+    });
+  }
+);

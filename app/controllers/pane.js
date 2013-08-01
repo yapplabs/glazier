@@ -1,4 +1,7 @@
-var CARD_PREFIX_REGEX = /^card:/;
+import { cardBucketProp } from 'glazier/utils/computed_properties';
+
+var CARD_PREFIX_REGEX = /^card:/,
+    get = Ember.get;
 
 var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   needs: ['dashboard'],
@@ -6,27 +9,12 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   isHidden: false,
   card: null,
   cardIsLoaded: false,
-  cardMetadata: null, // set by syncCardMetaData
+  cardMetadata: cardBucketProp('card', 'cardMetadata'),
   isEditable: Ember.computed.alias('cardMetadata.isEditable'),
   editPane: function(){ // action handler
     var cardReference = this.get('card');
     cardReference.render('edit');
   },
-  syncCardMetaData: function(){
-    var controller = this,
-        cardReference = this.get('card');
-    if (cardReference) {
-      cardReference.sandbox.promise.then(function() {
-        return cardReference.metadataFor('card');
-      }).then(function(metadata){
-        controller.set('cardMetadata', metadata);
-        controller.attachToMetadataPort();
-      }).then(null, Conductor.error);
-    } else {
-      controller.set('cardMetadata', null);
-    }
-  }.observes('card'),
-
   watchForCardLoad: function() {
     var controller = this,
         cardReference = this.get('card');
@@ -38,20 +26,8 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
 
     cardReference.sandbox.activatePromise.then(function() {
       controller.set('cardIsLoaded', true);
-    });
-  }.observes('card'),
-
-  attachToMetadataPort: function(){
-    var controller = this,
-        cardReference = this.get('card');
-    if (cardReference.sandbox.metadataUpdatePort) {
-      cardReference.sandbox.metadataUpdatePort.trigger = function(name, bucket, data){
-        if (name === 'updatedData' && bucket === 'card') {
-          controller.set('cardMetadata', data);
-        }
-      };
-    }
-  }
+    }).then(null, Conductor.error);
+  }.observes('card')
 });
 
 export default PaneController;

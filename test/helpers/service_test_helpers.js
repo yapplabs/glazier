@@ -14,6 +14,9 @@ function createServiceForTesting(ServiceClass, cardId, manifest) {
   };
 
   var service = new ServiceClass(port, sandbox);
+  if (service.initialize) {
+    service.initialize(port, sandbox);
+  }
 
   service.simulateRequest = function(requestName, key, value) {
     var handler = this.requests[requestName],
