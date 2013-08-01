@@ -1,6 +1,11 @@
-{{#if allowOauth}}
-  <button {{action approve}}>Approve Oauth</button>
-  <button {{action decline}}>Decline Oauth</button>
-{{else}}
-  A pane has requested Oauth, but you must log in to Glazier first.
-{{/if}}
+<div class="modal-header">
+  <h3>Oauth</h3>
+</div>
+<div class="modal-main">
+  {{#if allowOauth}}
+    <button {{action approve}}>Approve Oauth</button>
+    <button {{action decline}}>Decline Oauth</button>
+  {{else}}
+    A pane has requested Oauth, but you must log in to Glazier first.
+  {{/if}}
+</div>
