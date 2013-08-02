@@ -62,7 +62,7 @@ var PaneView = Ember.View.extend({
       Ember.run.scheduleOnce('afterRender', self, self.afterCollapse);
       self.set('fullSize', false);
     });
-    
+
     $pane.addClass('transition-position').css(this.originalPosition());
     $paneWrapper.css({
       'background-color': 'transparent'

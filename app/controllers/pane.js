@@ -11,9 +11,14 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   cardIsLoaded: false,
   cardMetadata: cardBucketProp('card', 'cardMetadata'),
   isEditable: Ember.computed.alias('cardMetadata.isEditable'),
+  isEditing: Ember.computed.alias('cardMetadata.isEditing'),
   editPane: function(){ // action handler
     var cardReference = this.get('card');
     cardReference.render('edit');
+  },
+  finishEditing: function(){ // action handler
+    var cardReference = this.get('card');
+    cardReference.render('default');
   },
   watchForCardLoad: function() {
     var controller = this,
