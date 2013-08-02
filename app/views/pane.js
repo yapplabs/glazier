@@ -6,7 +6,7 @@ var PaneView = Ember.View.extend({
     'fullSize'
   ],
 
-  fullSize: false,
+  fullSize: Ember.computed.alias('controller.fullSize'),
 
   click: function(event) {
     var $target = $(event.target),

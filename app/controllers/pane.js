@@ -8,6 +8,7 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   needs: ['dashboard'],
   isAdmin: alias('controllers.dashboard.isAdmin'),
   isHidden: false,
+  fullSize: false,
   card: null,
   cardIsLoaded: false,
   cardMetadata: cardBucketProp('card', 'cardMetadata'),

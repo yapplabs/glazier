@@ -6,8 +6,8 @@
   {{else}}
     <div class="pane-actions">
       <div class="toggle-actions">
-        <span class="icon-gear"></span>
       </div>
+        <span class="icon-gear"></span>
       <div class="actions-list-wrapper">
         <ul class="actions-list">
           {{#if isEditable}}
@@ -20,5 +20,9 @@
   {{/if}}
 {{/if}}
 <a class="toggle-size" {{action "toggleExpansion" target="view"}} href="#">
-  {{#if view.fullSize}}Collapse{{else}}Expand{{/if}}
+  {{#if fullSize}}
+    Collapse
+  {{else}}
+    Expand
+  {{/if}}
 </a>
