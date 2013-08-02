@@ -14,11 +14,9 @@
         </div>
       </div>
     {{/if}}
-    {{#if view.fullSize}}
-      <a class="toggle-size" {{action "collapse" target="view"}} href="#">Collapse</a>
-    {{else}}
-      <a class="toggle-size" {{action "expand" target="view"}} href="#">Expand</a>
-    {{/if}}
+    <a class="toggle-size" {{action "toggleExpansion" target="view"}} href="#">
+      {{#if view.fullSize}}Collapse{{else}}Expand{{/if}}
+    </a>
   </div>
   {{/unless}}
   {{view 'card'}}

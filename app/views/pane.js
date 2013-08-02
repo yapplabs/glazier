@@ -8,6 +8,23 @@ var PaneView = Ember.View.extend({
 
   fullSize: false,
 
+  click: function(event) {
+    var $target = $(event.target),
+        isBackgroundClick = $target.closest('.pane').length === 0;
+
+    if (isBackgroundClick && this.get('fullSize')) {
+      this.collapse();
+    }
+  },
+
+  toggleExpansion: function() {
+    if (this.get('fullSize')) {
+      this.collapse();
+    } else {
+      this.expand();
+    }
+  },
+
   expand: function(){
     var $paneWrapper = this.$();
     var $pane = $paneWrapper.children('.pane');
