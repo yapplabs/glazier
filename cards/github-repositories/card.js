@@ -26,10 +26,11 @@ var card = Conductor.card({
   App: null,
 
   render: function (intent, dimensions) {
-    if (!dimensions) { dimensions = {width:500,height:500}; }
-    document.body.innerHTML = "<div id=\"card\"></div>";
-    this.resize(dimensions);
-    this.App.advanceReadiness();
+    if (!document.getElementById('card') ){
+      document.body.innerHTML = "<div id=\"card\"></div>";
+    }
+
+    return this.App.render(intent, dimensions);
   },
 
   activate: function() {
