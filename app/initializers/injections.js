@@ -18,7 +18,7 @@ var initializer = {
       conductorURL: conductorUrl()
     }), { instantiate: false});
 
-    application.register('cardManager:main', CardManager);
+    application.register('cardManager:main', CardManager, {singleton: false});
     application.register('cardDataManager:main', CardDataManager);
 
     application.inject('cardDataManager:main', 'userController', 'controller:user');

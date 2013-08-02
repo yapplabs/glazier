@@ -15,12 +15,14 @@ var CardManager = Ember.Object.extend({
   },
 
   userDataDidChange: function() {
-    Ember.run.once(this, function() {
-      var userData = this.get('cardDataManager.userData');
-      this._updateUserData(userData);
-      this._updateUserRelatedPanesData();
-    });
+    Ember.run.once(this, this._updateUserDataHelper);
   }.observes('cardDataManager.userData', 'cardDataManager.isAdmin'),
+
+  _updateUserDataHelper: function() {
+    var userData = this.get('cardDataManager.userData');
+    this._updateUserData(userData);
+    this._updateUserRelatedPanesData();
+  },
 
   /*
     @public
@@ -39,34 +41,23 @@ var CardManager = Ember.Object.extend({
     return card;
   },
 
-  /*
-    @public
-
-    Unloads the provided pane
-
-    @method unload
-    @param pane {Glazier.Pane}
-  */
   unload: function (pane) {
-    var cardId = pane.get('id'),
-        card = this.instances[cardId],
-        provides = card && card.provides,
-        key;
-    if (!card) return;
+    var key,
+      id = pane.get('id'),
+      card = this.instances[id],
+      provides = card && card.provides;
+
+    delete this.instances[id];
 
     for (key in provides) {
       if (provides.hasOwnProperty(key)) {
         delete this.providerCardDeferreds[key];
       }
     }
-
-    card.destroy();
-
-    delete this.instances[cardId];
   },
 
   _updateUserRelatedPanesData: function() {
-    var paneIds = Glazier.Pane.all().mapProperty('id');
+    var paneIds = Ember.keys(this.instances);
     var cardManager = this;
 
     if (paneIds.length === 0) { return; }
@@ -113,6 +104,7 @@ var CardManager = Ember.Object.extend({
         cardData = this._cardData(pane, manifest),
         cardUrl = manifest.cardUrl,
         providerCardDeferreds = this.providerCardDeferreds,
+        servicesMap = {},
         consumes,
         provides,
         ambientData,
@@ -122,8 +114,8 @@ var CardManager = Ember.Object.extend({
       throw new Error("cardUrl cannot be null or undefined");
     }
 
-    consumes = this._processConsumes(manifest, capabilities);
-    provides = this._processProvides(manifest, capabilities);
+    consumes = this._processConsumes(manifest, capabilities, servicesMap);
+    provides = this._processProvides(manifest, capabilities, servicesMap);
 
     ambientData = this.cardDataManager.get('ambientData');
 
@@ -131,7 +123,8 @@ var CardManager = Ember.Object.extend({
     this.conductor.loadData(cardUrl, paneId, data);
 
     var card = this.conductor.load(cardUrl, paneId, {
-      capabilities: capabilities
+      capabilities: capabilities,
+      services: servicesMap
     });
 
     // attach wiretapping for the analytics panel
@@ -169,14 +162,14 @@ var CardManager = Ember.Object.extend({
     @param  capabilities {Object}
     @return {Object}
   */
-  _processConsumes: function (manifest, capabilities) {
+  _processConsumes: function (manifest, capabilities, serviceMap) {
     var conductorServices = this.conductor.services,
         providerCardDeferreds = this.providerCardDeferreds,
         consumes = {};
     if (manifest.consumes) {
       manifest.consumes.forEach(function (capability) {
         if (!conductorServices[capability]) {
-          conductorServices[capability] = ProxyService;
+          serviceMap[capability] = ProxyService;
           if (!providerCardDeferreds[capability]) {
             providerCardDeferreds[capability] = Conductor.Oasis.RSVP.defer();
           }
@@ -194,19 +187,18 @@ var CardManager = Ember.Object.extend({
     @method load
     @return {Conductor.Card} the panes card
   */
-  _processProvides: function (manifest, capabilities) {
+  _processProvides: function (manifest, capabilities, serviceMap) {
     var conductorServices = this.conductor.services,
         providerCardDeferreds = this.providerCardDeferreds,
-        proxiedCapabilities = this.proxiedCapabilities,
         provides = {};
+
     if (manifest.provides) {
       manifest.provides.forEach(function (capability) {
         if (!conductorServices[capability]) {
-          conductorServices[capability] = ProxyService;
-          proxiedCapabilities[capability] = true;
-        }
-        if (proxiedCapabilities[capability]) {
-          providerCardDeferreds[capability] = Conductor.Oasis.RSVP.defer();
+          serviceMap[capability] = Conductor.Oasis.Service;
+          if (!providerCardDeferreds[capability]) {
+            providerCardDeferreds[capability] = Conductor.Oasis.RSVP.defer();
+          }
         }
         provides[capability] = true;
         capabilities.push(capability);

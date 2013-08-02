@@ -19,7 +19,10 @@
     </a>
   </div>
   {{/unless}}
-  {{view 'card'}}
+
+  {{#if card}}
+    {{view 'card'}}
+  {{/if}}
 
   {{view 'paneLoading' isLoadedBinding='cardIsLoaded'}}
 </div>

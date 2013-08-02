@@ -21,24 +21,35 @@ var DashboardRoute = Ember.Route.extend({
     // since we need to do this for the sidebar and this
     // saves the server from having to repeat it
     return Repository.find(id, accessToken).then(function (repository) {
-      return Glazier.Dashboard.find(id).then(function(dashboard){
+      var promise, dashboard = Glazier.Dashboard.find(id);
+      if (dashboard.get('isLoaded')) {
+        promise = dashboard.reload();
+      } else {
+        promise = Glazier.Dashboard.find(id);
+      }
+
+      return promise.then(function(dashboard){
         dashboard.set('repository', repository);
         return dashboard;
       });
     });
   },
-  afterModel: function (resolvedModel) {
-    // If we routed to this providing the dashboard as context
-    // then the model hook isn't run, we need to ensure the
-    // repository is there
-    if (resolvedModel.get('repository')) {
-      return;
+  afterModel: function (dashboard, transition) {
+    if (transition.providedModels.dashboard === dashboard) {
+      if (dashboard.get('isLoaded')) {
+        var self = this;
+        return dashboard.reload().then(function() {
+          if (dashboard.get('repository')) {
+            return;
+          }
+          var id = dashboard.get('id'),
+              accessToken = self.controllerFor('user').get('accessToken');
+          return Repository.find(id, accessToken).then(function (repository) {
+            dashboard.set('repository', repository);
+          });
+        });
+      }
     }
-    var id = resolvedModel.get('id'),
-        accessToken = this.controllerFor('user').get('accessToken');
-    return Repository.find(id, accessToken).then(function (repository) {
-      resolvedModel.set('repository', repository);
-    });
   },
   events: {
     error: function (error, transition) {
@@ -62,6 +73,9 @@ var DashboardRoute = Ember.Route.extend({
         this.controllerFor('error').set('content', responseText.message);
         this.transitionTo('error');
       }
+    },
+    willTransition: function() {
+      this.controller.set('content', null);
     },
     reorderedPanes: function(){
       this.send('hideModal');
