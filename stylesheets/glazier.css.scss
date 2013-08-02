@@ -191,4 +191,13 @@ body {
   color: gray;
 }
 
+.toolbar-items {
+  float: left;
+
+  span {
+    line-height: 35px;
+    padding: 0 0.5em;
+  }
+}
+
 @import "themes";

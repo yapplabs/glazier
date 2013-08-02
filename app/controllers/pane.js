@@ -1,17 +1,19 @@
 import { cardBucketProp } from 'glazier/utils/computed_properties';
 
 var CARD_PREFIX_REGEX = /^card:/,
-    get = Ember.get;
+    get = Ember.get,
+    alias = Ember.computed.alias;
 
 var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   needs: ['dashboard'],
-  isAdmin: Ember.computed.alias('controllers.dashboard.isAdmin'),
+  isAdmin: alias('controllers.dashboard.isAdmin'),
   isHidden: false,
   card: null,
   cardIsLoaded: false,
   cardMetadata: cardBucketProp('card', 'cardMetadata'),
-  isEditable: Ember.computed.alias('cardMetadata.isEditable'),
-  isEditing: Ember.computed.alias('cardMetadata.isEditing'),
+  isEditable: alias('cardMetadata.isEditable'),
+  isEditing: alias('cardMetadata.isEditing'),
+  toolbar: alias('cardMetadata.toolbar'),
   editPane: function(){ // action handler
     var cardReference = this.get('card');
     cardReference.render('edit');
