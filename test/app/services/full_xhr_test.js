@@ -25,7 +25,7 @@ module("Glazier FullXhrService", {
   }
 });
 
-asyncTest("A card can return a configuration value by name", 1, function() {
+asyncTest("A card can retrieve data via XHR", 1, function() {
   inCard(card, function(card) {
     var fullXhrService = card.consumers.fullXhr;
 
