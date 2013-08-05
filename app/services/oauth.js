@@ -1,5 +1,23 @@
 import Conductor from 'conductor';
 
+/* Diagram: http://www.websequencediagrams.com/cgi-bin/cdraw?lz=ICAgIENhcmQgLT4gQ29uc3VtZXI6IHJlcXVlc3Q6IGF1dGhvcml6ZShwYXJhbXMpCgAsBQAiByAtPiBTZXJ2aWNlABMhACEHIC0-IE9hdXRoQ29udHJvbGxlcjogc3RhcnRGbG93AFkFABAPAB0VY29uZmlybSB2aWEgbW9kYWwAIhhBdXRoV2luZG93OiBwb3AtdXAAgT0FAA0KAHwVcG9zdE1lc3NhZ2UoAIEnBmRlAIF1BgCBChMAgXkJACIIAIFiDi0-IDxzZXJ2ZXI-OiBQT1NUIGV4Y2hhbmdlVXJsLAAnDgAhCAAxBU9BdXRoIFByb3ZpZGVyADUHAIEGCCArIHNlY3JldACCLQYAHg0AZQ9hY2Nlc3NUb2tlbgBTEgCBMwoAFw8AgyULAIQMDHNvbHZlIHdpdGgARxEAhAoMQ2FyZAAVGg&s=roundgreen
+   Put the following into websequencediagrams.com to regenerate:
+
+    Card -> Consumer: request: authorize(params)
+    Consumer -> Service: request: authorize(params)
+    Service -> OauthController: startFlow
+    OauthController -> OauthController: confirm via modal
+    OauthController -> AuthWindow: pop-up
+    AuthWindow -> OauthController: postMessage(authCode)
+    OauthController -> Service: authCode
+    Service --> <server>: POST exchangeUrl, authCode
+    <server> --> OAuth Provider: POST authCode + secret
+    OAuth Provider --> <server>: accessToken
+    <server> --> Service: accessToken
+    Service -> Consumer: resolve with accessToken
+    Consumer -> Card: resolve with accessToken
+*/
+
 // Lookup a url in the manifest for this card
 var cardEnv = function(cardId) {
   // assume the manifest is already loaded, this is likely brittle
