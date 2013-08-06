@@ -47,7 +47,7 @@ function proxyIndex(req, res, next){
 // works with tasks/locking.js
 function lock(req, res, next) {
   (function retry() {
-    if (lockFile.checkSync('connect.lock')) {
+    if (lockFile.checkSync('tmp/connect.lock')) {
       setTimeout(retry, 100);
     } else {
       next();

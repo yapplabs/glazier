@@ -12,7 +12,7 @@ module.exports = {
       'test/**',
       'templates/**',
       'public/**/*'],
-    tasks: ['lock', 'build', 'templateCSS', 'unlock', 'jshint', 'qunit:all'],
+    tasks: ['build', 'templateCSS', 'unlock', 'jshint', 'qunit:all'],
     options: {
       debounceDelay: 200
     }

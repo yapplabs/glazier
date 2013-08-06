@@ -44,6 +44,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
                        'clean',
+                       'lock',
                        'emberTemplates',
                        'transpile',
                        'jshint',
