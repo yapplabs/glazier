@@ -52,14 +52,6 @@ var card = Conductor.card({
         isEditable: false
       };
     }
-  },
-
-  resize: function(dimensions) {
-    var width = Math.min(dimensions.width, 500);
-    var height = Math.min(dimensions.height, 500);
-    $('body>div').css({
-      width: width
-    });
   }
 });
 

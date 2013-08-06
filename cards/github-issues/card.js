@@ -21,7 +21,7 @@ var card = Conductor.card({
   App: null,
 
   render: function (intent, dimensions) {
-    if (!document.getElementById('card') ){
+    if (!document.getElementById('card')){
       document.body.innerHTML = "<div id=\"card\"></div>";
     }
 

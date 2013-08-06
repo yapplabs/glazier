@@ -43,7 +43,7 @@ var card = Conductor.card({
     card: function() {
       return {
         isEditable: false
-      }
+      };
     }
   }
 });
