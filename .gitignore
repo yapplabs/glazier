@@ -1,8 +1,9 @@
 node_modules/
 tmp/
 dist/
-cards/stackoverflow-auth
-cards/stackoverflow-questions
-cards/github-people
+cards/*
+!cards/github-issues
+!cards/github-repositories
+!cards/github-stars
 npm-debug.log
 .sass-cache

@@ -1,7 +1,8 @@
 import { cardBucketProp } from 'glazier/utils/computed_properties';
 
 var CARD_PREFIX_REGEX = /^card:/,
-    get = Ember.get;
+    get = Ember.get,
+    alias = Ember.computed.alias;
 
 var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   init: function() {
@@ -9,12 +10,15 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
     this.contentDidChange();
   },
   needs: ['dashboard'],
-  isAdmin: Ember.computed.alias('controllers.dashboard.isAdmin'),
-  isHidden: Ember.computed.alias('card.hidden'),
+  isAdmin: alias('controllers.dashboard.isAdmin'),
+  isHidden: alias('card.hidden'),
+  fullSize: false,
   card: null,
   cardIsLoaded: false,
   cardMetadata: cardBucketProp('card', 'cardMetadata'),
-  isEditable: Ember.computed.alias('cardMetadata.isEditable'),
+  isEditable: alias('cardMetadata.isEditable'),
+  isEditing: alias('cardMetadata.isEditing'),
+  toolbar: alias('cardMetadata.toolbar'),
   contentDidChange: function() {
     var pane = this.get('content');
     if (pane) {
@@ -28,6 +32,10 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   editPane: function(){ // action handler
     var cardReference = this.get('card');
     cardReference.render('edit');
+  },
+  finishEditing: function(){ // action handler
+    var cardReference = this.get('card');
+    cardReference.render('default');
   },
   watchForCardLoad: function() {
     var controller = this,

@@ -1,5 +1,5 @@
 var proxy = require('proxy-middleware');
-var lrSnippet = require('connect-livereload');
+var connectLiveReload = require('connect-livereload');
 var url = require('url');
 var request = require('http').request;
 var lockFile = require('lockfile');
@@ -46,8 +46,10 @@ function proxyIndex(req, res, next){
 
 // works with tasks/locking.js
 function lock(req, res, next) {
+  var lockPath = '';
+
   (function retry() {
-    if (lockFile.checkSync('connect.lock')) {
+    if (lockFile.checkSync(lockPath + 'tmp/connect.lock')) {
       setTimeout(retry, 100);
     } else {
       next();
@@ -62,7 +64,7 @@ function middleware(connect, options) {
   theUrl.route = '/api';
 
   return [
-    lrSnippet(),
+    connectLiveReload(),
     lock,
     proxy(theUrl),
     proxyIndex,

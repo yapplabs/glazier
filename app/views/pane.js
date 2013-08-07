@@ -6,7 +6,7 @@ var PaneView = Ember.View.extend({
     'fullSize'
   ],
 
-  fullSize: false,
+  fullSize: Ember.computed.alias('controller.fullSize'),
 
   click: function(event) {
     var $target = $(event.target),
@@ -62,7 +62,7 @@ var PaneView = Ember.View.extend({
       Ember.run.scheduleOnce('afterRender', self, self.afterCollapse);
       self.set('fullSize', false);
     });
-    
+
     $pane.addClass('transition-position').css(this.originalPosition());
     $paneWrapper.css({
       'background-color': 'transparent'

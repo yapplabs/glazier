@@ -21,8 +21,11 @@ var card = Conductor.card({
   App: null,
 
   render: function (intent, dimensions) {
-    document.body.innerHTML = "<div id=\"card\"></div>";
-    Ember.run(this.App, 'advanceReadiness');
+    if (!document.getElementById('card')){
+      document.body.innerHTML = "<div id=\"card\"></div>";
+    }
+
+    return this.App.render(intent, dimensions);
   },
 
   activate: function() {
@@ -40,7 +43,7 @@ var card = Conductor.card({
     card: function() {
       return {
         isEditable: false
-      }
+      };
     }
   }
 });

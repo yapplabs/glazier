@@ -42,16 +42,23 @@ module.exports = function(grunt) {
     jsf.process('tmp/conductor.js', out);
   });
 
-  grunt.registerTask('build', [
-                       'clean',
+  grunt.registerTask("build:js", [
                        'emberTemplates',
                        'transpile',
                        'jshint',
+  ]);
+
+  grunt.registerTask("build:css", ['sass']);
+
+  grunt.registerTask('build', [
+                       'clean',
+                       'lock',
+                       'build:js',
+                       'build:css',
                        'copy_glazier',
-                       'sass',
                        'concat',
                        'jsframe',
-                       'shell:buildCards',
+                       'shell:buildCards', // slow
                        'copy:cards' ]);
 
   grunt.registerTask('copy_glazier', ['copy:main', 'copy:test', 'copy:fixtures', 'copy:vendor']);
@@ -67,6 +74,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('server', ['shell:glazierServer']);
   grunt.registerTask('test', ['shell:npmInstallForCards', 'build',  'connect', 'qunit:all']);
-  grunt.registerTask('fastBoot',['build', 'index.html', 'templateCSS', 'connect', 'watch']);
+  grunt.registerTask('fastBoot',['build', 'index.html', 'templateCSS', 'connect', 'unlock', 'watch']);
   grunt.registerTask('default', ['shell:npmInstallForCards','fastBoot']);
 };

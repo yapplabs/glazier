@@ -44,6 +44,7 @@ body {
     background-color: rgba(255,255,255,0.4);
     border-radius: 2px;
     padding: 20px;
+    display:none;
   }
 }
 
@@ -189,6 +190,17 @@ body {
   bottom: 0;
   background: white;
   color: gray;
+  text-align:center;
+  margin-top:125px;
+}
+
+.toolbar-items {
+  float: left;
+
+  span {
+    line-height: 35px;
+    padding: 0 0.5em;
+  }
 }
 
 @import "themes";

@@ -26,10 +26,11 @@ var card = Conductor.card({
   App: null,
 
   render: function (intent, dimensions) {
-    if (!dimensions) { dimensions = {width:500,height:500}; }
-    document.body.innerHTML = "<div id=\"card\"></div>";
-    this.resize(dimensions);
-    this.App.advanceReadiness();
+    if (!document.getElementById('card') ){
+      document.body.innerHTML = "<div id=\"card\"></div>";
+    }
+
+    return this.App.render(intent, dimensions);
   },
 
   activate: function() {
@@ -49,16 +50,8 @@ var card = Conductor.card({
     card: function() {
       return {
         isEditable: false
-      }
+      };
     }
-  },
-
-  resize: function(dimensions) {
-    var width = Math.min(dimensions.width, 500);
-    var height = Math.min(dimensions.height, 500);
-    $('body>div').css({
-      width: width
-    });
   }
 });
 

@@ -1,0 +1,28 @@
+{{render 'toolbar' toolbar}}
+
+{{#if isAdmin}}
+  {{#if isEditing}}
+    <a href="#" {{action 'finishEditing'}}>Finish Editing</a>
+  {{else}}
+    <div class="pane-actions">
+      <div class="toggle-actions">
+        <span class="icon-gear"></span>
+      </div>
+      <div class="actions-list-wrapper">
+        <ul class="actions-list">
+          {{#if isEditable}}
+          <li><a href="#" {{action "editPane" this}}><span class="icon-edit-card"></span>Edit Card</a></li>
+          {{/if}}
+          <li><a href="#" {{action "removePane" this}}><span class="icon-x"></span>Remove Card</a></li>
+        </ul>
+      </div>
+    </div>
+  {{/if}}
+{{/if}}
+<a class="toggle-size" {{action "toggleExpansion" target="view"}} href="#">
+  {{#if fullSize}}
+    Collapse
+  {{else}}
+    Expand
+  {{/if}}
+</a>

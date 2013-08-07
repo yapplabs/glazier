@@ -1,4 +1,35 @@
 Ember.onLoad('Ember.Application', function(Application){
+  Conductor.Oasis.configure('eventCallback', Ember.run);
+
+  Conductor.Oasis.RSVP.configure('async', function(callback, promise) {
+    Ember.run.schedule('actions', promise, callback, promise);
+  });
+
+  function handleRenderIntent(intent, dimensions) {
+    return function(app) {
+      var router = app.__container__.lookup('router:main');
+
+      if (intent) {
+        var message = "render" + Ember.String.capitalize(intent);
+        router.send(message, dimensions);
+      }
+
+      return router.router.activeTransition;
+    };
+  }
+
+  Ember.Application.reopen({
+    _renderHasBeenCalled: false,
+    render: function(intent, dimensions) {
+      if (!this._renderHasBeenCalled) {
+        this._renderHasBeenCalled = true;
+        Ember.run(this, 'advanceReadiness');
+      }
+
+      return this.then(handleRenderIntent(intent, dimensions))
+    }
+  });
+
   var CardDataStore = Ember.Object.extend({
     dataDidChange: function(bucket, data) {
       var cardData;
