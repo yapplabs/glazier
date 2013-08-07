@@ -7,6 +7,13 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('unlock', 'Release semaphore that connect server waits on.', function() {
-    lockFile.unlockSync('tmp/connect.lock');
+
+    var lockPath = 'tmp/connect.lock';
+
+    if (!lockFile.checkSync(lockPath)) {
+      throw new Error("Tried to unlock, but there was no lock.");
+    }
+
+    lockFile.unlockSync(lockPath);
   });
 };
