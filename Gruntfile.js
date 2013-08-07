@@ -48,7 +48,7 @@ module.exports = function(grunt) {
                        'jshint',
   ]);
 
-  grunt.registerTask("build:css", ['sass']);
+  grunt.registerTask("build:css", ['sass', 'templateCSS']);
 
   grunt.registerTask('build', [
                        'clean',
