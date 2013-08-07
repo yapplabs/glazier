@@ -32,15 +32,70 @@ var RSVP = require('rsvp');
 var grunt = require('grunt');
 var exec = RSVP.denodeify(require('child_process').exec);
 
-process.changedFiles = Object.create(null);
+grunt.event.on('watch', acumulateChanges);
 
-grunt.event.on('watch', function(action, filepath, target) {
+grunt.registerTask('smartBuild', 'braux', function(){
+  var changesJSON = readChanges();
+
+  var changes = Object.keys(changesJSON);
+  var done = this.async();
+
+  var changedFilesWithinCards = changes.filter(byRegex(/^cards\//));
+  var changedFiles            = changes.filter(byNegatedRegex(/^cards\//));
+  var changedCards            = grunt.util._.unique(changedFilesWithinCards.map(cardName));
+
+  console.log('files', changedFiles);
+  console.log('cardsFiles', changedFilesWithinCards);
+  console.log('cards', changedCards);
+
+  updateChanges();
+
+  var tasks = ['concat'];
+
+  // exclude cards... for now
+  if (changedFiles.filter(byRegex(/\.js$/)).length > 0) {
+    tasks.push('build:js');
+  }
+
+  if (changedFiles.filter(byRegex(/\.(scss|css)$/)).length > 0) {
+    tasks.push('build:css');
+  }
+
+  tasks.push('copy_glazier');
+  tasks.push('concat');
+  tasks.push('jsframe');
+
+  grunt.task.run(tasks);
+
+
+  RSVP.all(changedCards.map(buildCard)).
+    then(copyCards).
+    then(null, rethrow)
+});
+
+function acumulateChanges(action, filepath, target) {
   var changes = readChanges();
 
   changes[filepath] = action;
 
   updateChanges(changes);
-});
+}
+
+function copyCards(value){
+  grunt.task.run('copy:cards');
+  return value;
+}
+
+function buildCard(card) {
+  console.log("Running: cd cards/" + card + " && grunt");
+
+  function printOutput(value) {
+    console.log(value[0]);
+    return card;
+  }
+
+  return exec("cd cards/" + card + " && grunt").then(printOutput);
+}
 
 function byRegex(regex) {
   return function(string) {
@@ -72,68 +127,11 @@ function readChanges() {
   return json;
 }
 
-var RSVP = require('rsvp');
+function cardName(path) {
+  return path.split('/')[1];
+}
 
-grunt.registerTask('smartBuild', 'braux', function(){
-
-  var changesJSON = readChanges();
-
-
-  var changes = Object.keys(changesJSON);
-  var done = this.async();
-
-  function cardName(path) {
-    return path.split('/')[1];
-  }
-
-  var changedFilesWithinCards = changes.filter(byRegex(/^cards\//));
-  var changedFiles            = changes.filter(byNegatedRegex(/^cards\//));
-  var changedCards            = grunt.util._.unique(changedFilesWithinCards.map(cardName));
-
-  console.log('files', changedFiles);
-  console.log('cardsFiles', changedFilesWithinCards);
-  console.log('cards', changedCards);
-
-  updateChanges();
-
-  var tasks = ['concat'];
-
-  // exclude cards... for now
-  if (changedFiles.filter(byRegex(/\.js$/)).length > 0) {
-    tasks.push('build:js');
-  }
-
-  if (changedFiles.filter(byRegex(/\.(scss|css)$/)).length > 0) {
-    tasks.push('build:css');
-  }
-
-  tasks.push('copy_glazier');
-  tasks.push('concat');
-  tasks.push('jsframe');
-
-  grunt.task.run(tasks);
-
-  function rethrow(reason) {
-    setTimeout(function(){ throw reason; })
-    throw reason;
-  }
-
-  function copyCards(value){
-    grunt.task.run('copy:cards');
-    return value;
-  }
-
-  RSVP.all(changedCards.map(function(card){
-    console.log("Running: cd cards/" + card + " && grunt");
-
-    function printOutput(value) {
-      console.log(value[0]);
-      return card;
-    }
-
-    return exec("cd cards/" + card + " && grunt").then(printOutput);
-  })).
-    then(copyCards).
-    then(null, rethrow)
-});
-
+function rethrow(reason) {
+  setTimeout(function(){ throw reason; })
+  throw reason;
+}
