@@ -195,11 +195,14 @@ body {
 }
 
 .toolbar-items {
+  padding-left: 0.8em;
+
   float: left;
 
   span {
     line-height: 35px;
-    padding: 0 0.5em;
+    margin-right: 0.5em;
+    display: inline-block;
   }
 }
 
