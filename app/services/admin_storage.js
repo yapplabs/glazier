@@ -19,12 +19,15 @@ var AdminStorageService = Conductor.Oasis.Service.extend({
       @param value {Object}
     */
     setItem: function(key, value) {
-      var data = {};
+      var data = {},
+          cardId = this.sandbox.card.id;
       data[key] = JSON.stringify(value);
 
-      return ajax('/api/pane_entries/' + this.sandbox.card.id + '.json', {
+      return ajax('/api/pane_entries/' + cardId + '.json', {
         type: 'PUT',
         data: { data: data }
+      }).then(function(){
+        Glazier.Pane.find(cardId).updatePaneEntry(key, value);
       });
     },
 
@@ -35,9 +38,12 @@ var AdminStorageService = Conductor.Oasis.Service.extend({
       @param key {String}
     */
     removeItem: function(key) {
-      return ajax('/api/pane_entries/' + this.sandbox.card.id + '.json', {
+      var cardId = this.sandbox.card.id;
+      return ajax('/api/pane_entries/' + cardId + '.json', {
         type: 'DELETE',
         data: { key: key }
+      }).then(function(){
+        Glazier.Pane.find(cardId).removePaneEntry(key);
       });
     }
   }

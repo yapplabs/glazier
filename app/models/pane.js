@@ -15,7 +15,37 @@ var Pane = DS.Model.extend({
   }.property('paneEntries', 'paneUserEntries', 'paneTypeUserEntries'),
 
   manifest: Ember.computed.alias('paneType.manifest'),
-  displayName: Ember.computed.alias('paneType.displayName')
+  displayName: Ember.computed.alias('paneType.displayName'),
+  updatePaneEntry: function(key, value) {
+    this.propertyWillChange('paneEntries');
+    this.get('paneEntries')[key] = value;
+    this.propertyDidChange('paneEntries');
+  },
+  removePaneEntry: function(key) {
+    this.propertyWillChange('paneEntries');
+    delete this.get('paneEntries')[key];
+    this.propertyDidChange('paneEntries');
+  },
+  updatePaneUserEntry: function(key, value) {
+    this.propertyWillChange('paneUserEntries');
+    this.get('paneUserEntries')[key] = value;
+    this.propertyDidChange('paneUserEntries');
+  },
+  removePaneUserEntry: function(key) {
+    this.propertyWillChange('paneUserEntries');
+    delete this.get('paneUserEntries')[key];
+    this.propertyDidChange('paneUserEntries');
+  },
+  updatePaneTypeUserEntry: function(key, value) {
+    this.propertyWillChange('paneTypeUserEntries');
+    this.get('paneTypeUserEntries')[key] = value;
+    this.propertyDidChange('paneTypeUserEntries');
+  },
+  removePaneTypeUserEntry: function(key) {
+    this.propertyWillChange('paneTypeUserEntries');
+    delete this.get('paneTypeUserEntries')[key];
+    this.propertyDidChange('paneTypeUserEntries');
+  }
 });
 
 export default Pane;

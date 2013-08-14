@@ -12,8 +12,23 @@ var PaneType = DS.Model.extend({
       name = this.get('manifest.name');
     }
     return name;
-  }.property('manifest')
-
+  }.property('manifest'),
+  panesOfThisType: function(){
+    var thisPaneType = this;
+    return this.get('store').filter(Glazier.Pane, function(pane){
+      return pane.get('paneType') === thisPaneType;
+    });
+  }.property(),
+  updateUserEntry: function(key, value){
+    this.get('panesOfThisType').forEach(function(pane){
+      pane.updatePaneTypeUserEntry(key, value);
+    });
+  },
+  removeUserEntry: function(key){
+    this.get('panesOfThisType').forEach(function(pane){
+      pane.removePaneTypeUserEntry(key);
+    });
+  }
 });
 
 export default PaneType;

@@ -19,14 +19,17 @@ var PaneUserStorageService = Conductor.Oasis.Service.extend({
       @param value {Object}
     */
     setItem: function(key, value) {
-      var data = {};
-      var url = '/api/pane_user_entries/' + this.sandbox.card.id + '.json';
+      var data = {},
+          cardId = this.sandbox.card.id,
+          url = '/api/pane_user_entries/' + cardId + '.json';
 
       data[key] = JSON.stringify(value);
 
       return ajax(url, {
         type: 'PUT',
         data: {data: data, access: 'private'}
+      }).then(function(){
+        Glazier.Pane.find(cardId).updatePaneUserEntry(key, value);
       });
     },
 
@@ -37,11 +40,14 @@ var PaneUserStorageService = Conductor.Oasis.Service.extend({
       @param key {String}
     */
     removeItem: function(key) {
-      var url = '/api/pane_user_entries/' + this.sandbox.card.id + '.json';
+      var cardId = this.sandbox.card.id,
+          url = '/api/pane_user_entries/' + cardId + '.json';
 
       return ajax(url, {
         type: 'DELETE',
         data: {key: key, access: 'private'}
+      }).then(function(){
+        Glazier.Pane.find(cardId).removePaneUserEntry(key);
       });
     }
   }
