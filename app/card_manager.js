@@ -7,12 +7,12 @@ import Conductor from 'conductor';
 */
 var CardManager = Ember.Object.extend({
   cardDataManager: null,
+  dashboard: null,
 
   init: function () {
     this.instances = {}; // track instances by id
     this.providerCardDeferreds = {};
     this.proxiedCapabilities = {};
-    this.additionalProvidedCapabilities = {};
   },
 
   userDataDidChange: function() {
@@ -57,11 +57,8 @@ var CardManager = Ember.Object.extend({
     }
   },
 
-  addProvidedCapabilities: function(additionalCapabilities) {
-    if (!additionalCapabilities) { return; }
-    additionalCapabilities.forEach(function(capability) {
-      this.additionalProvidedCapabilities[capability] = true;
-    }, this);
+  setDashboard: function(dashboard) {
+    this.set('dashboard', dashboard);
   },
 
   _updateUserRelatedPanesData: function() {
@@ -173,13 +170,13 @@ var CardManager = Ember.Object.extend({
   _processConsumes: function (manifest, capabilities, serviceMap) {
     var conductorServices = this.conductor.services,
         providerCardDeferreds = this.providerCardDeferreds,
-        additionalProvidedCapabilities = this.additionalProvidedCapabilities,
+        dashboardProvidedCapabilities = this.get('dashboard.providedCapabilities'),
         consumes = {};
 
     if (manifest.consumes) {
       manifest.consumes.forEach(function (capability) {
         if (!conductorServices[capability]) {
-          if (!additionalProvidedCapabilities[capability]) {
+          if (dashboardProvidedCapabilities.indexOf(capability) === -1) {
             console.error("requested a service that nothing provides: " + capability);
           }
           serviceMap[capability] = ProxyService;

@@ -20,16 +20,9 @@ var DashboardController = Ember.ObjectController.extend({
   setupCardManager: function() {
     if (this.get('content')) {
       this.cardManager = this.container.lookup('cardManager:main');
-      this.cardManager.addProvidedCapabilities(this.get('providedCapabilities'));
+      this.cardManager.setDashboard(this.get('content'));
     }
   },
-
-  // triggered if newly added cards add capabilities
-  informCardManagerOfAdditionalProvides: function() {
-    if (this.cardManager) {
-      this.cardManager.addProvidedCapabilities(this.get('providedCapabilities'));
-    }
-  }.observes('providedCapabilities'),
 
   isAdmin: function() {
     var user = this.get('user.content'),
