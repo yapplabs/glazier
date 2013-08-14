@@ -29,7 +29,20 @@ var Dashboard = DS.Model.extend({
   nextPanePosition: function(){
     var max = maxValue(this.get('panes'), 'position') || 0;
     return max + 1;
-  }.property().volatile()
+  }.property().volatile(),
+  providedCapabilities: function() {
+    var capabilities = [];
+
+    var provideLists = this.get('panes').mapProperty('manifest.provides');
+    provideLists.forEach(function(list) {
+      if (!list) { return; }
+      list.forEach(function(provide) {
+        capabilities.push(provide);
+      });
+    });
+
+    return capabilities;
+  }.property('panes.@each')
 });
 
 export default Dashboard;

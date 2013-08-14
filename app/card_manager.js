@@ -12,6 +12,7 @@ var CardManager = Ember.Object.extend({
     this.instances = {}; // track instances by id
     this.providerCardDeferreds = {};
     this.proxiedCapabilities = {};
+    this.additionalProvidedCapabilities = {};
   },
 
   userDataDidChange: function() {
@@ -54,6 +55,13 @@ var CardManager = Ember.Object.extend({
         delete this.providerCardDeferreds[key];
       }
     }
+  },
+
+  addProvidedCapabilities: function(additionalCapabilities) {
+    if (!additionalCapabilities) { return; }
+    additionalCapabilities.forEach(function(capability) {
+      this.additionalProvidedCapabilities[capability] = true;
+    }, this);
   },
 
   _updateUserRelatedPanesData: function() {
@@ -165,10 +173,15 @@ var CardManager = Ember.Object.extend({
   _processConsumes: function (manifest, capabilities, serviceMap) {
     var conductorServices = this.conductor.services,
         providerCardDeferreds = this.providerCardDeferreds,
+        additionalProvidedCapabilities = this.additionalProvidedCapabilities,
         consumes = {};
+
     if (manifest.consumes) {
       manifest.consumes.forEach(function (capability) {
         if (!conductorServices[capability]) {
+          if (!additionalProvidedCapabilities[capability]) {
+            console.error("requested a service that nothing provides: " + capability);
+          }
           serviceMap[capability] = ProxyService;
           if (!providerCardDeferreds[capability]) {
             providerCardDeferreds[capability] = Conductor.Oasis.RSVP.defer();
