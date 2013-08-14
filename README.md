@@ -108,3 +108,17 @@ changed and you haven't migrated.  Run:
 
     #in glazier/glazier-server directory
     rake db:migrate
+    
+**NPM, Grunt Errors**
+
+If you're using Glazier for the first time and get errors running `npm install`, make sure 
+your version of npm is current. Outdated versions will give errors such as telling you npm 
+can't find a certain module which it subsequently lists as installed (nice!).
+
+If grunt commands just won't run, sometimes its because node modules have gotten out of 
+sync. Try deleting the `/node_modules` subdirectory and re-running `npm install`
+
+
+
+
+
