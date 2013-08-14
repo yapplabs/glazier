@@ -77,10 +77,12 @@ var DashboardRoute = Ember.Route.extend({
     willTransition: function() {
       this.controller.set('content', null);
     },
-    reorderedPanes: function(){
+    willReorderPanes: function(){
       this.send('hideModal');
-      this.controller.propertyWillChange('panes');
-      this.controller.propertyDidChange('panes');
+      this.controller.set('isPerformingReorder', true);
+    },
+    didReorderPanes: function(){
+      this.controller.set('isPerformingReorder', false);
     }
   }
 });

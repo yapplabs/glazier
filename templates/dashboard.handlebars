@@ -3,5 +3,7 @@
   {{render "dashboard_controls" }}
 </div>
 <div class="panes block-group">
-  {{render "panes" panes}}
+  {{#unless isPerformingReorder}}
+    {{render "panes" panes}}
+  {{/unless}}
 </div>

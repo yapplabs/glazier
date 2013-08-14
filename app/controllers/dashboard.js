@@ -3,11 +3,12 @@ var DashboardController = Ember.ObjectController.extend({
   user: Ember.computed.alias('controllers.user'),
   repositoryName: Ember.computed.alias('id'),
   hidePanes: false,
+  isPerformingReorder: false,
   cardManager: null,
 
-  contentDidChange: function() {
+  scheduleSetupCardManager: function() {
     Ember.run.once(this, this.setupCardManager);
-  }.observes('content'),
+  }.observes('content', 'isPerformingReorder'),
 
   contentWillChange: function() {
     if (this.cardManager) {

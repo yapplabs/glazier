@@ -41,7 +41,8 @@ var ApplicationRoute = Ember.Route.extend({
     hideModal: function() {
       this.hideModal();
     },
-    reorderedPanes: function(){
+    willReorderPanes: Ember.K,
+    didReorderPanes: function(){
       this.hideModal();
     },
     userDidChange: function(){
