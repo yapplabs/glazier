@@ -48,7 +48,7 @@ module.exports = function(grunt) {
                        'jshint',
   ]);
 
-  grunt.registerTask("build:css", ['sass', 'templateCSS']);
+  grunt.registerTask("build:css", ['sass', 'templateCSS:devOnly']);
 
   grunt.registerTask('build', [
                        'clean',
@@ -63,7 +63,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('copy_glazier', ['copy:main', 'copy:test', 'copy:fixtures', 'copy:vendor']);
 
-  grunt.registerTask('assets', ['build', /*'uglify:all',*/ 'md5', 'index.html', 'templateCSS']);
+  grunt.registerTask('assets', ['build', /*'uglify:all',*/ 'md5', 'index.html', 'templateCSS:prodOnly']);
 
   grunt.registerTask('ingest', ['assets', 'shell:ingest']);
   grunt.registerTask('deploy', ['prod', 'assets', 's3:prod', 'shell:ingestIndex']);
@@ -74,6 +74,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('server', ['shell:glazierServer']);
   grunt.registerTask('test', ['shell:npmInstallForCards', 'build',  'connect', 'qunit:all']);
-  grunt.registerTask('fastBoot',['build', 'index.html', 'templateCSS', 'connect', 'unlock', 'watch']);
+  grunt.registerTask('fastBoot',['build', 'index.html', 'templateCSS:devOnly', 'connect', 'unlock', 'watch']);
   grunt.registerTask('default', ['shell:npmInstallForCards','fastBoot']);
 };

@@ -7,20 +7,25 @@ var grunt = require('grunt'),
  */
 
 module.exports = function(grunt) {
-  var taskName = "templateCSS"
-
   //can add additional files here
   var templateFiles = ['css/glazier.css', 'css/glazier_card.css'];
 
-  var description = "process " + taskName;
-  grunt.registerTask(taskName, description, function() {
+  grunt.registerTask("templateCSS:devOnly", "process templateCSS:devOnly", function() {
+    if (process.env.GLAZIER_ENV === "prod") {
+      return;
+    }
     for (var i=0; i<templateFiles.length; i++) {
       var templateFile = templateFiles[i];
-      //always generate file for dev
       templateDevFile(templateFile, devConfig);
-      if(process.env.GLAZIER_ENV === "prod") {
-        templateProdFile(templateFile);
-      }
+    }
+  });
+  grunt.registerTask("templateCSS:prodOnly", "process templateCSS:prodOnly", function() {
+    if (process.env.GLAZIER_ENV !== "prod") {
+      return;
+    }
+    for (var i=0; i<templateFiles.length; i++) {
+      var templateFile = templateFiles[i];
+      templateProdFile(templateFile);
     }
   });
 };
@@ -65,7 +70,7 @@ function templateProdFile(templatePath) {
   var md5File = getMD5Filename(manifest, templatePath);
   var template = grunt.file.read(md5File);
   var assetHost = grunt.config.get('pkg').assetHost || '';
-
+  console.log(md5File);
   var indexContents = grunt.template.process(template, {
     data: {
       manifestUrl: manifestUrl(manifest),
