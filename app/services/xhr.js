@@ -1,9 +1,17 @@
 import Conductor from 'conductor';
 
+function protocolRelative(url){
+  if (document.location.protocol === 'https:') {
+    return url.replace(/^http:/, 'https:');
+  } else {
+    return url;
+  }
+}
+
 // Lookup a url in the manifest for this card
 function cardManifestUrl(cardManifest, url) {
   if (cardManifest && cardManifest.assets && cardManifest.assets[url]) {
-    return cardManifest.assets[url];
+    return protocolRelative(cardManifest.assets[url]);
   }
 }
 
@@ -12,7 +20,7 @@ function glazierUrl(url) {
   if (Glazier.manifest) {
     var translatedUrl = Glazier.manifest[url];
     if (translatedUrl) {
-      return Glazier.assetHost + translatedUrl;
+      return protocolRelative(Glazier.assetHost + translatedUrl);
     }
   }
   return null;

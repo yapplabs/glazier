@@ -59,7 +59,7 @@ Set the following environment variables with the s3 key and secret for the bucke
     GLAZIER_S3_KEY
     GLAZIER_S3_SECRET
 
-In the `package.json` file, ensure that the correct `assetHost` value is specified.  For glazier we are using "http://glazier.s3.amazonaws.com" as our asset host.
+In the `package.json` file, ensure that the correct `assetHost` value is specified.  For glazier we are using "https://glazier.s3.amazonaws.com" as our asset host.
 
 ### Deployment
 
