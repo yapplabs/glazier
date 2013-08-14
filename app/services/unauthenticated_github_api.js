@@ -37,12 +37,13 @@ var UnauthenticatedGithubApiService = Conductor.Oasis.Service.extend({
   }
 });
 
-function failureResultFromJqXhr(jqXhr){
-  var parsedError = {
-    responseText: jqXhr.responseText,
-    status: jqXhr.status,
-    rawHeaders: jqXhr.getAllResponseHeaders()
-  };
+function failureResultFromJqXhr(failureTriple){
+  var jqXhr = failureTriple[0],
+      parsedError = {
+        responseText: jqXhr.responseText,
+        status: jqXhr.status,
+        rawHeaders: jqXhr.getAllResponseHeaders()
+      };
 
   throw parsedError;
 }
