@@ -27207,7 +27207,10 @@ Ember.Route = Ember.Object.extend({
     options = normalizeOptions(this, name, template, options);
     view = setupView(view, container, options);
 
-    if (options.outlet === 'main') { this.lastRenderedTemplate = name; }
+    // workaround to https://github.com/emberjs/ember.js/pull/3119
+    if (options.outlet === 'main' && name === this.routeName) {
+      this.lastRenderedTemplate = name;
+    }
 
     appendView(this, view, options);
   },
