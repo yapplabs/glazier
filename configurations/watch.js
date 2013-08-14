@@ -50,7 +50,7 @@ grunt.registerTask('smartBuild', 'braux', function(){
 
   updateChanges();
 
-  var tasks = ['concat'];
+  var tasks = [];
 
   // exclude cards... for now
   if (changedFiles.filter(byRegex(/\.js$/)).length > 0) {
@@ -65,12 +65,13 @@ grunt.registerTask('smartBuild', 'braux', function(){
   tasks.push('concat');
   tasks.push('jsframe');
 
+  console.log('running', tasks);
   grunt.task.run(tasks);
-
 
   RSVP.all(changedCards.map(buildCard)).
     then(copyCards).
-    then(null, rethrow)
+    then(null, rethrow).
+    then(done, done);
 });
 
 function acumulateChanges(action, filepath, target) {
