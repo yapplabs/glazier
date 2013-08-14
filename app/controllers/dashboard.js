@@ -20,7 +20,7 @@ var DashboardController = Ember.ObjectController.extend({
   setupCardManager: function() {
     if (this.get('content')) {
       this.cardManager = this.container.lookup('cardManager:main');
-      this.cardManager.setDashboard(this.get('content'));
+      this.cardManager.setProviderCardCatalog(this.get('content'));
     }
   },
 

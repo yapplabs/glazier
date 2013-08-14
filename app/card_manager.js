@@ -7,7 +7,8 @@ import Conductor from 'conductor';
 */
 var CardManager = Ember.Object.extend({
   cardDataManager: null,
-  dashboard: null,
+  // This is set to an object that has a 'providedCapabilities' property
+  providerCardCatalog: null,
 
   init: function () {
     this.instances = {}; // track instances by id
@@ -57,8 +58,8 @@ var CardManager = Ember.Object.extend({
     }
   },
 
-  setDashboard: function(dashboard) {
-    this.set('dashboard', dashboard);
+  setProviderCardCatalog: function(providerCardCatalog) {
+    this.set('providerCardCatalog', providerCardCatalog);
   },
 
   _updateUserRelatedPanesData: function() {
@@ -105,7 +106,6 @@ var CardManager = Ember.Object.extend({
     var capabilities = [],
         manifest = pane.get('paneType.manifest'),
         paneId = pane.get('id'),
-        dashboardId = pane.get('dashboard.id'),
         cardData = this._cardData(pane, manifest),
         cardUrl = manifest.cardUrl,
         providerCardDeferreds = this.providerCardDeferreds,
@@ -170,13 +170,13 @@ var CardManager = Ember.Object.extend({
   _processConsumes: function (manifest, capabilities, serviceMap) {
     var conductorServices = this.conductor.services,
         providerCardDeferreds = this.providerCardDeferreds,
-        dashboardProvidedCapabilities = this.get('dashboard.providedCapabilities'),
+        additionalProvidedCapabilities = this.get('providerCardCatalog.providedCapabilities'),
         consumes = {};
 
     if (manifest.consumes) {
       manifest.consumes.forEach(function (capability) {
         if (!conductorServices[capability]) {
-          if (dashboardProvidedCapabilities.indexOf(capability) === -1) {
+          if (additionalProvidedCapabilities.indexOf(capability) === -1) {
             console.error("requested a service that nothing provides: " + capability);
           }
           serviceMap[capability] = ProxyService;
