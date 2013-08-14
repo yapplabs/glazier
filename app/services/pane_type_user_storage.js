@@ -1,4 +1,5 @@
 import Conductor from 'conductor';
+import ajax from 'glazier/utils/ajax';
 
 var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
 
@@ -18,12 +19,13 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
       @param value {Object}
     */
     setItem: function(key, value) {
-      var cardTypeName = this.sandbox.card.manifest.name,
-          data = {};
+      var cardTypeName = this.sandbox.card.manifest.name;
+      var data = {};
+      var url =  '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json';
+
       data[key] = JSON.stringify(value);
 
-      return $.ajax({
-        url: '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json',
+      return ajax(url, {
         type: 'PUT',
         data: {data: data, access: 'private'}
       });
@@ -37,9 +39,9 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
     */
     removeItem: function(key) {
       var cardTypeName = this.sandbox.card.manifest.name;
+      var url = '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json';
 
-      return $.ajax({
-        url: '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json',
+      return ajax(url, {
         type: 'DELETE',
         data: {key: key, access: 'private'}
       });

@@ -1,4 +1,5 @@
 import Conductor from 'conductor';
+import ajax from 'glazier/utils/ajax';
 
 var FullXhrService = Conductor.Oasis.Service.extend({
 
@@ -17,8 +18,10 @@ var FullXhrService = Conductor.Oasis.Service.extend({
       @param ajaxOpts {Object}
     */
     ajax: function(ajaxOpts) {
-      console.log('FullXhrService.ajax', ajaxOpts);
-      return Ember.$.ajax(ajaxOpts);
+      var url = ajaxOpts.url;
+      delete ajaxOpts.url;
+
+      return ajax(url, ajaxOpts);
     }
   }
 });

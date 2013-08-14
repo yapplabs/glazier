@@ -1,4 +1,5 @@
 import Conductor from 'conductor';
+import ajax from 'glazier/utils/ajax';
 
 /*
   Provides unauthenticated github api access
@@ -26,11 +27,12 @@ var UnauthenticatedGithubApiService = Conductor.Oasis.Service.extend({
 
       ajaxOpts.data = ajaxOpts.data = {};
 
-      ajaxOpts.url = 'https://api.github.com' + ajaxOpts.url;
+      var url = 'https://api.github.com' + ajaxOpts.url;
+
+      delete ajaxOpts.url;
       delete ajaxOpts.data.access_token;
 
-      return Conductor.Oasis.RSVP.resolve($.ajax(ajaxOpts)).
-        then(null, failureResultFromJqXhr);
+      return ajax(url, ajaxOpts).then(null, failureResultFromJqXhr);
     }
   }
 });

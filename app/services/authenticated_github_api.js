@@ -1,4 +1,5 @@
 import Conductor from 'conductor';
+import ajax from 'glazier/utils/ajax';
 
 /* Diagram: http://www.websequencediagrams.com/cgi-bin/cdraw?lz=Y2FyZCAtPiBjb25zdW1lcjogcmVxdWVzdDogYWpheChvcHRzKQoAFgggLT4gc2VydmljZQATFm5vdGUgcmlnaHQgb2YAIQoALQcgYXVnbWVudHMAVwUgXG5vcHRpb25zIHdpdGggQVBJIGhvc3RcbmFuZCBBdXRob3JpemF0aW9uIGhlYWRlcgoAQAgtPiBhcGkuZ2l0aHViLmNvbTogaHR0cACBNAgKAA8OAIEpDQAhB3Nwb25zZQBFDACBdgxzb2x2ZSBvciByZWplY3RcbncvAIEtBgAwCQCCBgxjYXJkABAm&s=roundgreen
    Put the following into websequencediagrams.com to regenerate:
@@ -42,12 +43,12 @@ var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
         ajaxOpts.data = {};
       }
 
-      ajaxOpts.url = 'https://api.github.com' + ajaxOpts.url;
-      ajaxOpts.beforeSend = function(xhr){
+      var url = 'https://api.github.com' + ajaxOpts.url;
+      ajaxOpts.beforeSend = function(xhr) {
         xhr.setRequestHeader('Authorization', "token " + accessToken);
       };
 
-      return Conductor.Oasis.RSVP.resolve($.ajax(ajaxOpts)).
+      return ajax(url, ajaxOpts).
         then(null, failureResultFromJqXhr);
     }
   }

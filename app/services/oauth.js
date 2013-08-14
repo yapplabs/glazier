@@ -1,4 +1,5 @@
 import Conductor from 'conductor';
+import ajax from 'glazier/utils/ajax';
 
 /* Diagram: http://www.websequencediagrams.com/cgi-bin/cdraw?lz=ICAgIENhcmQgLT4gQ29uc3VtZXI6IHJlcXVlc3Q6IGF1dGhvcml6ZShwYXJhbXMpCgAsBQAiByAtPiBTZXJ2aWNlABMhACEHIC0-IE9hdXRoQ29udHJvbGxlcjogc3RhcnRGbG93AFkFABAPAB0VY29uZmlybSB2aWEgbW9kYWwAIhhBdXRoV2luZG93OiBwb3AtdXAAgT0FAA0KAHwVcG9zdE1lc3NhZ2UoAIEnBmRlAIF1BgCBChMAgXkJACIIAIFiDi0-IDxzZXJ2ZXI-OiBQT1NUIGV4Y2hhbmdlVXJsLAAnDgAhCAAxBU9BdXRoIFByb3ZpZGVyADUHAIEGCCArIHNlY3JldACCLQYAHg0AZQ9hY2Nlc3NUb2tlbgBTEgCBMwoAFw8AgyULAIQMDHNvbHZlIHdpdGgARxEAhAoMQ2FyZAAVGg&s=roundgreen
    Put the following into websequencediagrams.com to regenerate:
@@ -94,9 +95,8 @@ var OauthService = Conductor.Oasis.Service.extend({
   */
   exchange: function (exchangeUrl, authCode) {
     // return ajax promise for exchange authCode for accessToken
-    return Ember.$.ajax({
+    return ajax(exchangeUrl, {
       type: 'post',
-      url: exchangeUrl,
       dataType: 'text',
       data: {
         code: authCode
