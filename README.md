@@ -2,7 +2,7 @@ glazier
 ==============
 [![Build Status](https://travis-ci.org/yapplabs/glazier.png?branch=master)](https://travis-ci.org/yapplabs/glazier)
 
-Dashboard for Github projects using [Conductor.js](https://github.com/tildeio/conductor.js) and 
+Dashboard for Github projects using [Conductor.js](https://github.com/tildeio/conductor.js) and
 [Oasis.js](https://github.com/tildeio/oasis.js).
 
 
@@ -56,10 +56,16 @@ When you submit the form you will get a **client id** and **client secret**. Set
     rake db:create
     rake db:migrate
 
+### Clone card repositories and symlink them into the glazier/cards directory
+
+    # open a separate window and navigate to the top glazier directory
+    grunt cloneCards
+    ls -al ./cards/ # to see where the symlinks point
+
 ### Install the Glazier proxy dependencies and start the proxy
 
-    #open a separate window and navigate to the top glazier directory
-    #make sure client id and client secret are set in this window
+    # navigate to the top glazier directory
+    # make sure client id and client secret are set in this window
     bundle install
     npm install
     grunt              //interrupt this task when it reaches the Waiting state
@@ -77,8 +83,8 @@ When you submit the form you will get a **client id** and **client secret**. Set
 
 ## Adding Node Packages
 
-Glazier uses [npm shrinkwrapping](https://npmjs.org/doc/shrinkwrap.html) to prevent 
-dependency version problems.  If you add or change dependencies in the package.json 
+Glazier uses [npm shrinkwrapping](https://npmjs.org/doc/shrinkwrap.html) to prevent
+dependency version problems.  If you add or change dependencies in the package.json
 files (either container or cards), make sure to run `npm shrinkwrap` in the appropriate
 place.
 
@@ -108,14 +114,14 @@ changed and you haven't migrated.  Run:
 
     #in glazier/glazier-server directory
     rake db:migrate
-    
+
 **NPM, Grunt Errors**
 
-If you're using Glazier for the first time and get errors running `npm install`, make sure 
-your version of npm is current. Outdated versions will give errors such as telling you npm 
+If you're using Glazier for the first time and get errors running `npm install`, make sure
+your version of npm is current. Outdated versions will give errors such as telling you npm
 can't find a certain module which it subsequently lists as installed (nice!).
 
-If grunt commands just won't run, sometimes its because node modules have gotten out of 
+If grunt commands just won't run, sometimes its because node modules have gotten out of
 sync. Try deleting the `/node_modules` subdirectory and re-running `npm install`
 
 
