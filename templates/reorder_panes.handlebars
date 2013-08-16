@@ -4,6 +4,11 @@
 
 {{! list items are added by the view}}
 <ol class="modal-main sortable-list">
+  {{#each controller.orderablePanes}}
+    <li draggable='true' data-pane-id='{{unbound id}}'><div class='mini-pane'>
+      {{diplayCardTitle}}
+    </div></li>
+  {{/each}}
 </ol>
 
 <div class="modal-footer">

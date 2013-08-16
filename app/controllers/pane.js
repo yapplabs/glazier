@@ -16,6 +16,10 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   card: null,
   cardIsLoaded: false,
   cardMetadata: cardBucketProp('card', 'cardMetadata'),
+  cardTitleChanged: function() {
+    this.set('content.cardTitle', this.get('cardTitle'));
+  }.observes('cardTitle'),
+  cardTitle: alias('cardMetadata.title'),
   isEditable: alias('cardMetadata.isEditable'),
   isEditing: alias('cardMetadata.isEditing'),
   toolbar: alias('cardMetadata.toolbar'),

@@ -16,6 +16,11 @@ var Pane = DS.Model.extend({
 
   manifest: Ember.computed.alias('paneType.manifest'),
   displayName: Ember.computed.alias('paneType.displayName'),
+  diplayCardTitle: function() {
+    var cardTitle = this.get('cardTitle');
+    if (cardTitle) { return cardTitle; }
+    return this.get('displayName');
+  }.property('displayName', 'cardTitle'),
   updatePaneEntry: function(key, value) {
     this.propertyWillChange('paneEntries');
     this.get('paneEntries')[key] = value;
