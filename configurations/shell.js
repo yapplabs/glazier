@@ -67,6 +67,22 @@ function herokuIngestCommand(dirname) {
 
 herokuIngestIndexCommand = "(cd glazier-server && heroku surrogate rake 'glazier:ingest_as_current[../tmp/public/index.html]' --app glazier)";
 
+function cloneHelper(repositoryFullName) {
+  var parts = repositoryFullName.split('/');
+  var githubUserName = parts[0];
+  var repositoryName = parts[1];
+  var cloneFolderPath = '../' + repositoryName;
+  var cloneUrl = 'git@github.com:' +  repositoryFullName + '.git';
+
+  var cloneUnlessDirectoryExists = 'if [ ! -d ' + cloneFolderPath + ' ]; then';
+  cloneUnlessDirectoryExists += ' git clone ' + cloneUrl + ' ' + cloneFolderPath + ' ;';
+  cloneUnlessDirectoryExists += ' else ';
+  cloneUnlessDirectoryExists += ' echo "' + cloneFolderPath + ' already exists. skipping.";';
+  cloneUnlessDirectoryExists += ' fi ';
+
+  return cloneUnlessDirectoryExists;
+}
+
 module.exports = {
   updateAllTheThings: {
     command: [
@@ -118,6 +134,27 @@ module.exports = {
   },
   herokuIngestCards: {
     command: cards.filter(isCardDir).map(herokuIngestCommand).join(' && '),
+    options: opts
+  },
+  cloneCards: {
+    command: [
+      cloneHelper("yapplabs/glazier-github-issues"),
+      "ln -sf ../../glazier-github-issues cards/github-issues",
+
+      cloneHelper("yapplabs/glazier-github-repositories"),
+      "ln -sf ../../glazier-github-repositories cards/github-repositories",
+
+      cloneHelper("yapplabs/glazier-github-stars"),
+      "ln -sf ../../glazier-github-stars cards/github-stars",
+
+      cloneHelper("yapplabs/glazier-github-people"),
+      "ln -sf ../../glazier-github-people cards/github-people",
+
+      cloneHelper("yapplabs/glazier-stackoverflow"),
+      "ln -sf ../../glazier-stackoverflow/cards/auth cards/stackoverflow-auth",
+      "ln -sf ../../glazier-stackoverflow/cards/questions cards/stackoverflow-questions"
+
+    ].join(" && "),
     options: opts
   }
 };

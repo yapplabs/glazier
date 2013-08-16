@@ -76,4 +76,6 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['shell:npmInstallForCards', 'build',  'connect', 'qunit:all']);
   grunt.registerTask('fastBoot',['build', 'index.html', 'templateCSS:devOnly', 'connect', 'unlock', 'watch']);
   grunt.registerTask('default', ['shell:npmInstallForCards','fastBoot']);
+
+  grunt.registerTask('cloneCards', ['shell:cloneCards']);
 };
