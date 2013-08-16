@@ -2,8 +2,5 @@ node_modules/
 tmp/
 dist/
 cards/*
-!cards/github-issues
-!cards/github-repositories
-!cards/github-stars
 npm-debug.log
 .sass-cache
