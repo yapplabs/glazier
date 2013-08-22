@@ -1,10 +1,10 @@
 import Conductor from 'conductor';
 
 var IntentService = Conductor.Oasis.Service.extend({
-  dashboardController: null, // injected
+  target: null, // injected
   events: {
     triggerIntent: function(intent) {
-      this.dashboardController.send('handleIntent', intent);
+      this.target.send('handleIntent', intent);
     }
   }
 });

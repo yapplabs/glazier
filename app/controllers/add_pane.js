@@ -1,10 +1,8 @@
 var AddPaneController = Ember.ObjectController.extend({
-  needs: ['dashboard'],
+  needs: ['dashboard', 'paneTypes'],
   content: Ember.computed.alias('controllers.dashboard.content'),
 
-  paneTypes: function() {
-    return this.get('store').find(Glazier.PaneType);
-  }.property(),
+  paneTypes: Ember.computed.alias('controllers.paneTypes'),
 
   addablePaneTypes: function() {
     var paneTypes = this.get('paneTypes');
