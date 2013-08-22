@@ -2,6 +2,7 @@ var Pane = DS.Model.extend({
   paneType: DS.belongsTo('Glazier.PaneType'),
   dashboard: DS.belongsTo('Glazier.Dashboard'),
   position: DS.attr('number'),
+  repository: DS.attr('string'),
 
   paneEntries: DS.attr('passthrough'),
   paneUserEntries: DS.attr('passthrough'),
@@ -10,7 +11,8 @@ var Pane = DS.Model.extend({
     return {
       paneEntries: this.get('paneEntries') || {},
       paneUserEntries: this.get('paneUserEntries') || {},
-      paneTypeUserEntries: this.get('paneTypeUserEntries') || {}
+      paneTypeUserEntries: this.get('paneTypeUserEntries') || {},
+      repositoryName: this.get('repository')
     };
   }.property('paneEntries', 'paneUserEntries', 'paneTypeUserEntries'),
 

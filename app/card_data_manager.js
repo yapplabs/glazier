@@ -24,7 +24,6 @@ var CardDataManager = Ember.Object.extend({
 
   ambientData: function() {
     return {
-      repositoryName: this.get('repositoryName'),
       user: this.get('userData'),
       isAdmin: this.get('isAdmin')
     };
