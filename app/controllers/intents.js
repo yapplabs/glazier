@@ -1,12 +1,6 @@
 var IntentsController = Ember.Controller.extend({
   needs: ['modalPaneType', 'paneTypes'],
 
-  init: function() {
-    this._super();
-    // make sure they're loaded for the implicit intents filter
-    this.get('allPaneTypes');
-  },
-
   handleIntent: function (intent, cardManager) {
     if (intent.cardName) {
       this.handleExplicitIntent(intent, cardManager);
@@ -28,23 +22,26 @@ var IntentsController = Ember.Controller.extend({
     });
   },
 
-  allPaneTypes: Ember.computed.alias('controllers.paneTypes'),
+  allPaneTypes: Ember.computed.alias('controllers.paneTypes.content'),
 
   handleImplicitIntent: function(intent, cardManager) {
-    var paneTypes = this.get('allPaneTypes').filter(function(paneType) {
-      var handlesIntents = paneType.get('manifest.handlesIntents');
-      if (!Ember.isNone(handlesIntents)) {
-        return handlesIntents.indexOf(intent.action) !== -1;
+    var self = this;
+    this.get('allPaneTypes').then(function(allPaneTypes) {
+      var paneTypes = allPaneTypes.filter(function(paneType) {
+        var handlesIntents = paneType.get('manifest.handlesIntents');
+        if (!Ember.isEmpty(handlesIntents)) {
+          return handlesIntents.indexOf(intent.action) !== -1;
+        }
+      });
+
+      if (paneTypes.length === 0) {
+        return;
       }
+
+      // TODO: what if more than one paneType handles the action?
+      var card = cardManager.loadTransient(paneTypes[0], {intent: intent});
+      self.showCardInModal(card);
     });
-
-    if (paneTypes.length === 0) {
-      return false;
-    }
-
-    // TODO: what if more than one paneType handles the action?
-    var card = cardManager.loadTransient(paneTypes[0], {intent: intent});
-    this.showCardInModal(card);
   },
 
   showCardInModal: function(card) {

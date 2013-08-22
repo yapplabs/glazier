@@ -35,6 +35,9 @@ var DashboardRoute = Ember.Route.extend({
     });
   },
   afterModel: function (dashboard, transition) {
+    // Pre-load paneTypes for intent handling.
+    this.controllerFor('paneTypes').get('content');
+
     if (transition.providedModels.dashboard === dashboard) {
       if (dashboard.get('isLoaded')) {
         var self = this;
