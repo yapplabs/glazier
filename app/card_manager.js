@@ -37,9 +37,16 @@ var CardManager = Ember.Object.extend({
     var id = pane.get('id');
     var card = this.instances[id];
     if (!card) {
-      card = this._load(pane);
+      card = this._loadFromPane(pane);
       this.instances[id] = card;
     }
+    return card;
+  },
+
+  loadTransient: function(paneType, cardData) {
+    var id = "transient_" + Ember.generateGuid(); // unique id so it cannot be in the cache
+    var card = this._load(paneType, id, cardData);
+    this.instances[id] = card;
     return card;
   },
 
@@ -98,15 +105,22 @@ var CardManager = Ember.Object.extend({
   /*
     @private
 
-    @method _load
+    @method _loadFromPane
     @param pane {Glazier.Pane}
     @return {Conductor.Card} the panes card
   */
-  _load: function (pane) {
-    var capabilities = [],
-        manifest = pane.get('paneType.manifest'),
+  _loadFromPane: function (pane) {
+    var manifest = pane.get('paneType.manifest'),
         paneId = pane.get('id'),
         cardData = this._cardData(pane, manifest),
+        paneType = pane.get('paneType');
+
+    return this._load(paneType, paneId, cardData);
+  },
+
+  _load: function(paneType, paneId, cardData) {
+    var capabilities = [],
+        manifest = paneType.get('manifest'),
         cardUrl = manifest.cardUrl,
         providerCardDeferreds = this.providerCardDeferreds,
         servicesMap = {},

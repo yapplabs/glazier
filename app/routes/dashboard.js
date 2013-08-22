@@ -83,6 +83,18 @@ var DashboardRoute = Ember.Route.extend({
     },
     didReorderPanes: function(){
       this.controller.set('isPerformingReorder', false);
+    },
+    handleIntent: function(intent) {
+      var route = this, controller = this.controller;
+
+      Glazier.PaneType.find(intent.cardName).then(function(paneType) {
+        var cardManager = controller.cardManager;
+        if (!cardManager) { return Ember.RSVP.reject("no longer in dashboard route"); }
+        return cardManager.loadTransient(paneType, {intent: intent});
+      }).then(function(card) {
+        route.controllerFor('modal_pane_type').set('content', card);
+        route.send('showModal', 'modal_pane_type');
+      });
     }
   }
 });
