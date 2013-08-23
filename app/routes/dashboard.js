@@ -90,6 +90,13 @@ var DashboardRoute = Ember.Route.extend({
     handleIntent: function(intent) {
       var cardManager = this.controller.cardManager;
       this.controllerFor('intents').handleIntent(intent, cardManager);
+    },
+    addPane: function(paneType) {
+      this.controller.addPane(paneType);
+    },
+    paste: function(pane) {
+      this.controller.addPane(pane.get('paneType'), pane.get('repository'));
+      // TODO: set data
     }
   }
 });

@@ -9,7 +9,7 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
     this._super();
     this.contentDidChange();
   },
-  needs: ['dashboard'],
+  needs: ['dashboard', 'clipboard'],
   isAdmin: alias('controllers.dashboard.isAdmin'),
   isHidden: alias('card.hidden'),
   fullSize: false,
@@ -33,6 +33,9 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
       this.set('card', null);
     }
   }.observes('content'),
+  copyPane: function(pane) {
+    this.set('controllers.clipboard.content', pane);
+  },
   editPane: function(){ // action handler
     var cardReference = this.get('card');
     cardReference.render('edit');

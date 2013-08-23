@@ -5,14 +5,15 @@
         {{partial "logo"}} glazier.io
       {{/linkTo}}
     </div>
-    {{render user}}
-    {{render repository}}
+    {{render "user"}}
+    {{render "repository"}}
     <div class="help">
       Help
     </div>
-    <div class="peek" {{action toggleAnalyticsDrawer}}>
+    <div class="peek" {{action "toggleAnalyticsDrawer"}}>
       ConductorPeek
     </div>
+    {{render "clipboard"}}
   </div>
 </div>
 <div class="panel">
