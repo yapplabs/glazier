@@ -142,7 +142,7 @@ module.exports = {
       "ln -sf ../../glazier-github-issues cards/github-issues",
 
       cloneHelper("yapplabs/glazier-github-issue"),
-      "ln -sf ../../glazier-github-issues cards/github-issue",
+      "ln -sf ../../glazier-github-issue cards/github-issue",
 
       cloneHelper("yapplabs/glazier-github-repositories"),
       "ln -sf ../../glazier-github-repositories cards/github-repositories",
