@@ -45,6 +45,7 @@ var CardManager = Ember.Object.extend({
 
   loadTransient: function(paneType, cardData) {
     var id = "transient_" + Ember.generateGuid(); // unique id so it cannot be in the cache
+    cardData = this._cardData(null, paneType.get('manifest'), cardData);
     var card = this._load(paneType, id, cardData);
     this.instances[id] = card;
     return card;
@@ -166,11 +167,22 @@ var CardManager = Ember.Object.extend({
     return card;
   },
 
-  _cardData: function(pane, manifest) {
-    var env = (/glazier\.herokuapp\.com/.test(window.location.hostname)) ? 'prod' : 'dev',
-        paneData = pane.get('cardData');
+  _cardData: function(pane, manifest, data) {
+    var paneData = {}, env;
+
+    env = (/glazier\.herokuapp\.com/.test(window.location.hostname)) ? 'prod' : 'dev';
     manifest.env = manifest.env || {};
-    return Ember.merge({ env: manifest.env[env] }, paneData);
+
+    if (pane) {
+      paneData = pane.get('cardData');
+    }
+
+    var defaults = {
+      repositoryName: this.get('cardDataManager.repositoryName'),
+      env: manifest.env[env]
+    };
+
+    return Ember.merge(defaults, Ember.merge(paneData, data || {}));
   },
 
   /*

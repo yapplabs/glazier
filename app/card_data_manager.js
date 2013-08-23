@@ -27,7 +27,7 @@ var CardDataManager = Ember.Object.extend({
       user: this.get('userData'),
       isAdmin: this.get('isAdmin')
     };
-  }.property('userData', 'repositoryName', 'isAdmin')
+  }.property('userData', 'isAdmin')
 });
 
 export default CardDataManager;
