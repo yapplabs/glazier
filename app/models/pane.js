@@ -4,9 +4,9 @@ var Pane = DS.Model.extend({
   position: DS.attr('number'),
   repository: DS.attr('string'),
 
-  paneEntries: DS.attr('passthrough'),
-  paneUserEntries: DS.attr('passthrough'),
-  paneTypeUserEntries: DS.attr('passthrough'),
+  paneEntries: DS.attr('passthrough'), // github people - the list and each person
+  paneUserEntries: DS.attr('passthrough'), // stackoverflow-auth, access token
+  paneTypeUserEntries: DS.attr('passthrough'), //
   cardData: function() {
     return {
       paneEntries: this.get('paneEntries') || {},

@@ -40,7 +40,7 @@ var DashboardController = Ember.ObjectController.extend({
     }
   },
 
-  addPane: function(paneType, repository) {
+  addPane: function(paneType, repository, paneEntries) {
     var store = this.get('store');
     var dependencies = this.paneTypesToAdd(paneType);
     var transaction = store.transaction();
@@ -48,6 +48,7 @@ var DashboardController = Ember.ObjectController.extend({
     var dashboard = this.get('content');
 
     repository = repository || this.get('id'); // default to dashboard id
+    paneEntries = paneEntries || {};
 
     if (dependencies) {
       dependencies.forEach(function(paneType) {
@@ -63,7 +64,8 @@ var DashboardController = Ember.ObjectController.extend({
       dashboard: dashboard,
       paneType: paneType,
       repository: repository,
-      position: dashboard.get('nextPanePosition')
+      position: dashboard.get('nextPanePosition'),
+      paneEntries: paneEntries
     });
 
     transaction.commit();

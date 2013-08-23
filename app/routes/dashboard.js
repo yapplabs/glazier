@@ -95,8 +95,7 @@ var DashboardRoute = Ember.Route.extend({
       this.controller.addPane(paneType);
     },
     paste: function(pane) {
-      this.controller.addPane(pane.get('paneType'), pane.get('repository'));
-      // TODO: set data
+      this.controller.addPane(pane.get('paneType'), pane.get('repository'), pane.get('paneEntries'));
     }
   }
 });
