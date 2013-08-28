@@ -60,6 +60,10 @@ module("CardManager", {
       }
     });
 
+    cardManager.setProviderCardCatalog(Ember.Object.create({
+      providedCapabilities: []
+    }));
+
     store.load(Pane, '7f878b1a-34af-42ed-b477-878721cbc90d', {
       paneType: '/cards/github-auth/manifest.json'
     });
