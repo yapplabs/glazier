@@ -1,10 +1,11 @@
 var DashboardController = Ember.ObjectController.extend({
-  needs: ['user'],
+  needs: ['user', 'paneTypes'],
   user: Ember.computed.alias('controllers.user'),
   repositoryName: Ember.computed.alias('id'),
   hidePanes: false,
   isPerformingReorder: false,
   cardManager: null,
+  paneTypes: Ember.computed.alias('controllers.paneTypes'),
 
   scheduleSetupCardManager: function() {
     Ember.run.once(this, this.setupCardManager);
