@@ -97,7 +97,21 @@ function cloneHelper(repositoryFullName) {
   return cloneUnlessDirectoryExists;
 }
 
+function runInCardCommand(cmd) {
+  return function(dirname) {
+    return "(cd cards/" + dirname + " && " +  cmd +")";
+  };
+}
+
+function runInCardsCommand(cmd) {
+  return cards.map(runInCardCommand(cmd)).join(" && ");
+}
+
 module.exports = {
+  runInCards: {
+    command: runInCardsCommand(grunt.option("cmd") || grunt.option("c")),
+    options: opts
+  },
   updateAllTheThings: {
     command: [
       'git pull --ff-only',
@@ -169,8 +183,13 @@ module.exports = {
 
       cloneHelper("yapplabs/glazier-stackoverflow"),
       "ln -sf ../../glazier-stackoverflow/cards/auth cards/stackoverflow-auth",
-      "ln -sf ../../glazier-stackoverflow/cards/questions cards/stackoverflow-questions"
+      "ln -sf ../../glazier-stackoverflow/cards/questions cards/stackoverflow-questions",
 
+      cloneHelper("yapplabs/glazier-markdown-editor"),
+      "ln -sf ../../glazier-markdown-editor cards/markdown-editor",
+
+      cloneHelper("yapplabs/glazier-travis-build"),
+      "ln -sf ../../glazier-travis-build cards/travis-build"
     ].join(" && "),
     options: opts
   }
