@@ -49,10 +49,16 @@ function cardPackage(dirname) {
   return grunt.file.readJSON('cards/' + dirname + '/package.json' );
 }
 
-function cardIngestManifestCommand(dirname) {
-  var name = cardPackage(dirname).name;
-  var manifestPath = 'cards/' + dirname + '/dist/dev/' + name + '/manifest.json';
-  var cmd = '(cd glazier-server && bundle exec rake "glazier:card:ingest[../' + manifestPath + ']")';
+function ingestManifestsCommand() {
+  var manifestPaths = [];
+
+  cards.forEach(function(dirname) {
+    var name = cardPackage(dirname).name;
+    var manifestPath = 'cards/' + dirname + '/dist/dev/' + name + '/manifest.json';
+    manifestPaths.push('../' + manifestPath);
+  });
+
+  var cmd = '(cd glazier-server && bundle exec rake "glazier:card:ingest[' + manifestPaths.join('|') + ']")';
   return cmd;
 }
 
@@ -133,7 +139,7 @@ module.exports = {
     options: opts
   },
   ingestCardManifests: {
-    command: cards.map(cardIngestManifestCommand).join(' && '),
+    command: ingestManifestsCommand(),
     options: opts
   },
   deployCards: {
