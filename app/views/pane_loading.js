@@ -2,7 +2,7 @@ var PaneLoadingView = Ember.View.extend({
   templateName: 'pane_loading',
   classNameBindings: ['isLoaded', ':pane-loading'],
 
-  isLoaded: Ember.computed.oneWay('controller.cardIsLoading'),
+  isLoaded: null, // binding provided in template
 
   updateVisibility: function() {
     var $el = this.$();
@@ -14,7 +14,7 @@ var PaneLoadingView = Ember.View.extend({
 
       // Alternatively:
       //$el.fadeOut();
-    } 
+    }
   }.observes('isLoaded')
 });
 

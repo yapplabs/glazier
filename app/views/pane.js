@@ -17,11 +17,13 @@ var PaneView = Ember.View.extend({
     }
   },
 
-  toggleExpansion: function() {
-    if (this.get('fullSize')) {
-      this.collapse();
-    } else {
-      this.expand();
+  actions: {
+    toggleExpansion: function() {
+      if (this.get('fullSize')) {
+        this.collapse();
+      } else {
+        this.expand();
+      }
     }
   },
 

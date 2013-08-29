@@ -5,10 +5,6 @@ var CARD_PREFIX_REGEX = /^card:/,
     alias = Ember.computed.alias;
 
 var PaneController = Ember.ObjectController.extend(Ember.Evented, {
-  init: function() {
-    this._super();
-    this.contentDidChange();
-  },
   needs: ['dashboard', 'clipboard'],
   isAdmin: alias('controllers.dashboard.isAdmin'),
   isHidden: alias('card.hidden'),
@@ -16,9 +12,6 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   card: null,
   cardIsLoaded: false,
   cardMetadata: cardBucketProp('card', 'cardMetadata'),
-  cardTitleChanged: function() {
-    this.set('content.cardTitle', this.get('cardTitle'));
-  }.observes('cardTitle'),
   cardTitle: alias('cardMetadata.title'),
   isEditable: alias('cardMetadata.isEditable'),
   isEditing: alias('cardMetadata.isEditing'),
@@ -32,18 +25,10 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
     } else {
       this.set('card', null);
     }
-  }.observes('content'),
-  copyPane: function(pane) {
-    this.set('controllers.clipboard.content', pane);
-  },
-  editPane: function(){ // action handler
-    var cardReference = this.get('card');
-    cardReference.render('edit');
-  },
-  finishEditing: function(){ // action handler
-    var cardReference = this.get('card');
-    cardReference.render('default');
-  },
+  }.observes('content').on('init'),
+  cardTitleChanged: function() {
+    this.set('content.cardTitle', this.get('cardTitle'));
+  }.observes('cardTitle'),
   watchForCardLoad: function() {
     var controller = this,
         cardReference = this.get('card');
@@ -56,7 +41,20 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
     cardReference.sandbox.activatePromise.then(function() {
       controller.set('cardIsLoaded', true);
     }).then(null, Conductor.error);
-  }.observes('card')
+  }.observes('card').on('init'),
+  actions: {
+    copyPane: function(pane) {
+      this.set('controllers.clipboard.content', pane);
+    },
+    editPane: function(){ // action handler
+      var cardReference = this.get('card');
+      cardReference.render('edit');
+    },
+    finishEditing: function(){ // action handler
+      var cardReference = this.get('card');
+      cardReference.render('default');
+    }
+  }
 });
 
 export default PaneController;

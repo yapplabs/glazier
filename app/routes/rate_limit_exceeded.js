@@ -2,7 +2,7 @@ var RateLimitExceededRoute = Ember.Route.extend({
   beforeModel: function (transition) {
     transition.method(null);
   },
-  events: {
+  actions: {
     userDidChange: function(){
 
       if (!this.controllerFor('user').get('isLoggedIn')) { return; }

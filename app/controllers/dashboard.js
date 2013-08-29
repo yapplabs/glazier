@@ -32,47 +32,49 @@ var DashboardController = Ember.ObjectController.extend({
     return repos && repos.indexOf(repositoryName) !== -1;
   }.property('user.content', 'repositoryName'),
 
-  removePane: function(pane) {
-    if (window.confirm('Are you sure you want to remove ' + pane.get('displayName') + '?')) {
-      pane.get('dashboard.panes').removeObject(pane);
-      pane.deleteRecord();
-      pane.store.commit();
-      this.cardManager.unload(pane);
+  actions: {
+    removePane: function(pane) {
+      if (window.confirm('Are you sure you want to remove ' + pane.get('displayName') + '?')) {
+        pane.get('dashboard.panes').removeObject(pane);
+        pane.deleteRecord();
+        pane.store.commit();
+        this.cardManager.unload(pane);
+      }
+    },
+
+    addPane: function(paneType, repository, paneEntries) {
+      var store = this.get('store');
+      var dependencies = this.paneTypesToAdd(paneType);
+      var transaction = store.transaction();
+      // TODO: make recursively handle dependencies. (YAGNI?)
+      var dashboard = this.get('content');
+
+      repository = repository || this.get('id'); // default to dashboard id
+      paneEntries = paneEntries || {};
+
+      if (dependencies) {
+        dependencies.forEach(function(paneType) {
+          transaction.createRecord(Glazier.Pane, {
+            dashboard: dashboard,
+            paneType: paneType,
+            position: dashboard.get('nextPanePosition')
+          });
+        }, this);
+      }
+
+      transaction.createRecord(Glazier.Pane, {
+        dashboard: dashboard,
+        paneType: paneType,
+        repository: repository,
+        position: dashboard.get('nextPanePosition'),
+        paneEntries: paneEntries
+      });
+
+      transaction.commit();
+      this.send('hideModal');
+
+      this.scrollLastPaneIntoView();
     }
-  },
-
-  addPane: function(paneType, repository, paneEntries) {
-    var store = this.get('store');
-    var dependencies = this.paneTypesToAdd(paneType);
-    var transaction = store.transaction();
-    // TODO: make recursively handle dependencies. (YAGNI?)
-    var dashboard = this.get('content');
-
-    repository = repository || this.get('id'); // default to dashboard id
-    paneEntries = paneEntries || {};
-
-    if (dependencies) {
-      dependencies.forEach(function(paneType) {
-        transaction.createRecord(Glazier.Pane, {
-          dashboard: dashboard,
-          paneType: paneType,
-          position: dashboard.get('nextPanePosition')
-        });
-      }, this);
-    }
-
-    transaction.createRecord(Glazier.Pane, {
-      dashboard: dashboard,
-      paneType: paneType,
-      repository: repository,
-      position: dashboard.get('nextPanePosition'),
-      paneEntries: paneEntries
-    });
-
-    transaction.commit();
-    this.send('hideModal');
-
-    this.scrollLastPaneIntoView();
   },
 
   scrollLastPaneIntoView: function() {

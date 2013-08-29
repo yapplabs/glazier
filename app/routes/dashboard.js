@@ -54,7 +54,7 @@ var DashboardRoute = Ember.Route.extend({
       }
     }
   },
-  events: {
+  actions: {
     error: function (error, transition) {
 
       var responseText = JSON.parse(error.responseText);
@@ -92,10 +92,10 @@ var DashboardRoute = Ember.Route.extend({
       this.controllerFor('intents').handleIntent(intent, cardManager);
     },
     addPane: function(paneType) {
-      this.controller.addPane(paneType);
+      this.controller.send('addPane', paneType);
     },
     paste: function(pane) {
-      this.controller.addPane(pane.get('paneType'), pane.get('repository'), pane.get('paneEntries'));
+      this.controller.send('addPane', pane.get('paneType'), pane.get('repository'), pane.get('paneEntries'));
     }
   }
 });

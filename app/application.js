@@ -7,7 +7,7 @@ var Application = Ember.Application.extend({
   modulePrefix: 'glazier',
   Router: Router,
   Store: Store,
-  resolver: Resolver
+  Resolver: Resolver
 });
 
 export default Application;
