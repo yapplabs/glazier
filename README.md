@@ -110,6 +110,20 @@ To automatically execute glazier-server specs as you update code and specs:
 
     bundle exec guard
 
+## Default Cards
+
+`grunt cloneCards` clones and symlinks the following repositories into the `glazier/cards` folder:
+
+  * [github-issue](https://github.com/yapplabs/glazier-github-issue)
+  * [github-issues](https://github.com/yapplabs/glazier-github-issues)
+  * [github-people](https://github.com/yapplabs/glazier-github-people)
+  * [github-repositories](https://github.com/yapplabs/glazier-github-repositories)
+  * [github-stars](https://github.com/yapplabs/glazier-github-stars)
+  * [stackoverflow-auth](https://github.com/yapplabs/glazier-stackoverflow)
+  * [stackoverflow-questions](https://github.com/yapplabs/glazier-stackoverflow)
+  * [markdown-editor](https://github.com/yapplabs/glazier-markdown-editor)
+  * [travis-build](https://github.com/yapplabs/glazier-travis-build)
+
 ## Troubleshooting
 
 **500 Internal Server Error**
