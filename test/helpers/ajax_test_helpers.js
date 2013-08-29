@@ -4,10 +4,13 @@ function mockAjax() {
   var originalAjax = Ember.$.ajax;
   mockAjax.requests = [];
 
-  Ember.$.ajax = function(options) {
+  Ember.$.ajax = function(url, options) {
+    options.url = url;
     mockAjax.requests.push(options);
+    var response = mockAjax.nextResponse;
+    options.success(response);
     return new Conductor.Oasis.RSVP.Promise(function(resolve, reject){
-      resolve(mockAjax.nextResponse || {});
+      resolve(response || {});
       mockAjax.nextResponse = null;
     });
   };

@@ -23,7 +23,7 @@ test("it exists", function(){
 test("requesting issues", function(){
   expect(3);
 
-  var responseJSON = { 
+  var responseJSON = {
         someOther: 'data'
       },
       requestPayload = {
@@ -33,12 +33,13 @@ test("requesting issues", function(){
 
   stop();
 
-  $.ajax = function(data) {
+  $.ajax = function(url, ajaxOpts) {
     return Conductor.Oasis.RSVP.Promise(function(resolve, reject){
-      equal(data.url, 'https://api.github.com/path', 'the url was re-written to include the path');
-      deepEqual(data, requestPayload, 'expected payloaded');
+      equal(url, 'https://api.github.com/path', 'the url was re-written to include the path');
+      deepEqual(ajaxOpts, requestPayload, 'expected payloaded');
 
       setTimeout(function(){
+        ajaxOpts.success(responseJSON);
         resolve(responseJSON);
       }, 0);
     });

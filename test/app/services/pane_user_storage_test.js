@@ -3,10 +3,12 @@ import assertResolved from 'helpers/promise_test_helpers';
 import { inCard, TestService } from 'helpers/card_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
 import mockAjax from 'helpers/ajax_test_helpers';
-
+import Adapter from 'glazier/adapter';
+import Pane from 'glazier/models/pane';
+import PaneType from 'glazier/models/pane_type';
 import Conductor from 'conductor';
 
-var conductor, card;
+var conductor, card, store;
 
 if (!/phantom/i.test(navigator.userAgent)) {
   module("Glazier PaneUserStorageService Integration", {
@@ -18,13 +20,39 @@ if (!/phantom/i.test(navigator.userAgent)) {
       Conductor.services['paneUserStorage'] = PaneUserStorageService;
       Conductor.services['test'] = TestService;
 
-      card = conductor.load('/test/fixtures/app/services/pane_user_storage_card.js', 1, {
-        capabilities: ['paneUserStorage', 'test']
-      });
-      card.promise.then(null, function(e){ console.log(e); });
-      card.appendTo('#qunit-fixture');
+      var cardId = '7f878b1a-34af-42ed-b477-878721cbc90d';
 
-      mockAjax();
+      store = DS.Store.create({
+        adapter: Adapter
+      });
+
+      store.load(PaneType, 'glazier-stackoverflow-auth', {
+        manifest: JSON.stringify({
+          cardUrl: '/cards/glazier-stackoverflow-auth/card.js',
+          consumes: ['fullXhr'],
+          provides: ['authenticatedStackoverflowApi']
+        })
+      });
+
+      store.load(Pane, cardId, {
+        dashboard_id: 'emberjs/ember.js',
+        pane_type_id: 'glazier-stackoverflow-auth'
+      });
+
+      var questionsPane = store.find(Pane, cardId); // needs to be loaded for service to return properly.
+
+      stop();
+      questionsPane.then(function(questionsPane) {
+        console.log(questionsPane);
+        card = conductor.load('/test/fixtures/app/services/pane_user_storage_card.js', cardId, {
+          capabilities: ['paneUserStorage', 'test']
+        });
+        card.promise.then(null, function(e){ console.log(e); });
+        card.appendTo('#qunit-fixture');
+
+        mockAjax();
+        start();
+      });
     },
     teardown: function(){
       Ember.$.ajax.restore();

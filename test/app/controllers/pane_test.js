@@ -5,10 +5,16 @@ var paneController;
 module("PaneController", {
   setup: function(){
     var container = new Ember.Container();
-    container.register('controller:dashboard', Ember.Controller.extend());
+    container.register('controller:dashboard', Ember.Controller.extend({
+      cardManager: Ember.Object.create({
+        load: function() {}
+      })
+    }));
+    container.register('controller:clipboard', {});
 
     paneController = PaneController.create({
-      container: container
+      container: container,
+      content: Ember.Object.create({})
     });
   },
   teardown: function() {

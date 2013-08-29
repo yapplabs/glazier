@@ -29,7 +29,10 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
         type: 'PUT',
         data: {data: data, access: 'private'}
       }).then(function(){
-        Glazier.PaneType.find(cardTypeName).updateUserEntry(key, value);
+        Glazier.PaneType.find(cardTypeName).then(function(paneType) {
+          paneType.updateUserEntry(key, value);
+        });
+        return true;
       });
     },
 
@@ -47,7 +50,10 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
         type: 'DELETE',
         data: {key: key, access: 'private'}
       }).then(function(){
-        Glazier.PaneType.find(cardTypeName).removeUserEntry(key);
+        Glazier.PaneType.find(cardTypeName).then(function(paneType) {
+          paneType.removeUserEntry(key);
+        });
+        return true;
       });
     }
   }

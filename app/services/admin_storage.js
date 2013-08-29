@@ -27,7 +27,10 @@ var AdminStorageService = Conductor.Oasis.Service.extend({
         type: 'PUT',
         data: { data: data }
       }).then(function(){
-        Glazier.Pane.find(cardId).updatePaneEntry(key, value);
+        Glazier.Pane.find(cardId).then(function(pane) {
+          pane.updatePaneEntry(key, value);
+        });
+        return true;
       });
     },
 
@@ -43,7 +46,10 @@ var AdminStorageService = Conductor.Oasis.Service.extend({
         type: 'DELETE',
         data: { key: key }
       }).then(function(){
-        Glazier.Pane.find(cardId).removePaneEntry(key);
+        Glazier.Pane.find(cardId).then(function(pane) {
+          pane.removePaneEntry(key);
+        });
+        return true;
       });
     }
   }

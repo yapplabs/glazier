@@ -35,8 +35,8 @@ test("requesting issues", function(){
 
   stop();
 
-  $.ajax = function(ajaxOpts) {
-    equal(ajaxOpts.url, 'https://api.github.com/path', 'the url was re-written to include the path');
+  $.ajax = function(url, ajaxOpts) {
+    equal(url, 'https://api.github.com/path', 'the url was re-written to include the path');
     var xhr = {
       setRequestHeader: function(header, value) {
         equal(header, 'Authorization');
@@ -45,6 +45,8 @@ test("requesting issues", function(){
     };
 
     ajaxOpts.beforeSend(xhr);
+
+    ajaxOpts.success(responseJSON);
 
     return Conductor.Oasis.RSVP.resolve(responseJSON);
   };
