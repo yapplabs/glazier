@@ -6,50 +6,58 @@ var opts = {
   failOnError: true
 };
 
-var cards = fs.readdirSync('cards').filter(isCardDir);
+var cards = fs.readdirSync('cards').filter(isCardDir).filter(isAllowedCard);
 
-function isCardDir(dir){
-  return dir[0] != ".";
+function isAllowedCard(dirname){
+  if (process.env.CARDS) {
+    var cardsToBuild = process.env.CARDS.split(',');
+    return cardsToBuild.indexOf(dirname) !== -1;
+  } else {
+    return true;
+  }
+}
+
+function isCardDir(dirname){
+  return dirname[0] != ".";
+}
+
+function echoCommand(dirname, text) {
+  return "(echo '-> " + dirname + ": " + text + "') && ";
+}
+
+function commandWithEcho(dirname, command) {
+  return echoCommand(dirname, command) + "(cd cards/" + dirname + " && " +  command +")";
 }
 
 function cardGruntCommand(dirname) {
-  var cardsToBuild = process.env.CARDS ? process.env.CARDS.split(',') : [];
-  if (process.env.CARDS && cardsToBuild.indexOf(dirname) == -1) {
-    console.log('skipping build for ' + dirname + ' - not in CARDS');
-    return ':'; // no-op so join(' && ') works
-  }
-  var cmd = "(cd cards/" + dirname + " && grunt)";
-  return cmd;
+  return commandWithEcho(dirname, "grunt");
 }
 
 function cardGruntDeployCommand(dirname) {
-  var cmd = "(cd cards/" + dirname + " && grunt deploy)";
-  return cmd;
+  return commandWithEcho(dirname, "grunt deploy");
 }
 
 function cardNpmInstallCommand(dirname) {
-  var cmd = "(cd cards/" + dirname + " && npm install)";
-  return cmd;
+  return commandWithEcho(dirname, "npm install");
 }
 
 function cardNpmRefreshCommand() {
-  var cmd = "rm -rf cards/*/node_modules";
-  return cmd;
+  return "rm -rf cards/*/node_modules";
 }
 
-function pkgAt(path) {
-  return grunt.file.readJSON(path + '/package.json' );
+function cardPackage(dirname) {
+  return grunt.file.readJSON('cards/' + dirname + '/package.json' );
 }
 
 function cardIngestManifestCommand(dirname) {
-  var name = pkgAt('cards/' + dirname).name;
+  var name = cardPackage(dirname).name;
   var manifestPath = 'cards/' + dirname + '/dist/dev/' + name + '/manifest.json';
   var cmd = '(cd glazier-server && bundle exec rake "glazier:card:ingest[../' + manifestPath + ']")';
   return cmd;
 }
 
 function herokuIngestCommand(dirname) {
-  var pkg = pkgAt('cards/' + dirname);
+  var pkg = cardPackage(dirname);
   var glazierConfig = pkg.glazierConfig;
 
   if (!glazierConfig.assetHost) {
