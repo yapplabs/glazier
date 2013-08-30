@@ -167,29 +167,29 @@ module.exports = {
   cloneCards: {
     command: [
       cloneHelper("yapplabs/glazier-github-issues"),
-      "ln -sf ../../glazier-github-issues cards/github-issues",
+      "ln -sfn ../../glazier-github-issues cards/github-issues",
 
       cloneHelper("yapplabs/glazier-github-issue"),
-      "ln -sf ../../glazier-github-issue cards/github-issue",
+      "ln -sfn ../../glazier-github-issue cards/github-issue",
 
       cloneHelper("yapplabs/glazier-github-repositories"),
-      "ln -sf ../../glazier-github-repositories cards/github-repositories",
+      "ln -sfn ../../glazier-github-repositories cards/github-repositories",
 
       cloneHelper("yapplabs/glazier-github-stars"),
-      "ln -sf ../../glazier-github-stars cards/github-stars",
+      "ln -sfn ../../glazier-github-stars cards/github-stars",
 
       cloneHelper("yapplabs/glazier-github-people"),
-      "ln -sf ../../glazier-github-people cards/github-people",
+      "ln -sfn ../../glazier-github-people cards/github-people",
 
       cloneHelper("yapplabs/glazier-stackoverflow"),
-      "ln -sf ../../glazier-stackoverflow/cards/auth cards/stackoverflow-auth",
-      "ln -sf ../../glazier-stackoverflow/cards/questions cards/stackoverflow-questions",
+      "ln -sfn ../../glazier-stackoverflow/cards/auth cards/stackoverflow-auth",
+      "ln -sfn ../../glazier-stackoverflow/cards/questions cards/stackoverflow-questions",
 
       cloneHelper("yapplabs/glazier-markdown-editor"),
-      "ln -sf ../../glazier-markdown-editor cards/markdown-editor",
+      "ln -sfn ../../glazier-markdown-editor cards/markdown-editor",
 
       cloneHelper("yapplabs/glazier-travis-build"),
-      "ln -sf ../../glazier-travis-build cards/travis-build"
+      "ln -sfn ../../glazier-travis-build cards/travis-build"
     ].join(" && "),
     options: opts
   }
