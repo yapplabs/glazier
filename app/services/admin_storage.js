@@ -21,6 +21,7 @@ var AdminStorageService = Conductor.Oasis.Service.extend({
     setItem: function(key, value) {
       var data = {},
           cardId = this.sandbox.card.id;
+      if (value === undefined) { value = null; }
       data[key] = JSON.stringify(value);
 
       return ajax('/api/pane_entries/' + cardId + '.json', {

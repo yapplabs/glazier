@@ -23,6 +23,7 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
           data = {},
           url = '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json';
 
+      if (value === undefined) { value = null; }
       data[key] = JSON.stringify(value);
 
       return ajax(url, {
