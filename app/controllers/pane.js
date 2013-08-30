@@ -28,7 +28,7 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   }.observes('content').on('init'),
   cardTitleChanged: function() {
     this.set('content.cardTitle', this.get('cardTitle'));
-  }.observes('cardTitle'),
+  }.observes('cardTitle').on('init'),
   watchForCardLoad: function() {
     var controller = this,
         cardReference = this.get('card');
