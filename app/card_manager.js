@@ -168,9 +168,8 @@ var CardManager = Ember.Object.extend({
   },
 
   _cardData: function(pane, manifest, data) {
-    var paneData = {}, env;
+    var paneData = {};
 
-    env = (/github\.glazier\.io/.test(window.location.hostname)) ? 'prod' : 'dev';
     manifest.env = manifest.env || {};
 
     if (pane) {
@@ -179,7 +178,7 @@ var CardManager = Ember.Object.extend({
 
     var defaults = {
       repositoryName: this.get('cardDataManager.repositoryName'),
-      env: manifest.env[env]
+      env: manifest.env[Glazier.env]
     };
 
     return Ember.merge(defaults, Ember.merge(paneData, data || {}));

@@ -19,6 +19,12 @@ function cardManifestUrl(cardManifest, url) {
 function glazierUrl(url) {
   if (Glazier.manifest) {
     var translatedUrl = Glazier.manifest[url];
+    if (Glazier.env === 'prod') {
+      var minifiedUrl = Glazier.manifest[url.replace(/\.(js|css)$/, '.min.$1')];
+      if (minifiedUrl) {
+        translatedUrl = minifiedUrl;
+      }
+    }
     if (translatedUrl) {
       return protocolRelative(Glazier.assetHost + translatedUrl);
     }

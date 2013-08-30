@@ -16,6 +16,7 @@ Glazier.PaneType = PaneType;
 Glazier.Dashboard = Dashboard;
 
 Glazier.PaneView = PaneView;
+Glazier.env = (/github\.glazier\.io/.test(window.location.hostname)) ? 'prod' : 'dev';
 
 Ember.Application.initializer(injectionsInitializer);
 Ember.Application.initializer(conductorServicesInitializer);

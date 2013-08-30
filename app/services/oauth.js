@@ -24,10 +24,8 @@ var cardEnv = function(cardId) {
   // assume the manifest is already loaded, this is likely brittle
   var manifest = Glazier.Pane.find(cardId).get('paneType.manifest');
 
-  var env = (/github\.glazier\.io/.test(window.location.hostname)) ? 'prod' : 'dev';
-
   if (manifest) {
-    return manifest.env[env];
+    return manifest.env[Glazier.env];
   }
 };
 
