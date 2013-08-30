@@ -170,7 +170,7 @@ var CardManager = Ember.Object.extend({
   _cardData: function(pane, manifest, data) {
     var paneData = {}, env;
 
-    env = (/glazier\.herokuapp\.com/.test(window.location.hostname)) ? 'prod' : 'dev';
+    env = (/github\.glazier\.io/.test(window.location.hostname)) ? 'prod' : 'dev';
     manifest.env = manifest.env || {};
 
     if (pane) {
