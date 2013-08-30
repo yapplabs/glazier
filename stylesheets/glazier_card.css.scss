@@ -32,10 +32,14 @@ body {
 }
 
 #card {
-  h3:first-of-type {
+  h3:first-of-type, .title-field {
     color: $base-color;
     font-size: 1.7em;
     margin-top: 15px;
+  }
+
+  .title-field {
+    font-family: 'Source Sans Pro', sans-serif;
   }
 
   .people {
