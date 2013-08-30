@@ -87,10 +87,6 @@ var DashboardRoute = Ember.Route.extend({
     didReorderPanes: function(){
       this.controller.set('isPerformingReorder', false);
     },
-    handleIntent: function(intent) {
-      var cardManager = this.controller.cardManager;
-      this.controllerFor('intents').handleIntent(intent, cardManager);
-    },
     addPane: function(paneType) {
       this.controller.send('addPane', paneType);
     },

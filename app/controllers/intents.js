@@ -1,11 +1,14 @@
 var IntentsController = Ember.Controller.extend({
-  needs: ['modalPaneType', 'paneTypes'],
+  needs: ['modalPaneType', 'paneTypes', 'dashboard'],
 
-  handleIntent: function (intent, cardManager) {
-    if (intent.cardName) {
-      this.handleExplicitIntent(intent, cardManager);
-    } else {
-      this.handleImplicitIntent(intent, cardManager);
+  actions: {
+    handleIntent: function (intent) {
+      var cardManager = this.get('controllers.dashboard.cardManager');
+      if (intent.cardName) {
+        this.handleExplicitIntent(intent, cardManager);
+      } else {
+        this.handleImplicitIntent(intent, cardManager);
+      }
     }
   },
 

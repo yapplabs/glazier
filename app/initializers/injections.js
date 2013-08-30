@@ -30,7 +30,7 @@ var initializer = {
     application.inject('service:identity', 'userController', 'controller:user');
     application.inject('service:authenticatedGithubApi', 'userController', 'controller:user');
     application.inject('service:oauth', 'oauthController', 'controller:oauth');
-    application.inject('service:intent', 'target', 'router:main');
+    application.inject('service:intent', 'target', 'controller:intents');
   }
 };
 
