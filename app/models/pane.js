@@ -55,4 +55,17 @@ var Pane = DS.Model.extend({
   }
 });
 
+Pane.reopenClass({
+  sortPanesThatProvideServicesFirst: function(paneA, paneB) {
+    var isPaneAProvider = !Ember.isEmpty(paneA.get('manifest.provides'));
+    var isPaneBProvider = !Ember.isEmpty(paneB.get('manifest.provides'));
+    if (isPaneAProvider === isPaneBProvider) return 0;
+    if (isPaneAProvider > isPaneBProvider) {
+      return -1
+    } else {
+      return 1;
+    }
+  }
+});
+
 export default Pane;
