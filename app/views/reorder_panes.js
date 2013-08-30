@@ -17,9 +17,6 @@ var ReorderPanesView = Ember.View.extend({
     return this.$('li').map(function(){
       return this.attributes['data-pane-id'].value;
     }).toArray();
-  }.property(),
-  applyNewOrder: function(){
-    this.get('controller').send('applyNewOrder', this.get('orderedIds'));
-  }
+  }.property().volatile()
 });
 export default ReorderPanesView;
