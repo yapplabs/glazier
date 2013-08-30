@@ -61,7 +61,7 @@ Pane.reopenClass({
     var isPaneBProvider = !Ember.isEmpty(paneB.get('manifest.provides'));
     if (isPaneAProvider === isPaneBProvider) return 0;
     if (isPaneAProvider > isPaneBProvider) {
-      return -1
+      return -1;
     } else {
       return 1;
     }
