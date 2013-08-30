@@ -7,15 +7,20 @@ module.exports = {
       if(process.env.GLAZIER_ENV !== "prod") { return path; }
       var parsed = url.parse(path, true);
 
-      if (!manifest[parsed.pathname]) {
-        throw "No file found in manifest for path " + parsed.pathname;
+      var pathname = parsed.pathname;
+      var minifiedPathname = pathname.replace(/\.(js|css)$/, '.min.$1');
+
+      var path = manifest[minifiedPathname] || manifest[pathname];
+
+      if (!path) {
+        throw "No file found in manifest for path " + pathname;
       } else {
-        console.log("Found entry for path " + parsed.pathname);
+        console.log("Found entry for path " + pathname);
       }
 
       var assetHost = grunt.config.process('<%= pkg.assetHost %>');
       var parts = {
-        pathname: assetHost + manifest[parsed.pathname],
+        pathname: assetHost + path,
         hash: parsed.hash,
         query: grunt.util._.extend({}, parsed.query, {"cors-fix": "1"})
       };
