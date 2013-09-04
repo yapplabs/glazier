@@ -1,15 +1,17 @@
 import AddPaneController from 'glazier/controllers/add_pane';
 
-import Dashboard from 'glazier/models/dashboard';
-import Pane from 'glazier/models/pane';
 import PaneType from 'glazier/models/pane_type';
+import Pane from 'glazier/models/pane';
+import Section from 'glazier/models/section';
+import Dashboard from 'glazier/models/dashboard';
 import DashboardController from 'glazier/controllers/dashboard';
+import DashboardSectionController from 'glazier/controllers/dashboard_section';
 import CardManager from 'glazier/card_manager';
 import Conductor from 'conductor';
 
 import Adapter from 'glazier/adapter';
 
-var addPaneController, dashboardController, store;
+var addPaneController, dashboardSectionController, store;
 
 module("AddPaneController", {
   setup: function() {
@@ -47,10 +49,10 @@ module("AddPaneController", {
     var authPane = store.find(Pane, '7f878b1a-34af-42ed-b477-878721cbc90d');
 
     var container = new Ember.Container();
-    dashboardController = DashboardController.create({container: container});
+    dashboardSectionController = DashboardSectionController.create({container: container});
     container.cache.dict['cardManager:main'] = CardManager.create();
     container.cache.dict['controller:user'] = Ember.Controller.create();
-    container.cache.dict['controller:dashboard'] = dashboardController;
+    container.cache.dict['controller:dashboard'] = dashboardSectionController;
     container.cache.dict['controller:paneTypes'] = Ember.Controller.create();
     container.cache.dict['controller:clipboard'] = Ember.Controller.create();
 
@@ -62,7 +64,7 @@ module("AddPaneController", {
   },
   teardown: function() {
     addPaneController = null;
-    dashboardController = null;
+    dashboardSectionController = null;
     Ember.run(function() {
       store.destroy();
       store = null;
@@ -71,15 +73,15 @@ module("AddPaneController", {
 });
 
 test("No auth pane required to add second questions pane", function() {
-  store.load(Dashboard, 'emberjs/ember.js', {
+  store.load(Section, '1', {
     pane_ids: ['1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2', '7f878b1a-34af-42ed-b477-878721cbc90d']
   });
-  var dashboard = store.find(Dashboard, 'emberjs/ember.js');
-  dashboardController.set('content', dashboard);
+  var section = store.find(Section, '1');
+  dashboardSectionController.set('content', section);
 
   var questionsPaneType = store.find(PaneType, 'glazier-stackoverflow-questions');
-  var dependencies = dashboardController.paneTypesToAdd(questionsPaneType);
-  equal(dependencies.length, 0, "all dependencies are already in the dashboard's panes");
+  var dependencies = dashboardSectionController.paneTypesToAdd(questionsPaneType);
+  equal(dependencies.length, 0, "all dependencies are already in the section's panes");
 });
 
 

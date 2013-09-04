@@ -1,9 +1,6 @@
 var DashboardView = Ember.View.extend({
   elementId: 'dashboard',
-  classNames: ['block-group'],
-  classNameBindings: [
-    'controller.hidePanes'
-  ]
+  classNames: ['block-group']
 });
 
 export default DashboardView;

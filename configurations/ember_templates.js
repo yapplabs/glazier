@@ -6,7 +6,7 @@ module.exports = {
       }
     },
     files: {
-      "tmp/public/glazier/templates.js": "templates/*.handlebars"
+      "tmp/public/glazier/templates.js": "templates/**/*.handlebars"
     }
   }
 };

@@ -3,7 +3,9 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('dashboard', { path: '/:github_user/:github_repo' });
+  this.resource('dashboard', { path: '/:github_user/:github_repo' }, function() {
+    this.route('section', { path: '/:section_slug' });
+  });
   this.route('notFound');
   this.route('rateLimitExceeded');
   this.route('error');

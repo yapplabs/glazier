@@ -64,10 +64,10 @@ var BulkPositionUpdater = Ember.Object.extend({
     this.adapter.ajax(this.adapter.buildURL(root, "reorder"), "POST", { data: data });
   },
   dataForType: function(type, records) {
-    var dashboard = records.list[0].get('dashboard'),
-        panes = dashboard.get('panes');
+    var section = records.list[0].get('section'),
+        panes = section.get('panes');
     return {
-      dashboard_id: dashboard.get('id'),
+      section_id: section.get('id'),
       pane_ids: panes.map(function(pane){
                   return { id: pane.get('id'), position: pane.get('position') };
                 }).sort(function(a,b){

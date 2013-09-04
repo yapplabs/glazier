@@ -5,7 +5,7 @@ var CARD_PREFIX_REGEX = /^card:/,
     alias = Ember.computed.alias;
 
 var PaneController = Ember.ObjectController.extend(Ember.Evented, {
-  needs: ['dashboard', 'clipboard'],
+  needs: ['dashboard', 'dashboardSection', 'clipboard'],
   isAdmin: alias('controllers.dashboard.isAdmin'),
   isHidden: alias('card.hidden'),
   fullSize: false,
@@ -19,8 +19,7 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   contentDidChange: function() {
     var pane = this.get('content');
     if (pane) {
-      var dashboard = pane.get('dashboard');
-      var cardManager = this.get('controllers.dashboard.cardManager');
+      var cardManager = this.get('controllers.dashboardSection.cardManager');
       this.set('card', cardManager.load(pane));
     } else {
       this.set('card', null);

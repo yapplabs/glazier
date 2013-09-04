@@ -2,6 +2,7 @@ import Application from 'glazier/application';
 
 import Pane from 'glazier/models/pane';
 import PaneType from 'glazier/models/pane_type';
+import Section from 'glazier/models/section';
 import Dashboard from 'glazier/models/dashboard';
 
 import PaneView from 'glazier/views/pane';
@@ -13,6 +14,7 @@ var Glazier = Application.create();
 
 Glazier.Pane = Pane;
 Glazier.PaneType = PaneType;
+Glazier.Section = Section;
 Glazier.Dashboard = Dashboard;
 
 Glazier.PaneView = PaneView;

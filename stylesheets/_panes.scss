@@ -32,9 +32,8 @@ iframe {
   @include pie-clearfix;
   position: absolute;
   top: $header-height;
-  left: 0; right: 0;
+  left: $section-nav-width + ($page-padding * 2); right: 0;
   min-height: 100%;
-  padding-left: $page-padding;
   @include scroll-after($footer-height);
   @include transition(500ms);
 
@@ -170,7 +169,7 @@ iframe {
     @include animation(slideUp $fast ease-out);
     @include transition(background $fast);
     @include clearfix;
-  
+
     li {
       display: block;
       height: 25px;

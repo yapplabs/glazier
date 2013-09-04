@@ -5,7 +5,7 @@ var paneController;
 module("PaneController", {
   setup: function(){
     var container = new Ember.Container();
-    container.register('controller:dashboard', Ember.Controller.extend({
+    container.register('controller:dashboardSection', Ember.Controller.extend({
       cardManager: Ember.Object.create({
         load: function() {}
       })

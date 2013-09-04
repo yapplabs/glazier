@@ -128,7 +128,27 @@ body {
     margin-top: 4px;
   }
 }
-.dashboard-card-controls {
+ol.navigation {
+  margin-left:$page-padding;
+  li {
+    background-color:#4d4d4d;
+    color:#999;
+    width:$section-nav-width;
+    height:60px;
+    line-height:60px;
+    @include box-sizing(border-box);
+    padding-left:15px;
+    font-size:20px;
+  }
+  .icon {
+    margin-right:10px;
+  }
+  li.selected {
+    background-color:#737373;
+    color:#fff;
+  }
+}
+.section-card-controls {
   position: absolute;
   text-align: right;
   overflow: hidden;
@@ -136,7 +156,7 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   right: 25px;
-  bottom: 10px;
+  top: 75px;
   white-space: nowrap;
   height: 40px;
   width:200px;

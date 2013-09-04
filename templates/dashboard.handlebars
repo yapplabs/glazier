@@ -1,9 +1,12 @@
 <div id="repository-header-block" class="block">
   {{render "repository_header" }}
-  {{render "dashboard_controls" }}
 </div>
-<div class="panes block-group">
-  {{#unless isPerformingReorder}}
-    {{render "panes" panes}}
-  {{/unless}}
-</div>
+<ol class="navigation">
+  {{#each sections itemController='sectionNavItem'}}
+    <li {{bind-attr class="isCurrent:selected"}}>
+      <span {{bind-attr class=":icon sectionIcon"}}></span>
+      {{name}}
+    </li>
+  {{/each}}
+</ol>
+{{outlet}}
