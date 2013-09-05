@@ -12,6 +12,12 @@ var SectionNavigationStateManager = Ember.StateManager.extend({
     add: function(manager) {
       manager.router.send('showModal', 'add_section');
     },
+    remove: function(manager, section) {
+      if (window.confirm("Are you sure you want to remove '" + section.get('name') + "'?")) {
+        var dashboard = this.container.lookup('controller:dashboard').get('content');
+        dashboard.removeSection(section);
+      }
+    },
     createSection: function(manager) {
       var addSectionController = this.container.lookup('controller:addSection');
       var dashboard = this.container.lookup('controller:dashboard').get('content');

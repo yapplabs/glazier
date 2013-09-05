@@ -16,6 +16,16 @@ var Dashboard = DS.Model.extend({
   },
   nextSectionPosition: function() {
     return this.get('sections.length');
+  },
+  removeSection: function(section) {
+    var store = this.get('store');
+    var transaction = store.transaction();
+    transaction.add(section);
+    section.get('panes').forEach(function(pane) {
+      pane.unloadRecord()
+    });
+    section.deleteRecord();
+    transaction.commit();
   }
 });
 

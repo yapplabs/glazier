@@ -47,6 +47,9 @@ var ApplicationRoute = Ember.Route.extend({
     },
     userDidChange: function(){
 
+    },
+    navigateToHome: function() {
+      this.transitionTo('index');
     }
   }
 });

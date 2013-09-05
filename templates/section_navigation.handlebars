@@ -1,9 +1,12 @@
 <div class='section-navigation'>
   <ol>
     {{#each}}
-      <li {{bind-attr class="isCurrent:selected"}} {{action navigateToSection this}}>
+      <li {{bind-attr class="isCurrent:selected"}} {{action "navigateToSection" this}}>
         <span {{bind-attr class=":icon sectionIcon"}}></span>
         {{name}}
+        {{#if parentController.isEditing}}
+          <span class="icon-x remove-section" {{action "remove" this target=parentController.stateManager bubbles=false}}></span>
+        {{/if}}
       </li>
     {{/each}}
     {{#if isEditing}}

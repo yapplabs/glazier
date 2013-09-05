@@ -198,6 +198,7 @@ body {
 .section-navigation {
   margin-left:$page-padding;
   li {
+    position: relative;
     background-color: #4d4d4d;
     color: #999;
     width: $section-nav-width;
@@ -219,6 +220,16 @@ body {
     background-color: #999;
     color: #444;
     margin-top: 4px;
+  }
+  .remove-section {
+    color: maroon;
+    font-size: 12px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    &:hover {
+      color: red;
+    }
   }
 }
 .section-card-controls {
