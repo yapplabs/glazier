@@ -22,7 +22,7 @@ var Dashboard = DS.Model.extend({
     var transaction = store.transaction();
     transaction.add(section);
     section.get('panes').forEach(function(pane) {
-      pane.unloadRecord()
+      pane.unloadRecord();
     });
     section.deleteRecord();
     transaction.commit();

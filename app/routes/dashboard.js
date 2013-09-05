@@ -78,7 +78,7 @@ var DashboardRoute = Ember.Route.extend({
     },
     navigateToSection: function(section) {
       var dashboard = this.currentModel;
-      if (this.controllerFor('dashboardSection').get('content') !== section) {
+      if (this.modelFor('dashboardSection') !== section) {
         this.transitionTo('dashboard.section', dashboard, section);
       }
     }
