@@ -53,7 +53,7 @@ grunt.registerTask('smartBuild', 'braux', function(){
   var tasks = [];
 
   // exclude cards... for now
-  if (changedFiles.filter(byRegex(/\.js$/)).length > 0) {
+  if (changedFiles.filter(byRegex(/\.(js|handlebars)$/)).length > 0) {
     tasks.push('build:js');
   }
 
