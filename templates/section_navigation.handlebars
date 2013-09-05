@@ -1,0 +1,22 @@
+<div class='section-navigation'>
+  <ol>
+    {{#each}}
+      <li {{bind-attr class="isCurrent:selected"}} {{action navigateToSection this}}>
+        <span {{bind-attr class=":icon sectionIcon"}}></span>
+        {{name}}
+      </li>
+    {{/each}}
+    {{#if isEditing}}
+      <li class='add-section' {{action "add" target=stateManager}}>
+        Add Section
+      </li>
+    {{/if}}
+  </ol>
+
+  {{#if isEditing}}
+    <button {{action "done" target=stateManager}}>Done</button>
+  {{else}}
+    <button {{action "edit" target=stateManager}}>Edit</button>
+  {{/if}}
+</div>
+

@@ -128,24 +128,97 @@ body {
     margin-top: 4px;
   }
 }
-ol.navigation {
+.not-found {
+  text-align: center;
+  color: #fff;
+  padding-top: 240px;
+  .logo-css {
+    @include transform(scale(7.5, 7.5));
+    @include transform-origin(top center 0);
+    background-color: transparent;
+  }
+  .logo-pane-1 {
+    background: #343434;
+  }
+  .logo-pane-2 {
+    border-top-color: #3b3b3b;
+  }
+  .logo-pane-3 {
+    background: #464646;
+  }
+  .logo-pane-4 {
+    border-top-color: #404040;
+  }
+  .logo-pane-5 {
+    border-bottom: none;
+  }
+  .face-bar {
+    background-color: $gray-darker;
+    height: 4px;
+    position: absolute;
+  }
+  .mouth {
+    width: 33px;
+    height: 5px;
+    top: 81px;
+    right: 9px;
+  }
+  .left-eye {
+    width: 20px;
+    top: 30px;
+    left: 16px;
+  }
+  .right-eye {
+    width: 20px;
+    top: 30px;
+    right: 9px;
+  }
+  .logo-box {
+    height: 100px;
+    width: 100px;
+    margin: 0px auto 27px;
+    position: relative;
+  }
+  .code {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+  .message {
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 28px;
+    margin-bottom: 40px;
+  }
+  button {
+    height: 40px;
+    width: 200px;
+    font-size: 16px;
+  }
+}
+.section-navigation {
   margin-left:$page-padding;
   li {
-    background-color:#4d4d4d;
-    color:#999;
-    width:$section-nav-width;
-    height:60px;
-    line-height:60px;
+    background-color: #4d4d4d;
+    color: #999;
+    width: $section-nav-width;
+    height: 60px;
+    line-height: 60px;
     @include box-sizing(border-box);
-    padding-left:15px;
-    font-size:20px;
+    padding-left: 15px;
+    font-size: 20px;
+    cursor: pointer;
   }
   .icon {
     margin-right:10px;
   }
   li.selected {
-    background-color:#737373;
-    color:#fff;
+    background-color: #737373;
+    color: #fff;
+  }
+  .add-section {
+    background-color: #999;
+    color: #444;
+    margin-top: 4px;
   }
 }
 .section-card-controls {

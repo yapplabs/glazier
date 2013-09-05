@@ -1,10 +1,21 @@
 import Conductor from 'conductor';
 
 var DashboardSectionRoute = Ember.Route.extend({
-  model: function(){
-    return this.modelFor('dashboard').get('sections.firstObject');
+  serialize: function (model, params) {
+    return {section_slug: model.get('slug')};
+  },
+
+  model: function(params){
+    var section = this.modelFor('dashboard').get('sections').findBy("slug", params.section_slug);
+    if (!section) {
+      throw new Error("No section found for " + params.section_slug);
+    }
+    return section;
   },
   actions: {
+    error: function(error) {
+      this.transitionTo('notFound');
+    },
     willReorderPanes: function(){
       this.send('hideModal');
       this.controller.set('isPerformingReorder', true);
@@ -17,6 +28,9 @@ var DashboardSectionRoute = Ember.Route.extend({
     },
     paste: function(pane) {
       this.controller.send('addPane', pane.get('paneType'), pane.get('repository'), pane.get('paneEntries'));
+    },
+    willTransition: function() {
+      this.controller.set('content', null);
     }
   }
 });

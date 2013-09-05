@@ -49,7 +49,7 @@ define("resolver",
    * important features:
    *
    *  1) The resolver makes the container aware of es6 modules via the AMD
-   *     output. The loader's registry is consulted so that classes can be 
+   *     output. The loader's registry is consulted so that classes can be
    *     resolved directly via the module loader, without needing a manual
    *     `import`.
    *  2) is able provide injections to classes that implement `extend`
@@ -60,14 +60,15 @@ define("resolver",
     util: 'utils',
     route: 'routes',
     service: 'services',
-    controller: 'controllers'
+    controller: 'controllers',
+    stateManager: 'state_managers'
   };
 
   function classFactory(klass) {
     return {
       create: function (injections) {
         if (typeof klass.extend === 'function') {
-          return klass.extend(injections);  
+          return klass.extend(injections);
         } else {
           return klass;
         }

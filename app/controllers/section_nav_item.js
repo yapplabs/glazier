@@ -1,7 +1,7 @@
 var SectionNavItemController = Ember.ObjectController.extend({
   isCurrent: function(){
-    return true; //TODO: compare this to the current section
-  }.property('content'),
+    return this.get('content') === this.get('parentController.currentSection');
+  }.property('content', 'parentController.currentSection'),
   sectionIcon: function(){
     var containerType = this.get('containerType');
     switch(containerType) {

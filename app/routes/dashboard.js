@@ -61,7 +61,6 @@ var DashboardRoute = Ember.Route.extend({
 
       if (error.status === 404) {
         this.transitionTo('notFound');
-        this.controllerFor('notFound').set('content', responseText.message);
       } else if (error.status === 403 &&
                  error.getResponseHeader('X-RateLimit-Remaining') === '0') {
         var reset = new Date(parseInt(error.getResponseHeader('X-RateLimit-Reset'),10)*1000);
@@ -77,8 +76,9 @@ var DashboardRoute = Ember.Route.extend({
         this.transitionTo('error');
       }
     },
-    willTransition: function() {
-      this.controller.set('content', null);
+    navigateToSection: function(section) {
+      var dashboard = this.currentModel;
+      this.transitionTo('dashboard.section', dashboard, section);
     }
   }
 });

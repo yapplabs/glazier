@@ -1,12 +1,5 @@
 <div id="repository-header-block" class="block">
   {{render "repository_header" }}
 </div>
-<ol class="navigation">
-  {{#each sections itemController='sectionNavItem'}}
-    <li {{bind-attr class="isCurrent:selected"}}>
-      <span {{bind-attr class=":icon sectionIcon"}}></span>
-      {{name}}
-    </li>
-  {{/each}}
-</ol>
+{{render 'sectionNavigation'}}
 {{outlet}}
