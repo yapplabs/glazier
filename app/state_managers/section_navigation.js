@@ -11,6 +11,7 @@ var SectionNavigationStateManager = Ember.StateManager.extend({
       manager.transitionTo('showing');
     },
     add: function(manager) {
+      this.container.lookup('controller:addSection').reset();
       manager.router.send('showModal', 'add_section');
     },
     remove: function(manager, section) {
