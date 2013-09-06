@@ -1,3 +1,5 @@
+import Section from 'glazier/models/section';
+
 var Dashboard = DS.Model.extend({
   sections: DS.hasMany('Glazier.Section'),
   createSection: function(attributes) {
@@ -9,7 +11,7 @@ var Dashboard = DS.Model.extend({
       name: attributes.name,
       containerType: attributes.containerType,
       position: this.nextSectionPosition(),
-      slug: attributes.name.dasherize()
+      slug: Section.sluggerize(attributes.name)
     });
 
     transaction.commit();

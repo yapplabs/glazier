@@ -205,9 +205,12 @@ body {
     height: 60px;
     line-height: 60px;
     @include box-sizing(border-box);
-    padding-left: 15px;
+    padding: 0 15px;
     font-size: 20px;
     cursor: pointer;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
   .icon {
     margin-right:10px;

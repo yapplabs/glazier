@@ -48,9 +48,13 @@ var Section = DS.Model.extend({
     return capabilities;
   }.property('panes.@each'),
   updateSlug: function(){
-    var slug = this.get('name').dasherize();
-    this.set('slug', slug);
+    this.set('slug', Section.sluggerize(this.get('name')));
   }.observes('name')
 });
 
+Section.reopenClass({
+  sluggerize: function(name) {
+    return name.dasherize().replace(/[^a-z0-9-]/g, '');
+  }
+});
 export default Section;
