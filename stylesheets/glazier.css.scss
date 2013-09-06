@@ -219,6 +219,11 @@ body {
     background-color: #737373;
     color: #fff;
   }
+  input {
+    font-size: 20px;
+    font-family: 'Source Sans Pro', sans-serif;
+    width: $section-nav-width - 90px;
+  }
   .add-section {
     background-color: #999;
     color: #444;
