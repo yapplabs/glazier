@@ -1,4 +1,6 @@
-var SectionNavItemController = Ember.ObjectController.extend({
+import BufferedProxyMixin from 'glazier/controllers/buffered_proxy_mixin';
+
+var SectionNavItemController = Ember.ObjectController.extend(BufferedProxyMixin, {
   isCurrent: function(){
     return this.get('content') === this.get('parentController.currentSection');
   }.property('content', 'parentController.currentSection'),

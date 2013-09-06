@@ -27,6 +27,7 @@ var initializer = {
     application.inject('cardManager:main', 'cardDataManager', 'cardDataManager:main');
 
     application.inject('stateManager:sectionNavigation', 'router', 'router:main');
+    application.inject('stateManager:sectionNavigation', 'store', 'store:main');
 
     application.inject('cardManager:main', 'conductor', 'conductor:main');
     application.inject('service:identity', 'userController', 'controller:user');

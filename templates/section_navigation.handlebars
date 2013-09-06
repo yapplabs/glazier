@@ -1,25 +1,30 @@
 <div class='section-navigation'>
+{{#if isEditing}}
+  <ol>
+    {{#each}}
+      <li {{bind-attr class="isCurrent:selected"}}>
+        <span {{bind-attr class=":icon sectionIcon"}}></span>
+        {{input value=name}}
+        <span class="icon-x remove-section" {{action "remove" this target=parentController.stateManager bubbles=false}}></span>
+      </li>
+    {{/each}}
+    <li class='add-section' {{action "add" target=stateManager}}>
+      Add Section
+    </li>
+  </ol>
+
+  <button {{action "done" target=stateManager}}>Done</button>
+{{else}}
   <ol>
     {{#each}}
       <li {{bind-attr class="isCurrent:selected"}} {{action "navigateToSection" this}}>
         <span {{bind-attr class=":icon sectionIcon"}}></span>
         {{name}}
-        {{#if parentController.isEditing}}
-          <span class="icon-x remove-section" {{action "remove" this target=parentController.stateManager bubbles=false}}></span>
-        {{/if}}
       </li>
     {{/each}}
-    {{#if isEditing}}
-      <li class='add-section' {{action "add" target=stateManager}}>
-        Add Section
-      </li>
-    {{/if}}
   </ol>
 
-  {{#if isEditing}}
-    <button {{action "done" target=stateManager}}>Done</button>
-  {{else}}
-    <button {{action "edit" target=stateManager}}>Edit</button>
-  {{/if}}
+  <button {{action "edit" target=stateManager}}>Edit</button>
+{{/if}}
 </div>
 

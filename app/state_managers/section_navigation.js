@@ -7,6 +7,7 @@ var SectionNavigationStateManager = Ember.StateManager.extend({
   }),
   editing: Ember.State.extend({
     done: function(manager) {
+      this.persistUpdatedSectionNames(manager);
       manager.transitionTo('showing');
     },
     add: function(manager) {
@@ -34,7 +35,17 @@ var SectionNavigationStateManager = Ember.StateManager.extend({
     exit: function() {
       this.get('sectionNavigationController').set('isEditing', false);
     },
-    edit: Ember.K
+    edit: Ember.K,
+    persistUpdatedSectionNames: function(manager){
+      var transaction = manager.get('store').transaction();
+      this.container.lookup("controller:sectionNavigation").forEach(function(sectionNavItemController){
+        if (sectionNavItemController.get('hasBufferedChanges')) {
+          sectionNavItemController.applyBufferedChanges();
+          transaction.add(sectionNavItemController.get('content'));
+        }
+      });
+      transaction.commit();
+    }
   })
 });
 

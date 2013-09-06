@@ -46,7 +46,11 @@ var Section = DS.Model.extend({
     });
 
     return capabilities;
-  }.property('panes.@each')
+  }.property('panes.@each'),
+  updateSlug: function(){
+    var slug = this.get('name').dasherize();
+    this.set('slug', slug);
+  }.observes('name')
 });
 
 export default Section;
