@@ -16,7 +16,11 @@ var SectionNavigationStateManager = Ember.StateManager.extend({
     remove: function(manager, section) {
       if (window.confirm("Are you sure you want to remove '" + section.get('name') + "'?")) {
         var dashboard = this.container.lookup('controller:dashboard').get('content');
+        var oldIndex = dashboard.get('sections').toArray().indexOf(section);
         dashboard.removeSection(section);
+        section.one('didDelete', function(){
+          manager.router.send('sectionRemoved', section, oldIndex);
+        });
       }
     },
     createSection: function(manager) {
