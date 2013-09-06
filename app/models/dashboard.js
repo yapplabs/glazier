@@ -4,7 +4,7 @@ var Dashboard = DS.Model.extend({
     var store = this.get('store');
     var transaction = store.transaction();
 
-    transaction.createRecord(Glazier.Section, {
+    var section = transaction.createRecord(Glazier.Section, {
       dashboard: this,
       name: attributes.name,
       containerType: attributes.containerType,
@@ -12,7 +12,8 @@ var Dashboard = DS.Model.extend({
       slug: attributes.name.dasherize()
     });
 
-    return transaction.commit();
+    transaction.commit();
+    return section;
   },
   nextSectionPosition: function() {
     return this.get('sections.length');

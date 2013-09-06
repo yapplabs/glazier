@@ -23,7 +23,10 @@ var SectionNavigationStateManager = Ember.StateManager.extend({
       var addSectionController = this.container.lookup('controller:addSection');
       var dashboard = this.container.lookup('controller:dashboard').get('content');
       var name = addSectionController.get('name');
-      dashboard.createSection({name: name, containerType: 'board'});
+      var section = dashboard.createSection({name: name, containerType: 'board'});
+      section.one("didCreate", function(){
+        manager.router.send('navigateToSection', section);
+      });
       manager.router.send('hideModal');
     },
     sectionNavigationController: function() {
