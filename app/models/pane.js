@@ -1,6 +1,6 @@
 var Pane = DS.Model.extend({
-  paneType: DS.belongsTo('Glazier.PaneType'),
-  section: DS.belongsTo('Glazier.Section'),
+  paneType: DS.belongsTo('paneType'),
+  section: DS.belongsTo('section'),
   position: DS.attr('number'),
   repository: DS.attr('string'),
 

@@ -16,16 +16,18 @@ var DashboardRoute = Ember.Route.extend({
   },
   model: function (params) {
     var id = params.github_user + '/' + params.github_repo,
-        accessToken = this.controllerFor('user').get('accessToken');
+        accessToken = this.controllerFor('user').get('accessToken'),
+        store = this.store;
+
     // We check if the repo exists before hitting the server
     // since we need to do this for the sidebar and this
     // saves the server from having to repeat it
     return Repository.find(id, accessToken).then(function (repository) {
-      var promise, dashboard = Glazier.Dashboard.find(id);
+      var promise, dashboard = store.find('dashboard', id);
       if (dashboard.get('isLoaded')) {
         promise = dashboard.reload();
       } else {
-        promise = Glazier.Dashboard.find(id);
+        promise = dashboard;
       }
 
       return promise.then(function(dashboard){

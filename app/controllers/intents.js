@@ -15,7 +15,7 @@ var IntentsController = Ember.Controller.extend({
   handleExplicitIntent: function(intent, cardManager) {
     var controller = this;
 
-    Glazier.PaneType.find(intent.cardName).then(function(paneType) {
+    this.store.find('pane_type', intent.cardName).then(function(paneType) {
       if (!cardManager || cardManager.isDestroyed) {
         return Ember.RSVP.reject("card manager unavailable - no longer in dashboard route");
       }

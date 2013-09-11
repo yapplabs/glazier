@@ -52,7 +52,8 @@ module("CardManager", {
       })
     });
 
-    store.load(PaneType, '/cards/github-auth/manifest.json', {
+    store.push('pane_type', {
+      id: '/cards/github-auth/manifest.json',
       manifest: {
         cardUrl: '/cards/github-auth/card.js',
         consumes: [ 'fullXhr', 'configuration', 'paneUserStorage', 'identity' ],
@@ -64,7 +65,8 @@ module("CardManager", {
       providedCapabilities: []
     }));
 
-    store.load(Pane, '7f878b1a-34af-42ed-b477-878721cbc90d', {
+    store.push('pane', {
+      id: '7f878b1a-34af-42ed-b477-878721cbc90d',
       paneType: '/cards/github-auth/manifest.json'
     });
 

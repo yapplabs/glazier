@@ -1,6 +1,6 @@
 import uuid from 'glazier/utils/uuid';
 
-var Adapter = DS.RESTAdapter.extend({
+var ApplicationAdapter = DS.RESTAdapter.extend({
   init: function(){
     this._super();
     this.set('bulkPositionUpdater', BulkPositionUpdater.create({ adapter: this }));
@@ -16,25 +16,10 @@ var Adapter = DS.RESTAdapter.extend({
     else {
       return this._super(store, type, records);
     }
-  }
-});
-
-
-Adapter.registerTransform('json', {
-  deserialize: function (serialized) {
-    return JSON.parse(serialized);
   },
-  serialize: function(deserialized) {
-    return JSON.stringify(deserialized);
-  }
-});
-
-Adapter.registerTransform('passthrough', {
-  deserialize: function (serialized) {
-    return serialized;
-  },
-  serialize: function(deserialized) {
-    return deserialized;
+  pathForType: function(type) {
+    var decamelized = Ember.String.decamelize(type);
+    return Ember.String.pluralize(decamelized);
   }
 });
 
@@ -77,4 +62,4 @@ var BulkPositionUpdater = Ember.Object.extend({
   }
 });
 
-export default Adapter;
+export default ApplicationAdapter;

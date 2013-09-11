@@ -15,7 +15,7 @@ var PaneType = DS.Model.extend({
   }.property('manifest'),
   panesOfThisType: function(){
     var thisPaneType = this;
-    return this.get('store').filter(Glazier.Pane, function(pane){
+    return this.get('store').filter('pane', function(pane){
       return pane.get('paneType') === thisPaneType;
     });
   }.property(),

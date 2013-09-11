@@ -1,6 +1,6 @@
 var IndexRoute = Ember.Route.extend({
   model: function () {
-    return Glazier.Dashboard.find();
+    return this.store.find('dashboard');
   }
 });
 

@@ -3,7 +3,6 @@ import assertResolved from 'helpers/promise_test_helpers';
 import { inCard, TestService } from 'helpers/card_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
 import mockAjax from 'helpers/ajax_test_helpers';
-import Adapter from 'glazier/adapter';
 import Pane from 'glazier/models/pane';
 import PaneType from 'glazier/models/pane_type';
 import Conductor from 'conductor';
@@ -22,11 +21,14 @@ if (!/phantom/i.test(navigator.userAgent)) {
 
       var cardId = '7f878b1a-34af-42ed-b477-878721cbc90d';
 
+      var container = new Ember.Container();
+      container.register('model:pane_type', PaneType);
       store = DS.Store.create({
-        adapter: Adapter
+        container: container
       });
 
-      store.load(PaneType, 'glazier-stackoverflow-auth', {
+      store.push('pane_type', {
+        id: 'glazier-stackoverflow-auth',
         manifest: JSON.stringify({
           cardUrl: '/cards/glazier-stackoverflow-auth/card.js',
           consumes: ['fullXhr'],
@@ -34,7 +36,8 @@ if (!/phantom/i.test(navigator.userAgent)) {
         })
       });
 
-      store.load(Pane, cardId, {
+      store.push('pane', {
+        id: cardId,
         dashboard_id: 'emberjs/ember.js',
         pane_type_id: 'glazier-stackoverflow-auth'
       });

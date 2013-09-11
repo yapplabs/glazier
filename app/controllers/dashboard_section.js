@@ -37,7 +37,7 @@ var DashboardSectionController = Ember.ObjectController.extend({
     addPane: function(paneType, repository, paneEntries) {
       var store = this.get('store');
       var dependencies = this.paneTypesToAdd(paneType);
-      var transaction = store.transaction();
+
       // TODO: make recursively handle dependencies. (YAGNI?)
       var section = this.get('content');
 
@@ -46,23 +46,22 @@ var DashboardSectionController = Ember.ObjectController.extend({
 
       if (dependencies) {
         dependencies.forEach(function(paneType) {
-          transaction.createRecord(Glazier.Pane, {
+          store.createRecord('pane', {
             section: section,
             paneType: paneType,
             position: section.get('nextPanePosition')
-          });
+          }).save();
         }, this);
       }
 
-      transaction.createRecord(Glazier.Pane, {
+      store.createRecord('pane', {
         section: section,
         paneType: paneType,
         repository: repository,
         position: section.get('nextPanePosition'),
         paneEntries: paneEntries
-      });
+      }).save();
 
-      transaction.commit();
       this.send('hideModal');
 
       this.scrollLastPaneIntoView();

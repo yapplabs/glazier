@@ -84,7 +84,7 @@ Ember.onLoad('Ember.Application', function(Application){
     after: 'registerConsumers',
     initialize: function(container, application) {
       var consumer = container.lookup('consumer:remoteEmberObject');
-      if (!consumer) { return; }
+      if (!consumer || !consumer.controllers) { return; }
       Ember.EnumerableUtils.forEach(consumer.controllers, function(name){
         var controller = container.lookup('controller:' + name);
         var bucket = {

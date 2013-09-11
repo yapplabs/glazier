@@ -19,8 +19,8 @@ var Section = DS.Model.extend({
   name: DS.attr('string'),
   slug: DS.attr('string'),
   containerType: DS.attr('string'),
-  panes: DS.hasMany('Glazier.Pane'),
-  dashboard: DS.belongsTo('Glazier.Dashboard'),
+  panes: DS.hasMany('pane'),
+  dashboard: DS.belongsTo('dashboard'),
   reorderPanes: function(orderedPaneIds) {
     var transaction = this.get('store').transaction();
     this.get('panes').toArray().forEach(function(pane){

@@ -8,18 +8,23 @@ import DashboardController from 'glazier/controllers/dashboard';
 import DashboardSectionController from 'glazier/controllers/dashboard_section';
 import CardManager from 'glazier/card_manager';
 import Conductor from 'conductor';
-
-import Adapter from 'glazier/adapter';
+import ApplicationAdapter from 'glazier/adapters/application';
 
 var addPaneController, dashboardSectionController, store;
 
 module("AddPaneController", {
   setup: function() {
+    var container = new Ember.Container();
+    container.register('adapter:application', ApplicationAdapter);
+    container.register('model:pane_type', PaneType);
+    container.register('model:pane', Pane);
+    container.register('model:section', Section);
     store = DS.Store.create({
-      adapter: Adapter
+      container: container
     });
 
-    store.load(PaneType, 'glazier-stackoverflow-auth', {
+    store.push('pane_type', {
+      id: 'glazier-stackoverflow-auth',
       manifest: JSON.stringify({
         cardUrl: '/cards/glazier-stackoverflow-auth/card.js',
         consumes: ['fullXhr'],
@@ -27,20 +32,23 @@ module("AddPaneController", {
       })
     });
 
-    store.load(Pane, '7f878b1a-34af-42ed-b477-878721cbc90d', {
+    store.push('pane', {
+      id: '7f878b1a-34af-42ed-b477-878721cbc90d',
       dashboard_id: 'emberjs/ember.js',
       pane_type_id: 'glazier-stackoverflow-auth'
     });
 
 
-    store.load(PaneType, 'glazier-stackoverflow-questions', {
+    store.push('pane_type', {
+      id: 'glazier-stackoverflow-questions',
       manifest: JSON.stringify({
         cardUrl: '/cards/glazier-stackoverflow-questions/card.js',
         consumes: ['authenticatedStackoverflowApi']
       })
     });
 
-    store.load(Pane, '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2', {
+    store.push('pane', {
+      id: '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2',
       dashboard_id: 'emberjs/ember.js',
       pane_type_id: 'glazier-stackoverflow-questions'
     });
@@ -48,7 +56,6 @@ module("AddPaneController", {
     var questionsPane = store.find(Pane, '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2');
     var authPane = store.find(Pane, '7f878b1a-34af-42ed-b477-878721cbc90d');
 
-    var container = new Ember.Container();
     dashboardSectionController = DashboardSectionController.create({container: container});
     container.cache.dict['cardManager:main'] = CardManager.create();
     container.cache.dict['controller:user'] = Ember.Controller.create();
@@ -73,7 +80,8 @@ module("AddPaneController", {
 });
 
 test("No auth pane required to add second questions pane", function() {
-  store.load(Section, '1', {
+  store.push('section', {
+    id: '1',
     pane_ids: ['1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2', '7f878b1a-34af-42ed-b477-878721cbc90d']
   });
   var section = store.find(Section, '1');
@@ -86,7 +94,7 @@ test("No auth pane required to add second questions pane", function() {
 
 
 // test("With a dashboard with no panes, the auth pane is a dependency", function() {
-//   store.load(Dashboard, 'emberjs/ember.js', {});
+//   store.push('dashboard', {id: 'emberjs/ember.js'});
 //   var dashboard = store.find(Dashboard, 'emberjs/ember.js');
 //   dashboardController.set('content', dashboard);
 
