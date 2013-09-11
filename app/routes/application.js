@@ -27,6 +27,7 @@ var ApplicationRoute = Ember.Route.extend({
     this.controllerFor('modal').set('isVisible', false);
     this.controllerFor('application').set('modalIsVisible', false);
     this.controllerFor('dashboard').set('hidePanes', false);
+    this.disconnectOutlet({ parentView: 'modal' });
   },
   actions: {
     showAddPane: function() {

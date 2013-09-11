@@ -18,20 +18,21 @@ var initializer = {
       conductorURL: conductorUrl()
     }), { instantiate: false});
 
-    application.register('cardManager:main', CardManager, {singleton: false});
-    application.register('cardDataManager:main', CardDataManager);
+    application.register('card_manager:main', CardManager, {singleton: false});
+    application.register('card_data_manager:main', CardDataManager);
 
-    application.inject('cardDataManager:main', 'userController', 'controller:user');
-    application.inject('cardDataManager:main', 'repositoryController', 'controller:repository');
+    application.inject('card_data_manager:main', 'userController', 'controller:user');
+    application.inject('card_data_manager:main', 'repositoryController', 'controller:repository');
 
-    application.inject('cardManager:main', 'cardDataManager', 'cardDataManager:main');
+    application.inject('card_manager:main', 'cardDataManager', 'card_data_manager:main');
+    application.inject('card_manager:main', 'store', 'store:main');
 
-    application.inject('stateManager:sectionNavigation', 'router', 'router:main');
-    application.inject('stateManager:sectionNavigation', 'store', 'store:main');
+    application.inject('state_manager:section_navigation', 'router', 'router:main');
+    application.inject('state_manager:section_navigation', 'store', 'store:main');
 
-    application.inject('cardManager:main', 'conductor', 'conductor:main');
+    application.inject('card_manager:main', 'conductor', 'conductor:main');
     application.inject('service:identity', 'userController', 'controller:user');
-    application.inject('service:authenticatedGithubApi', 'userController', 'controller:user');
+    application.inject('service:authenticated_github_api', 'userController', 'controller:user');
     application.inject('service:oauth', 'oauthController', 'controller:oauth');
     application.inject('service:intent', 'target', 'controller:intents');
   }

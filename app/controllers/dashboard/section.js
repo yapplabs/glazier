@@ -1,9 +1,9 @@
 var DashboardSectionController = Ember.ObjectController.extend({
-  needs: ['dashboard', 'paneTypes'],
+  needs: ['dashboard', 'pane_types'],
   hidePanes: false,
   isPerformingReorder: false,
   cardManager: null,
-  paneTypes: Ember.computed.alias('controllers.paneTypes'),
+  paneTypes: Ember.computed.alias('controllers.pane_types'),
   isAdmin: Ember.computed.alias('controllers.dashboard.isAdmin'),
 
   scheduleSetupCardManager: function() {
@@ -19,7 +19,7 @@ var DashboardSectionController = Ember.ObjectController.extend({
 
   setupCardManager: function() {
     if (this.get('content')) {
-      this.cardManager = this.container.lookup('cardManager:main');
+      this.cardManager = this.container.lookup('card_manager:main');
       this.cardManager.setProviderCardCatalog(this.get('content'));
     }
   },
@@ -29,15 +29,15 @@ var DashboardSectionController = Ember.ObjectController.extend({
       if (window.confirm('Are you sure you want to remove ' + pane.get('displayName') + '?')) {
         pane.get('section.panes').removeObject(pane);
         pane.deleteRecord();
-        pane.store.commit();
         this.cardManager.unload(pane);
+        pane.save();
       }
     },
 
     addPane: function(paneType, repository, paneEntries) {
       var store = this.get('store');
       var dependencies = this.paneTypesToAdd(paneType);
-      var transaction = store.transaction();
+
       // TODO: make recursively handle dependencies. (YAGNI?)
       var section = this.get('content');
 
@@ -46,23 +46,22 @@ var DashboardSectionController = Ember.ObjectController.extend({
 
       if (dependencies) {
         dependencies.forEach(function(paneType) {
-          transaction.createRecord(Glazier.Pane, {
+          store.createRecord('pane', {
             section: section,
             paneType: paneType,
             position: section.get('nextPanePosition')
-          });
+          }).save();
         }, this);
       }
 
-      transaction.createRecord(Glazier.Pane, {
+      store.createRecord('pane', {
         section: section,
         paneType: paneType,
         repository: repository,
         position: section.get('nextPanePosition'),
         paneEntries: paneEntries
-      });
+      }).save();
 
-      transaction.commit();
       this.send('hideModal');
 
       this.scrollLastPaneIntoView();
@@ -84,6 +83,7 @@ var DashboardSectionController = Ember.ObjectController.extend({
     var conductorServices = Conductor.services;
 
     var paneProvides = [];
+
     this.get('panes').forEach(function(pane) {
       var provides = pane.get('manifest.provides');
       if (provides && provides.length) {

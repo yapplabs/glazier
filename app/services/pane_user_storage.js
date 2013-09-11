@@ -1,6 +1,15 @@
 import Conductor from 'conductor';
 import ajax from 'glazier/utils/ajax';
 
+function apiUrl(cardId) {
+  return '/api/pane_user_entries/' + cardId + '.json';
+}
+
+function findPane(container, cardId) {
+  var store = container.lookup('store:main');
+  return store.find('pane', cardId);
+}
+
 var PaneUserStorageService = Conductor.Oasis.Service.extend({
 
   /*
@@ -21,20 +30,25 @@ var PaneUserStorageService = Conductor.Oasis.Service.extend({
     setItem: function(key, value) {
       var data = {},
           cardId = this.sandbox.card.id,
-          url = '/api/pane_user_entries/' + cardId + '.json';
+          panePromise = findPane(this.container, cardId);
 
       if (value === undefined) { value = null; }
       data[key] = JSON.stringify(value);
 
-      return ajax(url, {
+      var ajaxOptions = {
         type: 'PUT',
         data: {data: data, access: 'private'}
-      }).then(function(){
-        Glazier.Pane.find(cardId).then(function(pane) {
+      };
+
+      function updatePaneUserEntry(){
+        return panePromise.then(function(pane) {
           pane.updatePaneUserEntry(key, value);
         });
-        return true;
-      });
+      }
+
+      return ajax(apiUrl(cardId), ajaxOptions)
+            .then(updatePaneUserEntry)
+            .then(null, Conductor.error);
     },
 
     /*
@@ -45,17 +59,21 @@ var PaneUserStorageService = Conductor.Oasis.Service.extend({
     */
     removeItem: function(key) {
       var cardId = this.sandbox.card.id,
-          url = '/api/pane_user_entries/' + cardId + '.json';
+          panePromise = findPane(this.container, cardId),
+          ajaxOptions = {
+            type: 'DELETE',
+            data: {key: key, access: 'private'}
+          };
 
-      return ajax(url, {
-        type: 'DELETE',
-        data: {key: key, access: 'private'}
-      }).then(function(){
-        Glazier.Pane.find(cardId).then(function(pane) {
+      function removePaneUserEntry(){
+        return panePromise.then(function(pane) {
           pane.removePaneUserEntry(key);
         });
-        return true;
-      });
+      }
+
+      return ajax(apiUrl(cardId), ajaxOptions)
+            .then(removePaneUserEntry)
+            .then(null, Conductor.error);
     }
   }
 });

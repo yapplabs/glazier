@@ -76,7 +76,7 @@ var CardManager = Ember.Object.extend({
 
     if (paneIds.length === 0) { return; }
 
-    Glazier.Pane.query({ids: paneIds}).then(function(panes) {
+    this.store.find('pane', {ids: paneIds}).then(function(panes) {
       panes.toArray().sort(Glazier.Pane.sortPanesThatProvideServicesFirst).forEach(function(pane) {
         var card = cardManager.instances[pane.get('id')];
         if (card) {

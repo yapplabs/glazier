@@ -18,20 +18,17 @@ var CardView = Ember.View.extend({
     var self = this;
     var pane = this.get('controller.model');
 
-    function success() {
+    function performAppendCard() {
       var card = self.get('controller.card');
       self.appendCard(card);
     }
 
     if (pane.get('isSaving')) {
-      pane.one('becameError',error);
-      return pane.one('didCreate', success);
+      pane.one('becameError', error);
+      return pane.one('didCommit', performAppendCard);
+    } else {
+      performAppendCard();
     }
-
-    pane.then(function() {
-      var type = pane.get('paneType');
-      return type.then(success);
-    }).then(null, Conductor.error);
   },
 
   willDestroyElement: function() {

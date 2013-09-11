@@ -16,16 +16,18 @@ var DashboardRoute = Ember.Route.extend({
   },
   model: function (params) {
     var id = params.github_user + '/' + params.github_repo,
-        accessToken = this.controllerFor('user').get('accessToken');
+        accessToken = this.controllerFor('user').get('accessToken'),
+        store = this.store;
+
     // We check if the repo exists before hitting the server
     // since we need to do this for the sidebar and this
     // saves the server from having to repeat it
     return Repository.find(id, accessToken).then(function (repository) {
-      var promise, dashboard = Glazier.Dashboard.find(id);
+      var promise, dashboard = store.find('dashboard', id);
       if (dashboard.get('isLoaded')) {
         promise = dashboard.reload();
       } else {
-        promise = Glazier.Dashboard.find(id);
+        promise = dashboard;
       }
 
       return promise.then(function(dashboard){
@@ -78,13 +80,13 @@ var DashboardRoute = Ember.Route.extend({
     },
     navigateToSection: function(section) {
       var dashboard = this.currentModel;
-      if (this.modelFor('dashboardSection') !== section) {
+      if (this.modelFor('dashboard/section') !== section) {
         this.transitionTo('dashboard.section', dashboard, section);
       }
     },
     sectionRemoved: function(section, oldIndex) {
       var sections = this.modelFor('dashboard').get('sections');
-      if (section === this.modelFor('dashboardSection') && sections.get('length') > 0) {
+      if (section === this.modelFor('dashboard/section') && sections.get('length') > 0) {
         var newIndex = Math.max(oldIndex - 1, 0);
         var sectionToSelect = sections.objectAt(newIndex);
         this.send('navigateToSection', sectionToSelect);

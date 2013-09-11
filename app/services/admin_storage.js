@@ -1,8 +1,16 @@
 import Conductor from 'conductor';
 import ajax from 'glazier/utils/ajax';
 
-var AdminStorageService = Conductor.Oasis.Service.extend({
+function apiUrl(cardId) {
+  return '/api/pane_entries/' + cardId + '.json';
+}
 
+function findPane(container, cardId) {
+  var store = container.lookup('store:main');
+  return store.find('pane', cardId);
+}
+
+var AdminStorageService = Conductor.Oasis.Service.extend({
   /*
     @public
 
@@ -20,19 +28,22 @@ var AdminStorageService = Conductor.Oasis.Service.extend({
     */
     setItem: function(key, value) {
       var data = {},
-          cardId = this.sandbox.card.id;
+          cardId = this.sandbox.card.id,
+          panePromise = findPane(this.container, cardId);
+
       if (value === undefined) { value = null; }
       data[key] = JSON.stringify(value);
 
-      return ajax('/api/pane_entries/' + cardId + '.json', {
-        type: 'PUT',
-        data: { data: data }
-      }).then(function(){
-        Glazier.Pane.find(cardId).then(function(pane) {
+      function updatePaneEntry() {
+        return panePromise.then(function(pane) {
           pane.updatePaneEntry(key, value);
         });
-        return true;
-      });
+      }
+      var ajaxOptions = { type: 'PUT', data: { data: data } };
+
+      return ajax(apiUrl(cardId), ajaxOptions)
+             .then(updatePaneEntry)
+             .then(null, Conductor.error);
     },
 
     /*
@@ -42,16 +53,19 @@ var AdminStorageService = Conductor.Oasis.Service.extend({
       @param key {String}
     */
     removeItem: function(key) {
-      var cardId = this.sandbox.card.id;
-      return ajax('/api/pane_entries/' + cardId + '.json', {
-        type: 'DELETE',
-        data: { key: key }
-      }).then(function(){
-        Glazier.Pane.find(cardId).then(function(pane) {
+      var cardId = this.sandbox.card.id,
+          panePromise = findPane(this.container, cardId);
+
+      function removePaneEntry(){
+        return panePromise.then(function(pane) {
           pane.removePaneEntry(key);
         });
-        return true;
-      });
+      }
+
+      var ajaxOptions = { type: 'DELETE', data: { key: key } };
+      return ajax(apiUrl(cardId), ajaxOptions)
+            .then(removePaneEntry)
+            .then(null, Conductor.error);
     }
   }
 });

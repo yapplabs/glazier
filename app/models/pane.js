@@ -1,6 +1,6 @@
 var Pane = DS.Model.extend({
-  paneType: DS.belongsTo('Glazier.PaneType'),
-  section: DS.belongsTo('Glazier.Section'),
+  paneType: DS.belongsTo('pane_type'),
+  section: DS.belongsTo('section'),
   position: DS.attr('number'),
   repository: DS.attr('string'),
 
@@ -25,7 +25,7 @@ var Pane = DS.Model.extend({
   }.property('displayName', 'cardTitle'),
   updatePaneEntry: function(key, value) {
     this.propertyWillChange('paneEntries');
-    this.get('paneEntries')[key] = value;
+    this.set('paneEntries.' + key, value);
     this.propertyDidChange('paneEntries');
   },
   removePaneEntry: function(key) {
@@ -35,7 +35,7 @@ var Pane = DS.Model.extend({
   },
   updatePaneUserEntry: function(key, value) {
     this.propertyWillChange('paneUserEntries');
-    this.get('paneUserEntries')[key] = value;
+    this.set('paneUserEntries.' + key, value);
     this.propertyDidChange('paneUserEntries');
   },
   removePaneUserEntry: function(key) {

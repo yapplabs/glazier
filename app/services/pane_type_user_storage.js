@@ -1,6 +1,16 @@
 import Conductor from 'conductor';
 import ajax from 'glazier/utils/ajax';
 
+function apiUrl(cardTypeName) {
+  cardTypeName = encodeURIComponent(cardTypeName);
+  return '/api/pane_type_user_entries/' + cardTypeName + '.json';
+}
+
+function findPaneType(container, cardTypeName) {
+  var store = container.lookup('store:main');
+  return store.find('pane_type', cardTypeName);
+}
+
 var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
 
   /*
@@ -21,20 +31,25 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
     setItem: function(key, value) {
       var cardTypeName = this.sandbox.card.manifest.name,
           data = {},
-          url = '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json';
+          paneTypePromise = findPaneType(this.container, cardTypeName);
 
       if (value === undefined) { value = null; }
       data[key] = JSON.stringify(value);
 
-      return ajax(url, {
+      var ajaxOptions = {
         type: 'PUT',
         data: {data: data, access: 'private'}
-      }).then(function(){
-        Glazier.PaneType.find(cardTypeName).then(function(paneType) {
+      };
+
+      function updateUserEntry() {
+        return paneTypePromise.then(function(paneType){
           paneType.updateUserEntry(key, value);
         });
-        return true;
-      });
+      }
+
+      return ajax(apiUrl(cardTypeName), ajaxOptions)
+            .then(updateUserEntry)
+            .then(null, Conductor.error);
     },
 
     /*
@@ -44,18 +59,22 @@ var PaneTypeUserStorageService = Conductor.Oasis.Service.extend({
       @param key {String}
     */
     removeItem: function(key) {
-      var cardTypeName = this.sandbox.card.manifest.name;
-      var url = '/api/pane_type_user_entries/' + encodeURIComponent(cardTypeName) + '.json';
+      var cardTypeName = this.sandbox.card.manifest.name,
+          paneTypePromise = findPaneType(this.container, cardTypeName),
+          ajaxOptions = {
+            type: 'DELETE',
+            data: {key: key, access: 'private'}
+          };
 
-      return ajax(url, {
-        type: 'DELETE',
-        data: {key: key, access: 'private'}
-      }).then(function(){
-        Glazier.PaneType.find(cardTypeName).then(function(paneType) {
+      function removeUserEntry(){
+        return paneTypePromise.then(function(paneType) {
           paneType.removeUserEntry(key);
         });
-        return true;
-      });
+      }
+
+      return ajax(apiUrl(cardTypeName), ajaxOptions)
+             .then(removeUserEntry)
+             .then(null, Conductor.error);
     }
   }
 });

@@ -54,12 +54,11 @@ var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
   }
 });
 
-function failureResultFromJqXhr(failureTriple){
-  var jqXhr = failureTriple[0],
-      parsedError = {
-        responseText: jqXhr.responseText,
-        status: jqXhr.status,
-        rawHeaders: jqXhr.getAllResponseHeaders()
+function failureResultFromJqXhr(reason){
+  var parsedError = {
+        responseText: reason.responseText,
+        status: reason.status,
+        rawHeaders: reason.headers
       };
 
   throw parsedError;

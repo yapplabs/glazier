@@ -19,16 +19,15 @@ var Section = DS.Model.extend({
   name: DS.attr('string'),
   slug: DS.attr('string'),
   containerType: DS.attr('string'),
-  panes: DS.hasMany('Glazier.Pane'),
-  dashboard: DS.belongsTo('Glazier.Dashboard'),
+  panes: DS.hasMany('pane'),
+  dashboard: DS.belongsTo('dashboard'),
   reorderPanes: function(orderedPaneIds) {
-    var transaction = this.get('store').transaction();
-    this.get('panes').toArray().forEach(function(pane){
+    var panes = this.get('panes').toArray();
+    panes.forEach(function(pane){
       var newPosition = orderedPaneIds.indexOf(pane.get('id'));
       pane.set('position', newPosition);
-      transaction.add(pane);
     });
-    transaction.commit();
+    this.store.adapterFor(Glazier.Pane).persistPanePositions(panes);
   },
   nextPanePosition: function(){
     var max = maxValue(this.get('panes'), 'position') || 0;

@@ -25,24 +25,6 @@ var UserController = Ember.Controller.extend({
     var key = 'github_client_id';
     return Ember.$('meta[name='+ key + ']').attr('content');
   }.property(),
-  exchangeGithubOauthCode: function(authCode){
-    var self = this;
-
-    ajax(
-      "/api/oauth/github/exchange?code=" + authCode, {
-      type: 'post'
-    }).then(function(accessToken) {
-      self.loginWithGithub(accessToken);
-    }).then(null, Conductor.error);
-  },
-  clickedUser: function(){
-    this.toggleProperty('isShowingLogout');
-  },
-  logout: function() {
-    document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-    this.set('isShowingLogout', false);
-    this.set('content', null);
-  },
   loginWithGithub: function(githubAccessToken) {
     var self = this;
 
@@ -59,6 +41,26 @@ var UserController = Ember.Controller.extend({
       self.set('content', data.user);
     }).then(null, Conductor.error).
       then(loginComplete, loginComplete);
+  },
+  actions: {
+    exchangeGithubOauthCode: function(authCode){
+      var self = this;
+
+      ajax(
+        "/api/oauth/github/exchange?code=" + authCode, {
+        type: 'post'
+      }).then(function(accessToken) {
+        self.loginWithGithub(accessToken);
+      }).then(null, Conductor.error);
+    },
+    logout: function() {
+      document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+      this.set('isShowingLogout', false);
+      this.set('content', null);
+    },
+    clickedUser: function(){
+      this.toggleProperty('isShowingLogout');
+    }
   }
 });
 

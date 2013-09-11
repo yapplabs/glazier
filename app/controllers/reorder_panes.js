@@ -1,8 +1,8 @@
 import Pane from 'glazier/models/pane';
 
 var ReorderPanesController = Ember.ObjectController.extend({
-  needs: ['dashboardSection'],
-  content: Ember.computed.alias('controllers.dashboardSection.content'),
+  needs: ['dashboard/section'],
+  content: Ember.computed.alias('controllers.dashboard/section.content'),
   orderablePanes: function(){
     return this.get('panes').filterProperty('paneType.hasUI');
   }.property('panes.[]'),

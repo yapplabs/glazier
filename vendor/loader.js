@@ -10,6 +10,7 @@ if (typeof define !== 'function' && typeof requireModule !== 'function') {
 
     requireModule = function(name) {
       if (seen[name]) { return seen[name]; }
+      seen[name] = {};
 
       var mod = registry[name];
 
@@ -31,7 +32,6 @@ if (typeof define !== 'function' && typeof requireModule !== 'function') {
       }
 
       var value = callback.apply(this, reified);
-
       return seen[name] = exports || value;
     };
 
@@ -55,14 +55,6 @@ define("resolver",
    *  2) is able provide injections to classes that implement `extend`
    *     (as is typical with Ember).
    */
-  var typeMap = {
-    view: 'views',
-    util: 'utils',
-    route: 'routes',
-    service: 'services',
-    controller: 'controllers',
-    stateManager: 'state_managers'
-  };
 
   function classFactory(klass) {
     return {
@@ -77,15 +69,34 @@ define("resolver",
   }
 
   var underscore = Ember.String.underscore;
+  var classify = Ember.String.classify;
+  var get = Ember.get;
+
+  function parseName(fullName) {
+    var nameParts = fullName.split(":"),
+        type = nameParts[0], fullNameWithoutType = nameParts[1],
+        name = fullNameWithoutType,
+        namespace = get(this, 'namespace'),
+        root = namespace;
+
+    return {
+      fullName: fullName,
+      type: type,
+      fullNameWithoutType: fullNameWithoutType,
+      name: name,
+      root: root,
+      resolveMethodName: "resolve" + classify(type)
+    };
+  }
 
   function resolveOther(parsedName) {
     var prefix = this.namespace.modulePrefix;
     Ember.assert('module prefix must be defined', prefix);
 
-    var pluralizedType = typeMap[parsedName.type] || parsedName.type;
+    var pluralizedType = parsedName.type + 's';
     var name = parsedName.fullNameWithoutType;
 
-    var moduleName = prefix + '/' +  pluralizedType + '/' + underscore(name);
+    var moduleName = prefix + '/' +  pluralizedType + '/' + name;
     var module;
 
     if (define.registry[moduleName]) {
@@ -96,13 +107,13 @@ define("resolver",
       }
 
       if (Ember.ENV.LOG_MODULE_RESOLVER){
-        Ember.logger.info('hit', moduleName);
+        Ember.Logger.info('hit', moduleName);
       }
 
       return module;
     } else  {
       if (Ember.ENV.LOG_MODULE_RESOLVER){
-        Ember.logger.info('miss', moduleName);
+        Ember.Logger.info('miss', moduleName);
       }
 
       return this._super(parsedName);
@@ -112,7 +123,15 @@ define("resolver",
   // Ember.DefaultResolver docs:
   //   https://github.com/emberjs/ember.js/blob/master/packages/ember-application/lib/system/resolver.js
   var Resolver = Ember.DefaultResolver.extend({
-    resolveOther: resolveOther
+    resolveOther: resolveOther,
+    parseName: parseName,
+    normalize: function(fullName) {
+      // replace `.` with `/` in order to make nested controllers work in the following cases
+      // 1. `needs: ['posts/post']`
+      // 2. `{{render "posts/post"}}`
+      // 3. `this.render('posts/post')` from Route
+      return Ember.String.underscore(fullName).replace(/\./g, '/');
+    }
   });
 
   return Resolver;
