@@ -26,12 +26,12 @@ var initializer = {
 
     application.inject('card_manager:main', 'cardDataManager', 'card_data_manager:main');
 
-    application.inject('state_manager:sectionNavigation', 'router', 'router:main');
-    application.inject('state_manager:sectionNavigation', 'store', 'store:main');
+    application.inject('state_manager:section_navigation', 'router', 'router:main');
+    application.inject('state_manager:section_navigation', 'store', 'store:main');
 
     application.inject('card_manager:main', 'conductor', 'conductor:main');
     application.inject('service:identity', 'userController', 'controller:user');
-    application.inject('service:authenticatedGithubApi', 'userController', 'controller:user');
+    application.inject('service:authenticated_github_api', 'userController', 'controller:user');
     application.inject('service:oauth', 'oauthController', 'controller:oauth');
     application.inject('service:intent', 'target', 'controller:intents');
   }
