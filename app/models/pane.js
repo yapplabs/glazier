@@ -1,5 +1,5 @@
 var Pane = DS.Model.extend({
-  paneType: DS.belongsTo('paneType'),
+  paneType: DS.belongsTo('pane_type'),
   section: DS.belongsTo('section'),
   position: DS.attr('number'),
   repository: DS.attr('string'),

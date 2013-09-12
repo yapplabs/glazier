@@ -47,8 +47,8 @@ Ember.onLoad('Ember.Application', function(Application){
   Application.initializer({
     name: 'cardDataStore',
     initialize: function(container, application) {
-      application.register('store:cardData', CardDataStore);
-      application.inject('controller', 'cardDataStore', 'store:cardData');
+      application.register('store:card_data', CardDataStore);
+      application.inject('controller', 'cardDataStore', 'store:card_data');
       application.inject('route', 'cardDataStore', 'store:cardData');
 
       var card = container.lookup('card:main'),
@@ -70,8 +70,13 @@ Ember.onLoad('Ember.Application', function(Application){
       var card = container.lookup('card:main');
       Ember.keys(Object.getPrototypeOf(card.consumers)).forEach(function(name){
         var consumer = card.consumers[name];
+
+        // These 4 lines might evolve to be application.registerInstance or the like
         consumer.container = container;
-        application.register('consumer:' + name, consumer, { instantiate: false });
+        var fullName = container.normalize('consumer:' + name);
+        application.register(fullName, consumer, { instantiate: false });
+        container.cache.set(fullName, consumer);
+
         if (consumer.activate) {
           consumer.activate();
         }
@@ -83,7 +88,7 @@ Ember.onLoad('Ember.Application', function(Application){
     name: 'remoteEmberObjectConsumer',
     after: 'registerConsumers',
     initialize: function(container, application) {
-      var consumer = container.lookup('consumer:remoteEmberObject');
+      var consumer = container.lookup('consumer:remote_ember_object');
       if (!consumer || !consumer.controllers) { return; }
       Ember.EnumerableUtils.forEach(consumer.controllers, function(name){
         var controller = container.lookup('controller:' + name);

@@ -5,7 +5,7 @@ import Pane from 'glazier/models/pane';
 import Section from 'glazier/models/section';
 import Dashboard from 'glazier/models/dashboard';
 import DashboardController from 'glazier/controllers/dashboard';
-import DashboardSectionController from 'glazier/controllers/dashboard_section';
+import DashboardSectionController from 'glazier/controllers/dashboard/section';
 import CardManager from 'glazier/card_manager';
 import Conductor from 'conductor';
 import ApplicationAdapter from 'glazier/adapters/application';
@@ -19,9 +19,9 @@ module("AddPaneController", {
     container.register('model:pane_type', PaneType);
     container.register('model:pane', Pane);
     container.register('model:section', Section);
-    store = DS.Store.create({
-      container: container
-    });
+    container.register('model:dashboard', Dashboard);
+    container.register('store:main', DS.Store);
+    store = container.lookup('store:main');
 
     store.push('pane_type', {
       id: 'glazier-stackoverflow-auth',
@@ -41,10 +41,10 @@ module("AddPaneController", {
 
     store.push('pane_type', {
       id: 'glazier-stackoverflow-questions',
-      manifest: JSON.stringify({
+      manifest: {
         cardUrl: '/cards/glazier-stackoverflow-questions/card.js',
         consumes: ['authenticatedStackoverflowApi']
-      })
+      }
     });
 
     store.push('pane', {
@@ -53,21 +53,19 @@ module("AddPaneController", {
       pane_type_id: 'glazier-stackoverflow-questions'
     });
 
-    var questionsPane = store.find(Pane, '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2');
-    var authPane = store.find(Pane, '7f878b1a-34af-42ed-b477-878721cbc90d');
+    var questionsPane = store.find('pane', '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2');
+    var authPane = store.find('pane', '7f878b1a-34af-42ed-b477-878721cbc90d');
 
-    dashboardSectionController = DashboardSectionController.create({container: container});
-    container.cache.dict['cardManager:main'] = CardManager.create();
-    container.cache.dict['controller:user'] = Ember.Controller.create();
-    container.cache.dict['controller:dashboard'] = dashboardSectionController;
-    container.cache.dict['controller:paneTypes'] = Ember.Controller.create();
-    container.cache.dict['controller:clipboard'] = Ember.Controller.create();
+    container.register('card_manager:main', CardManager);
+    container.register('controller:user', Ember.Controller.extend());
+    container.register('controller:dashboard', DashboardController);
+    container.register('controller:dashboard/section', DashboardSectionController);
+    container.register('controller:paneTypes', Ember.ArrayController.extend());
+    container.register('controller:clipboard', Ember.Controller.extend());
+    container.register('controller:add_pane', AddPaneController);
 
-    addPaneController = AddPaneController.create({
-      needs: [],
-      store: store,
-      container: container
-    });
+    addPaneController = container.lookup('controller:add_pane');
+    dashboardSectionController = container.lookup('controller:dashboard/section')
   },
   teardown: function() {
     addPaneController = null;
@@ -79,17 +77,22 @@ module("AddPaneController", {
   }
 });
 
-test("No auth pane required to add second questions pane", function() {
+asyncTest("No auth pane required to add second questions pane", function() {
   store.push('section', {
     id: '1',
     pane_ids: ['1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2', '7f878b1a-34af-42ed-b477-878721cbc90d']
   });
-  var section = store.find(Section, '1');
-  dashboardSectionController.set('content', section);
+  var section = store.find('section', '1');
+  section.then(function(section){
+    dashboardSectionController.set('content', section);
 
-  var questionsPaneType = store.find(PaneType, 'glazier-stackoverflow-questions');
-  var dependencies = dashboardSectionController.paneTypesToAdd(questionsPaneType);
-  equal(dependencies.length, 0, "all dependencies are already in the section's panes");
+    var questionsPaneType = store.find('pane_type', 'glazier-stackoverflow-questions');
+    return questionsPaneType.then(function(questionsPaneType){
+      start();
+      var dependencies = dashboardSectionController.paneTypesToAdd(questionsPaneType);
+      equal(dependencies.length, 0, "all dependencies are already in the section's panes");
+    });
+  }).then(null, Conductor.error);
 });
 
 

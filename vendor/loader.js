@@ -130,10 +130,6 @@ define("resolver",
       // 1. `needs: ['posts/post']`
       // 2. `{{render "posts/post"}}`
       // 3. `this.render('posts/post')` from Route
-      if (fullName.indexOf('controller:') === 0) {
-        fullName = fullName.replace(/\./g, '_');
-      }
-
       return Ember.String.underscore(fullName).replace(/\./g, '/');
     }
   });

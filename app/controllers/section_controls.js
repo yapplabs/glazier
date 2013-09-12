@@ -1,7 +1,7 @@
 var SectionControlsController = Ember.ObjectController.extend({
-  needs: ['dashboardSection'],
-  content: Ember.computed.alias('controllers.dashboardSection.content'),
-  isAdmin: Ember.computed.alias('controllers.dashboardSection.isAdmin'),
+  needs: ['dashboard/section'],
+  content: Ember.computed.alias('controllers.dashboard/section.content'),
+  isAdmin: Ember.computed.alias('controllers.dashboard/section.isAdmin'),
   canAddPanes: Ember.computed.alias('isAdmin'),
   canReorderPanes: function(){
     return this.get('isAdmin') && (this.get('panes.length') > 1);

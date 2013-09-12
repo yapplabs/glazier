@@ -19,7 +19,7 @@ var DashboardSectionController = Ember.ObjectController.extend({
 
   setupCardManager: function() {
     if (this.get('content')) {
-      this.cardManager = this.container.lookup('cardManager:main');
+      this.cardManager = this.container.lookup('card_manager:main');
       this.cardManager.setProviderCardCatalog(this.get('content'));
     }
   },
@@ -29,8 +29,8 @@ var DashboardSectionController = Ember.ObjectController.extend({
       if (window.confirm('Are you sure you want to remove ' + pane.get('displayName') + '?')) {
         pane.get('section.panes').removeObject(pane);
         pane.deleteRecord();
-        pane.store.commit();
         this.cardManager.unload(pane);
+        pane.save();
       }
     },
 
@@ -83,6 +83,7 @@ var DashboardSectionController = Ember.ObjectController.extend({
     var conductorServices = Conductor.services;
 
     var paneProvides = [];
+
     this.get('panes').forEach(function(pane) {
       var provides = pane.get('manifest.provides');
       if (provides && provides.length) {
