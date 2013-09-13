@@ -3,6 +3,7 @@ import assertResolved from 'helpers/promise_test_helpers';
 import { inCard, TestService } from 'helpers/card_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
 import mockAjax from 'helpers/ajax_test_helpers';
+import isolatedContainer from 'helpers/container_test_helpers';
 
 import Conductor from 'conductor';
 
@@ -11,12 +12,35 @@ var conductor, card;
 if (!/phantom/i.test(navigator.userAgent)) {
   module("Glazier PaneTypeUserStorageService Integration", {
     setup: function() {
+      var container = isolatedContainer(
+        [
+        'service:pane_type_user_storage',
+        'model:pane_type',
+        'model:pane'
+        ]);
+      container.register('store:main', DS.Store.extend({
+        adapter: DS.FixtureAdapter
+      }));
+      container.register('service:test', { create: function(){ return TestService; }});
+
       conductor = new Conductor({
+        container: container,
         testing: true,
         conductorURL: '/vendor/conductor.js.html'
       });
-      Conductor.services['paneTypeUserStorage'] = PaneTypeUserStorageService;
-      Conductor.services['test'] = TestService;
+
+      Conductor.services['paneTypeUserStorage'] = container.lookup('service:pane_type_user_storage');
+      Conductor.services['test'] = container.lookup('service:test');
+
+      var store = container.lookup('store:main');
+      store.push('pane_type', {
+        id: 'card-type',
+        manifest: JSON.stringify({
+          cardUrl: '/cards/card-type/card.js',
+          consumes: [],
+          provides: []
+        })
+      });
 
       var cardUrl = '/test/fixtures/app/services/pane_type_user_storage_card.js';
       card = conductor.load(cardUrl, 1, {
@@ -40,8 +64,8 @@ if (!/phantom/i.test(navigator.userAgent)) {
       var service = card.consumers.paneTypeUserStorage;
       return service.request('setItem', 'foo', 'bar').then(function(){
         ok(true, 'setItem called');
-      }, function(){
-        ok(!true, 'service request setItem failed');
+      }, function(reason){
+        ok(!true, 'service request setItem failed: ' + reason.message);
       });
     }).then(function(){
       var ajaxRequest = mockAjax.requests[0];
