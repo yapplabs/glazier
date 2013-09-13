@@ -1,14 +1,4 @@
 var ApplicationSerializer = DS.RESTSerializer.extend({
-  normalizePayload: function(type, payload) {
-    Ember.keys(payload).filter(function(key) {
-      return key.indexOf('_') !== -1;
-    }).map(function(key) {
-      payload[Ember.String.camelize(key)] = payload[key];
-      delete payload[key];
-    });
-    return this._super(type, payload);
-  },
-
   keyForAttribute: function(attr) {
     return Ember.String.underscore(attr);
   },
