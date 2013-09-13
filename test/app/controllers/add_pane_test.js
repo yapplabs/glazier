@@ -65,7 +65,7 @@ module("AddPaneController", {
     container.register('controller:add_pane', AddPaneController);
 
     addPaneController = container.lookup('controller:add_pane');
-    dashboardSectionController = container.lookup('controller:dashboard/section')
+    dashboardSectionController = container.lookup('controller:dashboard/section');
   },
   teardown: function() {
     addPaneController = null;

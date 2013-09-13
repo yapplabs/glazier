@@ -32,7 +32,7 @@ module("CardManager", {
     container.register('card_manager:main', CardManager);
 
     cardManager = container.lookup('card_manager:main');
-    cardManager.conductor = conductor
+    cardManager.conductor = conductor;
     cardManager.set('cardDataManager', Ember.Object.create({
       getAmbientData: function() {
         return {};
