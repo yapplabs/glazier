@@ -48,7 +48,7 @@ var SectionNavigationStateManager = Ember.StateManager.extend({
       this.container.lookup("controller:sectionNavigation").forEach(function(sectionNavItemController){
         if (sectionNavItemController.get('hasBufferedChanges')) {
           sectionNavItemController.applyBufferedChanges();
-          sectionNavItemController.get('content').save()
+          sectionNavItemController.get('content').save();
         }
       });
     }
