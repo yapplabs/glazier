@@ -20,7 +20,8 @@ var Dashboard = DS.Model.extend({
   },
   removeSection: function(section) {
     var store = this.get('store');
-    section.get('panes').forEach(function(pane) {
+    // toArray because the object changes as we iterate over it otherwise
+    section.get('panes').toArray().forEach(function(pane) {
       pane.unloadRecord();
     });
     section.deleteRecord();
