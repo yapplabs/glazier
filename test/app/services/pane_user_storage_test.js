@@ -3,46 +3,60 @@ import assertResolved from 'helpers/promise_test_helpers';
 import { inCard, TestService } from 'helpers/card_test_helpers';
 import createServiceForTesting from 'helpers/service_test_helpers';
 import mockAjax from 'helpers/ajax_test_helpers';
-import Pane from 'glazier/models/pane';
-import PaneType from 'glazier/models/pane_type';
 import Conductor from 'conductor';
+import isolatedContainer from 'helpers/container_test_helpers';
 
-var conductor, card, store;
+var conductor, card;
+
+function pushPane(store, cardId){
+  store.push('pane_type', {
+    id: 'glazier-stackoverflow-auth',
+    manifest: {
+      cardUrl: '/cards/glazier-stackoverflow-auth/card.js',
+      consumes: ['fullXhr'],
+      provides: ['authenticatedStackoverflowApi']
+    }
+  });
+
+  store.push('pane', {
+    id: cardId,
+    paneUserEntries: {},
+    paneEntries: {},
+    dashboard_id: 'emberjs/ember.js',
+    pane_type_id: 'glazier-stackoverflow-auth'
+  });
+}
 
 if (!/phantom/i.test(navigator.userAgent)) {
   module("Glazier PaneUserStorageService Integration", {
     setup: function() {
+      var container = isolatedContainer(
+        [
+        'service:pane_user_storage',
+        'model:pane_type',
+        'model:pane',
+        'model:section'
+        ]);
+      container.register('store:main', DS.Store.extend({
+        adapter: DS.FixtureAdapter
+      }));
+      container.register('service:test', { create: function(){ return TestService; }});
+
       conductor = new Conductor({
+        container: container,
         testing: true,
         conductorURL: '/vendor/conductor.js.html'
       });
-      Conductor.services['paneUserStorage'] = PaneUserStorageService;
-      Conductor.services['test'] = TestService;
+
+      Conductor.services['paneUserStorage'] = container.lookup('service:pane_user_storage');
+      Conductor.services['test'] = container.lookup('service:test');
+
+      var store = container.lookup('store:main');
 
       var cardId = '7f878b1a-34af-42ed-b477-878721cbc90d';
 
-      var container = new Ember.Container();
-      container.register('model:pane_type', PaneType);
-      store = DS.Store.create({
-        container: container
-      });
-
-      store.push('pane_type', {
-        id: 'glazier-stackoverflow-auth',
-        manifest: JSON.stringify({
-          cardUrl: '/cards/glazier-stackoverflow-auth/card.js',
-          consumes: ['fullXhr'],
-          provides: ['authenticatedStackoverflowApi']
-        })
-      });
-
-      store.push('pane', {
-        id: cardId,
-        dashboard_id: 'emberjs/ember.js',
-        pane_type_id: 'glazier-stackoverflow-auth'
-      });
-
-      var questionsPane = store.find(Pane, cardId); // needs to be loaded for service to return properly.
+      pushPane(store, cardId);
+      var questionsPane = store.find('pane', cardId); // needs to be loaded for service to return properly.
 
       stop();
       questionsPane.then(function(questionsPane) {
@@ -85,7 +99,19 @@ if (!/phantom/i.test(navigator.userAgent)) {
 // var port, card, sandbox;
 module("Glazier PaneUserStorageService Unit", {
   setup: function() {
+    var container = isolatedContainer(
+      [
+      'model:pane_type',
+      'model:pane',
+      'model:section',
+      ]);
+    container.register('store:main', DS.Store.extend({
+      adapter: DS.FixtureAdapter
+    }));
     this.service = createServiceForTesting(PaneUserStorageService, 'card-id');
+    this.service.container = container;
+    var store = container.lookup('store:main');
+    pushPane(store, 'card-id');
     mockAjax();
   },
   teardown: function() {

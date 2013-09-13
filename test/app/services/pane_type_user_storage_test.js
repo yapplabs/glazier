@@ -9,6 +9,17 @@ import Conductor from 'conductor';
 
 var conductor, card;
 
+function pushPaneType(store){
+  store.push('pane_type', {
+    id: 'card-type',
+    manifest: JSON.stringify({
+      cardUrl: '/cards/card-type/card.js',
+      consumes: [],
+      provides: []
+    })
+  });
+}
+
 if (!/phantom/i.test(navigator.userAgent)) {
   module("Glazier PaneTypeUserStorageService Integration", {
     setup: function() {
@@ -33,14 +44,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
       Conductor.services['test'] = container.lookup('service:test');
 
       var store = container.lookup('store:main');
-      store.push('pane_type', {
-        id: 'card-type',
-        manifest: JSON.stringify({
-          cardUrl: '/cards/card-type/card.js',
-          consumes: [],
-          provides: []
-        })
-      });
+      pushPaneType(store);
 
       var cardUrl = '/test/fixtures/app/services/pane_type_user_storage_card.js';
       card = conductor.load(cardUrl, 1, {
@@ -82,7 +86,18 @@ if (!/phantom/i.test(navigator.userAgent)) {
 // var port, card, sandbox;
 module("Glazier PaneTypeUserStorageService Unit", {
   setup: function() {
+    var container = isolatedContainer(
+      [
+      'model:pane_type',
+      'model:pane'
+      ]);
+    container.register('store:main', DS.Store.extend({
+      adapter: DS.FixtureAdapter
+    }));
     this.service = createServiceForTesting(PaneTypeUserStorageService, 'card-id', { name: 'card-type' });
+    this.service.container = container;
+    var store = container.lookup('store:main');
+    pushPaneType(store);
     mockAjax();
   },
   teardown: function() {

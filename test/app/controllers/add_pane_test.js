@@ -9,17 +9,29 @@ import DashboardSectionController from 'glazier/controllers/dashboard/section';
 import CardManager from 'glazier/card_manager';
 import Conductor from 'conductor';
 import ApplicationAdapter from 'glazier/adapters/application';
+import isolatedContainer from 'helpers/container_test_helpers';
 
 var addPaneController, dashboardSectionController, store;
 
 module("AddPaneController", {
   setup: function() {
-    var container = new Ember.Container();
-    container.register('adapter:application', ApplicationAdapter);
-    container.register('model:pane_type', PaneType);
-    container.register('model:pane', Pane);
-    container.register('model:section', Section);
-    container.register('model:dashboard', Dashboard);
+
+    var container = isolatedContainer([
+      'model:pane',
+      'model:section',
+      'model:dashboard',
+      'model:pane_type',
+      'controller:add_pane',
+      'controller:dashboard',
+      'controller:dashboard/section',
+      'controller:pane_types'
+    ]);
+    container.injection('controller', 'store', 'store:main');
+    container.register('adapter:application', Ember.Object.extend({
+      findAll: function(){
+        return [];
+      }
+    }));
     container.register('store:main', DS.Store);
     store = container.lookup('store:main');
 
@@ -57,12 +69,6 @@ module("AddPaneController", {
     var authPane = store.find('pane', '7f878b1a-34af-42ed-b477-878721cbc90d');
 
     container.register('card_manager:main', CardManager);
-    container.register('controller:user', Ember.Controller.extend());
-    container.register('controller:dashboard', DashboardController);
-    container.register('controller:dashboard/section', DashboardSectionController);
-    container.register('controller:paneTypes', Ember.ArrayController.extend());
-    container.register('controller:clipboard', Ember.Controller.extend());
-    container.register('controller:add_pane', AddPaneController);
 
     addPaneController = container.lookup('controller:add_pane');
     dashboardSectionController = container.lookup('controller:dashboard/section');

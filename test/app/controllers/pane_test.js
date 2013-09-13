@@ -1,19 +1,22 @@
 import PaneController from 'glazier/controllers/pane';
+import isolatedContainer from 'helpers/container_test_helpers';
 
 var paneController;
 
 module("PaneController", {
   setup: function(){
-    var container = new Ember.Container();
-    container.register('controller:dashboard/section', Ember.Controller.extend({
-      cardManager: Ember.Object.create({
-        load: function() {}
-      })
+    var container = isolatedContainer([
+      'controller:dashboard',
+      'controller:pane_types',
+      'controller:dashboard/section',
+      'controller:pane',
+      'controller:clipboard'
+    ]);
+    container.register('card_manager:main', Ember.Object.extend({
+      load: function() {}
     }));
-    container.register('controller:clipboard', {});
-
-    paneController = PaneController.create({
-      container: container,
+    container.injection('controller:dashboard/section', 'cardManager', 'card_manager:main');
+    paneController = container.lookupFactory('controller:pane').create({
       content: Ember.Object.create({})
     });
   },

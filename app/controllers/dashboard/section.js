@@ -1,9 +1,9 @@
 var DashboardSectionController = Ember.ObjectController.extend({
-  needs: ['dashboard', 'paneTypes'],
+  needs: ['dashboard', 'pane_types'],
   hidePanes: false,
   isPerformingReorder: false,
   cardManager: null,
-  paneTypes: Ember.computed.alias('controllers.paneTypes'),
+  paneTypes: Ember.computed.alias('controllers.pane_types'),
   isAdmin: Ember.computed.alias('controllers.dashboard.isAdmin'),
 
   scheduleSetupCardManager: function() {
