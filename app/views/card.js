@@ -24,8 +24,8 @@ var CardView = Ember.View.extend({
     }
 
     if (pane.get('isSaving')) {
-      pane.one('becameError',error);
-      return pane.one('didCreate', performAppendCard); // TODO works with ember data update?
+      pane.one('becameError', error);
+      return pane.one('didCommit', performAppendCard);
     } else {
       performAppendCard();
     }
