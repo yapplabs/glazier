@@ -45,14 +45,12 @@ var SectionNavigationStateManager = Ember.StateManager.extend({
     },
     edit: Ember.K,
     persistUpdatedSectionNames: function(manager){
-      var transaction = manager.get('store').transaction();
       this.container.lookup("controller:sectionNavigation").forEach(function(sectionNavItemController){
         if (sectionNavItemController.get('hasBufferedChanges')) {
           sectionNavItemController.applyBufferedChanges();
-          transaction.add(sectionNavItemController.get('content'));
+          sectionNavItemController.get('content').save()
         }
       });
-      transaction.commit();
     }
   })
 });
