@@ -19,16 +19,6 @@ import ajax from 'glazier/utils/ajax';
     Consumer -> Card: resolve with accessToken
 */
 
-// Lookup a url in the manifest for this card
-var cardEnv = function(cardId) {
-  // assume the manifest is already loaded, this is likely brittle
-  var manifest = Glazier.Pane.find(cardId).get('paneType.manifest');
-
-  if (manifest) {
-    return manifest.env[Glazier.env];
-  }
-};
-
 var OauthService = Conductor.Oasis.Service.extend({
   oauthController: null, // injected
 
@@ -60,8 +50,8 @@ var OauthService = Conductor.Oasis.Service.extend({
         var redirectUri = window.location.origin + '/api/oauth/callback';
         var card = this.sandbox.card;
         var manifest = card.manifest;
-        var clientId = cardEnv(card.id).oauthClientId;
-        var paneDisplayName = (manifest && manifest.displayName || manifest.name);
+        var clientId = manifest.env[Glazier.env].oauthClientId;
+        var paneDisplayName = manifest.displayName || manifest.name;
 
         return this.authorize(params.authorizeUrl, clientId, redirectUri, paneDisplayName);
       }
