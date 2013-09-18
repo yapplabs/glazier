@@ -17,10 +17,6 @@ var initializer = {
     application.inject('state_manager:section_navigation', 'store', 'store:main');
 
     application.inject('card_manager:main', 'conductor', 'conductor:main');
-    application.inject('service:identity', 'userController', 'controller:user');
-    application.inject('service:authenticated_github_api', 'userController', 'controller:user');
-    application.inject('service:oauth', 'oauthController', 'controller:oauth');
-    application.inject('service:intent', 'target', 'controller:intents');
   }
 };
 

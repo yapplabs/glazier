@@ -545,12 +545,10 @@ define("oasis/iframe_adapter",
       },
 
       oasisLoaded: function() {
-        debugger;
         window.parent.postMessage(this.oasisLoadedMessage, '*', []);
       },
 
       didConnect: function() {
-        debugger;
         window.parent.postMessage(this.sandboxInitializedMessage, '*', []);
       },
 
@@ -1157,7 +1155,7 @@ define("oasis/sandbox_init",
 
         if (window.parent && window.parent !== window) {
           iframeAdapter.connectSandbox(this);
-        } 
+        }
       } else {
         webworkerAdapter.connectSandbox(this);
       }
@@ -1360,7 +1358,7 @@ define("oasis/shims",
       return obj;
     }
 
-    // If it turns out we need a better polyfill we can grab mozilla's at: 
+    // If it turns out we need a better polyfill we can grab mozilla's at:
     // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.removeEventListener?redirectlocale=en-US&redirectslug=DOM%2FEventTarget.removeEventListener#Polyfill_to_support_older_browsers
     function addEventListener(receiver, eventName, fn) {
       if (receiver.addEventListener) {
@@ -1501,7 +1499,7 @@ define("oasis/shims",
 
         // 9. return A
         return A;
-      };  
+      };
 
     __exports__.o_create = o_create;
     __exports__.addEventListener = addEventListener;
@@ -1647,12 +1645,10 @@ define("oasis/webworker_adapter",
       },
 
       oasisLoaded: function() {
-        debugger;
         postMessage(this.oasisLoadedMessage, []);
       },
 
       didConnect: function() {
-        debugger;
         postMessage(this.sandboxInitializedMessage, []);
       }
     });

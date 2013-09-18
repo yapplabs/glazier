@@ -1,5 +1,5 @@
 Ember.onLoad('Ember.Application', function(Application){
-  Conductor.Oasis.configure('eventCallback', Ember.run);
+  oasis.configure('eventCallback', Ember.run);
 
   Conductor.Oasis.RSVP.configure('async', function(callback, promise) {
     Ember.run.schedule('actions', promise, callback, promise);
