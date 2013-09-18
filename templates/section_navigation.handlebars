@@ -5,7 +5,10 @@
       <li {{bind-attr class="isCurrent:selected"}}>
         <span {{bind-attr class=":icon sectionIcon"}}></span>
         {{input value=name}}
-        <span class="icon-x remove-section" {{action "remove" this target=parentController.stateManager bubbles=false}}></span>
+
+        {{#if canRemovePanes}}
+          <span class="icon-x remove-section" {{action "remove" this target=parentController.stateManager bubbles=false}}></span>
+        {{/if}}
       </li>
     {{/each}}
     <li class='add-section' {{action "add" target=stateManager}}>

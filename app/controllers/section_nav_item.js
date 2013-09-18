@@ -1,18 +1,19 @@
 import BufferedProxyMixin from 'glazier/controllers/buffered_proxy_mixin';
 
 var SectionNavItemController = Ember.ObjectController.extend(BufferedProxyMixin, {
-  isCurrent: function(){
+  isCurrent: function() {
     return this.get('content') === this.get('parentController.currentSection');
   }.property('content', 'parentController.currentSection'),
-  sectionIcon: function(){
+  sectionIcon: function() {
     var containerType = this.get('containerType');
-    switch(containerType) {
+    switch (containerType) {
       case 'board':
         return 'icon-cards';
       default:
         return 'icon-star';
     }
-  }.property('containerType')
+  }.property('containerType'),
+  canRemovePanes: Ember.computed.gt('parentController.length', 1)
 });
 
 export default SectionNavItemController;
