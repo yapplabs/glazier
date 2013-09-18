@@ -545,6 +545,7 @@ define("oasis/iframe_adapter",
       },
 
       oasisLoaded: function() {
+        debugger;
         window.parent.postMessage(this.oasisLoadedMessage, '*', []);
       },
 

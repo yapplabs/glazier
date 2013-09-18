@@ -55,7 +55,7 @@ var ManifestXHRService = XHRService.extend({
         console.log("ManifestXHRService get", url, "->", processedUrl);
       }
 
-      var xhrServiceGet = Conductor.XHRService.prototype.requests.get;
+      var xhrServiceGet = XHRService.prototype.requests.get;
       return xhrServiceGet.call(this, processedUrl);
     }
   }
