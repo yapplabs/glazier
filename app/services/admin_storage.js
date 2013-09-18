@@ -43,7 +43,7 @@ var AdminStorageService = Conductor.Oasis.Service.extend({
 
       return ajax(apiUrl(cardId), ajaxOptions)
              .then(updatePaneEntry)
-             .then(null, Conductor.error);
+             .fail(Ember.RSVP.rethrow);
     },
 
     /*
@@ -65,7 +65,7 @@ var AdminStorageService = Conductor.Oasis.Service.extend({
       var ajaxOptions = { type: 'DELETE', data: { key: key } };
       return ajax(apiUrl(cardId), ajaxOptions)
             .then(removePaneEntry)
-            .then(null, Conductor.error);
+            .fail(Ember.RSVP.rethrow);
     }
   }
 });

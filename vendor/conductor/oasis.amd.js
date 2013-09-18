@@ -549,6 +549,7 @@ define("oasis/iframe_adapter",
       },
 
       didConnect: function() {
+        debugger;
         window.parent.postMessage(this.sandboxInitializedMessage, '*', []);
       },
 
@@ -599,7 +600,7 @@ define("oasis/logger",
   function() {
     "use strict";
     function Logger() {
-      this.enabled = false;
+      this.enabled = true;
     }
 
     Logger.prototype = {
@@ -1645,10 +1646,12 @@ define("oasis/webworker_adapter",
       },
 
       oasisLoaded: function() {
+        debugger;
         postMessage(this.oasisLoadedMessage, []);
       },
 
       didConnect: function() {
+        debugger;
         postMessage(this.sandboxInitializedMessage, []);
       }
     });

@@ -63,7 +63,7 @@ var ProxyService = Conductor.Oasis.Service.extend({
       return targetCard.sandbox.activatePromise.then(function () {
         return targetCard.sandbox.channels[capability].port1;
       });
-    }, Conductor.error);
+    }).fail(Ember.RSVP.rethrow);
   },
 
   /*
@@ -80,7 +80,7 @@ var ProxyService = Conductor.Oasis.Service.extend({
       targetPort.all(self.back, self);
       self.targetPort = targetPort;
       self.targetPromise.resolve(targetPort);
-    }, Conductor.error);
+    }).fail(Ember.RSVP.rethrow);
 
     this.loaded = true;
   },
@@ -104,7 +104,7 @@ var ProxyService = Conductor.Oasis.Service.extend({
 
     this.targetPromise.promise.then(function (targetPort) {
       targetPort.send(eventName, data);
-    }, console.error);
+    }).fail(Ember.RSVP.rethrow);
   },
 
   /*

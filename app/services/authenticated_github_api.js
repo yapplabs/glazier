@@ -48,8 +48,7 @@ var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
         xhr.setRequestHeader('Authorization', "token " + accessToken);
       };
 
-      return ajax(url, ajaxOpts).
-        then(null, failureResultFromJqXhr);
+      return ajax(url, ajaxOpts).fail(failureResultFromJqXhr);
     }
   }
 });

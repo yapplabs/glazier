@@ -39,7 +39,7 @@ var UserController = Ember.Controller.extend({
       }
     }).then(function(data){
       self.set('content', data.user);
-    }).then(null, Conductor.error).
+    }).fail(Ember.RSVP.rethrow).
       then(loginComplete, loginComplete);
   },
   actions: {
@@ -51,7 +51,7 @@ var UserController = Ember.Controller.extend({
         type: 'post'
       }).then(function(accessToken) {
         self.loginWithGithub(accessToken);
-      }).then(null, Conductor.error);
+      }).fail(Ember.RSVP.rethrow);
     },
     logout: function() {
       document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";

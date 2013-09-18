@@ -41,7 +41,7 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
 
     cardReference.sandbox.activatePromise.then(function() {
       controller.set('cardIsLoaded', true);
-    }).then(null, Conductor.error);
+    }).fail(Ember.RSVP.rethrow);
   }.observes('card').on('init'),
   actions: {
     copyPane: function(pane) {

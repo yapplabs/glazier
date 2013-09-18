@@ -1,5 +1,3 @@
-import Conductor from 'conductor';
-
 var DashboardSectionRoute = Ember.Route.extend({
   serialize: function (model, params) {
     return {section_slug: model.get('slug')};

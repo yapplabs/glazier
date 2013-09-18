@@ -1,4 +1,3 @@
-import Conductor from 'conductor';
 import Repository from 'glazier/models/repository';
 import Dashboard from 'glazier/models/dashboard';
 

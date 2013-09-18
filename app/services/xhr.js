@@ -1,4 +1,5 @@
 import Conductor from 'conductor';
+import XHRService from 'conductor/xhr_service';
 
 function protocolRelative(url){
   if (document.location.protocol === 'https:') {
@@ -32,7 +33,7 @@ function glazierUrl(url) {
   return null;
 }
 
-var ManifestXHRService = Conductor.XHRService.extend({
+var ManifestXHRService = XHRService.extend({
   requests: {
     /*
       @public

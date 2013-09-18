@@ -32,7 +32,7 @@ var UnauthenticatedGithubApiService = Conductor.Oasis.Service.extend({
       delete ajaxOpts.url;
       delete ajaxOpts.data.access_token;
 
-      return ajax(url, ajaxOpts).then(null, failureResultFromJqXhr);
+      return ajax(url, ajaxOpts).fail(failureResultFromJqXhr);
     }
   }
 });

@@ -83,7 +83,9 @@ var DashboardSectionController = Ember.ObjectController.extend({
 
   paneTypesToAdd: function(paneType) {
     var consumes = paneType.get('manifest.consumes');
-    var conductorServices = Conductor.services;
+    var conductor = this.container.lookup('conductor:main');
+
+    var conductorServices = conductor.services;
 
     var paneProvides = [];
 

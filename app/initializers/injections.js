@@ -1,23 +1,9 @@
 import CardManager from 'glazier/card_manager';
 import CardDataManager from 'glazier/card_data_manager';
-import Conductor from 'conductor';
-
-function conductorUrl(){
-  var url = $("meta[name='glazier-conductor-url']").attr('content');
-  if (Ember.isNone(url)) {
-    throw new Error("Missing Glazier Conductor url");
-  }
-  return url;
-}
 
 var initializer = {
   name: 'injections',
   initialize: function (container, application) {
-
-    application.register('conductor:main', new Conductor({
-      conductorURL: conductorUrl()
-    }), { instantiate: false});
-
     application.register('card_manager:main', CardManager, {singleton: false});
     application.register('card_data_manager:main', CardDataManager);
 
