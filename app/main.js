@@ -10,6 +10,12 @@ import PaneView from 'glazier/views/pane';
 import conductorServicesInitializer from 'glazier/initializers/conductor_services';
 import injectionsInitializer from 'glazier/initializers/injections';
 
+import autoFocusField from 'glazier/helpers/auto_focus_input';
+
+Ember.TextField.reopen({
+  attributeBindings: ['autofocus']
+});
+
 var Glazier = Application.create();
 
 Glazier.Pane = Pane;

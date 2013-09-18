@@ -2,7 +2,7 @@
   <h3>Add a Section</h3>
 </div>
 <div class="modal-main">
-  {{input value=name}}
+  {{autofocus-input value=name}}
   <button class="modal-confirm" {{action "createSection" target=stateManager}}>Create</button>
   <button class="modal-cancel" {{action "hideModal"}}>Cancel</button>
 </div>
