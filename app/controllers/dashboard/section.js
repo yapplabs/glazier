@@ -11,16 +11,18 @@ var DashboardSectionController = Ember.ObjectController.extend({
   }.observes('content', 'isPerformingReorder'),
 
   contentWillChange: function() {
-    if (this.cardManager) {
-      this.cardManager.destroy();
-      this.cardManager = null;
+    var cardManager = this.get('cardManager');
+    if (cardManager) {
+      cardManager.destroy();
+      this.set('cardManager', null);
     }
   }.observesBefore('content'),
 
   setupCardManager: function() {
     if (this.get('content')) {
-      this.cardManager = this.container.lookup('card_manager:main');
-      this.cardManager.setProviderCardCatalog(this.get('content'));
+      var cardManager = this.container.lookup('card_manager:main');
+      cardManager.setProviderCardCatalog(this.get('content'));
+      this.set('cardManager', cardManager);
     }
   },
 
@@ -29,7 +31,8 @@ var DashboardSectionController = Ember.ObjectController.extend({
       if (window.confirm('Are you sure you want to remove ' + pane.get('displayName') + '?')) {
         pane.get('section.panes').removeObject(pane);
         pane.deleteRecord();
-        this.cardManager.unload(pane);
+        var cardManager = this.get('cardManager');
+        cardManager.unload(pane);
         pane.save();
       }
     },

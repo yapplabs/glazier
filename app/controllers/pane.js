@@ -17,10 +17,11 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   isEditing: alias('cardMetadata.isEditing'),
   toolbar: alias('cardMetadata.toolbar'),
   sectionController: alias('controllers.dashboard/section'),
+  cardManager: alias('sectionController.cardManager'),
   contentDidChange: function() {
     var pane = this.get('content');
     if (pane) {
-      var cardManager = this.get('sectionController.cardManager');
+      var cardManager = this.get('cardManager');
       this.set('card', cardManager.load(pane));
     } else {
       this.set('card', null);
