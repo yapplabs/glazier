@@ -41,7 +41,6 @@ var CardView = Ember.View.extend({
     var parentView = this.get('parentView');
 
     Ember.run.scheduleOnce('afterRender', function() {
-      debugger;
       card.appendTo(element).
         then(render).
         fail(Ember.RSVP.rethrow);
