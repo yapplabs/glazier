@@ -181,24 +181,15 @@ define("conductor",
 
     var Conductor = function(options) {
       this.options = options || {};
+      this.oasis = new Oasis();
       this.conductorURL = this.options.conductorURL ||
-                          Oasis.config.oasisURL ||
-                          '/dist/conductor-0.2.0.js.html';
+                          oasis.configuration.oasisURL ||
+                          '/dist/conductor-0.3.0.js.html';
 
       this.data = {};
       this.cards = {};
       this.services = o_create(Conductor.services);
       this.capabilities = Conductor.capabilities.slice();
-    };
-
-    Conductor.configure = function (name, value) {
-      if (/(conductor|oasis)URL/.test(name)) {
-        Oasis.config.oasisURL = value;
-      } else if ('eventCallback' === name) {
-        Oasis.configure(name, value);
-      } else {
-        throw new Error("Unexpected Configuration `" + name + "` = `" + value + "`");
-      }
     };
 
     Conductor.error = function (error) {
@@ -234,6 +225,14 @@ define("conductor",
     }
 
     Conductor.prototype = {
+      configure: function (name, value) {
+        if ('eventCallback' === name) {
+          this.oasis.configure(name, value);
+        } else {
+          throw new Error("Unexpected Configuration `" + name + "` = `" + value + "`");
+        }
+      },
+
       loadData: function(url, id, data) {
         id = coerceId(id);
 
@@ -290,7 +289,7 @@ define("conductor",
           }
         }
 
-        var sandbox = Conductor.Oasis.createSandbox({
+        var sandbox = this.oasis.createSandbox({
           url: url,
           capabilities: capabilities,
           oasisURL: this.conductorURL,
@@ -315,9 +314,9 @@ define("conductor",
 
         // TODO: it would be better to access the consumer from
         // `conductor.parentCard` after the child card refactoring is in master.
-        if (Conductor.Oasis.consumers.nestedWiretapping) {
+        if (this.oasis.consumers.nestedWiretapping) {
           card.wiretap(function (service, messageEvent) {
-            Conductor.Oasis.consumers.nestedWiretapping.send(messageEvent.type, {
+            this.oasis.consumers.nestedWiretapping.send(messageEvent.type, {
               data: messageEvent.data,
               service: service+"",
               direction: messageEvent.direction,
@@ -410,9 +409,7 @@ define("conductor",
     /*global PathUtils ConductorShims*/
 
     (function() {
-      var requiredUrls = [],
-          requiredCSSUrls = [],
-          RSVP = requireModule('rsvp'),
+      var RSVP = requireModule('rsvp'),
           Promise = RSVP.Promise,
           o_create = ConductorShims.o_create,
           a_forEach = ConductorShims.a_forEach,
@@ -435,12 +432,15 @@ define("conductor",
         return base;
       }
 
+      Conductor.requiredUrls = [];
+      Conductor.requiredCSSUrls = [];
+
       Conductor.require = function(url) {
-        requiredUrls.push(url);
+        Conductor.requiredUrls.push(url);
       };
 
       Conductor.requireCSS = function(url) {
-        requiredCSSUrls.push(url);
+        Conductor.requiredCSSUrls.push(url);
       };
 
       Conductor.Card = function(options) {
@@ -451,36 +451,30 @@ define("conductor",
           this[prop] = options[prop];
         }
 
-        this.consumers = o_create(Conductor.Oasis.consumers);
+        this.consumers = o_create(oasis.consumers);
         this.options = options = options || {};
 
-        var renderDefered = this.defer();
-
-        var xhrDefered = this.defer();
+        this.deferred = {
+          data: this.defer(),
+          xhr: this.defer()
+        };
 
         options.events = options.events || {};
         options.requests = options.requests || {};
 
-        var assertionDefered = this.defer();
-        var dataDefered = this.defer();
-
-        var activatePromise = this.activateWhen(dataDefered.promise, [ xhrDefered.promise ]);
-
-        this.promise = activatePromise.then(function () {
-          return card;
-        }).then(null, Conductor.error);
+        this.activateWhen(this.deferred.data.promise, [ this.deferred.xhr.promise ]);
 
         var cardOptions = {
           consumers: extend({
-            xhr: Conductor.xhrConsumer(requiredUrls, requiredCSSUrls, xhrDefered, this),
-            render: Conductor.renderConsumer(renderDefered, this),
-            metadata: Conductor.metadataConsumer(this),
             // TODO: this should be a custom consumer provided in tests
-            assertion: Conductor.assertionConsumer(assertionDefered, this),
-            data: Conductor.dataConsumer(dataDefered, this),
-            lifecycle: Conductor.lifecycleConsumer(activatePromise),
-            height: Conductor.heightConsumer(this),
-            nestedWiretapping: Conductor.nestedWiretapping(this)
+            assertion: Conductor.AssertionConsumer,
+            xhr: Conductor.XhrConsumer,
+            render: Conductor.RenderConsumer,
+            metadata: Conductor.MetadataConsumer,
+            data: Conductor.DataConsumer,
+            lifecycle: Conductor.LifecycleConsumer,
+            height: Conductor.HeightConsumer,
+            nestedWiretapping: Conductor.NestedWiretapping
           }, options.consumers)
         };
 
@@ -488,18 +482,16 @@ define("conductor",
           cardOptions.consumers[prop] = cardOptions.consumers[prop].extend({card: this});
         }
 
-        Conductor.Oasis.connect(cardOptions);
+        oasis.connect(cardOptions);
       };
 
       Conductor.Card.prototype = {
-        defer: function(callback) {
-          var defered = RSVP.defer();
-          if (callback) { defered.promise.then(callback).then(null, Conductor.error); }
-          return defered;
+        waitForActivation: function () {
+          return this._waitForActivationDeferral().promise;
         },
 
         updateData: function(name, hash) {
-          Conductor.Oasis.portFor('data').send('updateData', { bucket: name, object: hash });
+          oasis.portFor('data').send('updateData', { bucket: name, object: hash });
         },
 
         /**
@@ -611,10 +603,19 @@ define("conductor",
 
         render: function () {},
 
+        //-----------------------------------------------------------------
+        // Internal
+
+        defer: function(callback) {
+          var defered = RSVP.defer();
+          if (callback) { defered.promise.then(callback).then(null, Conductor.error); }
+          return defered;
+        },
+
         activateWhen: function(dataPromise, otherPromises) {
           var card = this;
 
-          return RSVP.all([dataPromise].concat(otherPromises)).then(function(resolutions) {
+          return this._waitForActivationDeferral().resolve(RSVP.all([dataPromise].concat(otherPromises)).then(function(resolutions) {
             // Need to think if this called at the right place/time
             // My assumption for the moment is that
             // we don't rely on some initializations done in activate
@@ -623,7 +624,15 @@ define("conductor",
             if (card.activate) {
               return card.activate(resolutions[0]);
             }
-          });
+          }));
+        },
+
+        _waitForActivationDeferral: function () {
+          if (!this._activationDeferral) {
+            this._activationDeferral = RSVP.defer();
+            this._activationDeferral.promise.then(null, Conductor.error);
+          }
+          return this._activationDeferral;
         }
       };
 
@@ -640,14 +649,20 @@ define("conductor",
       this.sandbox = sandbox;
       var card = this;
 
-      this.promise = sandbox.promise.then(function () {
-        return card;
-      }).then(null, Conductor.error);
-
       return this;
     };
 
     CardReference.prototype = {
+      waitForLoad: function() {
+        var card = this;
+        if (!this._loadPromise) {
+          this._loadPromise = this.sandbox.waitForLoad().then(function() {
+            return card;
+          }).then(null, Conductor.error);
+        }
+        return this._loadPromise;
+      },
+
       metadataFor: function(name) {
         return this.sandbox.metadataPort.request('metadataFor', name);
       },
@@ -665,7 +680,7 @@ define("conductor",
 
         parent.appendChild(this.sandbox.el);
 
-        return this;
+        return this.waitForLoad();
       },
 
       render: function(intent, dimensions) {
@@ -699,56 +714,50 @@ define("conductor",
     })();
 
 
-    Conductor.assertionConsumer = function(promise, card) {
-      return Conductor.Oasis.Consumer.extend({
-        initialize: function() {
-          var service = this;
+    Conductor.AssertionConsumer = Conductor.Oasis.Consumer.extend({
+      initialize: function() {
+        var service = this;
 
-          window.ok = function(bool, message) {
-            service.send('ok', { bool: bool, message: message });
-          };
+        window.ok = function(bool, message) {
+          service.send('ok', { bool: bool, message: message });
+        };
 
-          window.equal = function(expected, actual, message) {
-            service.send('equal', { expected: expected, actual: actual, message: message });
-          };
+        window.equal = function(expected, actual, message) {
+          service.send('equal', { expected: expected, actual: actual, message: message });
+        };
 
-          window.start = function() {
-            service.send('start');
-          };
+        window.start = function() {
+          service.send('start');
+        };
+      },
 
-          promise.resolve();
+      events: {
+        instruct: function(info) {
+          this.card.instruct(info);
+        }
+      }
+    });
+
+    Conductor.DataConsumer = Conductor.Oasis.Consumer.extend({
+      events: {
+        initializeData: function(data) {
+          this.card.data = data;
+          this.card.deferred.data.resolve(data);
         },
 
-        events: {
-          instruct: function(info) {
-            card.instruct(info);
+        updateData: function(data) {
+          if (data.bucket === '*') {
+            this.card.data = data.data;
+          } else {
+            this.card.data[data.bucket] = data.data;
+          }
+
+          if (this.card.didUpdateData) {
+            this.card.didUpdateData(data.bucket, data.data);
           }
         }
-      });
-    };
-
-    Conductor.dataConsumer = function(promise, card) {
-      return Conductor.Oasis.Consumer.extend({
-        events: {
-          initializeData: function(data) {
-            card.data = data;
-            promise.resolve(data);
-          },
-
-          updateData: function(data) {
-            if (data.bucket === '*') {
-              card.data = data.data;
-            } else {
-              card.data[data.bucket] = data.data;
-            }
-
-            if (card.didUpdateData) {
-              card.didUpdateData(data.bucket, data.data);
-            }
-          }
-        }
-      });
-    };
+      }
+    });
 
     /*global DomUtils*/
 
@@ -785,140 +794,129 @@ define("conductor",
       card.consumers.height.update();
       ```
     */
-    Conductor.heightConsumer = function (card) {
-      var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
-      return Conductor.Oasis.Consumer.extend({
-        autoUpdate: true,
+    Conductor.HeightConsumer = Conductor.Oasis.Consumer.extend({
+      autoUpdate: true,
 
-        initialize: function () {
-          var consumer = this;
+      initialize: function () {
+        var consumer = this;
 
-          card.promise.then(function () {
-            if (!consumer.autoUpdate) {
-              return;
-            } else if (typeof MutationObserver === "undefined") {
-              Conductor.warn("MutationObserver is not defined.  Height service cannot autoupdate.  You must manually call `update` for your height consumer.  You may want to disable autoupdate when your card activates with `this.consumers.height.autoUpdate = false;`");
-              return;
-            }
-
-            consumer.setUpAutoupdate();
-          });
-        },
-
-        update: function (dimensions) {
-          if (typeof dimensions === "undefined") {
-            var width = 0,
-                height = 0,
-                childNodes = document.body.childNodes,
-                len = childNodes.length,
-                extraVSpace = 0,
-                extraHSpace = 0,
-                vspaceProps = ['marginTop', 'marginBottom', 'paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth'],
-                hspaceProps = ['marginLeft', 'marginRight', 'paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'],
-                i,
-                childNode;
-
-            for (i=0; i < vspaceProps.length; ++i) {
-              extraVSpace += parseInt(DomUtils.getComputedStyleProperty(document.body, vspaceProps[i]), 10);
-            }
-
-            for (i=0; i < hspaceProps.length; ++i) {
-              extraHSpace += parseInt(DomUtils.getComputedStyleProperty(document.body, hspaceProps[i]), 10);
-            }
-
-            for (i = 0; i < len; ++i) {
-              childNode = childNodes[i];
-              if (childNode.nodeType !== 1 /* Node.ELEMENT_NODE */ ) { continue; }
-
-              width = Math.max(width, childNode.clientWidth + extraHSpace);
-              height = Math.max(height, childNode.clientHeight + extraVSpace);
-            }
-
-            dimensions = {
-              width: width,
-              height: height
-            };
+        this.card.waitForActivation().then(function () {
+          if (!consumer.autoUpdate) {
+            return;
+          } else if (typeof MutationObserver === "undefined") {
+            Conductor.warn("MutationObserver is not defined.  Height service cannot autoupdate.  You must manually call `update` for your height consumer.  You may want to disable autoupdate when your card activates with `this.consumers.height.autoUpdate = false;`");
+            return;
           }
 
-          this.send('resize', dimensions);
-        },
+          consumer.setUpAutoupdate();
+        });
+      },
 
-        setUpAutoupdate: function () {
-          var consumer = this;
+      update: function (dimensions) {
+        if (typeof dimensions === "undefined") {
+          var width = 0,
+              height = 0,
+              childNodes = document.body.childNodes,
+              len = childNodes.length,
+              extraVSpace = 0,
+              extraHSpace = 0,
+              vspaceProps = ['marginTop', 'marginBottom', 'paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth'],
+              hspaceProps = ['marginLeft', 'marginRight', 'paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'],
+              i,
+              childNode;
 
-          var mutationObserver = new MutationObserver(function () {
-            consumer.update();
-          });
-
-          mutationObserver.observe(document.documentElement, {
-            childList: true,
-            attributes: true,
-            characterData: true,
-            subtree: true,
-            attributeOldValue: false,
-            characterDataOldValue: false,
-            attributeFilter: ['style', 'className']
-          });
-        }
-      });
-    };
-
-    Conductor.lifecycleConsumer = function(promise) {
-      return Conductor.Oasis.Consumer.extend({
-        initialize: function() {
-          var consumer = this;
-
-          promise.then(function() {
-            consumer.send('activated');  
-          });
-        }
-      });
-    };
-
-    Conductor.metadataConsumer = function(card) {
-      var options = card.options;
-
-      options.requests.metadataFor = function(name) {
-        if (name === '*') {
-          var values = [], names = [], defered;
-
-          for (var metadataName in options.metadata) {
-            values.push(card.metadata[metadataName].call(card));
-            names.push(metadataName);
+          for (i=0; i < vspaceProps.length; ++i) {
+            extraVSpace += parseInt(DomUtils.getComputedStyleProperty(document.body, vspaceProps[i]), 10);
           }
 
-          return Conductor.Oasis.RSVP.all(values).then(function(sources) {
-            var metadata = {};
+          for (i=0; i < hspaceProps.length; ++i) {
+            extraHSpace += parseInt(DomUtils.getComputedStyleProperty(document.body, hspaceProps[i]), 10);
+          }
 
-            for (var i = 0; i < sources.length; i++) {
-              var name = names[i];
-              for (var key in sources[i]) {
-                metadata[name+':'+key] = sources[i][key];
+          for (i = 0; i < len; ++i) {
+            childNode = childNodes[i];
+            if (childNode.nodeType !== 1 /* Node.ELEMENT_NODE */ ) { continue; }
+
+            width = Math.max(width, childNode.clientWidth + extraHSpace);
+            height = Math.max(height, childNode.clientHeight + extraVSpace);
+          }
+
+          dimensions = {
+            width: width,
+            height: height
+          };
+        }
+
+        this.send('resize', dimensions);
+      },
+
+      setUpAutoupdate: function () {
+        var consumer = this;
+
+        var mutationObserver = new MutationObserver(function () {
+          consumer.update();
+        });
+
+        mutationObserver.observe(document.documentElement, {
+          childList: true,
+          attributes: true,
+          characterData: true,
+          subtree: true,
+          attributeOldValue: false,
+          characterDataOldValue: false,
+          attributeFilter: ['style', 'className']
+        });
+      }
+    });
+
+    Conductor.LifecycleConsumer = Conductor.Oasis.Consumer.extend({
+      initialize: function() {
+        var consumer = this;
+
+        this.card.waitForActivation().then(function() {
+          consumer.send('activated');
+        });
+      }
+    });
+
+    Conductor.MetadataConsumer = Conductor.Oasis.Consumer.extend({
+      requests: {
+        metadataFor: function(name) {
+          if (name === '*') {
+            var values = [], names = [];
+
+            for (var metadataName in this.card.options.metadata) {
+              values.push(this.card.metadata[metadataName].call(this.card));
+              names.push(metadataName);
+            }
+
+            return Conductor.Oasis.RSVP.all(values).then(function(sources) {
+              var metadata = {};
+
+              for (var i = 0; i < sources.length; i++) {
+                var name = names[i];
+                for (var key in sources[i]) {
+                  metadata[name+':'+key] = sources[i][key];
+                }
               }
-            }
 
-            return metadata;
-          });
+              return metadata;
+            });
 
-        } else {
-          return card.metadata[name].call(card);
+          } else {
+            return this.card.metadata[name].call(this.card);
+          }
         }
-      };
+      }
+    });
 
-      return Conductor.Oasis.Consumer.extend(options);
-    };
-
-    Conductor.nestedWiretapping = function (card) {
-      return Conductor.Oasis.Consumer;
-    };
+    Conductor.NestedWiretapping = Conductor.Oasis.Consumer;
 
     /*global DomUtils ConductorShims*/
 
-    var o_create = ConductorShims.o_create;
-
-    Conductor.renderConsumer = function(promise, card) {
-      var options = o_create(card.options);
+    Conductor.RenderConsumer = function() {
       var domInitialized = false;
 
       function resetCSS() {
@@ -940,34 +938,34 @@ define("conductor",
         head.insertBefore(newStyle, head.children[0]);
       }
 
-      options.events.render = function(args) {
-        if(!domInitialized) {
-          resetCSS();
+      return Conductor.Oasis.Consumer.extend({
+        events: {
+          render: function(args) {
+            if(!domInitialized) {
+              resetCSS();
 
-          if(card.initializeDOM) {
-            card.initializeDOM();
+              if(this.card.initializeDOM) {
+                this.card.initializeDOM();
+              }
+
+              domInitialized = true;
+            }
+            this.card.render.apply(this.card, args);
           }
-
-          domInitialized = true;
         }
-        card.render.apply(card, args);
-      };
-
-      return Conductor.Oasis.Consumer.extend(options);
-    };
+      });
+    }();
 
     /*global DomUtils ConductorShims*/
 
-    var o_create = ConductorShims.o_create,
-        a_forEach = ConductorShims.a_forEach;
+    var a_forEach = ConductorShims.a_forEach;
 
-    Conductor.xhrConsumer = function(requiredUrls, requiredCSSUrls, promise, card) {
-      var options = o_create(card.options);
-
-      options.initialize = function() {
+    Conductor.XhrConsumer = Conductor.Oasis.Consumer.extend({
+      initialize: function() {
         var promises = [],
             jsPromises = [],
-            port = this.port;
+            port = this.port,
+            promise = this.card.deferred.xhr;
 
         function loadURL(callback) {
           return function(url) {
@@ -990,7 +988,7 @@ define("conductor",
           head.appendChild(style);
         }
 
-        a_forEach.call(requiredUrls, function( url ) {
+        a_forEach.call(Conductor.requiredUrls, function( url ) {
           var promise = port.request('get', url);
           jsPromises.push( promise );
           promises.push(promise);
@@ -998,13 +996,11 @@ define("conductor",
         Conductor.Oasis.RSVP.all(jsPromises).then(function(scripts) {
           a_forEach.call(scripts, processJavaScript);
         }).then(null, Conductor.error);
-        a_forEach.call(requiredCSSUrls, loadURL(processCSS));
+        a_forEach.call(Conductor.requiredCSSUrls, loadURL(processCSS));
 
         Conductor.Oasis.RSVP.all(promises).then(function() { promise.resolve(); }).then(null, Conductor.error);
-      };
-
-      return Conductor.Oasis.Consumer.extend(options);
-    };
+      }
+    });
 
     Conductor.AssertionService = Conductor.Oasis.Service.extend({
       initialize: function(port) {
