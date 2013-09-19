@@ -5,6 +5,10 @@ Ember.onLoad('Ember.Application', function(Application){
     Ember.run.schedule('actions', promise, callback, promise);
   });
 
+  Conductor.Oasis.RSVP.configure('onerror', function(error) {
+    debugger;
+  });
+
   function handleRenderIntent(intent, dimensions) {
     return function(app) {
       var router = app.__container__.lookup('router:main');

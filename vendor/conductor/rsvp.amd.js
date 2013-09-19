@@ -122,7 +122,9 @@ define("rsvp/async",
     }
 
 
-    __exports__.async = async;
+    __exports__.async = function(callback, arg) {
+      callback(arg);
+    };
   });
 define("rsvp/config",
   ["rsvp/async","exports"],
@@ -415,6 +417,7 @@ define("rsvp/promise",
     };
 
     function onerror(event) {
+      debugger;
       if (config.onerror) {
         config.onerror(event.detail);
       }

@@ -1281,6 +1281,31 @@ define("conductor/xhr_service",
       requests: {
         get: function(url) {
           var service = this;
+          function withXDomainRequest(url, options) {
+           return new Oasis.RSVP.Promise(function(resolve, reject){
+            debugger;
+             var xdr = new XDomainRequest();
+
+             xdr.onerror = function() {
+               reject(arguments);
+             };
+
+             xdr.ontimeout = function() {
+               reject(arguments);
+             };
+
+             xdr.onload = function() {
+               resolve(xdr.responseText);
+             }
+
+             xdr.open('get', url);
+             xdr.send();
+           });
+          }
+
+          if (window.XDomainRequest) {
+            return withXDomainRequest(url)
+          }
 
           return new Oasis.RSVP.Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest(),
