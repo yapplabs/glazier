@@ -773,6 +773,7 @@ define("conductor/height_service",
 
     var HeightService = Oasis.Service.extend({
       initialize: function (port) {
+        debugger;
         var el;
         if (el = this.sandbox.el) {
           Oasis.RSVP.EventTarget.mixin(el);
