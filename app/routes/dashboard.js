@@ -30,7 +30,7 @@ var DashboardRoute = Ember.Route.extend({
       }
 
       return promise.then(function(dashboard){
-        dashboard.set('repository', repository);
+        dashboard.set('repository', repository.data);
         return dashboard;
       });
     });

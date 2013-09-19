@@ -11,7 +11,7 @@ var Repository = {
 
     promise = ajax('https://api.github.com/repos/' + id, {
       type: 'get',
-      dataType: 'json',
+      dataType: 'jsonp',
       beforeSend: function(xhr) {
         if (accessToken) {
           xhr.setRequestHeader('Authorization', "token " + accessToken);

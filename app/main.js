@@ -29,4 +29,8 @@ Glazier.env = (/github\.glazier\.io/.test(window.location.hostname)) ? 'prod' : 
 Ember.Application.initializer(injectionsInitializer);
 Ember.Application.initializer(conductorServicesInitializer);
 
+Ember.RSVP.configure('onerror', function(error) {
+  Ember.Logger.assert(false, error);
+});
+
 export { Glazier };
