@@ -33,6 +33,8 @@ module("AddPaneController", {
       }
     }));
     container.register('store:main', DS.Store);
+    container.register('conductor:main', new Conductor(), { instantiate: false });
+
     store = container.lookup('store:main');
 
     store.push('pane_type', {
