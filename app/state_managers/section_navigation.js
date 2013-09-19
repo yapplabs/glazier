@@ -7,7 +7,7 @@ var SectionNavigationStateManager = Ember.StateManager.extend({
   }),
   editing: Ember.State.extend({
     done: function(manager) {
-      this.persistUpdatedSectionNames(manager);
+      this.persistUpdatedSections(manager);
       manager.transitionTo('showing');
     },
     add: function(manager) {
@@ -44,13 +44,18 @@ var SectionNavigationStateManager = Ember.StateManager.extend({
       this.get('sectionNavigationController').set('isEditing', false);
     },
     edit: Ember.K,
-    persistUpdatedSectionNames: function(manager){
+    persistUpdatedSections: function(manager){
+      var sections = [];
       this.container.lookup("controller:sectionNavigation").forEach(function(sectionNavItemController){
         if (sectionNavItemController.get('hasBufferedChanges')) {
           sectionNavItemController.applyBufferedChanges();
-          sectionNavItemController.get('content').save();
+          sections.push(sectionNavItemController.get('content'));
         }
       });
+      if (sections.length > 0) {
+        var store = this.container.lookup('store:main');
+        store.adapterFor(Glazier.Section).persistSections(sections);
+      }
     }
   })
 });
