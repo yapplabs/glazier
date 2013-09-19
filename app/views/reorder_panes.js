@@ -1,15 +1,11 @@
 var ReorderPanesView = Ember.View.extend({
   classNames: ['reorder-panes'],
-  didInsertElement: function(){
-    this.applySortable();
-  },
   applySortable: function(){
     var view = this;
     this.$('.sortable-list').sortable({items: 'li'}).on('sortupdate', function(){
-      view.propertyWillChange('orderedIds');
-      view.propertyDidChange('orderedIds');
+      view.notifyPropertyChange('orderedIds');
     });
-  },
+  }.on('didInsertElement'),
   willDestroyElement: function(){
     this.$('.sortable-list').sortable('destroy');
   },

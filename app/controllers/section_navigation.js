@@ -5,7 +5,8 @@ var SectionNavigationController = Ember.ArrayController.extend({
   stateManager: function() {
     return this.container.lookup('stateManager:sectionNavigation');
   }.property(),
-  currentSection: Ember.computed.alias('controllers.dashboard/section.content')
+  currentSection: Ember.computed.alias('controllers.dashboard/section.content'),
+  sortProperties: ['position']
 });
 
 export default SectionNavigationController;

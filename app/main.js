@@ -10,7 +10,10 @@ import PaneView from 'glazier/views/pane';
 import conductorServicesInitializer from 'glazier/initializers/conductor_services';
 import injectionsInitializer from 'glazier/initializers/injections';
 
+// These 'requires' are necessary because they involve registering
+// helpers, which needs to happen at app start.
 import autoFocusField from 'glazier/helpers/auto_focus_input';
+import reorderableSectionsView from 'glazier/views/reorderable_sections';
 
 Ember.TextField.reopen({
   attributeBindings: ['autofocus']
