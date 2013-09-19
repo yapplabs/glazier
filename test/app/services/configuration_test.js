@@ -3,7 +3,7 @@ import { assertResolved } from 'helpers/promise_test_helpers';
 
 import Conductor from 'conductor';
 
-var conductor, card, promise;
+var conductor, card;
 
 if (!/phantom/i.test(navigator.userAgent)) {
   module("Glazier ConfigurationService", {
@@ -19,7 +19,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
         capabilities: ['configuration']
       });
 
-      promise = card.appendTo('#qunit-fixture');
+      card.appendTo('#qunit-fixture');
 
       $('<meta>').
         attr('name', 'config_test').
@@ -33,7 +33,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
   });
 
   asyncTest("A card can return a configuration value by name", 2, function() {
-    assertResolved(promise.then(function() {
+    assertResolved(card.waitForLoad().then(function() {
       return card.metadataFor('retrievedConfig');
     }).then(function(retrievedConfigValue) {
       start();
