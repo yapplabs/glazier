@@ -16,7 +16,8 @@ var initializer = {
     var conductor = new Conductor({
       conductorURL: conductorURL()
     });
-
+    // Remove the height service
+    conductor.services.height = Conductor.Oasis.Service.extend({});
     conductor.oasis.configure('eventCallback', Ember.run);
     application.register('conductor:main', conductor, { instantiate: false });
 
