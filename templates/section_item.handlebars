@@ -1,0 +1,6 @@
+<span {{bind-attr class=":icon sectionIcon"}}></span>
+{{input value=name}}
+
+{{#if canRemovePanes}}
+  <span class="icon-x remove-section" {{action "remove" this target=parentController.stateManager bubbles=false}}></span>
+{{/if}}

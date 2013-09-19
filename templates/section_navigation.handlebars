@@ -1,25 +1,14 @@
 <div class='section-navigation'>
 {{#if isEditing}}
-  <ol>
-    {{#each}}
-      <li {{bind-attr class="isCurrent:selected"}}>
-        <span {{bind-attr class=":icon sectionIcon"}}></span>
-        {{input value=name}}
 
-        {{#if canRemovePanes}}
-          <span class="icon-x remove-section" {{action "remove" this target=parentController.stateManager bubbles=false}}></span>
-        {{/if}}
-      </li>
-    {{/each}}
-    <li class='add-section' {{action "add" target=stateManager}}>
-      Add Section
-    </li>
-  </ol>
+  {{reorderable-sections contentBinding="sortedContent"}}
+
+  <button class='add-section' {{action "add" target=stateManager}}>Add Section</button>
 
   <button {{action "done" target=stateManager}}>Done</button>
 {{else}}
   <ol>
-    {{#each}}
+    {{#each sortedContent}}
       <li {{bind-attr class="isCurrent:selected"}} {{action "navigateToSection" this}}>
         <span {{bind-attr class=":icon sectionIcon"}}></span>
         {{name}}

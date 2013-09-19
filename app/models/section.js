@@ -18,6 +18,7 @@ var maxValue = function(array, property){
 var Section = DS.Model.extend({
   name: DS.attr('string'),
   slug: DS.attr('string'),
+  position: DS.attr('number'),
   containerType: DS.attr('string'),
   panes: DS.hasMany('pane'),
   dashboard: DS.belongsTo('dashboard'),
