@@ -9,6 +9,8 @@ var SectionNavItemController = Ember.ObjectController.extend(BufferedProxyMixin,
     switch (containerType) {
       case 'board':
         return 'icon-cards';
+      case 'page':
+        return 'icon-page';
       default:
         return 'icon-star';
     }

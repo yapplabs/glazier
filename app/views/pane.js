@@ -85,8 +85,8 @@ var PaneView = Ember.View.extend({
     var $paneWrapper = this.$();
 
     return {
-      left: $paneWrapper.offset().left,
-      right: $paneWrapper.offsetParent().innerWidth() - ($paneWrapper.offset().left + $paneWrapper.width()),
+      left: $paneWrapper.position().left,
+      right: $paneWrapper.offsetParent().innerWidth() - ($paneWrapper.position().left + $paneWrapper.width()),
       top: $paneWrapper.position().top,
       bottom: $paneWrapper.offsetParent().outerHeight() - ($paneWrapper.position().top + $paneWrapper.innerHeight())
     };
