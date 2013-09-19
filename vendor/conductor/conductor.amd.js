@@ -773,7 +773,6 @@ define("conductor/height_service",
 
     var HeightService = Oasis.Service.extend({
       initialize: function (port) {
-        debugger;
         var el;
         if (el = this.sandbox.el) {
           Oasis.RSVP.EventTarget.mixin(el);
@@ -793,10 +792,11 @@ define("conductor/height_service",
               width = Math.min(data.width, maxWidth),
               height = Math.min(data.height, maxHeight);
 
-          el.style.width = width + "px";
-          el.style.height = height + "px";
+          // gut the height service:
+          // el.style.width = width + "px";
+          // el.style.height = height + "px";
 
-          el.trigger('resize', { width: width, height: height });
+          // el.trigger('resize', { width: width, height: height });
         }
       }
     });
