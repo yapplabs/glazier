@@ -40,8 +40,8 @@ if (!/phantom/i.test(navigator.userAgent)) {
         conductorURL: '/vendor/conductor.js.html'
       });
 
-      Conductor.services['paneTypeUserStorage'] = container.lookup('service:pane_type_user_storage');
-      Conductor.services['test'] = container.lookup('service:test');
+      conductor.services['paneTypeUserStorage'] = container.lookup('service:pane_type_user_storage');
+      conductor.services['test'] = container.lookup('service:test');
 
       var store = container.lookup('store:main');
       pushPaneType(store);
@@ -53,8 +53,9 @@ if (!/phantom/i.test(navigator.userAgent)) {
       card.manifest = {
         name: 'card-type'
       };
-      card.promise.then(null, function(e){ console.log(e); });
-      card.appendTo('#qunit-fixture');
+
+      var promise = card.appendTo('#qunit-fixture');
+      promise.then(null, function(e){ console.log(e); });
 
       mockAjax();
     },

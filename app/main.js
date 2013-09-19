@@ -29,6 +29,4 @@ Glazier.env = (/github\.glazier\.io/.test(window.location.hostname)) ? 'prod' : 
 Ember.Application.initializer(injectionsInitializer);
 Ember.Application.initializer(conductorServicesInitializer);
 
-Conductor.Oasis.configure('eventCallback', Ember.run);
-
 export { Glazier };

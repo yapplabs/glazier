@@ -13,7 +13,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
         conductorURL: '/vendor/conductor.js.html'
       });
 
-      Conductor.services['configuration'] = ConfigurationService;
+      conductor.services['configuration'] = ConfigurationService;
 
       card = conductor.load('/test/fixtures/app/services/configuration_card.js', 1, {
         capabilities: ['configuration']
@@ -33,7 +33,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
   });
 
   asyncTest("A card can return a configuration value by name", 2, function() {
-    assertResolved(card.promise.then(function() {
+    assertResolved(card.waitForLoad().then(function() {
       return card.metadataFor('retrievedConfig');
     }).then(function(retrievedConfigValue) {
       start();

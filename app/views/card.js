@@ -1,5 +1,3 @@
-import Conductor from 'conductor';
-
 function render(card) {
   card.render();
   return card;
@@ -43,9 +41,9 @@ var CardView = Ember.View.extend({
     var parentView = this.get('parentView');
 
     Ember.run.scheduleOnce('afterRender', function() {
-      card.appendTo(element).promise.
+      card.appendTo(element).
         then(render).
-        then(null, Conductor.error);
+        fail(Ember.RSVP.rethrow);
     });
   }
 });

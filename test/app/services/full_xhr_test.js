@@ -14,8 +14,8 @@ module("Glazier FullXhrService", {
       conductorURL: '/vendor/conductor.js.html'
     });
 
-    Conductor.services['fullXhr'] = FullXhrService;
-    Conductor.services['test'] = TestService;
+    conductor.services['fullXhr'] = FullXhrService;
+    conductor.services['test'] = TestService;
 
     card = conductor.load('/test/fixtures/app/services/full_xhr_card.js', 1, {
       capabilities: ['fullXhr', 'test']

@@ -13,7 +13,7 @@ module.exports = {
     src: ['tmp/public/vendor/loader.js', 'tmp/public/vendor/conductor/**/*.js'],
     dest: 'tmp/conductor.js',
     options: {
-      footer: "window.Conductor = requireModule('conductor');"
+      footer: "self.Oasis = requireModule('oasis'); self.Conductor = requireModule('conductor'); requireModule('conductor/card'); self.oasis = new self.Oasis(); self.oasis.autoInitializeSandbox();"
     }
   }
 };

@@ -15,9 +15,10 @@ import ajax from 'glazier/utils/ajax';
 
 var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
 
-  accessToken: function(){
-    return this.userController.get('accessToken');
+  accessToken: function() {
+    return this.container.lookup('controller:user').get('accessToken');
   },
+
   /*
     @public
 
@@ -48,8 +49,7 @@ var AuthenticatedGithubApiService = Conductor.Oasis.Service.extend({
         xhr.setRequestHeader('Authorization', "token " + accessToken);
       };
 
-      return ajax(url, ajaxOpts).
-        then(null, failureResultFromJqXhr);
+      return ajax(url, ajaxOpts).fail(failureResultFromJqXhr);
     }
   }
 });

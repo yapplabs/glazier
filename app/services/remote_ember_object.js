@@ -23,7 +23,7 @@ var RemoteEmberObjectService = Conductor.Oasis.Service.extend({
 
       this.port.request('getBucketData', bucketName).then(function(data){
         bucket.set('content', data);
-      }).then(null, Conductor.error);
+      }).fail(Ember.RSVP.rethrow);
     }
     return bucket;
   },

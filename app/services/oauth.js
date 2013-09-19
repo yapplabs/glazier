@@ -20,7 +20,9 @@ import ajax from 'glazier/utils/ajax';
 */
 
 var OauthService = Conductor.Oasis.Service.extend({
-  oauthController: null, // injected
+  oauthController: function() {
+    return this.container.lookup('controller:oauth');
+  },
 
   /*
     @public
@@ -71,7 +73,7 @@ var OauthService = Conductor.Oasis.Service.extend({
       redirectUri: redirectUri,
       paneDisplayName: paneDisplayName
     };
-    return this.oauthController.startOauthFlow(oauthOptions);
+    return this.oauthController().startOauthFlow(oauthOptions);
   },
 
   /*

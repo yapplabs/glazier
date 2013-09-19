@@ -48,7 +48,7 @@ var PaneUserStorageService = Conductor.Oasis.Service.extend({
 
       return ajax(apiUrl(cardId), ajaxOptions)
             .then(updatePaneUserEntry)
-            .then(null, Conductor.error);
+            .fail(Ember.RSVP.rethrow);
     },
 
     /*
@@ -73,7 +73,7 @@ var PaneUserStorageService = Conductor.Oasis.Service.extend({
 
       return ajax(apiUrl(cardId), ajaxOptions)
             .then(removePaneUserEntry)
-            .then(null, Conductor.error);
+            .fail(Ember.RSVP.rethrow);
     }
   }
 });

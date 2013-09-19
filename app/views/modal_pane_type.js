@@ -6,7 +6,7 @@ var ModalPaneTypeView = Ember.View.extend({
     var card = this.get('controller.content');
 
     if (card) {
-      var promise = card.appendTo(this.get('element')).promise;
+      var promise = card.appendTo(this.get('element'));
       promise.then(function() {
         card.render();
       }).then(null, function(reason) {
