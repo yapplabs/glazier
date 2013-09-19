@@ -36,6 +36,8 @@ iframe {
   min-height: 100%;
   @include scroll-after($footer-height);
   @include transition(500ms);
+  @include transition-property(transform, opacity);
+  opacity: 0;
 
   @media (max-height: $header-height + ($page-padding * 3) + ($min-card-height * 1.5) + $footer-height) {
     min-height: ($page-padding * 3) + ($min-card-height * 1.5);
@@ -44,6 +46,17 @@ iframe {
   .hide-panes & {
     @include transform(scale((1 / 3)));
     @include opacity(0);
+  }
+
+  &.page, &.board {
+    opacity: 1;
+  }
+
+  &.page {
+    @include box-sizing(border-box);
+    background: white;
+    margin-right: $page-padding;
+    padding: $page-padding;
   }
 }
 
@@ -67,7 +80,7 @@ iframe {
       @include box-sizing(content-box);
       @include backface-visibility(hidden);
       position: absolute;
-      left: 10%; right: 10%;
+      left: $page-padding; right: $page-padding;
       top: $page-padding; bottom: $footer-height;
       height: auto;
       max-width: ($min-card-width * 3);
@@ -80,6 +93,12 @@ iframe {
     @media (min-width: ($min-card-width * $i)) {
       width: (100% / $i);
     }
+  }
+
+  .page & {
+    width: 100%;
+    padding-left: $page-padding;
+    padding: 0;
   }
 }
 

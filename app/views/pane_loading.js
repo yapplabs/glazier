@@ -9,11 +9,9 @@ var PaneLoadingView = Ember.View.extend({
     if (!$el) { return; }
 
     if (this.get('isLoaded')) {
-      // Fully hide the element in 500ms.
-      Ember.run.later($el, 'hide', 500);
-
-      // Alternatively:
-      //$el.fadeOut();
+      $el.one('animationend webkitAnimationEnd oanimationEnd MSAnimationEnd', function() {
+        $el.hide();
+      });
     }
   }.observes('isLoaded')
 });
