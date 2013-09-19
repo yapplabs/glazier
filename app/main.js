@@ -34,4 +34,24 @@ Ember.Application.initializer(conductorServicesInitializer);
 
 Conductor.Oasis.configure('eventCallback', Ember.run);
 
+if ([].sortBy) { Ember.Logger.warn('Ember now provides sortBy. Please remove the code below.'); }
+
+var get = Ember.get;
+Ember.Enumerable.reopen({
+  sortBy: function() {
+    var sortKeys = arguments;
+    return this.toArray().sort(function(a, b){
+      for(var i = 0; i < sortKeys.length; i++) {
+        var key = sortKeys[i],
+            propA = get(a, key),
+            propB = get(b, key);
+        if (propA > propB) return 1;
+        if (propA < propB) return -1;
+        // else continue to the next sortKey
+      }
+      return 0;
+    });
+  }
+});
+
 export { Glazier };

@@ -1,14 +1,14 @@
 <div class='section-navigation'>
 {{#if isEditing}}
 
-  {{reorderable-sections contentBinding="this"}}
+  {{reorderable-sections contentBinding="sortedContent"}}
 
   <button class='add-section' {{action "add" target=stateManager}}>Add Section</button>
 
   <button {{action "done" target=stateManager}}>Done</button>
 {{else}}
   <ol>
-    {{#each}}
+    {{#each sortedContent}}
       <li {{bind-attr class="isCurrent:selected"}} {{action "navigateToSection" this}}>
         <span {{bind-attr class=":icon sectionIcon"}}></span>
         {{name}}

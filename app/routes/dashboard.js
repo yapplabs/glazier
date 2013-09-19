@@ -56,6 +56,10 @@ var DashboardRoute = Ember.Route.extend({
       }
     }
   },
+  setupController: function(controller, model) {
+    this._super(controller, model);
+    this.controllerFor('section_navigation').set('content', model.get('sections'));
+  },
   actions: {
     error: function (error, transition) {
 

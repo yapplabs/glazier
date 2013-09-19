@@ -21,36 +21,32 @@ var ReorderableSectionsView = Ember.CollectionView.extend({
       Ember.run(function() {
         view._updating = true;
 
+        var content = view.get('content');
+        var movedItem = content.objectAt(oldIndex);
+        content.removeAt(oldIndex);
+        content.insertAt(newIndex, movedItem);
 
-        //var content = view.get('content');
-        //var movedItem = content[oldIndex];
-        //content.removeAt(oldIndex);
-        //content.insertAt(newIndex, movedItem);
-
-        var movedItem = childViews[oldIndex];
+        var movedView = childViews[oldIndex];
         childViews.removeAt(oldIndex);
-        childViews.insertAt(newIndex, movedItem);
+        childViews.insertAt(newIndex, movedView);
 
         childViews.forEach(function(view, index) {
-          var content = view.get('content.content');
+          var content = view.get('content');
           content.set('position', index);
         });
 
         view._updating = false;
       });
-
-      //view.notifyPropertyChange('');
-      //view.propertyWillChange('orderedIds');
-      //view.propertyDidChange('orderedIds');
-    //}).on('sortstart', function() {
-      //console.log("Startin'");
     });
-  }.on('didInsertElement'),
+  },
 
   _updating: false,
 
   arrayWillChange: function(content, start, removedCount) {
     if (!this._updating) {
+      if (this.state === 'inDOM') {
+        this.$().sortable('destroy');
+      }
       this._super(content, start, removedCount);
     }
   },
@@ -58,6 +54,7 @@ var ReorderableSectionsView = Ember.CollectionView.extend({
   arrayDidChange: function(content, start, removed, added) {
     if (!this._updating) {
       this._super(content, start, removed, added);
+      Ember.run.scheduleOnce('afterRender', this, 'applySortable');
     }
   }
 });
