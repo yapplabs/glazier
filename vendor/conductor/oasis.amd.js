@@ -1937,7 +1937,7 @@ define("oasis/xhr",
         }
 
         xhr.onload = function () {
-          trigger('xhr.load', oasis, url, options, xhr);
+          //trigger('xhr.load', oasis, url, options, xhr);
 
           var status = getLoadStatus(xhr);
           if (status >= 200 && status < 300) {
@@ -1949,16 +1949,16 @@ define("oasis/xhr",
 
         xhr.onprogress = noop;
         xhr.ontimeout = function () {
-          trigger('xhr.timeout', oasis, url, options, xhr);
+          //trigger('xhr.timeout', oasis, url, options, xhr);
           reject(xhr);
         };
 
         xhr.onerror = function () {
-          trigger('xhr.error', oasis, url, options, xhr);
+          //trigger('xhr.error', oasis, url, options, xhr);
           reject(xhr);
         };
 
-        trigger('xhr.send', oasis, url, options, xhr);
+        //trigger('xhr.send', oasis, url, options, xhr);
         xhr.send();
       });
     }
