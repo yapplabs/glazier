@@ -121,10 +121,7 @@ define("rsvp/async",
       async = useSetTimeout();
     }
 
-
-    __exports__.async = function(callback, arg) {
-      callback(arg);
-    };
+    __exports__.async = async;
   });
 define("rsvp/config",
   ["rsvp/async","exports"],
