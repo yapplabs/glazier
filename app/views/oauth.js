@@ -1,5 +1,6 @@
 var OauthView = Ember.View.extend({
-  templateName: 'oauth'
+  templateName: 'oauth',
+  classNameBindings: ['controller.serviceSlug']
 });
 
 export default OauthView;

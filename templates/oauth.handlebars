@@ -1,14 +1,16 @@
-<div class="modal-header">
-  <h3>
-    The {{oauthOptions.paneDisplayName}} Pane would like you to Oauth
-    against {{oauthOptions.authorizeUrl}}
-  </h3>
-</div>
 <div class="modal-main">
-  {{#if allowOauth}}
-    <a href="#" {{action approve}}>Approve Oauth</a>
-    <a href="#" {{action decline}}>Decline Oauth</a>
+  <div class="logo"></div>
+  <p>
+   The {{paneDisplayName}} Pane would like permission to
+   read or write information using your identity on {{serviceHost}}.
+  </p>
+
+   {{#if allowOauth}}
+    <div class="buttons">
+      <button class="modal-confirm" {{action approve}}>Continue</button>
+      <button class="modal-cancel" {{action decline}}>Cancel</button>
+    </div>
   {{else}}
-    A pane has requested Oauth, but you must log in to Glazier first.
+    The {{paneDisplayName}} has requested Oauth, but you must log in to Glazier first.
   {{/if}}
 </div>

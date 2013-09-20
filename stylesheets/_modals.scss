@@ -52,6 +52,19 @@
       @include transform(scale(1));
     }
   }
+  .stackexchange-com .logo {
+    background-image: url("<%= manifestUrl('/stackoverflow-logo-282x87.png') %>");
+    width: 282px;
+    height:87px;
+    margin:0 auto;
+  }
+  .buttons {
+    text-align: center;
+    button { display: inline-block; }
+  }
+  .modal-confirm {
+    background-color: $base-color;
+  }
 }
 #modal-overlay {
   position: fixed;

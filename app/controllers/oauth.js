@@ -2,13 +2,24 @@ var OauthController = Ember.Controller.extend({
   needs: ['user'],
   allowOauth: Ember.computed.alias('controllers.user.model'),
   authorizeUrl: function(){
-    var oauthOptions = this.get('oauthOptions');
-    var url = oauthOptions.authorizeUrl;
+    var oauthOptions = this.get('oauthOptions'),
+        url = oauthOptions.authorizeUrl;
     url += "?response_type=token";
     url += "&redirect_uri=" + encodeURIComponent(oauthOptions.redirectUri);
     url += "&client_id=" + encodeURIComponent(oauthOptions.clientId);
     return url;
   }.property('oauthOptions'),
+  paneDisplayName: Ember.computed.alias('oauthOptions.paneDisplayName'),
+  serviceHost: function(){
+    var oauthOptions = this.get('oauthOptions'),
+        url = oauthOptions.authorizeUrl,
+        parser = document.createElement('a');
+    parser.href = url;
+    return parser.host;
+  }.property('oauthOptions'),
+  serviceSlug: function(){
+    return this.get('serviceHost').replace('.', '-');
+  }.property('serviceHost'),
   startOauthFlow: function(opts) {
     this.send('showModal', 'oauth');
     return this.beginFlow(opts);
