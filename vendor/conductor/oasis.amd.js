@@ -1922,6 +1922,7 @@ define("oasis/xhr",
     }
     // else inline adapter with cross-domain cards is not going to work
 
+      debugger;
 
     function xhr(url, options, oasis) {
       if (!oasis) { oasis = this; }
@@ -1932,9 +1933,7 @@ define("oasis/xhr",
         xhr.open("get", url, true);
         setRequestHeader(xhr, options);
 
-        if (options.timeout) {
-          xhr.timeout = options.timeout;
-        }
+        xhr.timeout = options.timeout || 0;
 
         xhr.onload = function () {
           //trigger('xhr.load', oasis, url, options, xhr);
@@ -1959,7 +1958,9 @@ define("oasis/xhr",
         };
 
         //trigger('xhr.send', oasis, url, options, xhr);
-        xhr.send();
+        setTimeout(function(){
+          xhr.send();
+        }, 100);
       });
     }
 
