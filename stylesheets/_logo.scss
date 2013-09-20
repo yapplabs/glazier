@@ -1,5 +1,5 @@
 $logo-size: 1em;
-$logo-speed: 2000ms;
+$logo-speed: 4000ms;
 $logo-easing: cubic-bezier(.5,0,.3,1);
 
 $logo-color-lightest: adjust_hue(saturate(lighten($base-color, 48%), 47%), -18deg);
@@ -68,7 +68,7 @@ $logo-color-dark: adjust_hue(saturate(darken($base-color, 15%), 10%), -2deg);
 	}
 
 
-	&.animate {
+	&.animate, .pane-loading & {
 		@include animation(rotate ($logo-speed * 4) ($logo-speed / -2) steps(4) infinite);
 
 		.logo-static {
@@ -76,23 +76,46 @@ $logo-color-dark: adjust_hue(saturate(darken($base-color, 15%), 10%), -2deg);
 		}
 
 		.logo-pane-1 {
-			@include animation(slideRight $logo-speed $logo-easing ($logo-speed / -2) infinite);
+			@include animation(logoSlideRight $logo-speed $logo-easing ($logo-speed / -2) infinite);
 		}
 
 		.logo-pane-3 {
-			@include animation(slideLeft $logo-speed $logo-easing ($logo-speed / -2) infinite);
+			@include animation(logoSlideLeft $logo-speed $logo-easing ($logo-speed / -2) infinite);
 		}
 
 		.logo-pane-2 {
-			@include animation(slideDown $logo-speed $logo-easing ($logo-speed / -2) infinite);
+			@include animation(logoSlideDown $logo-speed $logo-easing ($logo-speed / -2) infinite);
 		}
 
 		.logo-pane-4 {
-			@include animation(slideDownRight $logo-speed $logo-easing ($logo-speed / -2) infinite);
+			@include animation(logoSlideDownRight $logo-speed $logo-easing ($logo-speed / -2) infinite);
 		}
 
 		.logo-pane-5 {
-			@include animation(slideUp $logo-speed $logo-easing ($logo-speed / -2) infinite);
+			@include animation(logoSlideUp $logo-speed $logo-easing ($logo-speed / -2) infinite);
+		}
+	}
+
+	.pane-loading & {
+		font-size: 10em;
+		opacity: .5;
+
+		background: desaturate(transparentize($base-color, .5), 100%);
+
+		.logo-pane-1 {
+			background: desaturate($logo-color-dark, 100%);
+		}
+		.logo-pane-2 {
+			border-top: $logo-size solid desaturate($base-color, 100%);
+		}
+		.logo-pane-3 {
+			background: desaturate($logo-color-lighter, 100%);
+		}
+		.logo-pane-4 {
+			border-top: $logo-size solid desaturate($logo-color-light, 100%);
+		}
+		.logo-pane-5 {
+			border-bottom: $logo-size solid desaturate($logo-color-light, 100%);
 		}
 	}
 }
@@ -112,7 +135,7 @@ $logo-color-dark: adjust_hue(saturate(darken($base-color, 15%), 10%), -2deg);
 	}
 }
 
-@include keyframes(slideLeft) {
+@include keyframes(logoSlideLeft) {
 	0% {
 		@include transform(translateX(100%));
 		@include transform(translate3d(100%,0,0));
@@ -137,7 +160,7 @@ $logo-color-dark: adjust_hue(saturate(darken($base-color, 15%), 10%), -2deg);
 	}
 }
 
-@include keyframes(slideRight) {
+@include keyframes(logoSlideRight) {
 	0% {
 		@include transform(translateX(-100%));
 		@include transform(translate3d(-100%,0,0));
@@ -162,7 +185,7 @@ $logo-color-dark: adjust_hue(saturate(darken($base-color, 15%), 10%), -2deg);
 	}
 }
 
-@include keyframes(slideDown) {
+@include keyframes(logoSlideDown) {
 	0% {
 		@include transform(translateY(-100%));
 		@include transform(translate3d(0,-100%,0));
@@ -188,7 +211,7 @@ $logo-color-dark: adjust_hue(saturate(darken($base-color, 15%), 10%), -2deg);
 	}
 }
 
-@include keyframes(slideDownRight) {
+@include keyframes(logoSlideDownRight) {
 	0% {
 		@include transform(translateY(-100%));
 		@include transform(translate3d(0,-100%,0));
@@ -211,7 +234,7 @@ $logo-color-dark: adjust_hue(saturate(darken($base-color, 15%), 10%), -2deg);
 	}
 }
 
-@include keyframes(slideUp) {
+@include keyframes(logoSlideUp) {
 	0% {
 		@include transform(translateY(100%));
 		@include transform(translate3d(0,100%,0));

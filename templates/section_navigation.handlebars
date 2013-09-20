@@ -3,9 +3,9 @@
 
   {{reorderable-sections contentBinding="sortedContent"}}
 
-  <button class='add-section' {{action "add" target=stateManager}}>Add Section</button>
+  <button class='add-section' {{action "add" target=stateManager}}><span class="icon icon-plus"></span> Add a Section</button>
 
-  <button {{action "done" target=stateManager}}>Done</button>
+  <button {{action "done" target=stateManager}}>Done Editing</button>
 {{else}}
   <ol>
     {{#each sortedContent}}
@@ -16,7 +16,7 @@
     {{/each}}
   </ol>
 
-  <button {{action "edit" target=stateManager}}>Edit</button>
+  <button {{action "edit" target=stateManager}}><span class="icon-edit"></span> Edit Menu</button>
 {{/if}}
 </div>
 

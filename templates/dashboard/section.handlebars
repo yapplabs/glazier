@@ -1,6 +1,6 @@
-{{render "section_controls" }}
-<div class="panes block-group">
+<div {{bindAttr class=":panes :block-group containerType"}}>
   {{#unless isPerformingReorder}}
     {{render "panes" panes}}
   {{/unless}}
 </div>
+{{render "section_controls" }}

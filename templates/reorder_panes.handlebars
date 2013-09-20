@@ -3,7 +3,7 @@
 </div>
 
 {{! list items are added by the view}}
-<ol class="modal-main sortable-list">
+<ol {{bindAttr class=":modal-main :sortable-list containerType"}}>
   {{#each controller.orderablePanes}}
     <li draggable='true' data-pane-id='{{unbound id}}'><div class='mini-pane'>
       {{diplayCardTitle}}

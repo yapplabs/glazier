@@ -225,14 +225,17 @@ body {
     width: $section-nav-width - 90px;
   }
   .add-section {
-    background-color: #999;
+    background: none;
     color: #444;
+    border: 3px dashed #444;
     margin-top: 4px;
     display: block;
     width: 230px;
     height: 60px;
     line-height: 60px;
     font-size: 20px;
+    text-align: left;
+    padding: 0 15px;
   }
   .remove-section {
     color: maroon;
@@ -296,19 +299,36 @@ body {
         }
       }
     }
+
+    &.page {
+      li {
+        width: 100%;
+      }
+    }
   }
 }
 
 .pane-loading {
+  display: table;
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   background: white;
   color: gray;
   text-align:center;
-  margin-top:125px;
+
+  > .inner {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  &.is-loaded {
+    @include animation(finishLoading 1s);
+    opacity: 0;
+    z-index: -1;
+  }
 }
 
 .toolbar-items {
@@ -324,3 +344,14 @@ body {
 }
 
 @import "themes";
+
+@include keyframes(finishLoading) {
+  0% {
+    opacity: 1;
+    z-index: 1;
+  }
+  100% {
+    opacity: 0;
+    z-index: 1;
+  }
+}
