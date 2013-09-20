@@ -1,12 +1,13 @@
 define("oasis",
-  ["oasis/util","oasis/connect","rsvp","oasis/logger","oasis/version","oasis/config","oasis/sandbox","oasis/sandbox_init","oasis/service","oasis/iframe_adapter","oasis/webworker_adapter"],
-  function(__dependency1__, __dependency2__, RSVP, logger, Version, OasisConfiguration, Sandbox, autoInitializeSandbox, Service, iframeAdapter, webworkerAdapter) {
+  ["oasis/util","oasis/xhr","oasis/connect","rsvp","oasis/logger","oasis/version","oasis/config","oasis/sandbox","oasis/sandbox_init","oasis/events","oasis/service","oasis/iframe_adapter","oasis/webworker_adapter","oasis/inline_adapter"],
+  function(__dependency1__, __dependency2__, __dependency3__, RSVP, logger, Version, OasisConfiguration, Sandbox, autoInitializeSandbox, Events, Service, iframeAdapter, webworkerAdapter, inlineAdapter) {
     "use strict";
     var assert = __dependency1__.assert;
-    var connect = __dependency2__.connect;
-    var connectCapabilities = __dependency2__.connectCapabilities;
-    var portFor = __dependency2__.portFor;
-
+    var delegate = __dependency1__.delegate;
+    var xhr = __dependency2__.xhr;
+    var connect = __dependency3__.connect;
+    var connectCapabilities = __dependency3__.connectCapabilities;
+    var portFor = __dependency3__.portFor;
 
 
 
@@ -26,6 +27,9 @@ define("oasis",
       this.receivedPorts = false;
 
       this.configuration = new OasisConfiguration();
+      this.events = new Events();
+
+      this.didCreate();
     }
 
     Oasis.Version = Version;
@@ -33,7 +37,8 @@ define("oasis",
     Oasis.RSVP = RSVP;
     Oasis.adapters = {
       iframe: iframeAdapter,
-      webworker: webworkerAdapter
+      webworker: webworkerAdapter,
+      inline: inlineAdapter
     };
 
     Oasis.prototype = {
@@ -41,6 +46,14 @@ define("oasis",
       log: function () {
         this.logger.log.apply(this.logger, arguments);
       },
+
+      on: delegate('events', 'on'),
+      off: delegate('events', 'off'),
+      trigger: delegate('events', 'trigger'),
+
+      didCreate: function() {},
+
+      xhr: xhr,
 
       /**
         This is the entry point that allows the containing environment to create a
@@ -114,6 +127,7 @@ define("oasis/base_adapter",
     }
 
     BaseAdapter.prototype = {
+      initializeSandbox: mustImplement('BaseAdapter', 'initializeSandbox'),
       loadScripts: mustImplement('BaseAdapter', 'loadScripts'),
       name: mustImplement('BaseAdapter', 'name'),
 
@@ -148,28 +162,30 @@ define("oasis/base_adapter",
           if (!event.data.isOasisInitialization) { return; }
 
           removeEventListener(receiver, 'message', initializeOasisSandbox);
-
-          oasis.configuration.eventCallback(function () {
-            Logger.log("Sandbox received initialization message.");
-
-            oasis.configuration.oasisURL = event.data.oasisURL;
-
-            adapter.loadScripts(event.data.base, event.data.scriptURLs);
-
-            oasis.connectCapabilities(event.data.capabilities, event.ports);
-
-            adapter.didConnect();
-          });
+          adapter.initializeOasisSandbox(event, oasis);
         }
         addEventListener(receiver, 'message', initializeOasisSandbox);
 
-        adapter.oasisLoaded();
+        adapter.oasisLoaded(oasis);
+      },
+
+      initializeOasisSandbox: function (event, oasis) {
+        var adapter = this;
+        oasis.configuration.eventCallback(function () {
+          Logger.log("Sandbox received initialization message.");
+
+          oasis.configuration.oasisURL = event.data.oasisURL;
+
+          adapter.loadScripts(event.data.base, event.data.scriptURLs, oasis);
+
+          oasis.connectCapabilities(event.data.capabilities, event.ports);
+
+          adapter.didConnect(oasis);
+        });
       },
 
       createInitializationMessage: function (sandbox) {
-        var sandboxURL = sandbox.options.url,
-            dependencies = sandbox.dependencies || [],
-            scriptURLs = sandbox.type === 'js' ?  [sandboxURL].concat(dependencies) : dependencies;
+        var scriptURLs = this.generateScriptURLs(sandbox);
 
         return {
           isOasisInitialization: true,
@@ -180,7 +196,17 @@ define("oasis/base_adapter",
         };
       },
 
-      // protected
+      generateScriptURLs: function (sandbox) {
+        var sandboxURL = sandbox.options.url,
+            scriptURLs = [].concat(sandbox.dependencies || []);
+
+        if (sandbox.type === 'js') {
+          scriptURLs.push(sandboxURL);
+        }
+        
+        return scriptURLs;
+      },
+
       oasisLoadedMessage: "oasisSandboxLoaded",
       sandboxInitializedMessage:  "oasisSandboxInitialized"
     };
@@ -391,6 +417,54 @@ define("oasis/connect",
     __exports__.connectCapabilities = connectCapabilities;
     __exports__.portFor = portFor;
   });
+define("oasis/events",
+  [],
+  function() {
+    "use strict";
+    var a_slice = Array.prototype.slice;
+
+    function Events() {
+      this.listenerArrays = {};
+    }
+
+    Events.prototype = {
+      on: function (eventName, listener) {
+        var listeners = this.listenerArrays[eventName] = this.listenerArrays[eventName] || [];
+
+        listeners.push(listener);
+      },
+
+      off: function (eventName, listener) {
+        var listeners = this.listenerArrays[eventName];
+        if (!listeners) { return; }
+
+        for (var i=0; i<listeners.length; ++i) {
+          if (listeners[i] === listener) {
+            listeners.splice(i, 1);
+            break;
+          }
+        }
+      },
+
+      clear: function(eventName) {
+        delete this.listenerArrays[eventName];
+      },
+
+      trigger: function(eventName) {
+        var listeners = this.listenerArrays[eventName];
+        if (!listeners) { return; }
+
+        var args = a_slice.call(arguments, 1);
+
+        for (var i=0; i<listeners.length; ++i) {
+          listeners[i].apply(null, args);
+        }
+      }
+    };
+
+
+    return Events;
+  });
 define("oasis/iframe_adapter",
   ["oasis/util","oasis/shims","rsvp","oasis/logger","oasis/base_adapter"],
   function(__dependency1__, __dependency2__, RSVP, Logger, BaseAdapter) {
@@ -594,12 +668,127 @@ define("oasis/iframe_adapter",
 
     return iframeAdapter;
   });
+define("oasis/inline_adapter",
+  ["oasis/util","oasis/config","oasis/shims","oasis/xhr","rsvp","oasis/logger","oasis/base_adapter"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, RSVP, Logger, BaseAdapter) {
+    "use strict";
+    var assert = __dependency1__.assert;
+    var extend = __dependency1__.extend;
+    var noop = __dependency1__.noop;
+    var configuration = __dependency2__.configuration;
+    var a_forEach = __dependency3__.a_forEach;
+    var a_map = __dependency3__.a_map;
+    var xhr = __dependency4__.xhr;
+    /*global self, postMessage, importScripts */
+
+
+
+
+    function fetchResource(url, oasis) {
+      return xhr(url, {
+        dataType: 'text'
+      }, oasis).then(function (data) {
+        return new Function("oasis", data);
+      }).fail(RSVP.rethrow);
+    }
+
+    var InlineAdapter = extend(BaseAdapter, {
+      //-------------------------------------------------------------------------
+      // Environment API
+
+      initializeSandbox: function(sandbox) {
+        assert(sandbox.type !== 'html', "Inline adapter only supports type `js` sandboxes, but type `html` was requested.");
+
+        sandbox.el = document.createElement('div');
+
+        var oasis = sandbox.sandboxedOasis = new Oasis();
+        sandbox.sandboxedOasis.sandbox = sandbox;
+
+        return RSVP.resolve();
+      },
+ 
+      startSandbox: function(sandbox) {
+        var body = document.body || document.documentElement.getElementsByTagName('body')[0];
+        body.appendChild(sandbox.el);
+      },
+
+      terminateSandbox: function(sandbox) {
+        var el = sandbox.el;
+
+        if (el.parentNode) {
+          Logger.log("Terminating sandbox ", sandbox.el.name);
+          el.parentNode.removeChild(el);
+        }
+
+        sandbox.el = null;
+      },
+
+      connectPorts: function(sandbox, ports) {
+        var rawPorts = a_map.call(ports, function(oasisPort){ return oasisPort.port; }),
+            message = this.createInitializationMessage(sandbox),
+            event = { data: message, ports: rawPorts };
+
+        // Normally `connectSandbox` is called in autoinitialization, but there
+        // isn't a real sandbox here.
+        this.connectSandbox(sandbox.sandboxedOasis, event);
+      },
+
+      generateScriptURLs: function (sandbox) {
+        // We will manually load the sandbox URL
+        return sandbox.dependencies || [];
+      },
+
+      //-------------------------------------------------------------------------
+      // Sandbox API
+
+      connectSandbox: function(oasis, pseudoEvent) {
+        return this.initializeOasisSandbox(pseudoEvent, oasis);
+      },
+
+      oasisLoaded: noop,
+
+      didConnect: function(oasis) {
+        // This means the sandbox promise is not resolved until dependencies are
+        // loaded, which is not necessarily the case for the other adapters
+        oasis._loadScripts.then(function () {
+          oasis.sandbox._waitForLoadDeferred().resolve(oasis.sandbox);
+        });
+      },
+
+      loadScripts: function (base, scriptURLs, oasis) {
+        oasis._loadScripts = RSVP.all(a_map.call(scriptURLs, function (url) {
+          return fetchResource(url, oasis);
+        })).then(function (dependencies) {
+          a_forEach.call(dependencies, function (dependency) {
+            dependency(oasis);
+          });
+        }).then(loadSandboxJS).fail(RSVP.rethrow);
+
+        function applySandboxJS(sandboxFn) {
+          Logger.log("inline sandbox initialized");
+          sandboxFn(oasis);
+          return oasis.sandbox;
+        }
+
+        function loadSandboxJS() {
+          return new RSVP.Promise(function(resolve, reject) {
+            resolve(fetchResource(oasis.sandbox.options.url, oasis).then(applySandboxJS));
+          });
+        }
+      }
+    });
+
+    var inlineAdapter = new InlineAdapter();
+
+
+    return inlineAdapter;
+  });
 define("oasis/logger",
   [],
   function() {
     "use strict";
     function Logger() {
-      this.enabled = true;
+      this.enabled = false;
     }
 
     Logger.prototype = {
@@ -1155,7 +1344,7 @@ define("oasis/sandbox_init",
 
         if (window.parent && window.parent !== window) {
           iframeAdapter.connectSandbox(this);
-        }
+        } 
       } else {
         webworkerAdapter.connectSandbox(this);
       }
@@ -1358,7 +1547,7 @@ define("oasis/shims",
       return obj;
     }
 
-    // If it turns out we need a better polyfill we can grab mozilla's at:
+    // If it turns out we need a better polyfill we can grab mozilla's at: 
     // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget.removeEventListener?redirectlocale=en-US&redirectslug=DOM%2FEventTarget.removeEventListener#Polyfill_to_support_older_browsers
     function addEventListener(receiver, eventName, fn) {
       if (receiver.addEventListener) {
@@ -1499,7 +1688,7 @@ define("oasis/shims",
 
         // 9. return A
         return A;
-      };
+      };  
 
     __exports__.o_create = o_create;
     __exports__.addEventListener = addEventListener;
@@ -1519,6 +1708,8 @@ define("oasis/util",
         throw new Error(string);
       }
     }
+
+    function noop() { }
 
     function mustImplement(className, name) {
       return function() {
@@ -1544,9 +1735,18 @@ define("oasis/util",
       return OasisObject;
     }
 
+    function delegate(delegateeProperty, delegatedMethod) {
+      return function () {
+        var delegatee = this[delegateeProperty];
+        return delegatee[delegatedMethod].apply(delegatee, arguments);
+      };
+    }
+
     __exports__.assert = assert;
+    __exports__.noop = noop;
     __exports__.mustImplement = mustImplement;
     __exports__.extend = extend;
+    __exports__.delegate = delegate;
   });
 define("oasis/version",
   [],
@@ -1657,4 +1857,111 @@ define("oasis/webworker_adapter",
 
 
     return webworkerAdapter;
+  });
+define("oasis/xhr",
+  ["oasis/util","rsvp","exports"],
+  function(__dependency1__, RSVP, __exports__) {
+    "use strict";
+    var noop = __dependency1__.noop;
+    /*global XDomainRequest */
+
+
+    var a_slice = Array.prototype.slice;
+
+    function acceptsHeader(options) {
+      var dataType = options.dataType;
+
+      if (dataType && accepts[dataType]) {
+        return accepts[dataType];
+      }
+
+      return accepts['*'];
+    }
+
+    function xhrSetRequestHeader(xhr, options) {
+      xhr.setRequestHeader("Accepts", acceptsHeader(options));
+    }
+
+    function xhrGetLoadStatus(xhr) {
+      return xhr.status;
+    }
+
+    function xdrGetLoadStatus() {
+      return 200;
+    }
+
+    var NONE = {};
+
+    function trigger(event, oasis) {
+      if (!oasis) { return; }
+
+      var args = a_slice.call(arguments, 2);
+
+      args.unshift(event);
+      oasis.trigger.apply(oasis, args);
+    }
+
+    var accepts = {
+      "*": "*/*",
+      text: "text/plain",
+      html: "text/html",
+      xml: "application/xml, text/xml",
+      json: "application/json, text/javascript"
+    };
+
+    var XHR, setRequestHeader, getLoadStatus, send;
+
+    if ('withCredentials' in new XMLHttpRequest()) {
+      XHR = XMLHttpRequest;
+      setRequestHeader = xhrSetRequestHeader;
+      getLoadStatus = xhrGetLoadStatus;
+    } else if (typeof XDomainRequest !== 'undefined') {
+      XHR = XDomainRequest;
+      setRequestHeader = noop;
+      getLoadStatus = xdrGetLoadStatus;
+    }
+    // else inline adapter with cross-domain cards is not going to work
+
+
+    function xhr(url, options, oasis) {
+      if (!oasis) { oasis = this; }
+      if (!options) { options = NONE; }
+
+      return RSVP.Promise(function(resolve, reject){
+        var xhr = new XHR();
+        xhr.open("get", url, true);
+        setRequestHeader(xhr, options);
+
+        if (options.timeout) {
+          xhr.timeout = options.timeout;
+        }
+
+        xhr.onload = function () {
+          trigger('xhr.load', oasis, url, options, xhr);
+
+          var status = getLoadStatus(xhr);
+          if (status >= 200 && status < 300) {
+            resolve(xhr.responseText);
+          } else {
+            reject(xhr);
+          }
+        };
+
+        xhr.onprogress = noop;
+        xhr.ontimeout = function () {
+          trigger('xhr.timeout', oasis, url, options, xhr);
+          reject(xhr);
+        };
+
+        xhr.onerror = function () {
+          trigger('xhr.error', oasis, url, options, xhr);
+          reject(xhr);
+        };
+
+        trigger('xhr.send', oasis, url, options, xhr);
+        xhr.send();
+      });
+    }
+
+    __exports__.xhr = xhr;
   });
