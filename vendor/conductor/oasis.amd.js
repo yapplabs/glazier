@@ -1922,8 +1922,6 @@ define("oasis/xhr",
     }
     // else inline adapter with cross-domain cards is not going to work
 
-      debugger;
-
     function xhr(url, options, oasis) {
       if (!oasis) { oasis = this; }
       if (!options) { options = NONE; }
