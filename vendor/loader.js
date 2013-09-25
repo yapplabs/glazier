@@ -102,7 +102,7 @@ define("resolver",
     if (define.registry[moduleName]) {
       module = requireModule(moduleName);
 
-      if (typeof module.create !== 'function') {
+      if ((parsedName.type != 'template') && (typeof module.create !== 'function')) {
         module = classFactory(module);
       }
 
@@ -124,6 +124,7 @@ define("resolver",
   //   https://github.com/emberjs/ember.js/blob/master/packages/ember-application/lib/system/resolver.js
   var Resolver = Ember.DefaultResolver.extend({
     resolveOther: resolveOther,
+    resolveTemplate: resolveOther,
     parseName: parseName,
     normalize: function(fullName) {
       // replace `.` with `/` in order to make nested controllers work in the following cases
