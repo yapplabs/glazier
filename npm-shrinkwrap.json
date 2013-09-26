@@ -24,9 +24,8 @@
       "from": "grunt-contrib-copy@~0.4.1"
     },
     "grunt-ember-templates": {
-      "version": "0.4.10",
-      "from": "grunt-ember-templates@git://github.com/lukemelia/grunt-ember-templates.git",
-      "resolved": "git://github.com/lukemelia/grunt-ember-templates.git#2e86f205ee892e41565994f4f5ad8e287d6a1bc4"
+      "version": "0.4.15",
+      "from": "grunt-ember-templates@~0.4.15"
     },
     "grunt-md5": {
       "version": "0.1.11",

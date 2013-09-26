@@ -1,10 +1,8 @@
 module.exports = {
   compile: {
     options: {
-      generateRegistrationJs: function(processedTemplates) {
-        return processedTemplates.map(function(processedTemplate){
-          return "define('glazier/" + processedTemplate.name + "', [], function(){ return " + processedTemplate.js + "; });";
-        }).join("\n");
+      templateRegistration: function(name, content) {
+        return "define('glazier/" + name + "', [], function() { return " + content + "; });";
       }
     },
     files: {
