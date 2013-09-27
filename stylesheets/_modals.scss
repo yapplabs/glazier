@@ -2,12 +2,10 @@
   position: fixed;
   top: 0;
   left: 0; right: 0;
-  height: 100%; width: 50%;
-  margin: auto;
+  height: 100%; width: 100%;
   min-width: $min-page-width * .5;
   //max-width: 630px;
   //min-width: 320px;
-  z-index: 7000;
   visibility: hidden;
   display: table;
 
@@ -17,11 +15,15 @@
   //margin-left: -25%;
   //margin-top: -25%;
 
-  #modal-content {
-    @include box-sizing(border-box);
-    position: relative;
+  #modal-content-wrap {
     display: table-cell;
     vertical-align: middle;
+  }
+
+  #modal-content {
+    width: 50%;
+    @include box-sizing(border-box);
+    position: relative;
     margin: 0 auto;
     font-size: 1.1em;
     line-height: 1.51em;
@@ -73,7 +75,6 @@
   visibility: hidden;
   top: 0;
   left: 0;
-  z-index: 6000;
   opacity: 0;
   background: transparentize(black, .5);
   @include transition(opacity 1s);
