@@ -16,7 +16,7 @@ var ApplicationRoute = Ember.Route.extend({
     this.controllerFor('application').set('isReady', true);
   },
   showModal: function(name){
-    this.render(name, { into: 'modal' });
+    this.render(name, { into: 'modal', outlet: 'modal' });
     this.controllerFor('modal').set('isVisible', true);
     this.controllerFor('application').set('modalIsVisible', true);
 
