@@ -8,7 +8,8 @@ var DashboardSectionRoute = Ember.Route.extend({
     if (!section) {
       throw new Error("No section found for " + params.section_slug);
     }
-    return section;
+    // wait for panes to load
+    return section.get('panes').then(function() { return section; });
   },
   actions: {
     error: function(error) {

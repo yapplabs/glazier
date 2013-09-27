@@ -2,15 +2,17 @@ import ajax from 'glazier/utils/ajax';
 
 var ApplicationRoute = Ember.Route.extend({
   beforeModel: function(){
-    var userId = getUserIdFromCookie();
-    if (!userId) { return; } // no cookie yet - not logged in
-
     var userController = this.controllerFor('user');
-    return ajax('/api/user', {
-      dataType: 'json'
-    }).then(function(data) {
-      userController.set('content', data && data.user);
+    var login = this.container.lookup('behavior:login');
+    
+    login().then(function(user){
+    	// null object pattern might be better.
+    	if (user) {
+      	userController.set('content', user);
+    	}
     });
+    
+    return null;
   },
   setupController: function(data) {
     this.controllerFor('application').set('isReady', true);
