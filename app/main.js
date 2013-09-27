@@ -10,6 +10,11 @@ import PaneView from 'glazier/views/pane';
 import conductorServicesInitializer from 'glazier/initializers/conductor_services';
 import injectionsInitializer from 'glazier/initializers/injections';
 
+if (define.registry.ziniki) {
+	var zinikiInitializer = requireModule('glazier/initializers/ziniki');
+	Application.initializer(zinikiInitializer);
+}
+
 Ember.TextField.reopen({
   attributeBindings: ['autofocus']
 });
@@ -43,8 +48,8 @@ Glazier.Dashboard = Dashboard;
 Glazier.PaneView = PaneView;
 Glazier.env = (/github\.glazier\.io/.test(window.location.hostname)) ? 'prod' : 'dev';
 
-Ember.Application.initializer(injectionsInitializer);
-Ember.Application.initializer(conductorServicesInitializer);
+Application.initializer(injectionsInitializer);
+Application.initializer(conductorServicesInitializer);
 
 Ember.RSVP.configure('onerror', function(error) {
   Ember.Logger.assert(false, error);

@@ -4,3 +4,4 @@ dist/
 cards/*
 npm-debug.log
 .sass-cache
+.project
