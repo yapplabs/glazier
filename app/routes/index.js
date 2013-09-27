@@ -1,6 +1,11 @@
 var IndexRoute = Ember.Route.extend({
   model: function () {
-    return this.store.find('dashboard');
+    return Ember.$.ajax({
+      url: '/api/dashboards',
+      dataType: 'json'
+    }).then(function(data) {
+      return data.dashboards;
+    });
   }
 });
 

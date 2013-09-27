@@ -14,6 +14,13 @@ var DashboardRoute = Ember.Route.extend({
     return hash;
   },
   model: function (params) {
+    if (params.github_user.indexOf('/') !== -1) {
+      // Index route's `link-to "dashboard" this` hits this block
+      var parts = params.github_user.split('/');
+      params.github_user = parts[0];
+      params.github_repo = parts[1];
+    }
+
     var id = params.github_user + '/' + params.github_repo,
         accessToken = this.controllerFor('user').get('accessToken'),
         store = this.store;
