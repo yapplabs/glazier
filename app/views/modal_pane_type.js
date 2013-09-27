@@ -9,8 +9,6 @@ var ModalPaneTypeView = Ember.View.extend({
       var promise = card.appendTo(this.get('element'));
       promise.then(function() {
         card.render();
-      }).then(null, function(reason) {
-        console.error('card.appendTo.promise was rejected');
       });
     }
   },
