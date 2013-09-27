@@ -2,7 +2,7 @@
   <h1>Dashboards</h1>
   <ul>
   {{#each}}
-    <li>{{#linkTo "dashboard" this}}{{this}}{{/linkTo}}</li>
+    <li><a href="#/{{unbound this}}">{{unbound this}}</a></li>
   {{/each}}
   </ul>
 </div>
