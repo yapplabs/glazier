@@ -19,10 +19,13 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
   sectionController: alias('controllers.dashboard/section'),
   cardManager: alias('sectionController.cardManager'),
   contentDidChange: function() {
+    var self = this;
     var pane = this.get('content');
     if (pane) {
-      var cardManager = this.get('cardManager');
-      this.set('card', cardManager.load(pane));
+      pane.get('paneType').then(function() {
+        var cardManager = self.get('cardManager');
+        self.set('card', cardManager.load(pane));
+      });
     } else {
       this.set('card', null);
     }

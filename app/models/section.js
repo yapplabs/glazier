@@ -20,7 +20,7 @@ var Section = DS.Model.extend({
   slug: DS.attr('string'),
   position: DS.attr('number'),
   containerType: DS.attr('string'),
-  panes: DS.hasMany('pane'),
+  panes: DS.hasMany('pane', {async:true}),
   dashboard: DS.belongsTo('dashboard'),
   reorderPanes: function(orderedPaneIds) {
     var panes = this.get('panes').toArray();
