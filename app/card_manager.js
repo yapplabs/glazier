@@ -202,7 +202,7 @@ var CardManager = Ember.Object.extend({
       manifest.consumes.forEach(function (capability) {
         if (!conductorServices[capability]) {
           if (additionalProvidedCapabilities.indexOf(capability) === -1) {
-            console.error("requested a service that nothing provides: " + capability);
+            console.assert(false, "requested a service that nothing provides: " + capability);
           }
           serviceMap[capability] = ProxyService;
           if (!providerCardDeferreds[capability]) {

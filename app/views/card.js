@@ -4,7 +4,7 @@ function render(card) {
 }
 
 function error() {
-  console.error('failed to load Pane');
+  console.assert(false, 'failed to load Pane');
 }
 
 var CardView = Ember.View.extend({
