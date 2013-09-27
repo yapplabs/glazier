@@ -49,7 +49,7 @@ var DashboardRoute = Ember.Route.extend({
           var id = dashboard.get('id'),
               accessToken = self.controllerFor('user').get('accessToken');
           return Repository.find(id, accessToken).then(function (repository) {
-            dashboard.set('repository', repository);
+            dashboard.set('repository', repository.data);
           });
         });
       }
