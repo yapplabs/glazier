@@ -77,9 +77,22 @@ It does this by running:
 
 ## Uploading assets of cards in `glazier/cards` to s3
 
+before you deploy cards, you'll want to make sure you have the latest code for each card you are going to deploy
+
+the `runInCards` grunt command lets you quickly run a command in every symlinked card folder
+
 in `glazier/`
 
+    grunt runInCards --cmd="git status"
+    grunt runInCards --cmd="git pull --ff-only"
+
+    # once you are satisfied that all code is up to date
+
     grunt deployCards
+
+    # you can also use the CARDS env variable to control which cards are deployed
+
+    CARDS=github-issues,github-stars grunt deployCards
 
 will run `grunt deploy` in each folder within `glazier/cards/`, and then a `heroku surrogate rails run` command that ingests the manifests that were just uploaded.
 
