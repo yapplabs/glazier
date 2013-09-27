@@ -1,7 +1,8 @@
+import ajax from 'glazier/utils/ajax';
+
 var IndexRoute = Ember.Route.extend({
   model: function () {
-    return Ember.$.ajax({
-      url: '/api/dashboards',
+    return ajax('/api/dashboards', {
       dataType: 'json'
     }).then(function(data) {
       return data.dashboards;
