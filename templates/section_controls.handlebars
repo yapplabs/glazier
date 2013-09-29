@@ -1,10 +1,7 @@
 {{#if isAdmin}}
   <div class="section-card-controls">
-    {{#if canAddPanes}}
-      <button {{action "showAddPane"}}>Add Pane</button>
-    {{/if}}
     {{#if canReorderPanes}}
-      <button {{action "showReorderPanes"}}>Reorder Panes</button>
+      <button {{action "showReorderPanes"}}>Reorder Cards</button>
     {{/if}}
   </div>
 {{/if}}

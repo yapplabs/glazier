@@ -1,1 +1,9 @@
 {{each itemViewClass="Glazier.PaneView" itemController="pane"}}
+
+{{#if isAdmin}}
+  <div class="pane-wrapper">
+    <div class="pane add-card-pane">
+     <button {{action "showAddPane"}}><span class="icon-plus"></span> Add a New Card</button>
+    </div>
+  </div>
+{{/if}}
