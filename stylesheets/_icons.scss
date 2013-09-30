@@ -28,7 +28,7 @@ Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
 [class*="icon-"] {
 */
-.icon-star, .icon-watch, .icon-commit, .icon-tag, .icon-fork, .icon-issue, .icon-help, .icon-gear, .icon-user, .icon-github, .icon-plus, .icon-x, .icon-edit, .icon-edit-card, .icon-cards, .icon-log-out, .icon-arrow-up, .icon-arrow-down, .icon-arrow-left, .icon-arrow-right, .icon-build-status, .icon-page, .icon-text {
+.icon-star, .icon-commit, .icon-tag, .icon-fork, .icon-issue, .icon-help, .icon-gear, .icon-user, .icon-github, .icon-plus, .icon-x, .icon-edit, .icon-edit-card, .icon-cards, .icon-log-out, .icon-arrow-up, .icon-arrow-down, .icon-arrow-left, .icon-arrow-right, .icon-build-status, .icon-page, .icon-text, .icon-watch, .icon-clipboard, .icon-copy, .icon-move {
 	font-family: 'Glazier-Icons';
 	speak: none;
 	font-style: normal;
@@ -40,9 +40,6 @@ you can use the generic selector below, but it's slower:
 }
 .icon-star:before {
 	content: "\e000";
-}
-.icon-watch:before {
-	content: "\e001";
 }
 .icon-commit:before {
 	content: "\e002";
@@ -106,4 +103,16 @@ you can use the generic selector below, but it's slower:
 }
 .icon-text:before {
 	content: "\e016";
+}
+.icon-watch:before {
+	content: "\e001";
+}
+.icon-clipboard:before {
+	content: "\e017";
+}
+.icon-copy:before {
+	content: "\e018";
+}
+.icon-move:before {
+	content: "\e019";
 }

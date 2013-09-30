@@ -9,6 +9,10 @@
   z-index: 5000;
   @include transition(bottom 0.2s ease-out);
 
+  .tooltip {
+    z-index: 1;
+  }
+
   .tabs-wrapper {
     @include pie-clearfix;
     min-width: $min-page-width;
@@ -21,7 +25,7 @@
       display: inline-block;
       float: left;
       height: $footer-height;
-      min-width: 100px;
+      min-width: 50px;
       padding: 0em 1.75em;
       font-size: 0.875em;
       line-height: $footer-height;
@@ -46,6 +50,8 @@
         text-decoration: none;
       }
     }
+
+
 
     .user {
       position: relative;
@@ -73,6 +79,24 @@
       }
     }
 
+    .help, .peek {
+      position: relative;
+
+      .tooltip-top {
+        margin-bottom: -7px;
+      }
+    }
+
+    .icon-help {
+      font-size: 1.1em;
+    }
+
+    .icon-watch {
+      position: relative;
+      font-size: 0.8em;
+      top: -1px;
+    }
+
     .repository {
       input {
         margin-left: 0.5em;
@@ -97,5 +121,38 @@
     border: none;
     padding: 0.5em;
     background-color: #B3B3B3;
+  }
+}
+
+.clippy {
+  @include box-sizing(border-box);
+  position: relative;
+
+  .icon-clipboard {
+    position: relative;
+    top: -12px;
+    padding-right: 5px;
+  }
+
+  .pane-preview {
+    display: inline-block;
+    height: 40px;
+    margin-top: 10px;
+    padding: 0 5px;
+    border: 1px solid #333;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    border-bottom: none;
+    text-align: left;
+
+    > span {
+      display: block;
+      height: 18px;
+      line-height: 18px;
+    }
+
+    .repo {
+      color: #333;
+    }
   }
 }

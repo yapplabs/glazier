@@ -7,7 +7,7 @@
 	color: white;
 	background-color: $tooltip-bg;
 
-	&:hover, [data-tooltip="true"]:hover + & {
+	&:hover, [data-tooltip="true"]:hover + &, [data-tooltip="true"]:hover & {
 		display: inline-block;
 		@include animation(fadeIn $fast ease-out);
 	}
