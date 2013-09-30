@@ -6,12 +6,13 @@
       {{/linkTo}}
     </div>
     {{render "user"}}
-    {{render "repository"}}
     <div class="help">
-      Help
+      <span class="icon-help" data-tooltip="true"></span>
+      <span class="tooltip tooltip-top">Help</span>
     </div>
     <div class="peek" {{action "toggleAnalyticsDrawer"}}>
-      ConductorPeek
+      <span class="icon-watch" data-tooltip="true"></span>
+      <span class="tooltip tooltip-top">ConductorPeek</span>
     </div>
     {{render "clipboard"}}
   </div>

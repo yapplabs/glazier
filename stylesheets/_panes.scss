@@ -219,6 +219,10 @@ iframe {
     span {
       font-size: 15px;
       line-height: $card-footer-height;
+
+      .page & {
+        visibility: hidden;
+      }
     }
   }
 
@@ -232,7 +236,7 @@ iframe {
       top: 0;
       right: auto;
       left: 100%;
-      width: auto;
+      width: 115px;
     }
   }
 
