@@ -1,5 +1,10 @@
 {{#if content}}
   <div class="clippy" {{action "paste" content}}>
-    Paste {{paneName}} from {{repository}}
+    <span class="icon-clipboard"></span>
+    <span class="pane-preview" data-toolip="true">
+      <span class="pane-name">{{paneName}}</span>
+      <span class="repo">{{repository}}</span>
+    </span>
+    <span class="tooltip tooltip-top">Paste Card</span>
   </div>
 {{/if}}

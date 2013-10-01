@@ -55,8 +55,8 @@ iframe {
   &.page {
     @include box-sizing(border-box);
     background: white;
-    margin-right: $page-padding;
-    padding: $page-padding;
+    right: $section-nav-width + ($page-padding * 2);
+    padding: 0;
   }
 }
 
@@ -97,7 +97,7 @@ iframe {
 
   .page & {
     width: 100%;
-    padding-left: $page-padding;
+    margin: 0;
     padding: 0;
   }
 }
@@ -105,7 +105,7 @@ iframe {
 .pane {
   @include box-sizing(border-box);
   position: relative;
-  overflow: hidden;
+  z-index: 1;
 
   height: $min-card-height;
   padding-bottom: $card-footer-height;
@@ -115,6 +115,34 @@ iframe {
   &.transition-position {
     @include transition(left 500ms, right 500ms, top 500ms, bottom 500ms);
     @include transition-timing-function(ease);
+  }
+
+  .page & {
+    padding: 0;
+
+    &:hover {
+      .pane-actions {
+        .toggle-actions {
+          color: #4d4d4d;
+          background-color: #eee;
+        }
+
+        .actions-list {
+          display: block;
+          background-color: #eee;
+        }
+      }
+    }
+  }
+}
+
+.card-wrapper {
+  .page & {
+    @include box-sizing(border-box);
+    position: absolute;
+    top: $page-padding; bottom: $page-padding;
+    left: ($page-padding * 2); right: ($page-padding * 2);
+    background-color: white;
   }
 }
 
@@ -143,6 +171,11 @@ iframe {
       background-color: #cfcfcf;
     }
   }
+
+  .page & {
+    height: auto;
+    top: 0;
+  }
 }
 
 .pane-actions {
@@ -150,6 +183,7 @@ iframe {
   height: $card-footer-height;
   float: right;
   background-color: #e6e6e6;
+
   &:hover {
     .toggle-actions {
       color: #4d4d4d;
@@ -162,6 +196,20 @@ iframe {
     }
   }
 
+  .page & {
+    background-color: white;
+
+    &:hover {
+      .actions-list, .toggle-actions {
+        background-color: #eee;
+      }
+    }
+
+    .toggle-actions {
+      @include transition(background-color $fast);
+    }
+  }
+
   .toggle-actions {
     display: block;
     width: 100%; height: $card-footer-height;
@@ -171,6 +219,10 @@ iframe {
     span {
       font-size: 15px;
       line-height: $card-footer-height;
+
+      .page & {
+        visibility: hidden;
+      }
     }
   }
 
@@ -178,6 +230,14 @@ iframe {
     position: absolute;
     bottom: 100%; right: 0;
     overflow: hidden;
+
+    .page & {
+      bottom: 0;
+      top: 0;
+      right: auto;
+      left: 100%;
+      width: 115px;
+    }
   }
 
   .actions-list {
@@ -188,6 +248,11 @@ iframe {
     @include animation(slideUp $fast ease-out);
     @include transition(background $fast);
     @include clearfix;
+
+    .page & {
+      @include animation(slideRight $fast ease-out);
+      background-color: white;
+    }
 
     li {
       display: block;
@@ -222,6 +287,18 @@ iframe {
       }
     }
   }
+
+  .page & {
+    position: absolute;
+    left: 0; right: 0;
+    top: 0; bottom: 0;
+    width: auto; height: auto;
+
+    .toggle-actions {
+      height: 100%;
+      text-align: right;
+    }
+  }
 }
 
 .hidden-pane {
@@ -231,11 +308,54 @@ iframe {
   width: 0;
 }
 
+.add-card-pane {
+  padding: 0;
+  text-align: center;
+  background: none;
+
+  button {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    width: 80%; height: 70%;
+    margin: auto;
+    color: #444;
+    font-size: 22px;
+    border: 3px dashed #444;
+
+    span {
+      position: relative;
+      top: -1px;
+      font-size: 0.7em;
+    }
+  }
+
+  .page & {
+    height: 50px;
+    margin: $page-padding 0;
+    button {
+      color: #ccc;
+      border-color: #ccc;
+      width: auto; height: auto;
+      left: $page-padding; right: $page-padding;
+    }
+  }
+}
+
 @include keyframes(slideUp) {
   0% {
     @include transform(translateY(100%));
   }
   100% {
     @include transform(translateY(0));
+  }
+}
+
+@include keyframes(slideRight) {
+  0% {
+    @include transform(translateX(-100%));
+  }
+  100% {
+    @include transform(translateX(0));
   }
 }
