@@ -64,7 +64,7 @@ When you submit the form you will get a **client id** and **client secret**. Set
 
 ### Clone card repositories and symlink them into the glazier/cards directory
 
-    # open a separate window and navigate to the top glazier directory
+    # from the top glazier directory
     grunt cloneCards
     ls -al ./cards/ # to see where the symlinks point
 
@@ -84,7 +84,7 @@ When you submit the form you will get a **client id** and **client secret**. Set
 
 ### Navigate to the app in your browser
 
-    http://localhost:8000/api/
+    http://localhost:8000/
 
 ## Adding Node Packages
 
