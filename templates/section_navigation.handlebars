@@ -1,7 +1,7 @@
 <div class='section-navigation'>
 {{#if isEditing}}
 
-  {{reorderable-sections contentBinding="sortedContent"}}
+  {{reorderable-sections sortedContent}}
 
   <button class='add-section' {{action "add" target=stateManager}}><span class="icon icon-plus"></span> Add a Section</button>
 
