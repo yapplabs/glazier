@@ -15,8 +15,8 @@
       </li>
     {{/each}}
   </ol>
-
-  <button {{action "edit" target=stateManager}}><span class="icon-edit"></span> Edit Menu</button>
+  {{#if isAdmin}}
+    <button {{action "edit" target=stateManager}}><span class="icon-edit"></span> Edit Menu</button>
+  {{/if}}
 {{/if}}
 </div>
-

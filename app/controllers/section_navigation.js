@@ -7,6 +7,7 @@ var SectionNavigationController = Ember.ArrayController.extend({
   stateManager: function() {
     return this.container.lookup('stateManager:sectionNavigation');
   }.property(),
+  isAdmin: Ember.computed.alias('controllers.dashboard/section.isAdmin'),
   currentSection: Ember.computed.alias('controllers.dashboard/section.content')
 });
 
