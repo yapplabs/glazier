@@ -59,26 +59,6 @@ var ReorderableSectionsView = Ember.CollectionView.extend({
   }
 });
 
-var ReorderableSectionsItemView = Ember.View.extend({
-  tagName: 'li',
-  templateName: 'section_item',
-  attributeBindings: 'draggable',
-  draggable: 'true',
-  contextBinding: 'content',
-  isCurrent: true
-});
-
-Ember.Handlebars.registerHelper('reorderable-sections', function(content, options) {
-  options.hash.itemViewClass = ReorderableSectionsItemView.extend({
-    template: options.fn
-  });
-  delete options.fn;
-
-  options.hash.contentBinding = content;
-
-  return Ember.Handlebars.helpers.view.call(this, ReorderableSectionsView, options);
-});
-
 export default ReorderableSectionsView;
 /*
 var ReorderPanesView = Ember.View.extend({
