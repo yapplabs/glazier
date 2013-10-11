@@ -102,7 +102,7 @@ define("resolver",
     if (define.registry[moduleName]) {
       module = requireModule(moduleName);
 
-      if ((parsedName.type != 'template') && (parsedName.type != 'helper') && typeof module.create !== 'function') {
+      if ((parsedName.type !== 'template') && (parsedName.type !== 'helper') && typeof module.create !== 'function') {
         module = classFactory(module);
       }
 
@@ -131,11 +131,7 @@ define("resolver",
       // 1. `needs: ['posts/post']`
       // 2. `{{render "posts/post"}}`
       // 3. `this.render('posts/post')` from Route
-      if (fullName.indexOf('helper:') === 0) {
-        return fullName;
-      } else {
-        return Ember.String.underscore(fullName).replace(/\./g, '/');
-      }
+      return Ember.String.underscore(fullName).replace(/\./g, '/');
     }
   });
 
