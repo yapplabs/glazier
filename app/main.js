@@ -14,6 +14,25 @@ Ember.TextField.reopen({
   attributeBindings: ['autofocus']
 });
 
+var resolveHelper = Ember.Handlebars.resolveHelper;
+Ember.Handlebars.resolveHelper = function(container, name) {
+
+  if (!container || name.indexOf('-') === -1) {
+    return;
+  }
+
+
+  var helper = resolveHelper(container, name);
+  if (helper) {
+    return helper;
+  }
+
+  var template = container.lookup('template:' + name);
+  return template && function(options) {
+    template(this, { data: options.data });
+  };
+};
+
 var Glazier = Application.create();
 
 Glazier.Pane = Pane;
