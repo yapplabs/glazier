@@ -125,7 +125,7 @@ module.exports = {
   glazierServer: {
     command: [
       "cd glazier-server",
-      "PORT=3040 foreman start"
+      "PORT=3040 NOEXEC_DISABLE=1 foreman start"
     ].join(' && '),
     options: opts
   },
