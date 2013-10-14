@@ -14,4 +14,16 @@ function login() {
   });
 }
 
+function getUserIdFromCookie(){
+  var cookies = document.cookie.split(/\s*;\s*/);
+  for (var i = 0; i < cookies.length; i++) {
+    var cookie = cookies[i],
+        match = /^login=.+?\-(.+)/.exec(cookie);
+    if (match) {
+      return JSON.parse(decodeURIComponent(match[1])).github_id;
+    }
+  }
+  return null;
+}
+
 export default login;
