@@ -1,4 +1,6 @@
-function ajax(url, options){
+function ajax(url, options) {
+  options = options || {};
+ 
   return Ember.RSVP.Promise(function(resolve, reject){
     options.success = function(data) {
       Ember.run(null, resolve, data);
@@ -13,6 +15,7 @@ function ajax(url, options){
         responseText: jqXHR.responseText,
         headers: jqXHR.getAllResponseHeaders()
       };
+
       Ember.run(null, reject, error);
     };
 
