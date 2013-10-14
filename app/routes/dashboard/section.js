@@ -4,11 +4,13 @@ var DashboardSectionRoute = Ember.Route.extend({
   },
 
   model: function(params){
-    var section = this.modelFor('dashboard').get('sections').findBy("slug", params.section_slug);
-    if (!section) {
-      throw new Error("No section found for " + params.section_slug);
-    }
-    return section;
+    return this.modelFor('dashboard').get('sections').then(function(sections){
+      var section = sections.findBy("slug", params.section_slug);
+      if (!section) {
+        throw new Error("No section found for " + params.section_slug);
+      }
+      return section;
+    });
   },
   actions: {
     error: function(error) {

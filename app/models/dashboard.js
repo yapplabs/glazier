@@ -1,7 +1,7 @@
 import Section from 'glazier/models/section';
 
 var Dashboard = DS.Model.extend({
-  sections: DS.hasMany('section'),
+  sections: DS.hasMany('section', { async: true }),
   sortedSections: function(){
     return this.get('sections').sortBy('position');
   },
