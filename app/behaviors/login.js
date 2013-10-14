@@ -1,4 +1,4 @@
-import ajax from 'glazier/app/utils/ajax';
+import ajax from 'glazier/utils/ajax';
 
 function login() {
 	var userId = getUserIdFromCookie();
