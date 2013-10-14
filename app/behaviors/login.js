@@ -1,4 +1,5 @@
 import ajax from 'glazier/utils/ajax';
+// this file is overriden by ziniki
 
 function login() {
 	var userId = getUserIdFromCookie();

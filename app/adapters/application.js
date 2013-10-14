@@ -1,4 +1,5 @@
 import uuid from 'glazier/utils/uuid';
+// this file is overriden by ziniki
 
 var ApplicationAdapter = DS.RESTAdapter.extend({
   namespace: 'api',
