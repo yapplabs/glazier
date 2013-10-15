@@ -16,7 +16,7 @@ module.exports = {
 };
 
 function proxyIndex(req, res, next){
-  if (shouldProxyIndex(req.url)) {
+  if (shouldProxyIndex(req.url) && !process.env.DONT_PROXY_INDEX /* Ziniki case */) {
     // TODO: don't hardcode configuration
 
     var theUrl = url.parse(req.url)
@@ -67,7 +67,7 @@ function middleware(connect, options) {
     connectLiveReload(),
     lock,
     proxy(theUrl),
-    //proxyIndex,
+    proxyIndex,
     connect['static'](options.base),
     connect.directory(options.base)
   ];
