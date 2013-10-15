@@ -52,7 +52,9 @@ Application.initializer(injectionsInitializer);
 Application.initializer(conductorServicesInitializer);
 
 Ember.RSVP.configure('onerror', function(error) {
-  Ember.Logger.assert(false, error);
+  if (error instanceof Error) {
+    Ember.Logger.assert(false, error);
+  }
 });
 
 if ([].sortBy) { Ember.Logger.warn('Ember now provides sortBy. Please remove the code below.'); }
