@@ -18,3 +18,13 @@ define("glazier/adapters/application",
 
 	    return ApplicationAdapter;
 	  });
+
+define("glazier/serializers/application",
+	  ["ziniki/sr"],
+	  function(ZinikiSerializer) {
+	    "use strict";
+
+	    var ApplicationSerializer = ZinikiSerializer;
+
+	    return ApplicationSerializer;
+	  });

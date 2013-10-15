@@ -2,7 +2,7 @@ define("ziniki/sr",
   ["ziniki"], function (Ziniki) {
 	
    "use strict";
-   
+
 	/** We need to keep a number of elements in line to record
 	 * all the things we need to do between the Ember models and the Ziniki models.
 	 * This record is indexed multiple ways but exists once for each Ember type.
@@ -164,7 +164,7 @@ define("ziniki/sr",
 			var ret = new TypeMapping(type, emberKey, zgeneric, zcontent);
 			this.types[type.toString()] = ret;
 			if (zgeneric)
-				this.inboundTypes[zgeneric] = ret; 
+				this.inboundTypes[zgeneric] = ret;
 			return ret;
 		}
 	})
