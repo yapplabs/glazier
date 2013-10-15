@@ -11,7 +11,7 @@ var UserController = Ember.Controller.extend({
       this.get('target').send('userDidChange');
     }
   }.observes('content'),
-  isLoggedIn: true, // Ember.computed.bool('content'),
+  isLoggedIn: Ember.computed.bool('content'),
   username:  Ember.computed.oneWay('content.github_login'),
   accessToken: Ember.computed.oneWay('content.github_access_token'),
   avatarUrl: function(){
