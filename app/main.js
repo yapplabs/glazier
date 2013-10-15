@@ -11,8 +11,8 @@ import conductorServicesInitializer from 'glazier/initializers/conductor_service
 import injectionsInitializer from 'glazier/initializers/injections';
 
 if (define.registry.ziniki) {
-	var zinikiInitializer = requireModule('glazier/initializers/ziniki');
-	Application.initializer(zinikiInitializer);
+  var zinikiInitializer = requireModule('glazier/initializers/ziniki');
+  Application.initializer(zinikiInitializer);
 }
 
 Ember.TextField.reopen({

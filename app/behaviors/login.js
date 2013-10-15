@@ -2,18 +2,19 @@ import ajax from 'glazier/utils/ajax';
 // this file is overriden by ziniki
 
 function login() {
-	var userId = getUserIdFromCookie();
-	
-	if (!userId) {
-		// no cookie yet - not logged in
-		return Ember.RSVP.resolve();
-	}
+  var userId = getUserIdFromCookie();
+
+  if (!userId) {
+    // no cookie yet - not logged in
+    return Ember.RSVP.resolve();
+  }
 
   return ajax({
     url: '/api/user',
     dataType: 'json'
   });
 }
+
 
 function getUserIdFromCookie(){
   var cookies = document.cookie.split(/\s*;\s*/);
