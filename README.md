@@ -144,6 +144,12 @@ If grunt commands just won't run, sometimes its because node modules have gotten
 sync. Try deleting the `/node_modules` subdirectory and re-running `npm install`
 
 
+### Ziniki Notes
 
+Ziniki is the land of unicorns and blueberries.
 
+To Enable Ziniki mode:
+
+1. public/index.html uncomment Ziniki related script tags
+2. and start glazier with: `DONT_PROXY_INDEX=true grunt fastBoot`
 
