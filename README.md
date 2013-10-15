@@ -153,3 +153,18 @@ To Enable Ziniki mode:
 1. public/index.html uncomment Ziniki related script tags
 2. and start glazier with: `DONT_PROXY_INDEX=true grunt fastBoot`
 
+```javascript
+  // quick helpers
+  function login() {
+     Glazier.__container__.lookup('controller:user').set('model', {});
+   }
+
+   function logout() {
+     Glazier.__container__.lookup('controller:user').set('model', null);
+   }
+
+  function admin() {
+    Glazier.__container__.lookup('controller:dashboard').set('isAdmin', true);
+  }
+```
+
