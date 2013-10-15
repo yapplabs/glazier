@@ -21,9 +21,12 @@
   <script src="/glazier.js"></script>
   <script src="/test.js"></script>
   <script>
-    Ember.keys(define.registry).forEach(requireModule);
-
     window.Glazier = requireModule('glazier/main').Glazier;
+    function tests(key) {
+      return /_test$/.test(key);
+    }
+
+    Object.keys(define.registry).filter(tests).map(requireModule);
 
     Glazier.deferReadiness();
   </script>
