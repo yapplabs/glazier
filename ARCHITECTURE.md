@@ -42,8 +42,41 @@ communication is handled by leveraging Oasis.js and Conductor.js.
 ## Glazier Container Architecture
 
 ### Conductor & Oasis
+
+Oasis makes working with iFrame consistent across browser and provides a
+pleasant API. It abstracts away the annoying parts of knowing when an iFrame has
+finished loading, and of communicating securely across the iFrame boundary.
+
+Conductor builds on top of Oasis to provide a set of built-in services available
+to the iFrame, which Conductor dubs a "card". Using Conductor, it is possible to
+easily load a card javascript and have it wired up to the built-in and custom
+services automatically.
+
 ### Integrating Ember.js and Conductor
+
+Ember is a Javascript MVC framework for building ambitious browser apps. It is
+well-documented at emberjs.com.
+
+Glazier integrates Ember.js and Conductor at two key places: card loading and
+services.
+
+A custom Ember.Object subclass called CardManager is responsible for coordinating
+with Conductor to load and unload cards.
+
+Meanwhile, Glazier's custom Conductor services are registered with the Ember
+container, which allows them access to other parts of the Ember app, most
+importantly, to singleton controllers.
+
 #### Routes
+
+Glazier's routes are few in number, but quite dynamic. The basic structure is:
+
+    /:organization_name/:repository_name/:section_name
+
+The first two parts correspond to a Github repository, and the last part specifies
+the section. Sections are pages which repository users can create and edit and which
+contain cards, or panes as Glazier calles them.
+
 #### Services
 #### Persisting Cards with Ember-Data
 
@@ -59,6 +92,7 @@ TODO: detail auth flow
 
 ## How to Make Your Own Card
 
-yapplabs/glazier-card-bootstrap
-yapplabs/glazier-card-grunt-config
+Follow the instructtions in the README of yapplabs/glazier-card-bootstrap to make
+your own card. You will leverage the yapplabs/glazier-card-grunt-config module
+to avoid having to reinvent the wheel on build steps.
 
