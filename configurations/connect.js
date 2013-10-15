@@ -67,7 +67,7 @@ function middleware(connect, options) {
     connectLiveReload(),
     lock,
     proxy(theUrl),
-    proxyIndex,
+    //proxyIndex,
     connect['static'](options.base),
     connect.directory(options.base)
   ];

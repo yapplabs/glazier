@@ -13,7 +13,7 @@ module.exports = {
       'test/**',
       'templates/**',
       'public/**/*'],
-    tasks: ['lock', 'smartBuild', 'unlock', 'jshint', 'qunit:all'],
+    tasks: ['lock', 'smartBuild', 'index.html',  'unlock', 'jshint', 'qunit:all'],
     options: {
       debounceDelay: 200
     }
