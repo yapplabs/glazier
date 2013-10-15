@@ -8,8 +8,8 @@ var initializer = {
     initialize: function (container, application) {
         //	Ziniki.init("http://172.21.145.1:10080/ziniki/resources", "http://172.21.145.1:10080/ziniki/adapter");
         console.log("Should be an initializer");
-        Ziniki.init("http://localhost:10080/ziniki/resources", "http://localhost:10080/ziniki/adapter");
-	
+        //Ziniki.init("http://localhost:10080/ziniki/resources", "http://localhost:10080/ziniki/adapter");
+        Ziniki.init("http://devexp.ziniki.org:13080/ziniki/resources", "http://devexp.ziniki.org:13080/ziniki/adapter");
         var dashboard = ZinikiSerializer.mapType(Glazier.Dashboard, "dashboard", "us.yapp.glazier.Dashboard", "us.yapp.glazier.dashboard");
         // Glazier's rails server stupidly uses non-standard ids
         dashboard.naturalKey("repository", "byRepository");
