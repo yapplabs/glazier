@@ -7,8 +7,8 @@
 
 
 
-// Version: v1.0.0-beta.3-56-g8367aa5
-// Last commit: 8367aa5 (2013-10-12 07:56:29 +0300)
+// Version: v1.0.0-beta.3-60-geac9a74
+// Last commit: eac9a74 (2013-10-15 14:18:44 -0700)
 
 
 (function() {
@@ -2112,7 +2112,7 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
 
     Ember.assert("An adapter cannot assign a new id to a record that already has an id. " + record + " had id: " + oldId + " and you tried to update it with " + id + ". This likely happened because your server returned data in response to a find or update that had a different id than the one you sent.", oldId === null || id === oldId);
 
-    this.typeMapFor(record.constructor).idToRecord[id] = record;
+    this.typeMapFor(record.constructor).addRecord(id, record);
 
     set(record, 'id', id);
   },
@@ -2133,10 +2133,20 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
 
     if (typeMap) { return typeMap; }
 
-    typeMap = {
+    typeMap = (this.container && this.container.lookup('data-type-map:' + type.typeKey))  || {
       idToRecord: {},
       records: [],
-      metadata: {}
+      metadata: {},
+      addRecord: function (id, record) {
+        this.idToRecord[id] = record;
+        return record;
+      },
+      removeRecord: function(id) {
+        delete this.idToRecord[id];
+      },
+      setupAliases: function(store, record, data) {
+
+      }
     };
 
     typeMaps[guid] = typeMap;
@@ -2160,7 +2170,10 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
   */
   _load: function(type, data, partial) {
     var id = coerceId(data.id),
-        record = this.recordForId(type, id);
+        record = this.recordForId(type, id),
+        typeMap = this.typeMapFor(type);
+
+    typeMap.setupAliases(this, record, data);
 
     record.setupData(data, partial);
     this.recordArrayManager.recordDidChange(record);
@@ -2377,7 +2390,7 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
     // if we're creating an item, this process will be done
     // later, once the object has been persisted.
     if (id) {
-      idToRecord[id] = record;
+      typeMap.addRecord(id, record);
     }
 
     typeMap.records.push(record);
@@ -2405,7 +2418,7 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
     record.updateRecordArrays();
 
     if (id) {
-      delete typeMap.idToRecord[id];
+      typeMap.removeRecord(id);
     }
 
     var loc = indexOf(typeMap.records, record);

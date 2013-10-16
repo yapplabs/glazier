@@ -137,10 +137,12 @@ define("ziniki/sr",
 				var ret = {};
 				for (var p in hash) {
 					if (hash.hasOwnProperty(p)) {
-						if (map.hasOwnProperty(p))
+						if (map.hasOwnProperty(p)) {
+							ret['_ziniki_' + map[p]] = hash[map[p]];
 							ret[map[p]] = hash[p];
-						else
+            } else {
 							ret[p] = hash[p];
+            }
 					}
 				}
 				return ret;

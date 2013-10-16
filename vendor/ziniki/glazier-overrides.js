@@ -28,3 +28,15 @@ define("glazier/serializers/application",
 
 	    return ApplicationSerializer;
 	  });
+
+function login() {
+  Glazier.__container__.lookup('controller:user').set('model', {});
+}
+
+function logout() {
+  Glazier.__container__.lookup('controller:user').set('model', null);
+}
+
+function admin() {
+  Glazier.__container__.lookup('controller:dashboard').set('isAdmin', true);
+}

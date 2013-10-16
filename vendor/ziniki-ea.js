@@ -278,7 +278,7 @@ define("ziniki/ea",
 		/** Find multiple records in Ziniki based on following a "HasMany" relationship
 		 */
 		findHasMany: function(store, record, link, relationship) {
-			console.log("I'm not sure about this");
+      throw new Error("I'm not sure about this");
 //			var self = this;
 //			return new Ember.RSVP.Promise(function(resolve, reject) {
 //				var batch = new Batch(self.get('webSocket'));

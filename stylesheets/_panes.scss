@@ -36,7 +36,7 @@ iframe {
   min-height: 100%;
   @include scroll-after($footer-height);
   @include transition(500ms);
-  @include transition-property(transform, opacity);
+  /*@include transition-property(transform, opacity); */
   opacity: 0;
 
   @media (max-height: $header-height + ($page-padding * 3) + ($min-card-height * 1.5) + $footer-height) {
