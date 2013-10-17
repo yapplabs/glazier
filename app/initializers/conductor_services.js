@@ -1,6 +1,10 @@
 var camelize = Ember.String.camelize;
 import Conductor from 'conductor';
 
+Conductor.Oasis.RSVP.configure('async', function(callback, promise) {
+  Ember.run.schedule('actions', promise, callback, promise);
+});
+
 function conductorURL(){
   var url = Ember.$("meta[name='glazier-conductor-url']").attr('content');
   if (Ember.isNone(url)) {
