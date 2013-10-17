@@ -10,9 +10,9 @@ import PaneView from 'glazier/views/pane';
 import conductorServicesInitializer from 'glazier/initializers/conductor_services';
 import injectionsInitializer from 'glazier/initializers/injections';
 
-if (define.registry.ziniki) {
-	var zinikiInitializer = requireModule('glazier/initializers/ziniki');
-	Application.initializer(zinikiInitializer);
+if (requirejs._eak_seen.ziniki) {
+  var zinikiInitializer = require('glazier/initializers/ziniki');
+  Application.initializer(zinikiInitializer);
 }
 
 Ember.TextField.reopen({
@@ -53,26 +53,6 @@ Application.initializer(conductorServicesInitializer);
 
 Ember.RSVP.configure('onerror', function(error) {
   Ember.Logger.assert(false, error);
-});
-
-if ([].sortBy) { Ember.Logger.warn('Ember now provides sortBy. Please remove the code below.'); }
-
-var get = Ember.get;
-Ember.Enumerable.reopen({
-  sortBy: function() {
-    var sortKeys = arguments;
-    return this.toArray().sort(function(a, b){
-      for(var i = 0; i < sortKeys.length; i++) {
-        var key = sortKeys[i],
-            propA = get(a, key),
-            propB = get(b, key);
-        if (propA > propB) return 1;
-        if (propA < propB) return -1;
-        // else continue to the next sortKey
-      }
-      return 0;
-    });
-  }
 });
 
 export { Glazier };

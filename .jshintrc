@@ -10,7 +10,7 @@
     "define",
     "console",
     "require",
-    "requireModule",
+    "requirejs",
     "equal",
     "notEqual",
     "notStrictEqual",

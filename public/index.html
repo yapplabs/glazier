@@ -6,7 +6,8 @@
 
     <script>var ENV = { ENABLE_ALL_FEATURES: true };</script>
 
-    <script src="<%= manifestUrl('/vendor/loader.js') %>"></script>
+    <script src="<%= manifestUrl('/vendor/almond.js') %>"></script>
+    <script src="<%= manifestUrl('/vendor/resolver.js') %>"></script>
     <script src="<%= manifestUrl('/vendor/jquery.js') %>"></script>
     <script src="<%= manifestUrl('/vendor/jquery-sortable.js') %>"></script>
     <script src="<%= manifestUrl('/vendor/handlebars.js') %>"></script>
@@ -24,8 +25,8 @@
   </head>
   <body>
     <script>
-      window.Conductor = requireModule('conductor');
-      window.Glazier = requireModule('glazier/main').Glazier;
+      window.Conductor = require('conductor');
+      window.Glazier = require('glazier/main').Glazier;
       Glazier.manifest = <%= manifest %>;
       Glazier.assetHost = '<%= assetHost %>';
     </script>

@@ -4,19 +4,19 @@ import CardDataManager from 'glazier/card_data_manager';
 var initializer = {
   name: 'injections',
   initialize: function (container, application) {
-    application.register('card_manager:main', CardManager, {singleton: false});
-    application.register('card_data_manager:main', CardDataManager);
+    application.register('card-manager:main', CardManager, {singleton: false});
+    application.register('card-data_manager:main', CardDataManager);
 
-    application.inject('card_data_manager:main', 'userController', 'controller:user');
-    application.inject('card_data_manager:main', 'repositoryController', 'controller:repository');
+    application.inject('card-data-manager:main', 'userController', 'controller:user');
+    application.inject('card-data-manager:main', 'repositoryController', 'controller:repository');
 
-    application.inject('card_manager:main', 'cardDataManager', 'card_data_manager:main');
-    application.inject('card_manager:main', 'store', 'store:main');
+    application.inject('card-manager:main', 'cardDataManager', 'card-data-manager:main');
+    application.inject('card-manager:main', 'store', 'store:main');
 
-    application.inject('state_manager:section_navigation', 'router', 'router:main');
-    application.inject('state_manager:section_navigation', 'store', 'store:main');
+    application.inject('state-manager:section-navigation', 'router', 'router:main');
+    application.inject('state-manager:section-navigation', 'store', 'store:main');
 
-    application.inject('card_manager:main', 'conductor', 'conductor:main');
+    application.inject('card-manager:main', 'conductor', 'conductor:main');
   }
 };
 

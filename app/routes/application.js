@@ -6,10 +6,10 @@ var ApplicationRoute = Ember.Route.extend({
     var login = this.container.lookup('behavior:login');
 
     login().then(function(user){
-    	// null object pattern might be better.
-    	if (user) {
-      	userController.set('content', user);
-    	}
+      // null object pattern might be better.
+      if (user) {
+        userController.set('content', user);
+      }
     });
 
     return null; // Ziniki related race condition

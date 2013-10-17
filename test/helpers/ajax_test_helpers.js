@@ -1,4 +1,4 @@
-var Conductor = requireModule('conductor');
+var Conductor = require('conductor');
 
 function mockAjax() {
   var originalAjax = Ember.$.ajax;

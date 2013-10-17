@@ -20,7 +20,7 @@ var DashboardSectionController = Ember.ObjectController.extend({
 
   setupCardManager: function() {
     if (this.get('content')) {
-      var cardManager = this.container.lookup('card_manager:main');
+      var cardManager = this.container.lookup('card-manager:main');
       cardManager.setProviderCardCatalog(this.get('content'));
       this.set('cardManager', cardManager);
     }

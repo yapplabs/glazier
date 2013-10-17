@@ -21,7 +21,7 @@ var initializer = {
     conductor.oasis.configure('eventCallback', Ember.run);
     application.register('conductor:main', conductor, { instantiate: false });
 
-    Ember.keys(define.registry).forEach(function (moduleName) {
+    Ember.keys(requirejs._eak_seen).forEach(function (moduleName) {
       var match = /^glazier\/services\/(.+)/.exec(moduleName);
 
       if (match) {

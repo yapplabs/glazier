@@ -1,4 +1,4 @@
-var Conductor = requireModule('conductor');
+var Conductor = require('conductor');
 
 function inCard(card, fn) {
 

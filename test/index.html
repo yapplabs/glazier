@@ -10,7 +10,8 @@
   <div id="qunit"></div>
   <div id="qunit-fixture"></div>
   <script>var ENV = { ENABLE_ALL_FEATURES: true };</script>
-  <script src="/vendor/loader.js"></script>
+  <script src="/vendor/almond.js"></script>
+  <script src="/vendor/resolver.js"></script>
   <script src="/vendor/jquery.js"></script>
   <script src="/vendor/handlebars.js"></script>
   <script src="/vendor/ember-latest.js"></script>
@@ -21,9 +22,9 @@
   <script src="/glazier.js"></script>
   <script src="/test.js"></script>
   <script>
-    Ember.keys(define.registry).forEach(requireModule);
+    Ember.keys(requirejs._eak_seen).forEach(require);
 
-    window.Glazier = requireModule('glazier/main').Glazier;
+    window.Glazier = require('glazier/main').Glazier;
 
     Glazier.deferReadiness();
   </script>
