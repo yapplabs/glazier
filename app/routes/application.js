@@ -5,14 +5,12 @@ var ApplicationRoute = Ember.Route.extend({
     var userController = this.controllerFor('user');
     var login = this.container.lookup('behavior:login');
 
-    login().then(function(user){
+    return login().then(function(user){
       // null object pattern might be better.
       if (user) {
         userController.set('content', user);
       }
     });
-
-    return null; // Ziniki related race condition
   },
   setupController: function(data) {
     this.controllerFor('application').set('isReady', true);

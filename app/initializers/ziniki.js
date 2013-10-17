@@ -9,7 +9,6 @@ var initializer = {
     after: 'store',
 		
     initialize: function (container, application) {
-        Ember.Logger.log("Should be an initializer");
         Ziniki.init(host + "/resources", host + "/adapter");
         var dashboard = ZinikiSerializer.mapType(Glazier.Dashboard, "dashboard", "us.yapp.glazier.Dashboard", "us.yapp.glazier.dashboard");
         // Glazier's rails server stupidly uses non-standard ids
