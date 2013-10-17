@@ -22,7 +22,13 @@
   <script src="/glazier.js"></script>
   <script src="/test.js"></script>
   <script>
-    Ember.keys(requirejs._eak_seen).forEach(require);
+    Ember.keys(requirejs._eak_seen).forEach(function(moduleName){
+      try {
+        require(moduleName);
+      } catch(e) {
+        console.error(e);
+      }
+    });
 
     window.Glazier = require('glazier/main').Glazier;
 

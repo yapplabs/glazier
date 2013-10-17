@@ -22,10 +22,8 @@ var PaneController = Ember.ObjectController.extend(Ember.Evented, {
     var self = this;
     var pane = this.get('content');
     if (pane) {
-      pane.get('paneType').then(function() {
-        var cardManager = self.get('cardManager');
-        self.set('card', cardManager.load(pane));
-      });
+      var cardManager = self.get('cardManager');
+      self.set('card', cardManager.load(pane));
     } else {
       this.set('card', null);
     }

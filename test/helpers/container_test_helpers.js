@@ -1,8 +1,18 @@
 import Resolver from 'resolver';
 
+var NEED_CLASS_FACTORY = ['service', 'behavior'];
+
 function isolatedContainer(fullNames) {
   var container = new Ember.Container();
-  var resolver = Resolver.create();
+  var resolver = Resolver.extend({
+    shouldWrapInClassFactory: function(module, parsedName){
+      if (NEED_CLASS_FACTORY.indexOf(parsedName.type) !== -1) {
+        return true;
+      } else {
+        return this._super(module, parsedName);
+      }
+    }
+  }).create();
   resolver.namespace = {
     modulePrefix: 'glazier'
   };

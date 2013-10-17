@@ -70,7 +70,7 @@ module("AddPaneController", {
     var questionsPane = store.find('pane', '1eaa0cb9-45a6-4720-a3bb-f2f69c5602a2');
     var authPane = store.find('pane', '7f878b1a-34af-42ed-b477-878721cbc90d');
 
-    container.register('card_manager:main', CardManager);
+    container.register('card-manager:main', CardManager);
 
     addPaneController = container.lookup('controller:add_pane');
     dashboardSectionController = container.lookup('controller:dashboard/section');
