@@ -48,6 +48,7 @@ if (!/phantom/i.test(navigator.userAgent)) {
         conductorURL: '/vendor/conductor.js.html'
       });
 
+      conductor.services = {};
       conductor.services['paneUserStorage'] = container.lookup('service:pane_user_storage');
       conductor.services['test'] = container.lookup('service:test');
 
@@ -62,7 +63,11 @@ if (!/phantom/i.test(navigator.userAgent)) {
       questionsPane.then(function(questionsPane) {
         console.log(questionsPane);
         card = conductor.load('/test/fixtures/app/services/pane_user_storage_card.js', cardId, {
-          capabilities: ['paneUserStorage', 'test']
+          capabilities: ['paneUserStorage', 'test'],
+          services: {
+            test: TestService,
+            paneUserStorage: container.lookup('service:pane_user_storage'),
+          }
         });
 
         var promise = card.appendTo('#qunit-fixture');

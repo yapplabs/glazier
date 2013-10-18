@@ -33,7 +33,10 @@ module("AddPaneController", {
       }
     }));
     container.register('store:main', DS.Store);
-    container.register('conductor:main', new Conductor(), { instantiate: false });
+
+    var conductor = new Conductor();
+    conductor.services = {};
+    container.register('conductor:main', conductor, { instantiate: false });
 
     store = container.lookup('store:main');
 

@@ -13,10 +13,11 @@ if (!/phantom/i.test(navigator.userAgent)) {
         conductorURL: '/vendor/conductor.js.html'
       });
 
-      conductor.services['configuration'] = ConfigurationService;
-
       card = conductor.load('/test/fixtures/app/services/configuration_card.js', 1, {
-        capabilities: ['configuration']
+        capabilities: ['configuration'],
+        services: {
+          configuration: ConfigurationService
+        }
       });
 
       card.appendTo('#qunit-fixture');

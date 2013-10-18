@@ -18,6 +18,7 @@ module("CardManager", {
       testing: true,
       conductorURL: '/vendor/conductor.js.html'
     });
+    conductor.services = {};
 
     var container = isolatedContainer(
       ['model:pane',

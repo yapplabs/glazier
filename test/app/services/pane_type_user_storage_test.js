@@ -32,23 +32,25 @@ if (!/phantom/i.test(navigator.userAgent)) {
       container.register('store:main', DS.Store.extend({
         adapter: DS.FixtureAdapter
       }));
-      container.register('service:test', { create: function(){ return TestService; }});
 
       conductor = new Conductor({
         container: container,
         testing: true,
         conductorURL: '/vendor/conductor.js.html'
       });
-
-      conductor.services['paneTypeUserStorage'] = container.lookup('service:pane_type_user_storage');
-      conductor.services['test'] = container.lookup('service:test');
+      conductor.services = {};
 
       var store = container.lookup('store:main');
       pushPaneType(store);
 
       var cardUrl = '/test/fixtures/app/services/pane_type_user_storage_card.js';
+
       card = conductor.load(cardUrl, 1, {
-        capabilities: ['paneTypeUserStorage', 'test']
+        capabilities: ['paneTypeUserStorage', 'test'],
+        services: {
+          paneTypeUserStorage: container.lookup('service:pane_type_user_storage'),
+          test: TestService
+        }
       });
       card.manifest = {
         name: 'card-type'

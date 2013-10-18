@@ -14,11 +14,12 @@ module("Glazier FullXhrService", {
       conductorURL: '/vendor/conductor.js.html'
     });
 
-    conductor.services['fullXhr'] = FullXhrService;
-    conductor.services['test'] = TestService;
-
     card = conductor.load('/test/fixtures/app/services/full_xhr_card.js', 1, {
-      capabilities: ['fullXhr', 'test']
+      capabilities: ['fullXhr', 'test'],
+      services: {
+        test: TestService,
+        fullXhr: FullXhrService
+      }
     });
 
     card.appendTo('#qunit-fixture');
