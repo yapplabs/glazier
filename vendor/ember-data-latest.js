@@ -4567,7 +4567,8 @@ DS.RelationshipChangeRemove.prototype = Ember.create(DS.RelationshipChange.creat
 
 // the object is a value, and not a promise
 function isValue(object) {
-  return typeof object === 'object' && (!object.then || typeof object.then !== 'function');
+  // Glazier workaround for an issue with async relationships when using `createRecord`
+  return typeof object === 'object'; // && (!object.then || typeof object.then !== 'function');
 }
 
 DS.RelationshipChangeAdd.prototype.changeType = "add";
