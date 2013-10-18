@@ -5,10 +5,10 @@ var ApplicationRoute = Ember.Route.extend({
     var userController = this.controllerFor('user');
     var login = this.container.lookup('behavior:login');
 
-    login().then(function(user){
+    login().then(function(data){
       // null object pattern might be better.
-      if (user) {
-        userController.set('content', user);
+      if (data && data.user) {
+        userController.set('content', data.user);
       }
     });
 

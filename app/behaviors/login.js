@@ -9,8 +9,7 @@ function login() {
     return Ember.RSVP.resolve();
   }
 
-  return ajax({
-    url: '/api/user',
+  return ajax('/api/user', {
     dataType: 'json'
   });
 }
