@@ -4,7 +4,10 @@ var ReorderPanesController = Ember.ObjectController.extend({
   needs: ['dashboard/section'],
   content: Ember.computed.alias('controllers.dashboard/section.content'),
   orderablePanes: function(){
-    return this.get('panes').filterProperty('paneType.hasUI');
+    var panes = this.get('panes');
+    if (panes) { // hack... in this case we should probably not be observing anymore
+      return panes.filterProperty('paneType.hasUI');
+    }
   }.property('panes.[]'),
   actions: {
     applyNewOrder: function(orderedIds){
