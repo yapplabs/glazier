@@ -124,7 +124,7 @@ var CardManager = Ember.Object.extend({
         manifest = paneType.get('manifest'),
         cardUrl = manifest.cardUrl,
         providerCardDeferreds = this.providerCardDeferreds,
-        servicesMap = {},
+        servicesMap = Ember.$.extend({}, this.conductor.services),
         consumes,
         provides,
         ambientData,

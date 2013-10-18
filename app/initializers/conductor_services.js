@@ -20,9 +20,11 @@ var initializer = {
     var conductor = new Conductor({
       conductorURL: conductorURL()
     });
-    // Remove the height service
-    conductor.services.height = Conductor.Oasis.Service.extend({});
     conductor.oasis.configure('eventCallback', Ember.run);
+    // Conductor no longer stores the services it provides this way,
+    // but we are relying on it containing our custom services later on
+    conductor.services = {};
+    conductor.removeDefaultCapability('height');
     application.register('conductor:main', conductor, { instantiate: false });
 
     Ember.keys(requirejs._eak_seen).forEach(function (moduleName) {
@@ -33,10 +35,7 @@ var initializer = {
         var fullName = 'service:' + match[1];
         conductor.services[keyWithoutType] = container.lookup(fullName);
       }
-
     });
-    // Remove the height service
-    delete conductor.services.height;
   }
 };
 

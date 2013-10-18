@@ -1,38 +1,36 @@
 define("conductor",
-  ["conductor/require","conductor/services","oasis","conductor/version","conductor/card_reference","oasis/shims","conductor/shims","conductor/multiplex_service"],
-  function(__dependency1__, __dependency2__, Oasis, Version, CardReference, OasisShims, ConductorShims, MultiplexService) {
+  ["oasis/shims","oasis/util","oasis","conductor/version","conductor/card_reference","conductor/card_dependencies","conductor/capabilities","conductor/multiplex_service","conductor/adapters"],
+  function(__dependency1__, __dependency2__, Oasis, Version, CardReference, CardDependencies, ConductorCapabilities, MultiplexService, adapters) {
     "use strict";
-    var requiredUrls = __dependency1__.requiredUrls;
-    var requiredCSSUrls = __dependency1__.requiredCSSUrls;
-    var requireURL = __dependency1__.requireURL;
-    var requireCSS = __dependency1__.requireCSS;
-    var services = __dependency2__.services;
-    var capabilities = __dependency2__.capabilities;
-
-    var o_create = OasisShims.o_create,
-        a_forEach = OasisShims.a_forEach,
-        a_indexOf = ConductorShims.a_indexOf;
+    var o_create = __dependency1__.o_create;
+    var a_forEach = __dependency1__.a_forEach;
+    var a_indexOf = __dependency1__.a_indexOf;
+    var delegate = __dependency2__.delegate;
 
     function Conductor(options) {
       this.options = options || {};
       this.oasis = new Oasis();
       this.conductorURL = this.options.conductorURL ||
-                          this.oasis.configuration.oasisURL ||
+                          // take the default oasisURL from the global Oasis so
+                          // sandboxes can inherit
+                          oasis.configuration.oasisURL ||
                           'conductor-' + Version + '.js.html';
 
       this.data = {};
       this.cards = {};
-      this.services = o_create(services);
-      this.capabilities = capabilities.slice();
+      this._capabilities = new ConductorCapabilities();
+      Conductor._dependencies = new CardDependencies();
     }
 
     Conductor.Version = Version;
     Conductor.Oasis = Oasis;
-    Conductor.requiredUrls = requiredUrls;
-    Conductor.requiredCSSUrls = requiredCSSUrls;
-    Conductor.require = requireURL;
-    Conductor.requireCSS = requireCSS;
+
+    Conductor._dependencies = new CardDependencies();
+    Conductor.require = function(url) { Conductor._dependencies.requireJavaScript(url); };
+    Conductor.requireCSS = function(url) { Conductor._dependencies.requireCSS(url); };
+
     Conductor.MultiplexService = MultiplexService;
+    Conductor.adapters = adapters;
 
     var RSVP = Conductor.Oasis.RSVP,
         Promise = RSVP.Promise;
@@ -43,7 +41,7 @@ define("conductor",
 
     Conductor.prototype = {
       configure: function (name, value) {
-        if ('eventCallback' === name) {
+        if ('eventCallback' === name || 'allowSameOrigin' === name) {
           this.oasis.configure(name, value);
         } else {
           throw new Error("Unexpected Configuration `" + name + "` = `" + value + "`");
@@ -88,8 +86,9 @@ define("conductor",
             data = datas && datas[id],
             _options = options || {},
             extraCapabilities = _options.capabilities || [],
-            capabilities = this.capabilities.slice(),
-            cardServices = o_create(this.services),
+            capabilities = this.defaultCapabilities().slice(),
+            cardServices = o_create(this.defaultServices()),
+            adapter = _options.adapter,
             prop;
 
         capabilities.push.apply(capabilities, extraCapabilities);
@@ -109,8 +108,10 @@ define("conductor",
         var sandbox = this.oasis.createSandbox({
           url: url,
           capabilities: capabilities,
+          services: cardServices,
+
           oasisURL: this.conductorURL,
-          services: cardServices
+          adapter: adapter
         });
 
         sandbox.data = data;
@@ -155,11 +156,51 @@ define("conductor",
         card.sandbox.terminate();
         delete cardArray[cardIndex];
         cardArray.splice(cardIndex, 1);
-      }
+      },
+
+      /**
+        @return array the default list of capabilities that will be included for all
+        cards.
+      */
+      defaultCapabilities: delegate('_capabilities', 'defaultCapabilities'),
+
+      /**
+        @return object the default services used for the default capabilities.
+      */
+      defaultServices: delegate('_capabilities', 'defaultServices'),
+
+      /**
+        Add a default capability that this conductor will provide to all cards,
+        unless the capability is not supported by the specified adapter.
+
+        @param {string} capability the capability to add
+        @param {Oasis.Service} [service=Oasis.Service] the default service to use
+        for `capability`.  Defaults to a plain `Oasis.Service`.
+      */
+      addDefaultCapability: delegate('_capabilities', 'addDefaultCapability'),
+
+      // Be careful with this: it does no safety checking, so things will break if
+      // one for example removes `data` or `xhr` as a default capability.
+      //
+      // It is however safe to remove `height`.
+      removeDefaultCapability: delegate('_capabilities', 'removeDefaultCapability')
     };
 
 
     return Conductor;
+  });
+define("conductor/adapters",
+  ["oasis","conductor/inline_adapter"],
+  function(Oasis, inlineAdapter) {
+    "use strict";
+
+    var adapters = {
+      iframe: Oasis.adapters.iframe,
+      inline: inlineAdapter
+    };
+
+
+    return adapters;
   });
 define("conductor/assertion_consumer",
   ["oasis"],
@@ -170,15 +211,16 @@ define("conductor/assertion_consumer",
       initialize: function() {
         var service = this;
 
-        window.ok = function(bool, message) {
+
+        window.ok = window.ok || function(bool, message) {
           service.send('ok', { bool: bool, message: message });
         };
 
-        window.equal = function(expected, actual, message) {
+        window.equal = window.equal || function(expected, actual, message) {
           service.send('equal', { expected: expected, actual: actual, message: message });
         };
 
-        window.start = function() {
+        window.start = window.start || function() {
           service.send('start');
         };
       },
@@ -221,6 +263,47 @@ define("conductor/assertion_service",
 
     return AssertionService;
   });
+define("conductor/capabilities",
+  ["conductor/services","conductor/lang","oasis/shims","oasis"],
+  function(__dependency1__, __dependency2__, __dependency3__, Oasis) {
+    "use strict";
+    var services = __dependency1__.services;
+    var copy = __dependency2__.copy;
+    var a_indexOf = __dependency3__.a_indexOf;
+
+    function ConductorCapabilities() {
+      this.capabilities = [
+        'xhr', 'metadata', 'render', 'data', 'lifecycle', 'height',
+        'nestedWiretapping' ];
+      this.services = copy(services);
+    }
+
+    ConductorCapabilities.prototype = {
+      defaultCapabilities: function () {
+        return this.capabilities;
+      },
+
+      defaultServices: function () {
+        return this.services;
+      },
+
+      addDefaultCapability: function (capability, service) {
+        if (!service) { service = Oasis.Service; }
+        this.capabilities.push(capability);
+        this.services[capability] = service;
+      },
+
+      removeDefaultCapability: function (capability) {
+        var index = a_indexOf.call(this.capabilities, capability);
+        if (index) {
+          return this.capabilities.splice(index, 1);
+        }
+      }
+    };
+
+
+    return ConductorCapabilities;
+  });
 define("conductor/card",
   ["conductor","oasis","conductor/assertion_consumer","conductor/xhr_consumer","conductor/render_consumer","conductor/metadata_consumer","conductor/data_consumer","conductor/lifecycle_consumer","conductor/height_consumer","conductor/nested_wiretapping_consumer","conductor/multiplex_service","oasis/shims"],
   function(Conductor, Oasis, AssertionConsumer, XhrConsumer, RenderConsumer, MetadataConsumer, DataConsumer, LifecycleConsumer, HeightConsumer, NestedWiretapping, MultiplexService, OasisShims) {
@@ -249,9 +332,10 @@ define("conductor/card",
       return base;
     }
 
-    function Card(options) {
+    function Card(options, _oasis) {
       var card = this,
-          prop;
+          prop,
+          oasis = _oasis || self.oasis;
 
       for (prop in options) {
         this[prop] = options[prop];
@@ -301,15 +385,15 @@ define("conductor/card",
       },
 
       /**
-       A card can contain other cards.
+        A card can contain other cards.
 
-       `childCards` is an array of objects describing the differents cards. The accepted attributes are:
-       * `url` {String} the url of the card
-       * `id` {String} a unique identifier for this instance (per type)
-       * `options` {Object} Options passed to `Conductor.load` (optional)
-       * `data` {Object} passed to `Conductor.loadData`
+        `childCards` is an array of objects describing the differents cards. The accepted attributes are:
+        * `url` {String} the url of the card
+        * `id` {String} a unique identifier for this instance (per type)
+        * `options` {Object} Options passed to `Conductor.load` (optional)
+        * `data` {Object} passed to `Conductor.loadData`
 
-       Example:
+        Example:
 
           Conductor.card({
             childCards: [
@@ -317,10 +401,10 @@ define("conductor/card",
             ]
           });
 
-       Any `Conductor.Oasis.Service` needed for a child card can be simply
-       declared with the `services` attribute.  A card can contain other cards.
+        Any `Conductor.Oasis.Service` needed for a child card can be simply
+        declared with the `services` attribute.  A card can contain other cards.
 
-       Example:
+        Example:
 
           Conductor.card({
             services: {
@@ -331,13 +415,13 @@ define("conductor/card",
             ]
           });
 
-       `loadDataForChildCards` can be defined when a child card needs data passed
-       to the parent card.
+        `loadDataForChildCards` can be defined when a child card needs data passed
+        to the parent card.
 
-       Once `initializeChildCards` has been called, the loaded card can be
-       accessed through the `childCards` attribute.
+        Once `initializeChildCards` has been called, the loaded card can be
+        accessed through the `childCards` attribute.
 
-       Example:
+        Example:
 
           var card = Conductor.card({
             childCards: [
@@ -345,20 +429,60 @@ define("conductor/card",
             ]
           });
 
-
           // After `initializeChildCards` has been called
           var surveyCard = card.childCards[0].card;
 
         Child cards can be added to the DOM by overriding `initializeDOM`.  The
         default behavior of `initializeDOM` is to add all child cards to the body
         element.
+
+        You can pass the configuration to be used with Conductor on the instance used to load
+        the child cards. This will be passed to `conductor.configure`.
+
+        Example:
+
+          Conductor.card({
+            conductorConfiguration: { allowSameOrigin: true },
+            childCards: [
+              { url: '../cards/survey', id: 1 , options: {}, data: '' }
+            ]
+          });
+
+        If you use child cards and `allowSameOrigin`, you'll need to specify in the parent card
+        a different url for Conductor.js. This will ensure that the child cards can't access
+        their parent.
+
+        Example:
+
+          Conductor.card({
+            conductorConfiguration: {
+              conductorURL: "...", // specify here a link to Conductor hosted on a separate domain
+              allowSameOrigin: true
+            },
+            childCards: [
+              { url: '../cards/survey', id: 1 , options: {}, data: '' }
+            ]
+          });
        */
       initializeChildCards: function( data ) {
-        var prop;
+        var prop,
+            conductorOptions = {};
 
         if(this.childCards) {
-          this.conductor = new Conductor();
-          this.conductor.services.xhr = MultiplexService.extend({
+          if( this.conductorConfiguration ) {
+            conductorOptions.conductorURL = this.conductorConfiguration.conductorURL;
+            delete this.conductorConfiguration.conductorURL;
+          }
+
+          this.conductor = new Conductor( conductorOptions );
+
+          if( this.conductorConfiguration ) {
+            for( prop in this.conductorConfiguration ) {
+              this.conductor.configure( prop, this.conductorConfiguration[prop] );
+            }
+          }
+
+          this.conductor.addDefaultCapability('xhr', MultiplexService.extend({
             upstream: this.consumers.xhr,
             transformRequest: function (requestEventName, data) {
               var base = this.sandbox.options.url;
@@ -371,12 +495,12 @@ define("conductor/card",
 
               return data;
             }
-          });
+          }));
 
           // A child card may not need new services
           if( this.services ) {
             for( prop in this.services) {
-              this.conductor.services[prop] = this.services[prop];
+              this.conductor.addDefaultCapability(prop, this.services[prop]);
             }
           }
 
@@ -446,6 +570,27 @@ define("conductor/card",
       return new Card(options);
     };
 
+  });
+define("conductor/card_dependencies",
+  [],
+  function() {
+    "use strict";
+    function CardDependencies() {
+      this.requiredJavaScriptURLs = [];
+      this.requiredCSSURLs = [];
+    }
+
+    CardDependencies.prototype = {
+      requireJavaScript: function(url) {
+        this.requiredJavaScriptURLs.push(url);
+      },
+      requireCSS: function(url) {
+        this.requiredCSSURLs.push(url);
+      }
+    };
+
+
+    return CardDependencies;
   });
 define("conductor/card_reference",
   ["oasis"],
@@ -685,20 +830,21 @@ define("conductor/height_consumer",
     var HeightConsumer = Oasis.Consumer.extend({
       autoUpdate: true,
 
-      initialize: function () {
-        var consumer = this;
+      // TODO: fix autoupdate
+      // initialize: function () {
+        // var consumer = this;
 
-        this.card.waitForActivation().then(function () {
-          if (!consumer.autoUpdate) {
-            return;
-          } else if (typeof MutationObserver === "undefined") {
-            Conductor.warn("MutationObserver is not defined.  Height service cannot autoupdate.  You must manually call `update` for your height consumer.  You may want to disable autoupdate when your card activates with `this.consumers.height.autoUpdate = false;`");
-            return;
-          }
+        // this.card.waitForActivation().then(function () {
+          // if (!consumer.autoUpdate) {
+            // return;
+          // } else if (typeof MutationObserver === "undefined") {
+            // Conductor.warn("MutationObserver is not defined.  Height service cannot autoupdate.  You must manually call `update` for your height consumer.  You may want to disable autoupdate when your card activates with `this.consumers.height.autoUpdate = false;`");
+            // return;
+          // }
 
-          consumer.setUpAutoupdate();
-        });
-      },
+          // consumer.setUpAutoupdate();
+        // });
+      // },
 
       update: function (dimensions) {
         if (typeof dimensions === "undefined") {
@@ -792,17 +938,74 @@ define("conductor/height_service",
               width = Math.min(data.width, maxWidth),
               height = Math.min(data.height, maxHeight);
 
-          // gut the height service:
-          // el.style.width = width + "px";
-          // el.style.height = height + "px";
+          el.style.width = width + "px";
+          el.style.height = height + "px";
 
-          // el.trigger('resize', { width: width, height: height });
+          el.trigger('resize', { width: width, height: height });
         }
       }
     });
 
 
     return HeightService;
+  });
+define("conductor/inline_adapter",
+  ["oasis/util","oasis/inline_adapter"],
+  function(__dependency1__, OasisInlineAdapter) {
+    "use strict";
+    var extend = __dependency1__.extend;
+
+    var InlineAdapter = extend(OasisInlineAdapter, {
+      wrapResource: function (data, oasis) {
+        var functionDef = 
+          'var _globalOasis = window.oasis; window.oasis = oasis;' +
+          'try {' +
+          data +
+          ' } finally {' +
+          'window.oasis = _globalOasis;' +
+          '}';
+        return new Function("oasis", functionDef);
+        }
+    });
+
+    var inlineAdapter = new InlineAdapter();
+
+    inlineAdapter.addUnsupportedCapability('height');
+
+
+    return inlineAdapter;
+  });
+define("conductor/lang",
+  ["oasis/shims","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var a_indexOf = __dependency1__.a_indexOf;
+    var a_filter = __dependency1__.a_filter;
+
+    function copy(a) {
+      var b = {};
+      for (var prop in a) {
+        if (!a.hasOwnProperty(prop)) { continue; }
+
+        b[prop] = a[prop];
+      }
+      return b;
+    }
+
+    function setDiff(a, b) {
+      var differences  = [];
+
+      for(var prop in a) {
+        if( a[prop] !== b[prop] ) {
+          differences.push( prop );
+        }
+      }
+
+      return differences;
+    }
+
+    __exports__.copy = copy;
+    __exports__.setDiff = setDiff;
   });
 define("conductor/lifecycle_consumer",
   ["oasis"],
@@ -917,9 +1120,9 @@ define("conductor/multiplex_service",
             // nested conductor cannot load required resources, but its containing
             // environment can (possibly by passing the request up through its own
             // multiplex service).
-            conductor.services.xhr =  Conductor.MultiplexService.extend({
-                                        upstream: this.consumers.xhr
-                                      });
+            conductor.addDefaultCapability('xhr', Conductor.MultiplexService.extend({
+                                                    upstream: this.consumers.xhr
+                                                  }));
 
             // now the nested card can `Conductor.require` resources normally.
             conductor.card.load("/nested/card/url.js");
@@ -990,12 +1193,11 @@ define("conductor/nested_wiretapping_service",
     return NestedWiretappingService;
   });
 define("conductor/path",
-  ["conductor/shims"],
-  function(ConductorShims) {
+  ["oasis/shims"],
+  function(__dependency1__) {
     "use strict";
+    var a_filter = __dependency1__.a_filter;
     /* global PathUtils:true */
-
-    var a_filter = ConductorShims.a_filter;
 
     var PathUtils = window.PathUtils = {
       dirname: function (path) {
@@ -1094,26 +1296,6 @@ define("conductor/render_service",
 
     return RenderService;
   });
-define("conductor/require",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    var requiredUrls = [];
-    var requiredCSSUrls = [];
-
-    function requireURL(url) {
-      requiredUrls.push(url);
-    }
-
-    function requireCSS(url) {
-      requiredCSSUrls.push(url);
-    }
-
-    __exports__.requiredUrls = requiredUrls;
-    __exports__.requiredCSSUrls = requiredCSSUrls;
-    __exports__.requireURL = requireURL;
-    __exports__.requireCSS = requireCSS;
-  });
 define("conductor/services",
   ["conductor/assertion_service","conductor/xhr_service","conductor/render_service","conductor/metadata_service","conductor/data_service","conductor/lifecycle_service","conductor/height_service","conductor/nested_wiretapping_service","exports"],
   function(AssertionService, XhrService, RenderService, MetadataService, DataService, LifecycleService, HeightService, NestedWiretappingService, __exports__) {
@@ -1141,77 +1323,6 @@ define("conductor/services",
     __exports__.services = services;
     __exports__.capabilities = capabilities;
   });
-define("conductor/shims",
-  ["exports"],
-  function(__exports__) {
-    "use strict";
-    function isNativeFunc(func) {
-      // This should probably work in all browsers likely to have ES5 array methods
-      return func && Function.prototype.toString.call(func).indexOf('[native code]') > -1;
-    }
-
-    var a_filter = isNativeFunc(Array.prototype.filter) ? Array.prototype.filter : function(fun /*, thisp*/) {
-      "use strict";
-
-      if (this == null)
-        throw new TypeError();
-
-      var t = Object(this);
-      var len = t.length >>> 0;
-      if (typeof fun != "function")
-        throw new TypeError();
-
-      var res = [];
-      var thisp = arguments[1];
-      for (var i = 0; i < len; i++)
-      {
-        if (i in t)
-        {
-          var val = t[i]; // in case fun mutates this
-          if (fun.call(thisp, val, i, t))
-            res.push(val);
-        }
-      }
-
-      return res;
-    };
-
-    var a_indexOf = isNativeFunc(Array.prototype.indexOf) ? Array.prototype.indexOf : function (searchElement /*, fromIndex */ ) {
-      "use strict";
-      if (this == null) {
-        throw new TypeError();
-      }
-      var t = Object(this);
-      var len = t.length >>> 0;
-
-      if (len === 0) {
-        return -1;
-      }
-      var n = 0;
-      if (arguments.length > 1) {
-        n = Number(arguments[1]);
-        if (n != n) { // shortcut for verifying if it's NaN
-          n = 0;
-        } else if (n != 0 && n != Infinity && n != -Infinity) {
-          n = (n > 0 || -1) * Math.floor(Math.abs(n));
-        }
-      }
-      if (n >= len) {
-        return -1;
-      }
-      var k = n >= 0 ? n : Math.max(len - Math.abs(n), 0);
-      for (; k < len; k++) {
-        if (k in t && t[k] === searchElement) {
-          return k;
-        }
-      }
-      return -1;
-    };
-
-
-    __exports__.a_filter = a_filter;
-    __exports__.a_indexOf = a_indexOf;
-  });
 define("conductor/version",
   [],
   function() {
@@ -1220,8 +1331,8 @@ define("conductor/version",
     return '0.3.0';
   });
 define("conductor/xhr_consumer",
-  ["oasis","conductor/require","oasis/shims","conductor/dom"],
-  function(Oasis, ConductorRequire, OasisShims, DomUtils) {
+  ["oasis","oasis/shims","conductor/dom"],
+  function(Oasis, OasisShims, DomUtils) {
     "use strict";
 
     var a_forEach = OasisShims.a_forEach;
@@ -1243,9 +1354,10 @@ define("conductor/xhr_consumer",
 
         function processJavaScript(data) {
           var script = document.createElement('script');
+          var head = document.head || document.documentElement.getElementsByTagName('head')[0];
           // textContent is ie9+
           script.text = script.textContent = data;
-          document.body.appendChild(script);
+          head.appendChild(script);
         }
 
         function processCSS(data) {
@@ -1254,7 +1366,7 @@ define("conductor/xhr_consumer",
           head.appendChild(style);
         }
 
-        a_forEach.call(ConductorRequire.requiredUrls, function( url ) {
+        a_forEach.call(Conductor._dependencies.requiredJavaScriptURLs, function( url ) {
           var promise = port.request('get', url);
           jsPromises.push( promise );
           promises.push(promise);
@@ -1262,7 +1374,7 @@ define("conductor/xhr_consumer",
         Oasis.RSVP.all(jsPromises).then(function(scripts) {
           a_forEach.call(scripts, processJavaScript);
         }).fail( Oasis.RSVP.rethrow );
-        a_forEach.call(ConductorRequire.requiredCSSUrls, loadURL(processCSS));
+        a_forEach.call(Conductor._dependencies.requiredCSSURLs, loadURL(processCSS));
 
         Oasis.RSVP.all(promises).then(function() { promise.resolve(); }).fail( Oasis.RSVP.rethrow );
       }
@@ -1272,32 +1384,19 @@ define("conductor/xhr_consumer",
     return XhrConsumer;
   });
 define("conductor/xhr_service",
-  ["oasis","conductor/path"],
-  function(Oasis, PathUtils) {
+  ["oasis/xhr","oasis","conductor/path"],
+  function(__dependency1__, Oasis, PathUtils) {
     "use strict";
+    var xhr = __dependency1__.xhr;
     /*global PathUtils */
 
     var XhrService = Oasis.Service.extend({
       requests: {
         get: function(url) {
           var service = this;
+          var resourceUrl = PathUtils.cardResourceUrl(service.sandbox.options.url, url);
 
-          return new Oasis.RSVP.Promise(function (resolve, reject) {
-            var xhr = new XMLHttpRequest(),
-                resourceUrl = PathUtils.cardResourceUrl(service.sandbox.options.url, url);
-
-            xhr.onreadystatechange = function (a1, a2, a3, a4) {
-              if (this.readyState === 4) {
-                if (this.status === 200) {
-                  resolve(this.responseText);
-                } else {
-                  reject({status: this.status});
-                }
-              }
-            };
-            xhr.open("get", resourceUrl, true);
-            xhr.send();
-          });
+          return xhr(resourceUrl);
         }
       }
     });
