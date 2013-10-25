@@ -3,14 +3,67 @@ define("ziniki",
 
   "use strict";
 
+/* Interface to Ziniki from JavaScript
+ * (C) 2013 Ziniki Infrastructure Software, LLC
+ * Author: Gareth Powell
+ */
   var Ziniki = {};
+function getURLParameterByName(window, name)
+{
+	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	var regexS = "[\\?&]" + name + "=([^&#]*)";
+	var regex = new RegExp(regexS);
+	var results = regex.exec(window.location.search);
+	if (results == null)
+		return "";
+	else
+		return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
 
   var url = null;
   var wsUrl = null;
   var webSocket = null;
-  var token = null;
   var performingLogin = false;
-//var onSuccessfulLogin = [];
+
+  function setLoggedInUser(newValue)
+  {
+          sessionStorage.setItem("userName", newValue.name);
+          sessionStorage.setItem("userToken", newValue.token);
+  }
+
+  function clearLoggedInUser()
+  {
+          sessionStorage.removeItem("userName");
+          sessionStorage.removeItem("userToken");
+  }
+
+  function getLoggedInUser()
+  {
+          var name = sessionStorage.getItem("userName");
+          var token = sessionStorage.getItem("userToken");
+          return token ? new LoggedInUser(name, token) : null;
+  }
+
+  function getLoggedInUserName()
+  {
+          return getLoggedInUser().name;
+  }
+  
+  function getToken()
+  {
+          var user = getLoggedInUser();
+          return user ? user.token : null;
+  }
+
+  function hasToken()
+  {
+          return getToken() != null;
+  }
+
+    // If you already have a token, you can call this
+    function reuseToken(inToken) {
+          setLoggedInUser(new LoggedInUser(inToken, inToken));
+    };
 
   /** We need to keep track of all server requests by id
    * and then map those ids back to the requests so that
@@ -52,16 +105,16 @@ define("ziniki",
     };
 
     this.conn = function() {
-      if (!this._conn) {
+      if (!this._conn)
         this._conn = this.create();
-        return this._conn;
-      };
+      return this._conn;
     }
 
     /** Do the work to create a websocket: initialize atmosphere,
      * pass a request, and handle the "open" message
      */
     this.create = function() {
+      var token = getToken();
       if (token == null && !performingLogin)
         throw "Cannot open websocket until logged in";
       var self = this;
@@ -81,18 +134,8 @@ define("ziniki",
             // and then handle each incoming message
             onMessage: function(response) {
               var body = response.responseBody;
-              if (body == "Confirm") {
+              if (body == "Confirm")
                 resolve(actualConn);
-                // All replaced by promise
-//              if (onReady) {
-//              if (!obj)
-//              onReady(self);
-//              else
-//              onReady.apply(obj, [self]);
-//              }
-//              for (var i=0;i<self.delayed.length;i++)
-//              self.conn.push(self.delayed[i]);
-              }
               else
                 self.dispatch(body);
             }
@@ -123,7 +166,6 @@ define("ziniki",
   };
 
   /** Tell us how to find Ziniki
-   * 
    */
   function init(inUrl, inWsUrl) {
     url = inUrl;
@@ -141,101 +183,143 @@ define("ziniki",
 
     // We can't set up the websocket without a login token, but if that process
     // is already under way, don't complain, just wait for the response
-    if (token == null && !performingLogin)
+    if (getToken() == null && !performingLogin)
       throw "Cannot open websocket until logged in";
 
     // OK, create the websocket object
-    webSocket = new WebSocket();
-//  if (token != null)
-//  webSocket.create();
-//  else
-//  onSuccessfulLogin.push(function() { webSocket.create(); });
-    return webSocket;
+    return new WebSocket();
   }
 
-  function zinikiGet(url, success, failure) {
-    jQuery.ajax({
-      type: "GET",
-      url: url,
-      headers: {
-        "Accept": "application/json",
-        "X-Ziniki-Token": token
-      },
-      success: function(json, status, xhr) {
-        if (success != null)
-          success(json, xhr);
-      },
-      error: function(xhr, text, error) {
-        if (failure != null)
-          failure(error, xhr);
-      }
-    });
+	function Response(xhr, json, textStatus)
+	{
+		this.xhr = xhr;
+		this.json = json;
+		this.status = status;
+	}
+	
+	function RequestError(xhr, textStatus, errorThrown)
+	{
+		this.name = "RequestError";
+		this.xhr = xhr;
+		this.textStatus = textStatus;
+		this.errorThrown = errorThrown;
+	}
+	RequestError.prototype = new Error("An error occurred while a request was being processed.");
+	
+	function zinikiGet(url)
+	{
+		return new Ember.RSVP.Promise(function(resolve, reject)
+			{
+				jQuery.ajax({
+					type: "GET",
+					url: url,
+					headers: {
+						"Accept": "application/json",
+						"X-Ziniki-Token": getToken()
+					},
+					success: function(json, textStatus, xhr) {	resolve(new Response(xhr, json, textStatus));	},
+					error: function(xhr, textStatus, errorThrown) {	reject(new RequestError(xhr, textStatus, errorThrown));	}
+				});
+			});
   };
 
-  function zinikiPost(url, payload, success, failure) {
-    var options = {
-        type: "POST",
-        headers: {
-          "Accept": "application/json"
-        },
-        success: function(json, status, xhr) {
-          if (success != null)
-            success(json, xhr);
-        },
-        error: function(xhr, text, error) {
-          console.log("Saw error ", text, error);
-          if (failure != null)
-            failure(xhr);
-        }
-    };
-    if (token != null) {
-      options.headers["X-Ziniki-Token"] = token;
-    }
-    if (payload != null) {
-      options.data = JSON.stringify(payload);
-      options.dataType = 'json';
-      options.contentType = 'application/json';
-    }
-    jQuery.ajax(url, options);
+	function zinikiPost(url, payload)
+	{
+		return new Ember.RSVP.Promise(function(resolve, reject)
+			{
+				var options =
+				{
+					type: "POST",
+					headers: {"Accept": "application/json"},
+					success: function(json, textStatus, xhr) {	resolve(new Response(xhr, json, textStatus));	},
+					error: function(xhr, textStatus, errorThrown) {	reject(new RequestError(xhr, textStatus, errorThrown));	}
+				};
+				
+				if (getToken() != null)
+					options.headers["X-Ziniki-Token"] = getToken();
+				
+				if (payload != null)
+				{
+					options.data = JSON.stringify(payload);
+					options.dataType = 'json';
+					options.contentType = 'application/json';
+				}
+				
+				jQuery.ajax(url, options);
+			});
   };
 
-  function login(method, username, options, success, failure) {
+  function LoggedInUser(name, token)
+  {
+          this.name = name;
+          this.token = token;
+  }
+
+	function login(username, password)
+	{
+		var hash = {method: "basic", login: username, password: password};
+		var loginPacket = {"ZinikiCredential": hash};
+		var loginPromise = zinikiPost(url + "/login", loginPacket);
+		
     performingLogin = true;
+		return loginPromise.then(
+			function(response)
+			{
+				var token = response.xhr.getResponseHeader("X-Ziniki-Token");
+				setLoggedInUser(new LoggedInUser(username, token));
+				performingLogin = false;
+			});
+	}
+	
+	function loginViaOpenID(window, providerString)
+	{
+	        performingLogin = true;
+		return new Ember.RSVP.Promise(function(resolve, reject)
+			{
+				var popupURL = url + "/login?method=openid&provider=" + encodeURIComponent(providerString) + "&returnTo=" + encodeURIComponent(window.location.origin + "/loggedIn.html");
+				var popup = window.open(popupURL);
+				
+				var intervalID = window.setInterval(function()
+					{
+						function cleanupAction()
+						{
+							window.clearInterval(intervalID);
+							popup.close();
+						}
+						
+						var loginIsComplete = false;
+						
+						try
+						{
+							loginIsComplete = popup.document && popup.document.domain === window.document.domain && popup.specialZinikiProperty4185809849535936024619905263 == 6986;
+						}
+						catch (error)	// the code above tries to gracefully set loginIsComplete to false while the popup is pointing to the provider's site, but
+						{					// there didn't seem to be a way to detect that condition (without triggering a security-related exception) in the case
+						}					// where the main window is using http and the provider is using https or vice versa...  so here that exception is quietly
+											// accepted as evidence that loginIsComplete should remain false
+						if (loginIsComplete)
+						{
+							var token = getURLParameterByName(popup, "token");
+							setLoggedInUser(new LoggedInUser("OpenID", token));
+							performingLogin = false;
+							cleanupAction();
+							resolve();
+						}
+						else if (popup.closed)
+						{
+							cleanupAction();
+							reject();
+						}
+					}, 64);
+			});
+	}
 
-    var ret = Ember.RSVP.defer();
-    if (method == "openid") {
-      zinikiGet(url+'/login?method=openid&provider='+options.provider, handleSuccess, function() { performingLogin = false; if (failure) failure(arguments); });
-    } else {
-      var hash = $.extend({"method":method,"login":username}, options);
-      var loginPacket = {"ZinikiCredential":hash};
-      zinikiPost(url+'/login', loginPacket, handleSuccess, failure);
-    }
-
-    return ret.promise;
-
-    // On success, we want to come back here and let everybody know the good news.
-    // This includes people who were waiting while we were doing the round trip
-    function handleSuccess(json, xhr) {
-      performingLogin = false;
-      token = xhr.getResponseHeader("X-Ziniki-Token");
-      ret.resolve();
-      if (success)
-        success(json);
-//    for (var i=0;i<onSuccessfulLogin.length;i++)
-//    onSuccessfulLogin[i]();
-//    onSuccessfulLogin = [];
-    }
-
-  };
-
-  function logout() {
-    zinikiPost(url+"/logout", null, null, null);
+	
+	function logout()
+	{
+		clearLoggedInUser();
+		return zinikiPost(url + "/logout", null);
   }
-
-  // If you already have a token, you can call this
-  function reuseToken(inToken) {
-    token = inToken;
-  };
 
   // This creates a new credential
   function newCredential(method, username, options, success, failure) {
@@ -276,14 +360,14 @@ define("ziniki",
     return rest;
   };
 
-  function zinikiGetResource(app, prot, resource, id, success, failure) {
+	function zinikiGetResource(app, prot, resource, id) {
     var rest = assembleUrl(app, prot, resource, id);
-    zinikiGet(rest, success, failure);
+		return zinikiGet(rest);
   }
 
-  function zinikiSave(app, prot, resource, id, data, success, failure) {
+	function zinikiSave(app, prot, resource, id, data) {
     var rest = assembleUrl(app, prot, resource, id);
-    zinikiPost(rest, data, success, failure);
+		return zinikiPost(rest, data);
   }
 
   function zinikiCall(app, prot, method, data, success, failure) {
@@ -299,7 +383,10 @@ define("ziniki",
   Ziniki = {
       init: init,
       login: login,
+	  loginViaOpenID: loginViaOpenID,
       logout: logout,
+      hasToken: hasToken,
+      getLoggedInUserName: getLoggedInUserName,
       reuseToken: reuseToken,
       newCredential: newCredential,
       createIdentity: createIdentity,

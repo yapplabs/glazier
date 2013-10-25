@@ -4,7 +4,7 @@ define("glazier/behaviors/login",
     "use strict";
     function login() {
       // There should be a proper login screen
-      return Ziniki.login("basic", "gareth", { password:"powell"});
+      return Ziniki.login("gareth", "powell");
     }
     return login;
   }
