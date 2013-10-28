@@ -1,0 +1,1 @@
+../ember-latest.js

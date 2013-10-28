@@ -113,6 +113,11 @@
     background-color: rgba(0,0,0,0.8);
   }
 
+  .analytics,
+  .output {
+    height: inherit;
+  }
+
   &.is-drawer-open {
     bottom:0;
   }

@@ -14,6 +14,7 @@
     <script src="<%= manifestUrl('/vendor/ember-latest.js') %>"></script>
     <script src="<%= manifestUrl('/vendor/ember-states.js') %>"></script>
     <script src="<%= manifestUrl('/vendor/ember-data-latest.js') %>"></script>
+    <script src="<%= manifestUrl('/vendor/conductor-analytics/conductor-analytics-bootstrap.js') %>"></script>
     <script src="<%= manifestUrl('/vendor/conductor.js.html') %>"></script>
     <script src="<%= manifestUrl('/glazier.js') %>"></script>
     <!--
@@ -25,6 +26,7 @@
   </head>
   <body>
     <script>
+      var StarterKit = {};
       window.Conductor = require('conductor');
       window.Glazier = require('glazier/main').Glazier;
       Glazier.manifest = <%= manifest %>;
@@ -33,10 +35,5 @@
 
     <!-- Analytics -->
     <link rel="stylesheet" href="<%= manifestUrl('/css/glazier.css') %>">
-
-    <script>
-      var StarterKit = {};
-    </script>
-    <script src="<%= manifestUrl('/vendor/analytics.js') %>"></script>
   </body>
 </html>

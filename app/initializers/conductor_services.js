@@ -27,6 +27,8 @@ var initializer = {
     conductor.removeDefaultCapability('height');
     application.register('conductor:main', conductor, { instantiate: false });
 
+    if( window.StarterKit ) window.StarterKit.initializeAnalytics(conductor);
+
     Ember.keys(requirejs._eak_seen).forEach(function (moduleName) {
       var match = /^glazier\/services\/(.+)/.exec(moduleName);
 
