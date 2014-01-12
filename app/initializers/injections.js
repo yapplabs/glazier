@@ -5,7 +5,7 @@ var initializer = {
   name: 'injections',
   initialize: function (container, application) {
     application.register('card-manager:main', CardManager, {singleton: false});
-    application.register('card-data_manager:main', CardDataManager);
+    application.register('card-data-manager:main', CardDataManager);
 
     application.inject('card-data-manager:main', 'userController', 'controller:user');
     application.inject('card-data-manager:main', 'repositoryController', 'controller:repository');
